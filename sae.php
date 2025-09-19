@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>sae</title>
-    <link href = "style.css" rel="stylesheet">
+    <link href = "style.css" rel= "stylesheet">
 </head>
 <body>
 
@@ -14,12 +14,15 @@
 
     <label>Date et heure de début :</label>
     <input name="date_start" id="date_start" type="datetime-local" />
+    <p></p>
 
-    <label>Date et heure de fin :</label>
+    <label>Date etheure de fin :</label>
     <input name="date_end" id="date_end" type="datetime-local" />
+    <p></p>
 
     <label>Motif :</label>
-    <input name="motif" id="motif" type="text" /></p>
+    <input name="motif" id="motif" type="text" />
+    <p></p>
 
     <button type="submit">Valider</button>
 </form>
