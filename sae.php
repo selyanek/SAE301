@@ -16,14 +16,15 @@
     <input name="date_start" id="date_start" type="datetime-local" />
     <p></p>
 
-    <label>Date etheure de fin :</label>
+    <label>Date et heure de fin :</label>
     <input name="date_end" id="date_end" type="datetime-local" />
     <p></p>
 
-    <label>Motif :</label>
+    <label id = "motif_label">Motif :</label>
     <input name="motif" id="motif" type="text" />
     <p></p>
 
+    <button type="reset">Annuler</button>
     <button type="submit">Valider</button>
 </form>
 
