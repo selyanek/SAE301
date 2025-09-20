@@ -21,7 +21,11 @@
     <p></p>
 
     <label id = "motif_label">Motif :</label>
-    <input name="motif" id="motif" type="text" />
+    <textarea name="motif" id="motif" rows="2"></textarea>
+    <p></p>
+
+    <label for="justification">Justification :</label>
+    <input type="file" id="justification" name="justification" accept=".pdf,.jpg,.png" maxsize="5MB" />
     <p></p>
 
     <button type="reset">Annuler</button>
