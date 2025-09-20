@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>sae</title>
-    <link href = "style.css" rel= "stylesheet">
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
 
-<h1> Absence </h1>
-<h2> Modifiez les informations liées à votre absence </h2>
+<h1> Justifier une absence </h1>
+<h2> Saisissez les informations liées à votre absence </h2>
 
 <form action="sae.php" method="post">
 
