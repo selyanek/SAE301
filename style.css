@@ -57,3 +57,29 @@ motif_label {
     max-width: 300px;
     max-height: 100px;
 }
+input[type="text"],
+input[type="date"],
+select,
+input[type="datetime-local"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+button {
+    background-color: #2a4d9b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 24px;
+    transition: background-color 0.2s;
+}
