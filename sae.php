@@ -1,3 +1,6 @@
+<!-- SAE.php : Saisir une Absence et l'Enregistrer -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,13 +23,16 @@
     <input name="date_end" id="date_end" type="datetime-local" />
     <p></p>
 
-    <label id = "motif_label">Motif :</label>
+    <label id = "motif_label">Motif de l'absence :</label>
     <textarea name="motif" id="motif" rows="2"></textarea>
     <p></p>
 
     <label for="justification">Justification :</label>
+    <text>Veuillez joindre un justificatif (format accepté : .pdf, .jpg, .png | taille max : 5MB)</text>
+    <p></p>
     <input type="file" id="justification" name="justification" accept=".pdf,.jpg,.png" maxsize="5MB" />
     <p></p>
+
 
     <button type="reset">Annuler</button>
     <button type="submit">Valider</button>
