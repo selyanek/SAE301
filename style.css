@@ -83,3 +83,26 @@ button {
     margin-top: 24px;
     transition: background-color 0.2s;
 }
+button:hover {
+    background-color: #1a2a4d;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+th {
+    background-color: #f4f6fa;
+    color: #2a4d9b;
+}
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+tr:hover {
+    background-color: #f1f1f1;
+}

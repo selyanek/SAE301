@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>sae</title>
+    <title>Justifier une absence</title>
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
@@ -32,11 +32,11 @@
     <br>
     <input type="file" id="justification" name="justification" accept=".pdf,.jpg,.png" maxsize="5MB" />
     <br>
-
-
-    <button type="reset">Annuler</button>
+    <button type="reset">Réinitialiser</button>
     <button type="submit">Valider</button>
+    <a href="accueil_étudiant.php"><button type="button">Annuler</button></a>
 </form>
+
 
 </body>
 </html>
