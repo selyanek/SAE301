@@ -22,7 +22,10 @@
 
 <button type="submit">Soumettre un justificatif</button>
 </form>
+<h2> Autres options : </h2>
 <a href="infos_etu.php"><button type="button">Mes informations</button></a>
+<a href="gestion_absence.php"><button type="button">Gérer mes absences</button></a>
+<a href="connexion.php"><button type="button">Se déconnecter</button></a>
 
 </body>
 </html>
