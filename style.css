@@ -12,7 +12,7 @@ body {
 }
 
 h1 {
-    color: #2a4d9b;
+    color: #2083b1;
     text-align: center;
     font: italic bold 48px/1.2 Georgia, serif;
     letter-spacing: 2px;
@@ -35,12 +35,12 @@ p, li {
     line-height: 1.7;
 }
 a {
-    color: #2a4d9b;
+    color: #0a4fe2;
     text-decoration: none;
     transition: color 0.2s;
 }
 a:hover {
-    color: #1a2a4d;
+    color: #588edf;
     text-decoration: underline;
 }
 label {
@@ -73,7 +73,7 @@ textarea {
 }
 
 button {
-    background-color: #2a4d9b;
+    background-color: #2083b1;
     color: white;
     border: none;
     border-radius: 8px;
@@ -84,7 +84,7 @@ button {
     transition: background-color 0.2s;
 }
 button:hover {
-    background-color: #1a2a4d;
+    background-color: #1a3d4d;
 }
 table {
     width: 100%;
@@ -120,10 +120,10 @@ footer p {
     font-size: 0.9rem;
 }
 footer a {
-    color: #2a4d9b;
+    color: #2083b1;
 }
 footer a:hover {
-    color: #1a2a4d;
+    color: #146281;
     text-decoration: underline;
 }
 /* Responsive Design */
