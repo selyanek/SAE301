@@ -37,6 +37,16 @@
     <button type="reset">Annuler</button>
     <button type="submit">Valider</button>
 </form>
+<?php
+$connections = "host=localhost port=5435 dbname=sae user=sae password=1zevkN&49b&&a*Pi97C";
+$connection = pg_connect($connections);
+if (!$connection) {
+    echo "Une erreur s'est produite.\n";
+    exit;
+} else {
+    echo "Connexion réussie.\n";
+}
 
+?>
 </body>
 </html>
