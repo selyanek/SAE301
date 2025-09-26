@@ -45,6 +45,14 @@ function ajouterAbsence($pdo, $date_start, $date_end, $motif, $justificatif) {
     ]);
     return $pdo->lastInsertId();
 }
+function testTemps($pdo, $date_end) {
+    if ($date_end > $date_end+2*60*60*24) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 
 
 

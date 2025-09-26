@@ -156,3 +156,11 @@ JOIN Compte cp ON p.compte_id = cp.id
 WHERE ce.identifiant = 'dilara.simsek' AND cp.identifiant = 'john.doe';
 --rollback DELETE FROM Absence WHERE etudiant_id = (SELECT e.id FROM Etudiant e JOIN Compte ce ON e.compte_id = ce.id WHERE ce.identifiant = 'dilara.simsek') AND cours_id = (SELECT c.id FROM Cours c JOIN Professeur p ON c.professeur_id = p.id JOIN Compte cp ON p.compte_id = cp.id WHERE cp.identifiant = 'john.doe' AND c.date_debut = '2024-09-01 9:30:00');
 -- End of changelog (for now)
+
+--changeset Oscar:17
+--comment: Ajout d'une table associative pour récupérer le cours des étudiants
+CREATE TABLE coursDesEtudiants (
+    etudiant_id INTEGER REFERENCES Etudiant(id),
+    cours_id INTEGER REFERENCES Cours(id),
+    PRIMARY KEY (etudiant_id, cours_id)
+);
