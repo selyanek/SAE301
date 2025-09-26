@@ -1,45 +1,46 @@
 <?php
-// Paramètres de connexion à la base de données
-$host = 'node2.liruz.fr';
-$port = '5435';
-$dbname = 'sae';
-$username = 'sae';
-$password = '1zevkN&49b&&a*Pi97C';
-
+require 'Database.php';
 try {
-    // Création de la connexion PDO
-    $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
-    $pdo = new PDO($dsn, $username, $password, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES => false,
-    ]);
-    
-    echo "Connexion à la base de données réussie !";
+    $db = new Database();
+    $pdo = $db->getConnection();
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Récupération des données du formulaire
-        $etudiant_id = $_POST['etudiant_id'];
-        $date_absence = $_POST['date_absence'];
-        $justificatif = $_POST['justificatif']; // téléchargement de fichiers à gérer
+        $date_start = $_POST['date_start'];
+        $date_end = $_POST['date_end'];
+        $motif = $_POST['motif'];
+        $justificatif = null;
+
+        // Gestion du fichier justificatif
+        if (isset($_FILES['justification']) && $_FILES['justification']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = 'uploads/';
+            if (!is_dir($uploadDir)) mkdir($uploadDir);
+            $fileName = uniqid() . '_' . basename($_FILES['justification']['name']);
+            $targetPath = $uploadDir . $fileName;
+            if (move_uploaded_file($_FILES['justification']['tmp_name'], $targetPath)) {
+                $justificatif = $targetPath;
+            }
+        }
 
         // Appel de la fonction pour ajouter l'absence
-        $absence_id = ajouterAbsence($pdo, $etudiant_id, $date_absence, $justificatif);
+        $absence_id = ajouterAbsence($pdo, $date_start, $date_end, $motif, $justificatif);
         echo "Absence ajoutée avec l'ID : " . $absence_id;
     } else {
         echo "Méthode de requête non prise en charge.";
     }
-    
+    $pdo = null;
+
 } catch (PDOException $e) {
     die("Erreur de connexion : " . $e->getMessage());
 }
 
-function ajouterAbsence($pdo, $etudiant_id, $date_absence, $justificatif) {
-    $sql = "INSERT INTO absences (etudiant_id, date_absence, justificatif) VALUES (:etudiant_id, :date_absence, :justificatif)";
+function ajouterAbsence($pdo, $date_start, $date_end, $motif, $justificatif) {
+    $sql = "INSERT INTO Absence (date_debut, date_fin, motif, justificatif) VALUES (:date_debut, :date_fin, :motif, :justificatif)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
-        ':etudiant_id' => $etudiant_id,
-        ':date_absence' => $date_absence,
+        ':date_debut' => $date_start,
+        ':date_fin' => $date_end,
+        ':motif' => $motif,
         ':justificatif' => $justificatif
     ]);
     return $pdo->lastInsertId();
@@ -47,14 +48,7 @@ function ajouterAbsence($pdo, $etudiant_id, $date_absence, $justificatif) {
 
 
 
-$connections = "host=localhost port=5435 dbname=sae user=sae password=1zevkN&49b&&a*Pi97C";
-$connection = pg_connect($connections);
-if (!$connection) {
-    echo "Une erreur s'est produite.\n";
-    exit;
-} else {
-    echo "Connexion réussie.\n";
-}
+
 // Fermeture de la connexion
 $pdo = null;
 ?>
