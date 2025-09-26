@@ -6,7 +6,10 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
-<h1> Connexion </h1>
+    <header>
+        <img src="logouphf.png" alt="Logo UPHF" class="logo">    
+    </header>
+    <h1> Connexion </h1>
 <form action="accueil_étudiant.php" method="post">
     <label>Nom d'utilisateur :</label>
     <input name="username" id="username" type="text" />
