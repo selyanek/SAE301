@@ -22,4 +22,4 @@
         <td>BUT Informatique</td>
     </tr>
     </table>
-<a href="accueil_étudiant.php"><button type="button">Annuler</button></a>
+<a href="accueil_etudiant.php"><button type="button">Annuler</button></a>

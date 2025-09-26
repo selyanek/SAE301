@@ -34,7 +34,7 @@
     <br>
     <button type="reset">Réinitialiser</button>
     <button type="submit">Valider</button>
-    <a href="accueil_étudiant.php"><button type="button">Annuler</button></a>
+    <a href="accueil_etudiant.php"><button type="button">Annuler</button></a>
 </form>
 
 
