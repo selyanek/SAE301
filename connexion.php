@@ -16,6 +16,22 @@
     <br>
     <button type="reset">Réinitialiser</button>
     <button type="submit">Se connecter</button>
+
+
 </form>
+<?php
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $user = $_POST["username"] ?? '';
+    $pass = $_POST["password"] ?? '';
+    if ($user && $pass ) {
+    header('Location: accueil_étudiant.php');
+    } else {
+    echo "Identifiant ou mot de passe incorrect";
+    }
+}
+
+?>
+
 </body>
 </html>
