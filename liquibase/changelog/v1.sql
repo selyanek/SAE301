@@ -102,3 +102,57 @@ SELECT id, 'Simsek', 'Dilara', 'Informatique'
 FROM Compte
 WHERE identifiant = 'dilara.simsek';
 --rollback DELETE FROM Etudiant WHERE compte_id = (SELECT id FROM Compte WHERE identifiant = 'dilara.simsek'); DELETE FROM Compte WHERE identifiant = 'dilara.simsek';
+
+--changeset Selyane:12
+--comment: Insertion d'un compte professeur et de son profil Professeur
+INSERT INTO Compte (identifiant, mot_de_passe)
+VALUES ('john.doe', 'securepassword'); 
+
+INSERT INTO Professeur (compte_id, nom, prenom)
+SELECT id, 'Doe', 'John'
+FROM Compte
+WHERE identifiant = 'john.doe';
+--rollback DELETE FROM Professeur WHERE compte_id = (SELECT id FROM Compte WHERE identifiant = 'john.doe'); DELETE FROM Compte WHERE identifiant = 'john.doe';
+
+--changeset Selyane:13
+--comment: Insertion d'un compte responsable pédagogique et de son profil Responsable_Pedagogique
+INSERT INTO Compte (identifiant, mot_de_passe)
+VALUES ('jane.smith', 'anotherpassword');
+
+INSERT INTO Responsable_Pedagogique (compte_id, nom, prenom)
+SELECT id, 'Smith', 'Jane'
+FROM Compte
+WHERE identifiant = 'jane.smith';
+--rollback DELETE FROM Responsable_Pedagogique WHERE compte_id = (SELECT id FROM Compte WHERE identifiant = 'jane.smith'); DELETE FROM Compte WHERE identifiant = 'jane.smith';
+
+--changeset Selyane:14
+--comment: Insertion d'un cours associé au professeur John Doe
+INSERT INTO Cours (professeur_id, type, eval, date_debut, date_fin)
+SELECT p.id, 'CM', FALSE, '2024-09-01 9:30:00', '2024-09-01 11:00:00'
+FROM Professeur p
+JOIN Compte c ON p.compte_id = c.id
+WHERE c.identifiant = 'john.doe';
+--rollback DELETE FROM Cours WHERE professeur_id = (SELECT p.id FROM Professeur p JOIN Compte c ON p.compte_id = c.id WHERE c.identifiant = 'john.doe');
+
+--changeset Selyane:15
+--comment: Insertion d'une ressource associée au cours créé précédemment
+INSERT INTO Ressource (cours_id, nom)
+SELECT c.id, 'Introduction to Programming'
+FROM Cours c
+JOIN Professeur p ON c.professeur_id = p.id
+JOIN Compte cp ON p.compte_id = cp.id
+WHERE cp.identifiant = 'john.doe' AND c.date_debut = '2024-09-01 9:30:00';
+--rollback DELETE FROM Ressource WHERE cours_id = (SELECT c.id FROM Cours c JOIN Professeur p ON c.professeur_id = p.id JOIN Compte cp ON p.compte_id = cp.id WHERE cp.identifiant = 'john.doe' AND c.date_debut = '2024-09-01 9:30:00');
+
+--changeset Selyane:16
+--comment: Insertion d'une absence pour l'étudiant Dilara Simsek pour le cours créé précédemment
+INSERT INTO Absence (etudiant_id, cours_id, date_debut, date_fin, motif, justifie)
+SELECT e.id, c.id, '2024-09-01 9:30:00', '2024-09-01 11:00:00', 'Maladie', FALSE
+FROM Etudiant e
+JOIN Compte ce ON e.compte_id = ce.id
+JOIN Cours c ON c.date_debut = '2024-09-01 9:30:00'
+JOIN Professeur p ON c.professeur_id = p.id
+JOIN Compte cp ON p.compte_id = cp.id
+WHERE ce.identifiant = 'dilara.simsek' AND cp.identifiant = 'john.doe';
+--rollback DELETE FROM Absence WHERE etudiant_id = (SELECT e.id FROM Etudiant e JOIN Compte ce ON e.compte_id = ce.id WHERE ce.identifiant = 'dilara.simsek') AND cours_id = (SELECT c.id FROM Cours c JOIN Professeur p ON c.professeur_id = p.id JOIN Compte cp ON p.compte_id = cp.id WHERE cp.identifiant = 'john.doe' AND c.date_debut = '2024-09-01 9:30:00');
+-- End of changelog (for now)
