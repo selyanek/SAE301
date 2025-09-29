@@ -38,17 +38,6 @@
     <button type="submit">Valider</button>
     <a href="accueil_etudiant.php"><button type="button">Annuler</button></a>
 </form>
-<script>
-    document.getElementById("absenceForm").addEventListener("submit", function(event) {
-        let motif = document.getElementById("motif").value.trim();
-        let motifError = document.getElementById("motif_error");
-        motifError.textContent = "";
-        if (motif === "") {
-            event.preventDefault();
-            motifError.textContent = "⚠️ Champ non rempli : veuillez saisir un motif.";
-        }
-    });
-</script>
 </body>
 </html>
 
