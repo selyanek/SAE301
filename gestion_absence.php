@@ -42,5 +42,6 @@
     </tr>
     <!-- D'autres absences peuvent être listées ici -->
 </table>
+
 </body>
 </html>
