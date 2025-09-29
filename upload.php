@@ -14,7 +14,7 @@
 <body>
 <h1> Justifier une absence </h1>
 <h2> Saisissez les informations liées à votre absence </h2>
-<form id="absenceForm" action="sae.php" method="post" enctype="multipart/form-data">
+<form id="absenceForm" action="upload.php" method="post" enctype="multipart/form-data">
 
     <label>Date et heure de début :</label>
     <input name="date_start" id="date_start" type="datetime-local" />
@@ -31,7 +31,7 @@
 
     <label for="justification">Justification :</label>
     <p>Veuillez joindre un justificatif (format accepté : .pdf, .jpg, .png | taille max : 5MB)</p>
-    <input type="file" id="justification" name="justification" accept=".pdf,.jpg,.png" />
+    <input type="file" id="justification" name="file" accept=".pdf,.jpg,.png" />
     <br><br>
 
     <button type="reset">Réinitialiser</button>
@@ -51,3 +51,16 @@
 </script>
 </body>
 </html>
+
+<?php 
+if (isset($_FILES['file'])) {
+    $dossier = 'uploads/';
+    $nom_fichier = basename($_FILES['file']['name']);
+    $fichier = $dossier . $nom_fichier;
+    if (move_uploaded_file($_FILES['file']['tmp_name'], $fichier)) {
+        echo "Le fichier ".htmlspecialchars($nom_fichier)." a été uploadé avec succès." . $_FILES['file']['size'];
+    } else {
+        echo "Une erreur est survenue lors de l'upload.";
+    }
+}
+?>
