@@ -45,7 +45,7 @@
         motifError.textContent = "";
         if (motif === "") {
             event.preventDefault();
-            motifError.textContent = "⚠️ Champ non rempli : veuillez saisir un motif.";
+            motifError.textContent = "Champ non rempli : veuillez saisir un motif.";
         }
     });
 </script>
