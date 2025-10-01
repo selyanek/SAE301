@@ -26,6 +26,9 @@
 
     <label id="motif_label">Motif de l'absence :</label>
     <textarea name="motif" id="motif" rows="2"></textarea>
+    <?php if (isset($_POST['motif']) && empty(trim($_POST['motif']))) { ?>
+        <div class="error">Le motif est obligatoire.</div>
+    <?php } ?>
     <div id="motif_error" class="error"></div>
     <br>
 
@@ -38,17 +41,6 @@
     <button type="submit">Valider</button>
     <a href="accueil_etudiant.php"><button type="button">Annuler</button></a>
 </form>
-<script>
-    document.getElementById("absenceForm").addEventListener("submit", function(event) {
-        let motif = document.getElementById("motif").value.trim();
-        let motifError = document.getElementById("motif_error");
-        motifError.textContent = "";
-        if (motif === "") {
-            event.preventDefault();
-            motifError.textContent = "Champ non rempli : veuillez saisir un motif.";
-        }
-    });
-</script>
 </body>
 </html>
 
