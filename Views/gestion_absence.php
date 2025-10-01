@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Gérer mes absences</title>
-    <link href="style.css" rel="stylesheet">
+    <link href="style2.css" rel="stylesheet">
 </head>
 <body>
 <h1> Gérer mes absences </h1>
@@ -12,6 +12,14 @@
 <br>
 <a href="sae.php"><button type="button">Soumettre un nouveau justificatif</button></a>
 <br>
+<div class="sidebar">
+    <ul>
+        <li>Accueil</li>
+        <li>Gestion des absences</li>
+        <li>Historique des absences</li>
+        <li>Paramètre</li>
+    </ul>
+</div>
 <table> 
     <tr>
         <th>Date de début</th>
