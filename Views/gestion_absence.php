@@ -1,11 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Gérer mes absences</title>
-    <link href="style2.css" rel="stylesheet">
+    <link href="/Views/style2.css" rel="stylesheet">
 </head>
+<header class="header">
+    <img src="../img/logouphf.png" alt="Logo uphf">
+</header>
 <body>
+<div class="logoEdu">
+    <img src="../img/logoedutrack.png" alt="Logo EduTrack">
+</div>
+<div class="separator"></div>
 <h1> Gérer mes absences </h1>
 <p> Cette page permettra à l'étudiant de voir, modifier ou supprimer ses absences justifiées. </p>
 <a href="accueil_étudiant.php"><button type="button">Retour à l'accueil</button></a>

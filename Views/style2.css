@@ -54,11 +54,36 @@ body {
     display: flex;
     align-items: center;
 }
+.separator {
+  border-bottom: 2px solid #ccc;
+  margin: 20px 0;
+  width: 100%;
+}
+.logoEdu {
+    text-align: center;
+    margin: 20px 0;
+}
+.logoEdu img {
+    height: 50px;
+    width: auto;
+    display: inline-block;
+}
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 60px;
+  width: 150px;
+  background-color: #29acc8; /* couleur typique de la sidebar */
+  display: flex;
+  align-items: center;
+  padding-left: 0px;
+  box-sizing: border-box;
+  z-index: 10;
+}
 
-.main-content {
-    margin-left: 150px;
-    margin-top: 60px;
-    padding: 40px 20px;
-    min-height: calc(100vh - 60px);
+.header img {
+  height: 60px;
+  width: auto;
 }
 
