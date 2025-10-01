@@ -10,9 +10,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Accueil</title>
-    <link href="style.css" rel="stylesheet">
+    <link href="/Views/style2.css" rel="stylesheet">
 </head>
 <body>
+
+<div class="sidebar">
+    <ul>
+        <li>Accueil</li>
+        <li>Gestion des absences</li>
+        <li>Historique des absences</li>
+        <li>Paramètre</li>
+    </ul>
+</div>
 
 <h1> Bonjour, étudiant </h1>
 <h2> Vos absences : </h2>
