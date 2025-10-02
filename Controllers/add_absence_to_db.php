@@ -6,9 +6,10 @@ try {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Récupération des données du formulaire
-        $date_start = $_POST['date_start'];
-        $date_end = $_POST['date_end'];
-        $motif = $_POST['motif'];
+        
+        $date_start = filter_input(INPUT_POST, 'date_start', FILTER_SANITIZE_STRING);
+        $date_end = filter_input(INPUT_POST, 'date_end', FILTER_SANITIZE_STRING);
+        $motif = filter_input(INPUT_POST, 'motif', FILTER_SANITIZE_STRING);
         $justificatif = null;
 
         // Gestion du fichier justificatif
