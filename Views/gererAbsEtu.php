@@ -16,7 +16,7 @@
 <h1> Gérer mes absences </h1>
 <p>Cette page vous donne accès aux informations et réponses liées à vos absences justifiées.</p>
 <br>
-<a href="sae.php"><button type="button" class="button">Soumettre un nouveau justificatif</button></a>
+<a href="/sae.php"><button type="button" class="button">Soumettre un nouveau justificatif</button></a>
 <div class="sidebar">
     <ul>
         <li>Accueil</li>

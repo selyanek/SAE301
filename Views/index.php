@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/Views/style2.css" rel="stylesheet">
-    <title>Login</title>
+    <title>Authentification</title>
 </head>
 <header class="header">
     <img src="../img/logouphf.png" alt="Logo uphf">
@@ -16,9 +16,6 @@
         <img src="../img/logoedutrack.png" alt="Logo EduTrack">
     </div>
     <div class="separator"></div>
-    <div class="text">
-         <h1>Bienvenue sur le portail d'authentification</h1>
-    </div>
     <div class="text-with-image">
         <img src="../img/logoco.png" alt="Connexion">
         <h2>Connexion</h2>
