@@ -32,18 +32,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/Views/style2.css" rel="stylesheet">
+    <link href="/Views/style.css" rel="stylesheet">
     <title>Authentification</title>
 </head>
-<header class="header">
+<header class="uphf">
     <img src="../img/logouphf.png" alt="Logo uphf">
 </header>
 <body>
     <div class="logoEdu">
         <img src="../img/logoedutrack.png" alt="Logo EduTrack">
     </div>
-    <div class="separator"></div>
-
     <section class="text-with-image-section">
         <div class="text-with-image">
             <img src="../img/logoco.png" alt="Connexion">
@@ -70,4 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
     </div>
 </body>
+<footer class="footer">
+    <nav class="footer-nav">
+    <a href="#">Accueil</a>
+    <span>|</span>
+    <a href="../Views/aide.php">Aides</a>
+  </nav>
+</footer>
 </html>

@@ -5,38 +5,69 @@
     <title>Justifier une absence</title>
     <link href="../Views/style.css" rel="stylesheet">
 </head>
+<div class="uphf">
+    <img src="../img/logouphf.png" alt="Logo uphf">
+</div>
 <body>
-<h1> Justifier une absence </h1>
-<h2> Saisissez les informations liées à votre absence </h2>
-<form id="absenceForm" action="upload.php" method="post" enctype="multipart/form-data">
+  <section class="container">
+    <div class="logoEdu">
+        <img src="../img/logoedutrack.png" alt="Logo EduTrack">
+    </div>
+    <div class="sidebar">
+        <ul>
+            <li>Accueil</li>
+            <li>Gérer des absences</li>
+            <li>Historique des absences</li>
+            <li>Paramètre</li>
+        </ul>
+    </div>
+    <header class="text">
+      <h1 class="title">Justifier une absence</h1>
+      <h3 class="subtitle">Saisissez les informations liées à votre absence</h3>
+    </header>
+    <form id="absenceForm" class="absence-form" action="upload.php" method="post" enctype="multipart/form-data">
 
-    <label>Date et heure de début :</label>
-    <input name="date_start" id="date_start" type="datetime-local" />
-    <br>
+      <div class="form-group">
+        <label class="label">Date et heure de début :</label>
+        <input class="input" name="date_start" id="date_start" type="datetime-local" />
+      </div>
 
-    <label>Date et heure de fin :</label>
-    <input name="date_end" id="date_end" type="datetime-local" />
-    <br>
+      <div class="form-group">
+        <label class="label">Date et heure de fin :</label>
+        <input class="input" name="date_end" id="date_end" type="datetime-local" />
+      </div>
 
-    <label id="motif_label">Motif de l'absence :</label>
-    <textarea name="motif" id="motif" rows="2"></textarea>
-    <?php if (isset($_POST['motif']) && empty(trim($_POST['motif']))) { ?>
-        <div class="error">Le motif est obligatoire.</div>
-    <?php } ?>
-    <div id="motif_error" class="error"></div>
-    <br>
+      <div class="form-group">
+        <label class="label" id="motif_label">Motif de l'absence :</label>
+        <textarea class="textarea" name="motif" id="motif" rows="2"></textarea>
+        <?php if (isset($_POST['motif']) && empty(trim($_POST['motif']))) { ?>
+          <div class="error">Le motif est obligatoire.</div>
+        <?php } ?>
+        <div id="motif_error" class="error"></div>
+      </div>
 
-    <label for="justification">Justification :</label>
-    <p>Veuillez joindre un justificatif (format accepté : .pdf, .jpg, .png | taille max : 5MB)</p>
-    <input type="file" id="justification" name="file" accept=".pdf,.jpg,.png" />
-    <br><br>
+      <div class="form-group">
+        <label class="label" for="justification">Justification :</label>
+        <p class="info">Veuillez joindre un justificatif (format accepté : .pdf, .jpg, .png | taille max : 5MB)</p>
+        <input class="file-input" type="file" id="justification" name="file" accept=".pdf,.jpg,.png" />
+      </div>
 
-    <button type="reset">Réinitialiser</button>
-    <button type="submit">Valider</button>
-    <a href="accueil_etudiant.php"><button type="button">Annuler</button></a>
-</form>
+      <div class="buttons">
+        <button type="reset" class="btn">Réinitialiser</button>
+        <button type="submit" class="btn">Valider</button>
+        <a href="accueil_etudiant.php"><button type="button" class="btn">Annuler</button></a>
+      </div>
+
+    </form>
+  </section>
 </body>
-</html>
+<footer class="footer">
+    <nav class="footer-nav">
+    <a href="#">Accueil</a>
+    <span>|</span>
+    <a href="../Views/aide.php">Aides</a>
+  </nav>
+</footer>
 
 <?php 
 if (isset($_FILES['file'])) {

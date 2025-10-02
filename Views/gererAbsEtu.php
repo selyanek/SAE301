@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Gérer mes absences</title>
-    <link href="/Views/style2.css" rel="stylesheet">
+    <link href="/Views/style.css" rel="stylesheet">
 </head>
-<header class="header">
+<header class="uphf">
     <img src="../img/logouphf.png" alt="Logo uphf">
 </header>
 <body>
@@ -57,4 +57,11 @@
 <br>
 <a href="accueil_étudiant.php"><button type="button" class="button">Retour à l'accueil</button></a>
 </body>
+<footer class="footer">
+    <nav class="footer-nav">
+    <a href="#">Accueil</a>
+    <span>|</span>
+    <a href="../Views/aide.php">Aides</a>
+  </nav>
+</footer>
 </html>
