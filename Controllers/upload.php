@@ -3,13 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Justifier une absence</title>
-    <link href="style.css" rel="stylesheet">
-    <style>
-        .error {
-            color: red;
-            font-size: 0.9em;
-        }
-    </style>
+    <link href="../Views/style.css" rel="stylesheet">
 </head>
 <body>
 <h1> Justifier une absence </h1>

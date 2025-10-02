@@ -10,6 +10,11 @@ display: flex;
 flex-direction: column;
 }
 
+.error {
+    color: red;
+    font-size: 0.9em;
+}
+
 /* Styles pour le header et le logo - AJOUTÉ ICI */
 header {
     position: fixed !important;
