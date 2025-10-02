@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/Views/style2.css" rel="stylesheet">
-    <title>Login</title>
+    <title>Authentification</title>
 </head>
 <header class="header">
     <img src="../img/logouphf.png" alt="Logo uphf">
