@@ -43,9 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <img src="../img/logoedutrack.png" alt="Logo EduTrack">
     </div>
     <div class="separator"></div>
-    <div class="text">
-         <h1>Bienvenue sur le portail d'authentification</h1>
-    </div>
 
     <section class="text-with-image-section">
         <div class="text-with-image">
