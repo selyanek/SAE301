@@ -74,7 +74,7 @@ body {
   left: 0;
   height: 60px;
   width: 150px;
-  background-color: #29acc8; /* couleur typique de la sidebar */
+  background-color: #29acc8;
   display: flex;
   align-items: center;
   padding-left: 0px;
@@ -85,5 +85,105 @@ body {
 .header img {
   height: 60px;
   width: auto;
+}
+.liste-absences {
+    width: 80%;
+    margin: 20px;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: left;
+}
+a .button {
+    background-color: #29acc8;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.text-with-image {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 60px;
+  width: 200px;
+}
+.text-with-image img {
+ height: 50px;
+ width: auto;
+ vertical-align: middle;
+}
+
+.text-with-image h2 {
+  display: flex;
+  align-items: center;
+}
+
+.wapper {
+  max-width: 320px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+}
+
+.wapper form {
+  display: flex;
+  flex-direction: column;
+}
+
+.wapper label {
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+.wapper input[type="text"],
+.wapper input[type="password"] {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.wapper input[type="text"]:focus,
+.wapper input[type="password"]:focus {
+  outline: none;
+  border-color: #29acc8;
+  box-shadow: 0 0 5px rgba(41,172,200,0.5);
+}
+
+.wapper button {
+  background-color: #29acc8;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 17px;
+  transition: background-color 0.3s;
+}
+
+.wapper button:hover {
+  background-color: #238da4;
+}
+
+.wapper a {
+  color: #29acc8;
+  text-decoration: none;
+  margin-top: 12px;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.wapper a:hover {
+  text-decoration: underline;
 }
 
