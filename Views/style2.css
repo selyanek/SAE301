@@ -107,8 +107,14 @@ a .button {
   align-items: center;
   gap: 10px;
   height: 60px;
-  width: 1720px;
+  width: 100%;
   justify-content: center;
+  margin-bottom: 20px;
+  position: sticky;
+  top: 60px;
+  background-color: #f7f9fb;
+  border-bottom: 1px solid #ddd;
+  
 }
 .text-with-image img {
  height: 50px;
@@ -191,5 +197,7 @@ a .button {
 
 .wapper a:hover {
   text-decoration: underline;
+  color: #238da4;
+  background-color: #f1f8ff;
 }
 
