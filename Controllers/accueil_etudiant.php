@@ -31,7 +31,7 @@
 
 <button type="submit">Soumettre un justificatif</button>
 </form>
-<a href="infos_etu.php"><button type="button">Mes informations</button></a>
+<a href="../Views/infos_etu.php"><button type="button">Mes informations</button></a>
 
 </body>
 </html>

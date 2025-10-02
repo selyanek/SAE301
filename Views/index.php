@@ -16,7 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($login->verifierConnexion($pdo)) {
             $message = "Connexion réussie !";
-            // Ici tu peux démarrer une session ou rediriger l'utilisateur
+            header('Location: https://localhost/Views/infos_etu.php');
+            exit();
         } else {
             $message = "Identifiant ou mot de passe incorrect.";
         }
