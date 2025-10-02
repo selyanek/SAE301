@@ -1,26 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Gérer mes absences</title>
-    <link href="style2.css" rel="stylesheet">
+    <link href="/Views/style2.css" rel="stylesheet">
 </head>
+<header class="header">
+    <img src="../img/logouphf.png" alt="Logo uphf">
+</header>
 <body>
+<div class="logoEdu">
+    <img src="../img/logoedutrack.png" alt="Logo EduTrack">
+</div>
+<div class="separator"></div>
 <h1> Gérer mes absences </h1>
-<p> Cette page permettra à l'étudiant de voir, modifier ou supprimer ses absences justifiées. </p>
-<a href="accueil_étudiant.php"><button type="button">Retour à l'accueil</button></a>
+<p>Cette page vous donne accès aux informations et réponses liées à vos absences justifiées.</p>
 <br>
-<a href="sae.php"><button type="button">Soumettre un nouveau justificatif</button></a>
-<br>
+<a href="sae.php"><button type="button" class="button">Soumettre un nouveau justificatif</button></a>
 <div class="sidebar">
     <ul>
         <li>Accueil</li>
-        <li>Gestion des absences</li>
+        <li>Gérer des absences</li>
         <li>Historique des absences</li>
         <li>Paramètre</li>
     </ul>
 </div>
-<table> 
+<table class="liste-absences"> 
     <tr>
         <th>Date de début</th>
         <th>Date de fin</th>
@@ -48,8 +53,8 @@
             <button type="button">Supprimer</button>
         </td>
     </tr>
-    <!-- D'autres absences peuvent être listées ici -->
 </table>
-
+<br>
+<a href="accueil_étudiant.php"><button type="button" class="button">Retour à l'accueil</button></a>
 </body>
 </html>
