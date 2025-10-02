@@ -120,6 +120,12 @@ a .button {
   align-items: center;
 }
 
+.text-with-image-section{
+  display: flex;
+  justify-content: center;
+  margin-top: 80px; /* Adjust based on header height */
+}
+
 .wapper {
   max-width: 320px;
   margin: 40px auto;
