@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Aide</title>
-    <link href="/Views/style.css" rel="stylesheet">
+    <link href="/CSS/cssDeBase.css" rel="stylesheet">
 </head>
 <div class="uphf">
     <img src="../img/logouphf.png" alt="Logo uphf">
@@ -29,7 +29,7 @@
 
         <p>Pensez à transmettre vos justificatifs dans les délais afin que vos absences soient correctement prises en compte.</p>
 
-        <a href="accueil_etudiant.php"><button type="button" class="button">Retour à l'accueil</button></a>
+        <a href="accueil_etudiant.php"><button type="button" class="btn">Retour à l'accueil</button></a>
     </section>
 
 </body>

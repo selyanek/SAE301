@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Justifier une absence</title>
-    <link href="../Views/cssDeBase.css" rel="stylesheet">
-    <link href="../Views/cssUpload.css" rel="stylesheet">
+    <link href="../CSS/cssDeBase.css" rel="stylesheet">
+    <link href="../CSS/cssUpload.css" rel="stylesheet">
 </head>
 <div class="uphf">
     <img src="../img/logouphf.png" alt="Logo uphf">

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Gérer mes absences</title>
-    <link href="/Views/cssDeBase.css" rel="stylesheet">
-    <link href="/Views/cssGererAbsEtu.css" rel="stylesheet">
+    <link href="/CSS/cssDeBase.css" rel="stylesheet">
+    <link href="/CSS/cssGererAbsEtu.css" rel="stylesheet">
 
 </head>
 <div class="uphf">
@@ -17,8 +17,8 @@
 <header class="text">
     <h1>Gérer mes absences </h1>
     <p>Cette page vous donne accès aux informations et réponses liées à vos absences justifiées.</p>
+    <a href="/sae.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>
 </header>
-<a href="/sae.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>
 <div class="sidebar">
     <ul>
         <li>Accueil</li>
@@ -57,11 +57,13 @@
     </tr>
 </table>
 <br>
-<a href="accueil_étudiant.php"><button type="button" class="btn">Retour à l'accueil</button></a>
+<div class="text">
+    <a href="accueil_étudiant.php"><button type="button" class="btn">Retour à l'accueil</button></a>
+</div>
 </body>
 <footer class="footer">
     <nav class="footer-nav">
-    <a href="#">Accueil</a>
+    <a href="../Controllers/accueil_etudiant.php">Accueil</a>
     <span>|</span>
     <a href="../Views/aide.php">Aides</a>
   </nav>
