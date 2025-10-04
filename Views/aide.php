@@ -35,7 +35,7 @@
 </body>
 <footer class="footer">
     <nav class="footer-nav">
-    <a href="#">Accueil</a>
+    <a href="../Views/index.php">Accueil</a>
     <span>|</span>
     <a href="../Views/aide.php">Aides</a>
   </nav>

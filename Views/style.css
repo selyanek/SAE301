@@ -54,11 +54,6 @@ body {
     display: flex;
     align-items: center;
 }
-.separator {
-  border-bottom: 2px solid #ccc;
-  margin: 20px 0;
-  width: 100%;
-}
 .logoEdu {
     text-align: center;
     margin: 20px 0;
@@ -296,3 +291,4 @@ a .button {
 .buttons a .btn:hover {
   background-color: #555;
 }
+

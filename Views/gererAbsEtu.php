@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Gérer mes absences</title>
-    <link href="/Views/style.css" rel="stylesheet">
+    <link href="/Views/cssDeBase.css" rel="stylesheet">
+    <link href="/Views/cssGererAbsEtu.css" rel="stylesheet">
+
 </head>
-<header class="uphf">
+<div class="uphf">
     <img src="../img/logouphf.png" alt="Logo uphf">
-</header>
+</div>
 <body>
 <div class="logoEdu">
     <img src="../img/logoedutrack.png" alt="Logo EduTrack">
 </div>
-<div class="separator"></div>
-<h1> Gérer mes absences </h1>
-<p>Cette page vous donne accès aux informations et réponses liées à vos absences justifiées.</p>
-<br>
-<a href="/sae.php"><button type="button" class="button">Soumettre un nouveau justificatif</button></a>
+<header class="text">
+    <h1>Gérer mes absences </h1>
+    <p>Cette page vous donne accès aux informations et réponses liées à vos absences justifiées.</p>
+</header>
+<a href="/sae.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>
 <div class="sidebar">
     <ul>
         <li>Accueil</li>
@@ -55,7 +57,7 @@
     </tr>
 </table>
 <br>
-<a href="accueil_étudiant.php"><button type="button" class="button">Retour à l'accueil</button></a>
+<a href="accueil_étudiant.php"><button type="button" class="btn">Retour à l'accueil</button></a>
 </body>
 <footer class="footer">
     <nav class="footer-nav">

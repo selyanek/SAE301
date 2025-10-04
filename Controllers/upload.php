@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Justifier une absence</title>
-    <link href="../Views/style.css" rel="stylesheet">
+    <link href="../Views/cssDeBase.css" rel="stylesheet">
+    <link href="../Views/cssUpload.css" rel="stylesheet">
 </head>
 <div class="uphf">
     <img src="../img/logouphf.png" alt="Logo uphf">
@@ -35,6 +36,24 @@
       <div class="form-group">
         <label class="label">Date et heure de fin :</label>
         <input class="input" name="date_end" id="date_end" type="datetime-local" />
+      </div>
+      <div class="select">
+        <label for="pet-select">Cours concerné(s):</label>
+        <select name="cours" id="cours-select">
+          <option value="">Choisissez un cours</option>
+          <option value="R1.01">R1.01</option>
+          <option value="R1.01">R1.02</option>
+          <option value="R1.03">R1.03</option>
+          <option value="R1.04">R1.04</option>
+          <option value="R1.05">R1.05</option>
+          <option value="R1.06">R1.06</option>
+          <option value="R1.07">R1.07</option>
+          <option value="R1.08">R1.08</option>
+          <option value="R1.09">R1.09</option>
+          <option value="R1.10">R1.10</option>
+          <option value="R1.11">R1.11</option>
+          <option value="R1.12">R1.12</option>
+        </select>
       </div>
 
       <div class="form-group">
