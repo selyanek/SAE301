@@ -20,6 +20,7 @@
         <li>Paramètre</li>
     </ul>
 </div>
+
 <header class="text">
 <h1> Bonjour, étudiant (faudrait take l'id de l'etu via la bdd) </h1>
 <a href="../Views/gererAbsEtu.php"><button type="submit" class="btn">Consulter vos justificatifs</button></a>

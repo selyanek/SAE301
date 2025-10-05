@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
     if ($username && $password) {
-        header('Location: accueil_étudiant.php');
+        header('Location: accueil_etudiant.php');
     } else {
         echo "Identifiant ou mot de passe incorrect";
     }
