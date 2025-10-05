@@ -15,12 +15,12 @@
         <img src="../img/logoedutrack.png" alt="Logo EduTrack">
     </div>
     <div class="sidebar">
-        <ul>
-            <li>Accueil</li>
-            <li>Gérer des absences</li>
-            <li>Historique des absences</li>
-            <li>Paramètre</li>
-        </ul>
+      <ul>
+          <li><a href="../Controllers/accueil_etudiant.php">Accueil</a></li>
+          <li><a href="../Views/gererAbsEtu.php">Gérer des absences</a></li>
+          <li><a href="#">Historique des absences</a></li>
+          <li><a href="../Views/aide.php">Aides</a></li>
+      </ul>
     </div>
     <header class="text">
       <h1 class="title">Justifier une absence</h1>
@@ -37,23 +37,21 @@
         <label class="label">Date et heure de fin :</label>
         <input class="input" name="date_end" id="date_end" type="datetime-local" />
       </div>
-      <div class="select">
-        <label for="pet-select">Cours concerné(s):</label>
-        <select name="cours" id="cours-select">
-          <option value="">Choisissez un cours</option>
-          <option value="R1.01">R1.01</option>
-          <option value="R1.01">R1.02</option>
-          <option value="R1.03">R1.03</option>
-          <option value="R1.04">R1.04</option>
-          <option value="R1.05">R1.05</option>
-          <option value="R1.06">R1.06</option>
-          <option value="R1.07">R1.07</option>
-          <option value="R1.08">R1.08</option>
-          <option value="R1.09">R1.09</option>
-          <option value="R1.10">R1.10</option>
-          <option value="R1.11">R1.11</option>
-          <option value="R1.12">R1.12</option>
-        </select>
+      <div class="input">
+        <label for="cours-select">Cours concerné(s):</label>
+        <select name="cours" id="cours-select"></select>
+          <script>
+            const select = document.getElementById('cours-select');
+            const options = [
+              "", "R1.01", "R1.02", "R1.03", "R1.04", "R1.05", "R1.06",
+              "R1.07", "R1.08", "R1.09", "R1.10", "R1.11", "R1.12"
+            ];
+            select.innerHTML = options.map(val =>
+              val === "" ?
+                `<option value="">Choisissez un cours</option>` :
+                `<option value="${val}">${val}</option>`
+            ).join('');
+          </script>
       </div>
 
       <div class="form-group">
@@ -82,7 +80,7 @@
 </body>
 <footer class="footer">
     <nav class="footer-nav">
-    <a href="#">Accueil</a>
+    <a href="/Controllers/accueil_etudiant.php">Accueil</a>
     <span>|</span>
     <a href="../Views/aide.php">Aides</a>
   </nav>

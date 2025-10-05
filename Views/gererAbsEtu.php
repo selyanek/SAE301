@@ -21,10 +21,10 @@
 </header>
 <div class="sidebar">
     <ul>
-        <li>Accueil</li>
-        <li>Gérer des absences</li>
-        <li>Historique des absences</li>
-        <li>Paramètre</li>
+        <li><a href="../Controllers/accueil_etudiant.php">Accueil</a></li>
+        <li><a href="../Views/gererAbsEtu.php">Gérer des absences</a></li>
+        <li><a href="#">Historique des absences</a></li>
+        <li><a href="../Views/aide.php">Aides</a></li>
     </ul>
 </div>
 <table class="liste-absences"> 
@@ -58,7 +58,7 @@
 </table>
 <br>
 <div class="text">
-    <a href="accueil_étudiant.php"><button type="button" class="btn">Retour à l'accueil</button></a>
+    <a href="../Controllers/accueil_etudiant.php"><button type="button" class="btn">Retour à l'accueil</button></a>
 </div>
 </body>
 <footer class="footer">

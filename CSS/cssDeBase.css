@@ -27,6 +27,11 @@ body {
 .sidebar ul li:hover {
     background: #238ca3;
 }
+.sidebar ul li a{
+  text-decoration: none;
+  color: #fff;
+  margin: 0 8px;
+}
 .uphf {
     position: fixed;
     left: 150px;
@@ -106,7 +111,7 @@ body {
 }
 .btn {
   cursor: pointer;
-  background-color: #1976d2;
+  background-color: #29acc8;
   border: none;
   color: white;
   font-size: 15px;
