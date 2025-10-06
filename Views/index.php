@@ -16,8 +16,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($login->verifierConnexion($pdo)) {
             $message = "Connexion réussie !";
-            header('Location: https://localhost/Views/infos_etu.php');
-            exit();
+            if($login->verifRole($pdo) == 'etudiante'){
+                header('Location: https://localhost/Controllers/accueil_etudiant.php');
+                exit();
+            } elseif (($login->verifRole($pdo) == 'professeur')){
+                header('Location: https://localhost/Controllers/accueil_prof.php');
+                exit();
+            } elseif (($login->verifRole($pdo) == 'responsable_pedagogique')) {
+                header('Location: https://localhost/Controllers/accueil_rp.php');
+                exit();
+            } else {
+                echo 'vous n exister pas';
+            }
+
         } else {
             $message = "Identifiant ou mot de passe incorrect.";
         }

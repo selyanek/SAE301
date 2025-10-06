@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Accueil</title>
-    <link href="/Views/style2.css" rel="stylesheet">
+    <link href="/Views/style2.css" rel="stylesheet"> 
 </head>
 <body>
 
