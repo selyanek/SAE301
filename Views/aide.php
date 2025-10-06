@@ -25,7 +25,7 @@
             <li>Attends la validation du responsable</li>
         </ol>
 
-        <a href="https://moodle.uphf.fr/course/view.php?id=3785">Règlement intérieur sur les absences</a>
+        <a href="https://moodle.uphf.fr/course/view.php?id=3785" target="_blank">Règlement intérieur sur les absences</a>
 
         <p>Pensez à transmettre vos justificatifs dans les délais afin que vos absences soient correctement prises en compte.</p>
 

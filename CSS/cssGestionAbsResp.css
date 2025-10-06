@@ -1,0 +1,33 @@
+.pipicaca{
+    display: flex;
+    margin-right: 5%;
+    justify-content: flex-end;
+}
+
+.calendar {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 280px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th {
+  background-color: #f0f0f0;
+  padding: 6px;
+}
+td {
+  padding: 8px;
+  text-align: center;
+  border-radius: 4px;
+}
+td.today {
+  background-color: #007BFF;
+  color: white;
+  font-weight: bold;
+}
