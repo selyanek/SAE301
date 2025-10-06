@@ -1,37 +1,36 @@
-<!-- ACCUEIL_ETUDIANT.php : Menu d'accueil pour les utilisateurs connectés en tant qu'étudiant -->
-
-<?php $message_absent = "Vous n'avez actuellement aucune absence signalée";
-
-?>
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Accueil</title>
-    <link href="/Views/style2.css" rel="stylesheet"> 
+    <link href="/CSS/cssDeBase.css" rel="stylesheet">
 </head>
+<div class="uphf">
+    <img src="../img/logouphf.png" alt="Logo uphf">
+</div>
 <body>
-
+<div class="logoEdu">
+    <img src="../img/logoedutrack.png" alt="Logo EduTrack">
+</div>
 <div class="sidebar">
-    <ul>
-        <li>Accueil</li>
-        <li>Gestion des absences</li>
-        <li>Historique des absences</li>
-        <li>Paramètre</li>
-    </ul>
+      <ul>
+          <li><a href="../Controllers/accueil_etudiant.php">Accueil</a></li>
+          <li><a href="../Views/gererAbsEtu.php">Gérer des absences</a></li>
+          <li><a href="#">Historique des absences</a></li>
+          <li><a href="../Views/aide.php">Aides</a></li>
+      </ul>
 </div>
 
-<h1> Bonjour, étudiant </h1>
-<h2> Vos absences : </h2>
-<label><?= $message_absent ?></label>
-
-<form action="sae.php"method="post">
-
-<button type="submit">Soumettre un justificatif</button>
-</form>
-<a href="../Views/infos_etu.php"><button type="button">Mes informations</button></a>
-
+<header class="text">
+<h1> Bonjour, étudiant (faudrait take l'id de l'etu via la bdd) </h1>
+<a href="../Views/gererAbsEtu.php"><button type="submit" class="btn">Consulter vos justificatifs</button></a>
+</header>
+<footer class="footer">
+    <nav class="footer-nav">
+    <a href="/Controllers/accueil_etudiant.php">Accueil</a>
+    <span>|</span>
+    <a href="../Views/aide.php">Aides</a>
+  </nav>
+</footer>
 </body>
 </html>

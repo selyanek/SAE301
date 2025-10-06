@@ -3,26 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Gérer mes absences</title>
-    <link href="/Views/style2.css" rel="stylesheet">
+    <link href="/CSS/cssDeBase.css" rel="stylesheet">
+    <link href="/CSS/cssGererAbsEtu.css" rel="stylesheet">
+
 </head>
-<header class="header">
+<div class="uphf">
     <img src="../img/logouphf.png" alt="Logo uphf">
-</header>
+</div>
 <body>
 <div class="logoEdu">
     <img src="../img/logoedutrack.png" alt="Logo EduTrack">
 </div>
-<div class="separator"></div>
-<h1> Gérer mes absences </h1>
-<p>Cette page vous donne accès aux informations et réponses liées à vos absences justifiées.</p>
-<br>
-<a href="/sae.php"><button type="button" class="button">Soumettre un nouveau justificatif</button></a>
+<header class="text">
+    <h1>Gérer mes absences </h1>
+    <p>Cette page vous donne accès aux informations et réponses liées à vos absences justifiées.</p>
+    <a href="/sae.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>
+</header>
 <div class="sidebar">
     <ul>
-        <li>Accueil</li>
-        <li>Gérer des absences</li>
-        <li>Historique des absences</li>
-        <li>Paramètre</li>
+        <li><a href="../Controllers/accueil_etudiant.php">Accueil</a></li>
+        <li><a href="../Views/gererAbsEtu.php">Gérer des absences</a></li>
+        <li><a href="#">Historique des absences</a></li>
+        <li><a href="../Views/aide.php">Aides</a></li>
     </ul>
 </div>
 <table class="liste-absences"> 
@@ -55,6 +57,15 @@
     </tr>
 </table>
 <br>
-<a href="accueil_étudiant.php"><button type="button" class="button">Retour à l'accueil</button></a>
+<div class="text">
+    <a href="../Controllers/accueil_etudiant.php"><button type="button" class="btn">Retour à l'accueil</button></a>
+</div>
 </body>
+<footer class="footer">
+    <nav class="footer-nav">
+    <a href="../Controllers/accueil_etudiant.php">Accueil</a>
+    <span>|</span>
+    <a href="../Views/aide.php">Aides</a>
+  </nav>
+</footer>
 </html>
