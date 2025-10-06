@@ -7,7 +7,7 @@ try {
     $username = // Récupérer le nom d'utilisateur de la session ou d'une autre source
     $db = new Database();
     $pdo = $db->getConnection();
-    $sql = 'SELECT id FROM Etudiant WHERE username = :username';
+    $sql = 'SELECT idCompte FROM Compte WHERE nom = :username';
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['username' => $username]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
