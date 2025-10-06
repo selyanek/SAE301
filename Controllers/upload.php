@@ -88,7 +88,7 @@
 
 <?php 
 if (isset($_FILES['file'])) {
-    $dossier = 'uploads/';
+    $dossier = '../uploads/';
     $nom_fichier = basename($_FILES['file']['name']);
     $fichier = $dossier . $nom_fichier;
     if (move_uploaded_file($_FILES['file']['tmp_name'], $fichier)) {
