@@ -1,4 +1,4 @@
-<?= require '../Models/GetFiles.php'?>
+<?php require '../Models/GetFiles.php'?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -35,7 +35,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <table>
         <thead>
             <tr>
@@ -49,7 +48,7 @@
             <?php
                 $tmp = new GetFiles();
                 $folder = "../uploads/";
-                $files = $tmp->get_files($folder, [".txt", ".pdf", ".jpg"], false);
+                $files = $tmp->get_files($folder, [".txt", ".pdf", ".jpg",".png"], false);
                 
                 if (count($files) > 0) {
                     foreach ($files as $file) {
