@@ -1,3 +1,4 @@
+<?php require "../Models/GetFiles.php" ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -25,7 +26,7 @@
 <header class="text">
 <h1> Bonjour, Responsable (faudrait take l'id via la bdd) </h1>
 </header>
-<section class="pipicaca">
+<!--<section class="pipicaca">
       <div class="calendar">
     <?php
       $year = date("Y");
@@ -65,7 +66,7 @@
       ?>
       </tr>
     </table>
-  </div>
+  </div>--> 
 </section>
 <div class="text">
         <a href="#"><button type="submit" class="btn">Consulter les absences</button></a>

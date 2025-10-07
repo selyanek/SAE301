@@ -1,6 +1,6 @@
 <?php
 class GetFiles {
-    function get_files($folder, $ext, $subfolders) {
+    public function get_files($folder, $ext, $subfolders) {
         // Ajouter le / à la fin du nom du dossier
         if(substr($folder, -1) != '/')
             $folder .= '/';
@@ -34,7 +34,7 @@ class GetFiles {
         return $files;
     }
     
-    function count_files($folder, $ext, $subfolders)
+    public function count_files($folder, $ext, $subfolders)
     {
         return count(get_files($folder, $ext, $subfolders));
     }
