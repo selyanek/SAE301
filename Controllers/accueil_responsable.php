@@ -74,7 +74,7 @@
     <nav class="footer-nav">
     <a href="/Controllers/accueil_responsable.php">Accueil</a>
     <span>|</span>
-    <a href="../Views/aide.php">Aides</a>
+    <a href="../Views/aideResp.php">Aides</a>
   </nav>
 </footer>
 </body>
