@@ -21,7 +21,7 @@ class GetFiles {
             
             // Si c'est un sous-dossier et qu'on veut les parcourir
             if(is_dir($folder . $file) && $subfolders)
-                $files = array_merge($files, get_files($folder . $file, $ext, true));
+                $files = array_merge($files, $this->get_files($folder . $file, $ext, true));
             // Vérifier l'extension
             else if(is_array($ext)) {
                 $file_ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
@@ -36,6 +36,6 @@ class GetFiles {
     
     public function count_files($folder, $ext, $subfolders)
     {
-        return count(get_files($folder, $ext, $subfolders));
+        return count($this->get_files($folder, $ext, $subfolders));
     }
 }
