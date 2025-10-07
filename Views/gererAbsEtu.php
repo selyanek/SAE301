@@ -17,7 +17,7 @@
 <header class="text">
     <h1>Gérer mes absences </h1>
     <p>Cette page vous donne accès aux informations et réponses liées à vos absences justifiées.</p>
-    <a href="/sae.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>
+    <a href="/Controllers/upload.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>
 </header>
 <div class="sidebar">
     <ul>
