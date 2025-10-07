@@ -29,7 +29,7 @@
 
         <p>Pensez à traiter les demandes dans les délais afin d’assurer le bon suivi des absences et la conformité avec le règlement.</p>
 
-        <a href="accueil_responsable.php"><button type="button" class="btn">Retour à l'accueil</button></a>
+        <a href="/Controllers/accueil_responsable.php"><button type="button" class="btn">Retour à l'accueil</button></a>
     </section>
 
 </body>
