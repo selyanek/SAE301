@@ -1,3 +1,6 @@
+<?php require '../vendor/autoload.php';
+require '../Models/Database.php'; ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -100,5 +103,59 @@ if (isset($_FILES['file'])) {
     } else {
         echo "Une erreur est survenue lors de l'upload.";
     }
+}
+session_start();
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+$pdo = new Database();
+$db = $pdo->getConnection();
+
+$idCompte = $_SESSION['idCompte'] ?? null;
+
+if ($idCompte) {
+    $stmt = $db->prepare('SELECT nom, prenom FROM Compte WHERE idCompte = ?');
+    $stmt->execute([$idCompte]);
+    $user = $stmt->fetch();
+
+    if ($user) {
+        $nom = $user['nom'];
+        $prenom = $user['prenom'];
+        $dest_email = strtolower($prenom) . '.' . strtolower($nom) . '@uphf.fr';
+
+        if (isset($_FILES['file'])) {
+            $dossier = '../uploads/';
+            $nom_fichier = basename($_FILES['file']['name']);
+            $fichier = $dossier . $nom_fichier;
+            if (move_uploaded_file($_FILES['file']['tmp_name'], $fichier)) {
+                $mail = new PHPMailer(true);
+                try {
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'gestion.absences12@gmail.com';
+                    $mail->Password = 'zxxm srcb zvox vzgx';
+                    $mail->SMTPSecure = 'tls';
+                    $mail->Port = 587;
+
+                    $mail->setFrom('gestion.absences12@gmail.com', $prenom . ' ' . $nom);
+                    $mail->addAddress($dest_email);
+                    $mail->Subject = '[GESTION-ABS]';
+                    $mail->Body = "Votre justificatif d'absence a été déposé et pris en compte.";
+
+                    $mail->send();
+                    echo "Le fichier ".htmlspecialchars($nom_fichier)." a été uploadé avec succès. Confirmation envoyée à $dest_email.";
+                } catch (Exception $e) {
+                    echo "Erreur lors de l’envoi du mail : {$mail->ErrorInfo}";
+                }
+            } else {
+                echo "Une erreur est survenue lors de l'upload.";
+            }
+        }
+    } else {
+        echo "Utilisateur introuvable en base.";
+    }
+} else {
+    echo "Identifiant utilisateur absent de la session.";
 }
 ?>
