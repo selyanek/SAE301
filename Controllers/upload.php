@@ -1,5 +1,5 @@
-<?php require '../vendor/autoload.php';
-require '../Models/Database.php'; ?>
+<?php require ('../vendor/autoload.php');
+require ('../Models/Database.php'); ?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -39,22 +39,6 @@ require '../Models/Database.php'; ?>
       <div class="form-group">
         <label class="label">Date et heure de fin :</label>
         <input class="input" name="date_end" id="date_end" type="datetime-local" />
-      </div>
-      <div class="input">
-        <label for="cours-select">Cours concerné(s):</label>
-        <select name="cours" id="cours-select"></select>
-          <script>
-            const select = document.getElementById('cours-select');
-            const options = [
-              "", "R1.01", "R1.02", "R1.03", "R1.04", "R1.05", "R1.06",
-              "R1.07", "R1.08", "R1.09", "R1.10", "R1.11", "R1.12"
-            ];
-            select.innerHTML = options.map(val =>
-              val === "" ?
-                `<option value="">Choisissez un cours</option>` :
-                `<option value="${val}">${val}</option>`
-            ).join('');
-          </script>
       </div>
 
       <div class="form-group">
@@ -101,13 +85,11 @@ require '../Models/Database.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Vérification de l'authentification
 if (!isset($_SESSION['idCompte'])) {
     header('Location: ../Controllers/login.php');
     exit;
 }
 
-// Vérification que c'est une requête POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: gererAbsEtu.php');
     exit;
@@ -115,7 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $errors = [];
 
-// Validation des données
 $date_start = $_POST['date_start'] ?? '';
 $date_end = $_POST['date_end'] ?? '';
 $cours = $_POST['cours'] ?? '';
