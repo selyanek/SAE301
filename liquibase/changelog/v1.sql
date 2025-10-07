@@ -88,7 +88,7 @@ VALUES ('dilara.simsek', 'Informatique');
 --changeset Selyane:9
 --comment: Insertion d'un compte professeur et de son profil Professeur
 INSERT INTO Compte (idCompte, mot_de_passe, nom, prenom, fonction)
-VALUES ('john.doe', 'securepassword', 'Doe', 'John', 'professeur'); 
+VALUES ('john.doe', 'x', 'Doe', 'John', 'professeur'); 
 
 INSERT INTO Professeur (idProfesseur)
 VALUES ('john.doe');

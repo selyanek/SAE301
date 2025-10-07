@@ -23,7 +23,7 @@
 </div>
 
 <header class="text">
-<h1> Bonjou </h1>
+<h1> Bonjour </h1>
 </header>
 <!DOCTYPE html>
 <html lang="fr">
