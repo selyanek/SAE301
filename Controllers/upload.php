@@ -1,22 +1,31 @@
-<?php require '../vendor/autoload.php';
-require '../Models/Database.php'; ?>
+<?php 
+require '../vendor/autoload.php';
+require '../Models/Database.php'; 
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Justifier une absence</title>
+    <!-- Importation des feuilles de style -->
     <link href="../CSS/cssDeBase.css" rel="stylesheet">
     <link href="../CSS/cssUpload.css" rel="stylesheet">
 </head>
+
+<!-- Logo UPHF -->
 <div class="uphf">
     <img src="../img/logouphf.png" alt="Logo uphf">
 </div>
+
 <body>
   <section class="container">
+    <!-- Logo EduTrack -->
     <div class="logoEdu">
         <img src="../img/logoedutrack.png" alt="Logo EduTrack">
     </div>
+    
+    <!-- Menu de navigation -->
     <div class="sidebar">
       <ul>
           <li><a href="../Controllers/accueil_etudiant.php">Accueil</a></li>
@@ -25,21 +34,29 @@ require '../Models/Database.php'; ?>
           <li><a href="../Views/aide.php">Aides</a></li>
       </ul>
     </div>
+    
+    <!-- En-tête de la page -->
     <header class="text">
       <h1 class="title">Justifier une absence</h1>
       <h3 class="subtitle">Saisissez les informations liées à votre absence</h3>
     </header>
+    
+    <!-- Formulaire de justification d'absence -->
     <form id="absenceForm" class="absence-form" action="upload.php" method="post" enctype="multipart/form-data">
 
+      <!-- Date de début -->
       <div class="form-group">
         <label class="label">Date et heure de début :</label>
         <input class="input" name="date_start" id="date_start" type="datetime-local" />
       </div>
 
+      <!-- Date de fin -->
       <div class="form-group">
         <label class="label">Date et heure de fin :</label>
         <input class="input" name="date_end" id="date_end" type="datetime-local" />
       </div>
+      
+      <!-- Sélection du cours -->
       <div class="input">
         <label for="cours-select">Cours concerné(s):</label>
         <select name="cours" id="cours-select"></select>
@@ -57,6 +74,7 @@ require '../Models/Database.php'; ?>
           </script>
       </div>
 
+      <!-- Motif de l'absence -->
       <div class="form-group">
         <label class="label" id="motif_label">Motif de l'absence :</label>
         <textarea class="textarea" name="motif" id="motif" rows="2"></textarea>
@@ -66,6 +84,7 @@ require '../Models/Database.php'; ?>
         <div id="motif_error" class="error"></div>
       </div>
 
+      <!-- Upload du justificatif -->
       <div class="form-group">
         <label class="label" for="justification">Justification :</label>
         <p class="info">Veuillez joindre un justificatif (format accepté : .pdf, .jpg, .png | taille max : 5MB)</p>
@@ -76,6 +95,7 @@ require '../Models/Database.php'; ?>
         <div id="file_error" class="error"></div>
       </div>
 
+      <!-- Boutons d'action -->
       <div class="buttons">
         <button type="reset" class="btn">Réinitialiser</button>
         <button type="submit" class="btn">Valider</button>
@@ -85,6 +105,7 @@ require '../Models/Database.php'; ?>
     </form>
   </section>
 </body>
+
 <footer class="footer">
     <nav class="footer-nav">
     <a href="/Controllers/accueil_etudiant.php">Accueil</a>
@@ -94,6 +115,7 @@ require '../Models/Database.php'; ?>
 </footer>
 
 <?php
+
 session_start();
 require '../vendor/autoload.php';
 require '../Models/Database.php';
@@ -107,7 +129,7 @@ if (!isset($_SESSION['idCompte'])) {
     exit;
 }
 
-// Vérification que c'est une requête POST
+// Vérification méthode POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: gererAbsEtu.php');
     exit;
@@ -129,7 +151,7 @@ if (empty($cours)) {
     $errors[] = "Veuillez sélectionner un cours.";
 }
 
-// Validation du fichier
+// Validation du fichier 
 if (!isset($_FILES['file']) || $_FILES['file']['error'] === UPLOAD_ERR_NO_FILE) {
     $errors[] = "Le justificatif est obligatoire.";
 } elseif ($_FILES['file']['error'] !== UPLOAD_ERR_OK) {
@@ -139,6 +161,7 @@ if (!isset($_FILES['file']) || $_FILES['file']['error'] === UPLOAD_ERR_NO_FILE) 
     $allowed_types = ['application/pdf', 'image/jpeg', 'image/png'];
     $max_size = 5 * 1024 * 1024; // 5MB
     
+    // Vérification du type 
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
     $mime = finfo_file($finfo, $file['tmp_name']);
     finfo_close($finfo);
@@ -152,7 +175,7 @@ if (!isset($_FILES['file']) || $_FILES['file']['error'] === UPLOAD_ERR_NO_FILE) 
     }
 }
 
-// Si erreurs, rediriger avec message
+// Redirection si une erreurs détectées
 if (!empty($errors)) {
     $_SESSION['errors'] = $errors;
     $_SESSION['form_data'] = $_POST;
@@ -160,12 +183,12 @@ if (!empty($errors)) {
     exit;
 }
 
-// Traitement de l'upload
 $dossier = '../uploads/';
 if (!is_dir($dossier)) {
     mkdir($dossier, 0755, true);
 }
 
+// Génération d'un nom de fichier unique
 $extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 $nom_fichier = uniqid('justif_') . '.' . $extension;
 $fichier = $dossier . $nom_fichier;
@@ -176,11 +199,11 @@ if (!move_uploaded_file($_FILES['file']['tmp_name'], $fichier)) {
     exit;
 }
 
-// Insertion en base de données
 try {
     $pdo = new Database();
     $db = $pdo->getConnection();
     
+    // Insertion de l'absence
     $stmt = $db->prepare(
         'INSERT INTO Absence (idCompte, date_debut, date_fin, cours, motif, justificatif) 
          VALUES (?, ?, ?, ?, ?, ?)'
@@ -194,14 +217,16 @@ try {
         $nom_fichier
     ]);
     
-    // Envoi du mail
+    // Récupération des infos de l'étudiant
     $stmt = $db->prepare('SELECT nom, prenom FROM Compte WHERE idCompte = ?');
     $stmt->execute([$_SESSION['idCompte']]);
     $user = $stmt->fetch();
     
     if ($user) {
+        // Construction de l'email UPHF
         $dest_email = strtolower($user['prenom']) . '.' . strtolower($user['nom']) . '@uphf.fr';
         
+        // Configuration PHPMailer
         $mail = new PHPMailer(true);
         $mail->isSMTP();
         $mail->Host = $_ENV['SMTP_HOST'] ?? 'smtp.gmail.com';
@@ -211,6 +236,7 @@ try {
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
         
+        // Envoi du mail
         $mail->setFrom($_ENV['SMTP_FROM'], 'Gestion des Absences');
         $mail->addAddress($dest_email);
         $mail->Subject = '[GESTION-ABS] Confirmation de dépôt';
@@ -219,11 +245,13 @@ try {
         $mail->send();
     }
     
+    // Redirection avec message de succès
     $_SESSION['success'] = "Votre absence a été justifiée avec succès.";
     header('Location: ../Controllers/accueil_etudiant.php');
     exit;
     
 } catch (Exception $e) {
+    // Gestion des erreurs
     error_log($e->getMessage());
     $_SESSION['errors'] = ["Une erreur est survenue. Veuillez réessayer."];
     header('Location: gererAbsEtu.php');

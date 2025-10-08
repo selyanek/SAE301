@@ -6,6 +6,7 @@
     <title>accueil prof</title>
 </head>
 <body>
+    <!-- Message de bienvenue pour le professeur -->
     <h1>vous etes prof</h1>
 </body>
 </html>
