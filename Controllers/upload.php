@@ -40,23 +40,6 @@ require '../Models/Database.php'; ?>
         <label class="label">Date et heure de fin :</label>
         <input class="input" name="date_end" id="date_end" type="datetime-local" />
       </div>
-      <div class="input">
-        <label for="cours-select">Cours concerné(s):</label>
-        <select name="cours" id="cours-select"></select>
-          <script>
-            const select = document.getElementById('cours-select');
-            const options = [
-              "", "R1.01", "R1.02", "R1.03", "R1.04", "R1.05", "R1.06",
-              "R1.07", "R1.08", "R1.09", "R1.10", "R1.11", "R1.12"
-            ];
-            select.innerHTML = options.map(val =>
-              val === "" ?
-                `<option value="">Choisissez un cours</option>` :
-                `<option value="${val}">${val}</option>`
-            ).join('');
-          </script>
-      </div>
-
       <div class="form-group">
         <label class="label" id="motif_label">Motif de l'absence :</label>
         <textarea class="textarea" name="motif" id="motif" rows="2"></textarea>
@@ -101,13 +84,11 @@ require '../Models/Database.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Vérification de l'authentification
 if (!isset($_SESSION['idCompte'])) {
     header('Location: ../Controllers/login.php');
     exit;
 }
 
-// Vérification que c'est une requête POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: gererAbsEtu.php');
     exit;
@@ -115,7 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $errors = [];
 
-// Validation des données
 $date_start = $_POST['date_start'] ?? '';
 $date_end = $_POST['date_end'] ?? '';
 $cours = $_POST['cours'] ?? '';
@@ -129,7 +109,6 @@ if (empty($cours)) {
     $errors[] = "Veuillez sélectionner un cours.";
 }
 
-// Validation du fichier
 if (!isset($_FILES['file']) || $_FILES['file']['error'] === UPLOAD_ERR_NO_FILE) {
     $errors[] = "Le justificatif est obligatoire.";
 } elseif ($_FILES['file']['error'] !== UPLOAD_ERR_OK) {
@@ -137,7 +116,7 @@ if (!isset($_FILES['file']) || $_FILES['file']['error'] === UPLOAD_ERR_NO_FILE) 
 } else {
     $file = $_FILES['file'];
     $allowed_types = ['application/pdf', 'image/jpeg', 'image/png'];
-    $max_size = 5 * 1024 * 1024; // 5MB
+    $max_size = 5 * 1024 * 1024;
     
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
     $mime = finfo_file($finfo, $file['tmp_name']);
@@ -152,7 +131,7 @@ if (!isset($_FILES['file']) || $_FILES['file']['error'] === UPLOAD_ERR_NO_FILE) 
     }
 }
 
-// Si erreurs, rediriger avec message
+
 if (!empty($errors)) {
     $_SESSION['errors'] = $errors;
     $_SESSION['form_data'] = $_POST;
@@ -160,7 +139,6 @@ if (!empty($errors)) {
     exit;
 }
 
-// Traitement de l'upload
 $dossier = '../uploads/';
 if (!is_dir($dossier)) {
     mkdir($dossier, 0755, true);
@@ -176,7 +154,6 @@ if (!move_uploaded_file($_FILES['file']['tmp_name'], $fichier)) {
     exit;
 }
 
-// Insertion en base de données
 try {
     $pdo = new Database();
     $db = $pdo->getConnection();
@@ -194,7 +171,6 @@ try {
         $nom_fichier
     ]);
     
-    // Envoi du mail
     $stmt = $db->prepare('SELECT nom, prenom FROM Compte WHERE idCompte = ?');
     $stmt->execute([$_SESSION['idCompte']]);
     $user = $stmt->fetch();
