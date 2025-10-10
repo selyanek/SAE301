@@ -6,9 +6,9 @@ import numpy as np
 
 if __name__ == '__main__':
 
-    ideal = [59,50,30,0]
-    real = [59,59,43,24]
-    sprint = [0,1,2,3]
+    ideal = [217 * (4 - i) / 4 for i in range(0, 5)]
+    real = [217,217,217,217,217]
+    sprint = [0,1,2,3,4]
 
     plt.plot(sprint, ideal, label='Avancement idéal', color='red', linestyle='--')
     plt.plot(sprint, real, label='Avancement réel', color='blue', linestyle='--')
@@ -23,6 +23,6 @@ if __name__ == '__main__':
 
 
 
-    plt.title('Burndown chart pour équipe 1')
+    plt.title('Burndown chart pour le projet')
 
     plt.show()
