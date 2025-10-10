@@ -66,13 +66,9 @@
       <div class="form-group">
         <label class="label" for="justification">Justification :</label>
         <p class="info">Veuillez joindre un justificatif (format accepté : .pdf, .jpg, .png | taille max : 5MB)</p>
-        <input class="file-input" type="file" id="justification" name="file" accept=".pdf,.jpg,.png" />
-        <?php if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_NO_FILE) { ?>
-          <div class="error">Il faut obligatoirement joindre votre justificatif.</div>
-        <?php } ?>
         <div id="file_error" class="error"></div>
       </div>
-
+        <input class="file-input" type="file" id="justification" name="file" accept=".pdf,.jpg,.png" />
       <div class="buttons">
         <button type="reset" class="btn">Réinitialiser</button>
         <button type="submit" class="btn">Valider</button>
