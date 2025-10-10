@@ -23,18 +23,16 @@
 
 </form>
 <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
-
-    if ($username && $password) {
-        header('Location: accueil_etudiant.php');
-    } else {
-        echo "Identifiant ou mot de passe incorrect";
+        if ($username && $password) {
+            header('Location: accueil_etudiant.php');
+        } else {
+            echo "Identifiant ou mot de passe incorrect";
+        }
     }
-}
-
 ?>
 
 </body>

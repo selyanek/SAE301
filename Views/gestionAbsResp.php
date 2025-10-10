@@ -1,9 +1,11 @@
+<?php require '../Models/GetFiles.php'?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Accueil</title>
     <link href="/CSS/cssDeBase.css" rel="stylesheet">
+    <link href="/CSS/cssGestionAbsResp.css" rel="stylesheet">
 
 </head>
 <div class="uphf">
@@ -23,7 +25,7 @@
 </div>
 
 <header class="text">
-<h1> Bonjou </h1>
+<h1> Bonjour </h1>
 </header>
 <!DOCTYPE html>
 <html lang="fr">
@@ -33,6 +35,35 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<table>
+        <thead>
+            <tr>
+                <th scope='col'>Étudiant</th>
+                <th scope='col'>Justification</th>
+                <th scope='col'>Document</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <?php
+                $tmp = new GetFiles();
+                $folder = "../uploads/";
+                $files = $tmp->get_files($folder, [".txt", ".pdf", ".jpg",".png"], false);
+                
+                if (count($files) > 0) {
+                    foreach ($files as $file) {
+                        echo "<tr>";
+                        echo "<td>Étudiant " . htmlspecialchars(basename($file, pathinfo($file, PATHINFO_EXTENSION))) . "</td>";
+                        echo "<td>Justification d'absence</td>";
+                        echo "<td><a href='" . htmlspecialchars($file) . "' target='_blank'>Voir le document</a></td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='3'>Aucun document trouvé</td></tr>";
+                }
+              ?>
+        </tbody>
+    </table>
 
 <footer class="footer">
     <nav class="footer-nav">

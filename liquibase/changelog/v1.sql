@@ -6,7 +6,8 @@ CREATE TABLE Compte (
     idCompte TEXT PRIMARY KEY,
     mot_de_passe TEXT NOT NULL,
     nom TEXT NOT NULL,
-    prenom TEXT NOT NULL
+    prenom TEXT NOT NULL,
+    fonction TEXT NOT NULL
 );
 --rollback DROP TABLE Compte;
 
@@ -77,8 +78,8 @@ CREATE TABLE Absence (
 
 --changeset Baptiste:8
 --comment: Insertion d'un compte etudiant et de son profil Etudiant
-INSERT INTO Compte (idCompte, mot_de_passe, nom, prenom)
-VALUES ('dilara.simsek', 'motdepasse123', 'Simsek', 'Dilara');
+INSERT INTO Compte (idCompte, mot_de_passe, nom, prenom, fonction)
+VALUES ('dilara.simsek', 'motdepasse123', 'Simsek', 'Dilara', 'etudiante');
 
 INSERT INTO Etudiant (idEtudiant, formation)
 VALUES ('dilara.simsek', 'Informatique');
@@ -86,8 +87,8 @@ VALUES ('dilara.simsek', 'Informatique');
 
 --changeset Selyane:9
 --comment: Insertion d'un compte professeur et de son profil Professeur
-INSERT INTO Compte (idCompte, mot_de_passe, nom, prenom)
-VALUES ('john.doe', 'securepassword', 'Doe', 'John'); 
+INSERT INTO Compte (idCompte, mot_de_passe, nom, prenom, fonction)
+VALUES ('john.doe', 'x', 'Doe', 'John', 'professeur'); 
 
 INSERT INTO Professeur (idProfesseur)
 VALUES ('john.doe');
@@ -95,8 +96,8 @@ VALUES ('john.doe');
 
 --changeset Selyane:10
 --comment: Insertion d'un compte responsable pédagogique et de son profil Responsable_Pedagogique
-INSERT INTO Compte (idCompte, mot_de_passe, nom, prenom)
-VALUES ('jane.smith', 'anotherpassword', 'Smith', 'Jane');
+INSERT INTO Compte (idCompte, mot_de_passe, nom, prenom, fonction)
+VALUES ('jane.smith', 'anotherpassword', 'Smith', 'Jane', 'responsable_pedagogique');
 
 INSERT INTO Responsable_Pedagogique (idResponsablePedagogique)
 VALUES ('jane.smith');
