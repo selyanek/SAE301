@@ -1,5 +1,25 @@
 <?php
-session_start()
+//Inclusion du fichier contenant les fonctions ou données nécessaires (ex : récupération de fichiers)
+session_start();
+$message = '';
+$roleNecessaire = 'professeur';
+
+if (!isset($_SESSION['login']) || !isset($_SESSION['role'])) {
+    header('Location:../Views/index.php');
+    exit();
+}if ($_SESSION['role'] !== $roleNecessaire) {
+    switch ($_SESSION['role']) {
+        case 'etudiante':
+            header('Location: accueil_etudiant.php');
+            exit();
+        case 'professeur':
+            header('Location: accueil_professeur.php');
+            exit();
+        default:
+            header('Location: index.php');
+            exit();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -26,7 +46,7 @@ session_start()
 </div>
 
 <header class="text">
-    <h1> Bonjour, <?php echo $_SESSION['identifiant'] ?> </h1>
+    <h1> Bonjour, <?php echo $_SESSION['nom'] ?> </h1>
     <a href="../Views/gererAbsEtu.php"><button type="submit" class="btn">Consulter vos justificatifs</button></a>
 </header>
 <footer class="footer">

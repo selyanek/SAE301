@@ -1,7 +1,26 @@
-<?php 
+<?php
 //Inclusion du fichier contenant les fonctions ou données nécessaires (ex : récupération de fichiers)
 session_start();
-require "../Models/GetFiles.php"; //Classe pour la gestion des fichiers
+
+$message = '';
+$roleNecessaire = 'responsable_pedagogique';
+
+if (!isset($_SESSION['login']) || !isset($_SESSION['role'])) {
+    header('Location:../Views/index.php');
+    exit();
+}if ($_SESSION['role'] !== $roleNecessaire) {
+    switch ($_SESSION['role']) {
+        case 'etudiante':
+            header('Location: accueil_etudiant.php');
+            exit();
+        case 'professeur':
+            header('Location: accueil_professeur.php');
+            exit();
+        default:
+            header('Location: index.php');
+            exit();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -23,27 +42,31 @@ require "../Models/GetFiles.php"; //Classe pour la gestion des fichiers
 </div>
 <!-- Barre latérale de navigation -->
 <div class="sidebar">
-      <ul>
-          <li><a href="../Controllers/accueil_responsable.php">Accueil</a></li> <!-- Lien vers la page d'accueil -->
-          <li><a href="../Views/gestionAbsResp.php">Gestion des absences</a></li> <!-- Lien vers la gestion des absences -->
-          <li><a href="#">Historique des absences</a></li> <!-- Lien vers l'historique (à compléter) -->
-          <li><a href="#">Statistiques</a></li> <!-- Lien vers les statistiques (à compléter) -->
-      </ul>
+    <ul>
+        <li><a href="../Controllers/accueil_responsable.php">Accueil</a></li> <!-- Lien vers la page d'accueil -->
+        <li><a href="../Views/gestionAbsResp.php">Gestion des absences</a></li>
+        <!-- Lien vers la gestion des absences -->
+        <li><a href="#">Historique des absences</a></li> <!-- Lien vers l'historique (à compléter) -->
+        <li><a href="#">Statistiques</a></li> <!-- Lien vers les statistiques (à compléter) -->
+    </ul>
 </div>
 <header class="text">
-<h1> Bonjour, <?php echo $_SESSION['identifiant'] ?>  </h1> <!-- Message d'accueil, à personnaliser avec l'id du responsable -->
+    <h1> Bonjour, <?php echo $_SESSION['nom'] ?>  </h1>
+    <!-- Message d'accueil, à personnaliser avec l'id du responsable -->
 </header>
 <!-- Bouton pour consulter les absences -->
 <div class="text">
-        <a href="#"><button type="submit" class="btn">Consulter les absences</button></a>
+    <a href="#">
+        <button type="submit" class="btn">Consulter les absences</button>
+    </a>
 </div>
 <!-- Pied de page avec navigation -->
 <footer class="footer">
     <nav class="footer-nav">
-    <a href="/Controllers/accueil_responsable.php">Accueil</a> <!-- Retour à l'accueil -->
-    <span>|</span>
-    <a href="../Views/aideResp.php">Aides</a> <!-- Lien vers la page d'aide -->
-  </nav>
+        <a href="/Controllers/accueil_responsable.php">Accueil</a> <!-- Retour à l'accueil -->
+        <span>|</span>
+        <a href="../Views/aideResp.php">Aides</a> <!-- Lien vers la page d'aide -->
+    </nav>
 </footer>
 </body>
 </html>
