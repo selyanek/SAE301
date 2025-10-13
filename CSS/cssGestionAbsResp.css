@@ -31,3 +31,90 @@ td.today {
   color: white;
   font-weight: bold;
 }
+
+.ddd {
+  background-color: #ffffff;
+  color: #333;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-left: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.ddd:hover {
+  background-color: #f0f0f0;
+}
+.ddd label, .ddd input {
+  margin-right: 10px;
+  font-size: 16px;
+}
+.ddd input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 200px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.ddd button {
+  background-color: #29acc8;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+.ddd button:hover {
+  background-color: #0d4f94;
+}   
+
+@media (max-width: 600px) {
+  .ddd {
+    flex-direction: column;
+    align-items: stretch;
+    margin-left: 0;
+    padding: 8px;
+    gap: 8px;
+  }
+  .ddd label, .ddd input {
+    margin-right: 0;
+    font-size: 15px;
+  }
+  .ddd input {
+    width: 100%;
+  }
+  .ddd button {
+    width: 100%;
+    padding: 10px 0;
+  }
+}
+/* Styles pour le tableau des absences */
+table {
+
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+}   
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+tr:hover {
+
+
+    background-color: #e8f4f5;
+}

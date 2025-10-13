@@ -4,7 +4,7 @@
 // Ce script récupère toutes les informations d'absence.
 require 'Database.php';
 
-class Get_Absence {
+class Get_Absence { // Classe pour gérer les absences
 
 
     public function fetchAbsences(): array|string {
