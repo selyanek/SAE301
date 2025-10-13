@@ -44,10 +44,10 @@ require '../Models/Database.php'; ?>
         <?php } ?>
         <?php
         if (
-            isset($_POST['date_end']) &&
+            isset($_POST['date_end']) && !empty($_POST['date_end']) &&
             strtotime('now') > strtotime($_POST['date_end']) + 48 * 3600
         ) { ?>
-          <div class="error">Vous ne pouvez plus soumettre après plus de 48 heures après la date de fin.</div>
+          <div class="error">Vous n'avez plus la possibilité de soumettre plus de 48 heures après la date de fin.</div>
         <?php } ?>
       </div>
       <div class="form-group">
