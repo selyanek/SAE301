@@ -9,7 +9,6 @@ require '../Models/GetFiles.php';
     <title>Accueil</title>
     <link href="/CSS/cssDeBase.css" rel="stylesheet">
     <link href="/CSS/cssGestionAbsResp.css" rel="stylesheet">
-
 </head>
 <!-- Affichage des logos -->
 <div class="uphf">
@@ -40,15 +39,15 @@ require '../Models/GetFiles.php';
 </head>
 <body>
 <!-- Filtrage  -->
-<form class="ddd"  method="get" style="margin-bottom: 20px;">
+<form method="post">
     <label for="nom">Nom étudiant :</label>
-    <input type="text" name="nom" id="nom" value="<?php echo isset($_GET['nom']) ? htmlspecialchars($_GET['nom']) : ''; ?>">
+    <input type="text" name="nom" id="nom" value="<?php echo isset($_POST['nom']) ? htmlspecialchars($_POST['nom']) : ''; ?>">
     <label for="date">Date :</label>
-    <input type="date" name="date" id="date" value="<?php echo isset($_GET['date']) ? htmlspecialchars($_GET['date']) : ''; ?>">
+    <input type="date" name="date" id="date" value="<?php echo isset($_POST['date']) ? htmlspecialchars($_POST['date']) : ''; ?>">
     <label for="cours">Cours :</label>
-    <input type="text" name="cours" id="cours" value="<?php echo isset($_GET['cours']) ? htmlspecialchars($_GET['cours']) : ''; ?>"> 
+    <input type="text" name="cours" id="cours" value="<?php echo isset($_POST['cours']) ? htmlspecialchars($_POST['cours']) : ''; ?>"> 
     <label for="groupe">Groupe :</label>
-    <input type="text" name="groupe" id="groupe" value="<?php echo isset($_GET['groupe']) ? htmlspecialchars($_GET['groupe']) : ''; ?>">
+    <input type="text" name="groupe" id="groupe" value="<?php echo isset($_POST['groupe']) ? htmlspecialchars($_POST['groupe']) : ''; ?>">
     <button type="submit">Filtrer</button>
     <a href="gestionAbsResp.php"><button type="button">Réinitialiser</button></a>
 </form>
@@ -66,8 +65,8 @@ require '../Models/GetFiles.php';
                 $tmp = new GetFiles();
                 $folder = "../uploads/";
                 $files = $tmp->get_files($folder, [".txt", ".pdf", ".jpg", ".png"], false);
-                $nom = isset($_GET['nom']) ? strtolower(trim($_GET['nom'])) : '';
-                $date = isset($_GET['date']) ? $_GET['date'] : '';
+                $nom = isset($_POST['nom']) ? strtolower(trim($_POST['nom'])) : '';
+                $date = isset($_POST['date']) ? $_POST['date'] : '';
                 if (count($files) > 0) {
                     foreach ($files as $file) {
                         $etudiant = htmlspecialchars(basename($file, pathinfo($file, PATHINFO_EXTENSION)));
