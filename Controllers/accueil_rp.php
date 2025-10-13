@@ -36,7 +36,7 @@
         <tbody>
             <?php 
                 $folder = "../uploads/";
-                $files = get_files($folder, [".txt", ".pdf", ".jpg"], false);
+                $files = $this->get_files($folder, [".txt", ".pdf", ".jpg"], false);
                 
                 if (count($files) > 0) {
                     foreach ($files as $file) {

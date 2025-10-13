@@ -1,4 +1,7 @@
-<?php require '../Models/GetFiles.php'?>
+<?php 
+// Inclusion du modèle pour la gestion des fichiers
+require '../Models/GetFiles.php';
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -8,6 +11,7 @@
     <link href="/CSS/cssGestionAbsResp.css" rel="stylesheet">
 
 </head>
+<!-- Affichage des logos -->
 <div class="uphf">
     <img src="../img/logouphf.png" alt="Logo uphf">
 </div>
@@ -15,15 +19,15 @@
 <div class="logoEdu">
     <img src="../img/logoedutrack.png" alt="Logo EduTrack">
 </div>
+<!-- Barre latérale de navigation -->
 <div class="sidebar">
       <ul>
           <li><a href="../Controllers/accueil_responsable.php">Accueil</a></li>
-          <li><a href="#">Gestion des absences</a></li>
+          <li><a href="../Views/gestionAbsResp.php">Gestion des absences</a></li>
           <li><a href="#">Historique des absences</a></li>
           <li><a href="#">Statistiques</a></li>
       </ul>
 </div>
-
 <header class="text">
 <h1> Bonjour </h1>
 </header>
@@ -35,7 +39,21 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<table>
+<!-- Filtrage  -->
+<form class="ddd"  method="get" style="margin-bottom: 20px;">
+    <label for="nom">Nom étudiant :</label>
+    <input type="text" name="nom" id="nom" value="<?php echo isset($_GET['nom']) ? htmlspecialchars($_GET['nom']) : ''; ?>">
+    <label for="date">Date :</label>
+    <input type="date" name="date" id="date" value="<?php echo isset($_GET['date']) ? htmlspecialchars($_GET['date']) : ''; ?>">
+    <label for="cours">Cours :</label>
+    <input type="text" name="cours" id="cours" value="<?php echo isset($_GET['cours']) ? htmlspecialchars($_GET['cours']) : ''; ?>"> 
+    <label for="groupe">Groupe :</label>
+    <input type="text" name="groupe" id="groupe" value="<?php echo isset($_GET['groupe']) ? htmlspecialchars($_GET['groupe']) : ''; ?>">
+    <button type="submit">Filtrer</button>
+    <a href="gestionAbsResp.php"><button type="button">Réinitialiser</button></a>
+</form>
+<!-- Tableau des absences -->
+<table id="tableAbsences">
         <thead>
             <tr>
                 <th scope='col'>Étudiant</th>
@@ -43,17 +61,23 @@
                 <th scope='col'>Document</th>
             </tr>
         </thead>
-
         <tbody>
             <?php
                 $tmp = new GetFiles();
                 $folder = "../uploads/";
-                $files = $tmp->get_files($folder, [".txt", ".pdf", ".jpg",".png"], false);
-                
+                $files = $tmp->get_files($folder, [".txt", ".pdf", ".jpg", ".png"], false);
+                $nom = isset($_GET['nom']) ? strtolower(trim($_GET['nom'])) : '';
+                $date = isset($_GET['date']) ? $_GET['date'] : '';
                 if (count($files) > 0) {
                     foreach ($files as $file) {
+                        $etudiant = htmlspecialchars(basename($file, pathinfo($file, PATHINFO_EXTENSION)));
+                        $dateAbs = date('Y-m-d', rand(strtotime('2024-09-01'), strtotime('2024-12-15')));
+                        if (($nom && strpos(strtolower($etudiant), $nom) === false) ||
+                            ($date && $dateAbs != $date)) {
+                            continue;
+                        }
                         echo "<tr>";
-                        echo "<td>Étudiant " . htmlspecialchars(basename($file, pathinfo($file, PATHINFO_EXTENSION))) . "</td>";
+                        echo "<td>Étudiant $etudiant</td>";
                         echo "<td>Justification d'absence</td>";
                         echo "<td><a href='" . htmlspecialchars($file) . "' target='_blank'>Voir le document</a></td>";
                         echo "</tr>";
@@ -61,16 +85,17 @@
                 } else {
                     echo "<tr><td colspan='3'>Aucun document trouvé</td></tr>";
                 }
-              ?>
+            ?>
         </tbody>
     </table>
-
+<!-- Pied de page -->
 <footer class="footer">
-    <nav class="footer-nav">
-    <a href="/Controllers/accueil_responsable.php">Accueil</a>
-    <span>|</span>
-    <a href="../Views/aide.php">Aides</a>
-  </nav>
+        <nav class="footer-nav">
+        <a href="/Controllers/accueil_responsable.php">Accueil</a>
+        <span>|</span>
+        <a href="../Views/aide.php">Aides</a>
+        
+    </nav>
 </footer>
 </body>
 </html>
