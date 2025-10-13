@@ -11,7 +11,6 @@ require "../Models/GetFiles.php"; //Classe pour la gestion des fichiers
     <link href="/CSS/cssDeBase.css" rel="stylesheet">
     <link href="/CSS/cssGestionAbsResp.css" rel="stylesheet">
 </head>
-
 <!-- Affichage du logo de l'université -->
 <div class="uphf">
     <img src="../img/logouphf.png" alt="Logo uphf">
@@ -21,7 +20,6 @@ require "../Models/GetFiles.php"; //Classe pour la gestion des fichiers
 <div class="logoEdu">
     <img src="../img/logoedutrack.png" alt="Logo EduTrack">
 </div>
-
 <!-- Barre latérale de navigation -->
 <div class="sidebar">
       <ul>
@@ -31,17 +29,13 @@ require "../Models/GetFiles.php"; //Classe pour la gestion des fichiers
           <li><a href="#">Statistiques</a></li> <!-- Lien vers les statistiques (à compléter) -->
       </ul>
 </div>
-
-<!-- En-tête principal -->
 <header class="text">
 <h1> Bonjour, Responsable (faudrait take l'id via la bdd) </h1> <!-- Message d'accueil, à personnaliser avec l'id du responsable -->
 </header>
-
 <!-- Bouton pour consulter les absences -->
 <div class="text">
         <a href="#"><button type="submit" class="btn">Consulter les absences</button></a>
 </div>
-
 <!-- Pied de page avec navigation -->
 <footer class="footer">
     <nav class="footer-nav">
