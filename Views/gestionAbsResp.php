@@ -40,14 +40,14 @@ require '../Models/GetFiles.php';
 </head>
 <body>
 <!-- Filtrage  -->
-<form method="get" style="margin-bottom: 20px;">
+<form class="ddd"  method="get" style="margin-bottom: 20px;">
     <label for="nom">Nom étudiant :</label>
     <input type="text" name="nom" id="nom" value="<?php echo isset($_GET['nom']) ? htmlspecialchars($_GET['nom']) : ''; ?>">
     <label for="date">Date :</label>
     <input type="date" name="date" id="date" value="<?php echo isset($_GET['date']) ? htmlspecialchars($_GET['date']) : ''; ?>">
     <label for="cours">Cours :</label>
     <input type="text" name="cours" id="cours" value="<?php echo isset($_GET['cours']) ? htmlspecialchars($_GET['cours']) : ''; ?>"> 
-    <label for="groupe">Cours :</label>
+    <label for="groupe">Groupe :</label>
     <input type="text" name="groupe" id="groupe" value="<?php echo isset($_GET['groupe']) ? htmlspecialchars($_GET['groupe']) : ''; ?>">
     <button type="submit">Filtrer</button>
     <a href="gestionAbsResp.php"><button type="button">Réinitialiser</button></a>
