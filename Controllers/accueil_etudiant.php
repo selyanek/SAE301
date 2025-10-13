@@ -1,3 +1,8 @@
+<?php
+session_start();
+require '../Models/Login.php';
+require '../Models/Database.php';
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -22,7 +27,7 @@
 </div>
 
 <header class="text">
-<h1> Bonjour, étudiant (faudrait take l'id de l'etu via la bdd) </h1>
+<h1> Bonjour, <?php echo $_SESSION['identifiant'] ?> </h1>
 <a href="../Views/gererAbsEtu.php"><button type="submit" class="btn">Consulter vos justificatifs</button></a>
 </header>
 <footer class="footer">

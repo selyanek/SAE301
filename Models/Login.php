@@ -3,7 +3,7 @@ class Login {
     private $identifiant;
     private $mot_de_passe;
 
-    public function __construct($identifiant, $mot_de_passe) {
+    public function __construct($identifiant, $mot_de_passe,) {
         $this->identifiant = $identifiant;
         $this->mot_de_passe = $mot_de_passe;
     }
@@ -25,5 +25,14 @@ class Login {
         ]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ? $result['fonction'] : false;
+    }
+    public function getName($pdo) {
+        $stmt = $pdo->prepare("SELECT nom, prenom FROM Compte WHERE idCompte = :id AND mot_de_passe = :mdp");
+        $stmt->execute([
+            ':id' => $this->identifiant,
+            ':mdp' => $this->mot_de_passe
+        ]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['prenom'] . ' ' . $result['nom'] : false;
     }
 }
