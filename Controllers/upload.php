@@ -39,6 +39,16 @@ require '../Models/Database.php'; ?>
       <div class="form-group">
         <label class="label">Date et heure de fin :</label>
         <input class="input" name="date_end" id="date_end" type="datetime-local" />
+        <?php if (isset($_POST['date_end']) && isset($_POST['date_start']) && $_POST['date_end'] < $_POST['date_start']) { ?>
+          <div class="error">La date de début doit être antérieure à la date de fin.</div>
+        <?php } ?>
+        <?php
+        if (
+            isset($_POST['date_end']) && !empty($_POST['date_end']) &&
+            strtotime('now') > strtotime($_POST['date_end']) + 48 * 3600
+        ) { ?>
+          <div class="error">Vous n'avez plus la possibilité de soumettre plus de 48 heures après la date de fin.</div>
+        <?php } ?>
       </div>
       <div class="form-group">
         <label class="label" id="motif_label">Motif de l'absence :</label>
