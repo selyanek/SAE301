@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Accueil</title>
+    <link href="/CSS/cssTraitementDesJustificatifs.css" rel="stylesheet">
     <link href="/CSS/cssDeBase.css" rel="stylesheet">
     <link href="/CSS/cssGestionAbsResp.css" rel="stylesheet">
-
 </head>
 <div class="uphf">
     <img src="../img/logouphf.png" alt="Logo uphf">
@@ -24,8 +24,8 @@
       </ul>
 </div>
 
-<header class="text">
-<h1> Bonjour </h1>
+<header class="titre">
+<h1> Détails du justificatif des absences </h1>
 </header>
 <!DOCTYPE html>
 <html lang="fr">
@@ -35,38 +35,52 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<table>
-        <thead>
-            <tr>
-                <th scope='col'>Étudiant</th>
-                <th scope='col'>Justification</th>
-                <th scope='col'>Document</th>
-                <th scope='col'>Statut</th>
-            </tr>
-        </thead>
+    
+<div class="trait">
+</div>
 
-        <tbody>
-            <?php
-                $tmp = new GetFiles();
-                $folder = "../uploads/";
-                $files = $tmp->get_files($folder, [".txt", ".pdf", ".jpg",".png"], false);
-                
-                if (count($files) > 0) {
-                    foreach ($files as $file) {
-                        echo "<tr>";
-                        echo "<td>Étudiant " . htmlspecialchars(basename($file, pathinfo($file, PATHINFO_EXTENSION))) . "</td>";
-                        echo "<td>Justification d'absence</td>";
-                        echo "<td><a href='" . htmlspecialchars($file) . "' target='_blank'>Voir le document</a></td>";
-                        echo "<td>Statut élève</td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='3'>Aucun document trouvé</td></tr>";
-                }
-              ?>
-        </tbody>
-    </table>
+<div class="encadre1">   
+    <div class="encadre2">
+        <h3>Date de début de l'absence</h3>
+        <div class="encadre3">
+        <p>09/12/2022</p>
+        </div>
+    </div>
+    <div class="encadre2">
+        <h3>Date de fin de l'absence</h3>
+        <div class="encadre3">
+            <p>12/12/2022</p>
+        </div>
+    </div>
+</div>
 
+<div class="encadre1">   
+    <div class="encadre2">
+        <h3>Date de soumission</h3>
+        <div class="encadre3">
+            <p>09/12/2022</p>
+        </div>
+    </div>
+    <div class="encadre2">
+        <h3>Cours concerné</h3>
+        <div class="encadre3">
+            <p>dev réseau</p>
+        </div>
+    </div>
+</div>
+
+<div class="trait">
+</div>
+
+<div class="motif">
+    <h3>Motif de l'absence</h3>
+</div>
+
+<div class="boutons">
+    <button>Valider</button>
+    <button>Refuser</button>
+    <button>Justificatifs supplémentaires</button>
+</div>
 <footer class="footer">
     <nav class="footer-nav">
     <a href="/Controllers/accueil_responsable.php">Accueil</a>
