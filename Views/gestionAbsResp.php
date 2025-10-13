@@ -64,7 +64,6 @@
               ?>
         </tbody>
     </table>
-
 <footer class="footer">
     <nav class="footer-nav">
     <a href="/Controllers/accueil_responsable.php">Accueil</a>
