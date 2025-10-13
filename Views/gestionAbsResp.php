@@ -58,6 +58,7 @@ require '../Models/GetFiles.php';
                 <th scope='col'>Étudiant</th>
                 <th scope='col'>Justification</th>
                 <th scope='col'>Document</th>
+                <th scope='col'>Statut</th>
             </tr>
         </thead>
         <tbody>
@@ -79,6 +80,7 @@ require '../Models/GetFiles.php';
                         echo "<td>Étudiant $etudiant</td>";
                         echo "<td>Justification d'absence</td>";
                         echo "<td><a href='" . htmlspecialchars($file) . "' target='_blank'>Voir le document</a></td>";
+                        echo "<td>Statut élève</td>";
                         echo "</tr>";
                     }
                 } else {
