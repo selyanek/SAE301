@@ -1,4 +1,3 @@
-<?php require '../Models/GetFiles.php'?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -8,6 +7,7 @@
     <link href="/CSS/cssGestionAbsResp.css" rel="stylesheet">
 
 </head>
+<!-- Affichage des logos -->
 <div class="uphf">
     <img src="../img/logouphf.png" alt="Logo uphf">
 </div>
@@ -15,15 +15,15 @@
 <div class="logoEdu">
     <img src="../img/logoedutrack.png" alt="Logo EduTrack">
 </div>
+<!-- Barre latérale de navigation -->
 <div class="sidebar">
       <ul>
           <li><a href="../Controllers/accueil_responsable.php">Accueil</a></li>
-          <li><a href="#">Gestion des absences</a></li>
+          <li><a href="../Views/gestionAbsResp.php">Gestion des absences</a></li>
           <li><a href="#">Historique des absences</a></li>
           <li><a href="#">Statistiques</a></li>
       </ul>
 </div>
-
 <header class="text">
 <h1> Bonjour </h1>
 </header>
@@ -35,15 +35,21 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<table>
-        <thead>
-            <tr>
-                <th scope='col'>Étudiant</th>
-                <th scope='col'>Justification</th>
-                <th scope='col'>Document</th>
-            </tr>
-        </thead>
-
+<!-- Filtrage  -->
+<form method="get" style="margin-bottom: 20px;">
+    <label for="nom">Nom étudiant :</label>
+    <input type="text" name="nom" id="nom" value="">
+    <label for="date">Date :</label>
+    <input type="date" name="date" id="date" value="">
+    <label for="cours">Cours :</label>
+    <input type="text" name="cours" id="cours" value=""> 
+    <label for="groupe">Cours :</label>
+    <input type="text" name="groupe" id="groupe" value="">
+    <button type="submit">Filtrer</button>
+    <a href="gestionAbsResp.php"><button type="button">Réinitialiser</button></a>
+</form>
+<!-- Tableau des absences -->
+    <table>
         <tbody>
             <?php
                 $tmp = new GetFiles();
@@ -64,6 +70,7 @@
               ?>
         </tbody>
     </table>
+
 <footer class="footer">
     <nav class="footer-nav">
     <a href="/Controllers/accueil_responsable.php">Accueil</a>
