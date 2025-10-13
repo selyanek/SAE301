@@ -1,25 +1,9 @@
 <?php
 //Inclusion du fichier contenant les fonctions ou données nécessaires (ex : récupération de fichiers)
 session_start();
-$message = '';
-$roleNecessaire = 'professeur';
-
-if (!isset($_SESSION['login']) || !isset($_SESSION['role'])) {
-    header('Location:../Views/index.php');
-    exit();
-}if ($_SESSION['role'] !== $roleNecessaire) {
-    switch ($_SESSION['role']) {
-        case 'etudiante':
-            header('Location: accueil_etudiant.php');
-            exit();
-        case 'professeur':
-            header('Location: accueil_professeur.php');
-            exit();
-        default:
-            header('Location: index.php');
-            exit();
-    }
-}
+require "../Models/Redirect.php";
+$redirect = new Redirect('professeur');
+$redirect->redirect();
 ?>
 <!DOCTYPE html>
 <html lang="fr">

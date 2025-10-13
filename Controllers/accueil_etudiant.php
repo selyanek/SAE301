@@ -1,24 +1,9 @@
 <?php
 session_start();
-$message = '';
-$roleNecessaire = 'etudiante';
+require "../Models/Redirect.php";
 
-if (!isset($_SESSION['login']) || !isset($_SESSION['role'])) {
-    header('Location:../Views/index.php');
-    exit();
-}if ($_SESSION['role'] !== $roleNecessaire) {
-    switch ($_SESSION['role']) {
-        case 'etudiante':
-            header('Location: accueil_etudiant.php');
-            exit();
-        case 'professeur':
-            header('Location: accueil_professeur.php');
-            exit();
-        default:
-            header('Location: index.php');
-            exit();
-    }
-}
+$redirect = new Redirect('etudiante');
+$redirect->redirect();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
