@@ -1,5 +1,6 @@
 <?php 
 //Inclusion du fichier contenant les fonctions ou données nécessaires (ex : récupération de fichiers)
+session_start();
 require "../Models/GetFiles.php"; //Classe pour la gestion des fichiers
 ?>
 <!DOCTYPE html>
@@ -30,7 +31,7 @@ require "../Models/GetFiles.php"; //Classe pour la gestion des fichiers
       </ul>
 </div>
 <header class="text">
-<h1> Bonjour, Responsable (faudrait take l'id via la bdd) </h1> <!-- Message d'accueil, à personnaliser avec l'id du responsable -->
+<h1> Bonjour, <?php echo $_SESSION['identifiant'] ?>  </h1> <!-- Message d'accueil, à personnaliser avec l'id du responsable -->
 </header>
 <!-- Bouton pour consulter les absences -->
 <div class="text">

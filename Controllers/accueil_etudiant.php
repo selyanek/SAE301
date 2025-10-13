@@ -1,7 +1,5 @@
 <?php
 session_start();
-require '../Models/Login.php';
-require '../Models/Database.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">

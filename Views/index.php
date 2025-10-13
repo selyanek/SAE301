@@ -25,7 +25,7 @@
                 header('Location: https://localhost/Controllers/accueil_prof.php');
             exit();
             } elseif (($login->verifRole($pdo) == 'responsable_pedagogique')) {
-                header('Location: https://localhost/Controllers/accueil_rp.php');
+                header('Location: https://localhost/Controllers/accueil_responsable.php');
             exit();
             } else {
                 echo 'vous n exister pas';
