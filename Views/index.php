@@ -82,11 +82,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 </div>
 </body>
-<footer class="footer">
-    <nav class="footer-nav">
-        <a href="#">Accueil</a>
-        <span>|</span>
-        <a href="../Views/aide.php">Aides</a>
-    </nav>
-</footer>
+<section class="container">
+    <footer class="footer">
+        <nav class="footer-nav">
+            <a href="#">Accueil</a>
+            <span>|</span>
+            <a href="../Views/aide.php">Aides</a>
+        </nav>
+    </footer>
+</section>
 </html>

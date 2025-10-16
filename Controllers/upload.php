@@ -1,14 +1,8 @@
 <?php require ('../vendor/autoload.php');
-require ('../Models/Database.php'); ?>
+require ('../Models/Database.php'); 
+session_start
+?>
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Justifier une absence</title>
-    <link href="../CSS/cssDeBase.css" rel="stylesheet">
-    <link href="../CSS/cssUpload.css" rel="stylesheet">
-</head>
 <?php
 session_start();
 require '../vendor/autoload.php';
