@@ -126,4 +126,13 @@ VALUES ('2024-09-01 09:30:00', '2024-09-01 11:00:00', 'Maladie', FALSE,
         (SELECT idCours FROM Cours WHERE idProfesseur = 'john.doe' AND date_debut = '2024-09-01 09:30:00'));
 --rollback DELETE FROM Absence WHERE idEtudiant = 'dilara.simsek' AND idCours = (SELECT idCours FROM Cours WHERE idProfesseur = 'john.doe' AND date_debut = '2024-09-01 09:30:00');
 
+--changeset Roman:14
+--comment: Insertion d'un compte etudiant et de son profil Etudiant
+INSERT INTO Compte (idCompte, mot_de_passe, nom, prenom, fonction)
+VALUES ('alice.martin', 'securepass456', 'Martin', 'Alice', 'etudiante');
+INSERT INTO Etudiant (idEtudiant, formation)
+VALUES ('alice.martin', 'Mathematics');
+--rollback DELETE FROM Etudiant WHERE idEtudiant = 'alice.martin'; DELETE FROM Compte WHERE idCompte = 'alice.martin';
+
+
 -- End of changelog

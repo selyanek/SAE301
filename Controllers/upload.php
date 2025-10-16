@@ -20,19 +20,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: ../Controllers/login.php');
         exit;
     }
-
     // Récupération et validation des champs
     $date_start = $_POST['date_start'] ?? '';
     $date_end = $_POST['date_end'] ?? '';
     $cours = $_POST['cours'] ?? '';
     $motif = trim($_POST['motif'] ?? '');
-
     if (empty($motif)) {
         $errors[] = "Le motif est obligatoire.";
     }
-
     if (empty($cours)) {
         $errors[] = "Veuillez sélectionner un cours.";
+    }
+
+    // Vérification de la limite de 48 heures
+    $now = new DateTime();
+    $absence_date = new DateTime($date_start);
+    $diff = $now->diff($absence_date);
+    $hours = $diff->h + ($diff->days * 24);
+    
+    if ($hours > 48) {
+        $errors[] = "Le délai de 48 heures pour justifier l'absence est dépassé.";
     }
 
     // Validation du fichier

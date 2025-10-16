@@ -2,8 +2,7 @@
 session_start();
 require "../Models/Redirect.php";
 
-$redirect = new Redirect('etudiante');
-$redirect->redirect();
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
