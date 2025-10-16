@@ -26,21 +26,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: ../Controllers/login.php');
         exit;
     }
-
     // Récupération et validation des champs
     $date_start = $_POST['date_start'] ?? '';
     $date_end = $_POST['date_end'] ?? '';
     $cours = $_POST['cours'] ?? '';
     $motif = trim($_POST['motif'] ?? '');
-
     if (empty($motif)) {
         $errors[] = "Le motif est obligatoire.";
     }
-
     if (empty($cours)) {
         $errors[] = "Veuillez sélectionner un cours.";
     }
-
     // Validation du fichier
     if (!isset($_FILES['file']) || $_FILES['file']['error'] === UPLOAD_ERR_NO_FILE) {
         $errors[] = "Le justificatif est obligatoire.";
