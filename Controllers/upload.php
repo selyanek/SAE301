@@ -37,6 +37,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($cours)) {
         $errors[] = "Veuillez sélectionner un cours.";
     }
+
+    // Vérification de la limite de 48 heures
+    $now = new DateTime();
+    $absence_date = new DateTime($date_start);
+    $diff = $now->diff($absence_date);
+    $hours = $diff->h + ($diff->days * 24);
+    
+    if ($hours > 48) {
+        $errors[] = "Le délai de 48 heures pour justifier l'absence est dépassé.";
+    }
+
     // Validation du fichier
     if (!isset($_FILES['file']) || $_FILES['file']['error'] === UPLOAD_ERR_NO_FILE) {
         $errors[] = "Le justificatif est obligatoire.";

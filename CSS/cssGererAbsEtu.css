@@ -1,3 +1,18 @@
+.error-messages {
+    width: 80%;
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #ffebee;
+    border: 1px solid #ef5350;
+}
+
+.error {
+    color: #c62828;
+    margin: 5px 0;
+    font-weight: 500;
+}
+
 .liste-absences {
     width: 80%;
     margin: 20px;
