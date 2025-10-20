@@ -134,5 +134,14 @@ INSERT INTO Etudiant (idEtudiant, formation)
 VALUES ('alice.martin', 'Mathematics');
 --rollback DELETE FROM Etudiant WHERE idEtudiant = 'alice.martin'; DELETE FROM Compte WHERE idCompte = 'alice.martin';
 
+--changeset Enzo:15
+--comment: Ajout de la colonne verrouille dans la table Absence
+ALTER TABLE Absence ADD COLUMN verrouille BOOLEAN DEFAULT FALSE;
+--rollback ALTER TABLE Absence DROP COLUMN verrouille;
+
+--changeset Enzo:16
+--comment: Ajout de la colonne date_verrouillage dans la table Absence
+ALTER TABLE Absence ADD COLUMN date_verrouillage TIMESTAMP;
+--rollback ALTER TABLE Absence DROP COLUMN date_verrouillage;
 
 -- End of changelog
