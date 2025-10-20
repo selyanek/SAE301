@@ -22,7 +22,8 @@ if (isset($_GET['error'])) {
             'file_required' => 'Veuillez joindre un justificatif.',
             'file_type' => 'Format de fichier non accepté. Utilisez .pdf, .jpg ou .png',
             'file_size' => 'Le fichier est trop volumineux (max 5MB).',
-            'upload_failed' => 'Erreur lors de l\'upload du fichier.'
+            'upload_failed' => 'Erreur lors de l\'upload du fichier.',
+            'delai_depasse' => 'Le délai de 48 heures pour déposer un justificatif est dépassé.'
     ];
     $error = $_GET['error'];
     if (isset($error_messages[$error])) {
