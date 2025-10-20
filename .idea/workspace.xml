@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="4e8ce99d-a18a-4d00-8d21-c0a3c317092f" name="Changes" comment="" />
+    <list default="true" id="4e8ce99d-a18a-4d00-8d21-c0a3c317092f" name="Changes" comment="FEAT (Redirect) permet de rediriger vers la bonne page en fonction du role.">
+      <change afterPath="$PROJECT_DIR$/Views/depotJustif.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/accueil_etudiant.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/accueil_etudiant.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/accueil_prof.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/accueil_prof.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/accueil_rp.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/accueil_rp.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/upload.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/upload.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Database.php" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Database.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/GestionCSV.php" beforeDir="false" afterPath="$PROJECT_DIR$/Models/GestionCSV.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Redirect.php" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Redirect.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/gestionAbsResp.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/gestionAbsResp.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/index.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings">
+  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -20,7 +37,24 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="/bin/php" />
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;baptisteChouraih&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/selyanek/SAE301.git&quot;,
+    &quot;accountId&quot;: &quot;a339a5fe-712d-4b0a-b59d-ff48c39d5db2&quot;
+  }
+}</component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="$PROJECT_DIR$/../../../../../../php/php.exe">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/phpmailer/phpmailer" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+    </include_path>
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -29,25 +63,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/chour/Desktop/BUT 2/SAE/SAE301/Controllers&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
+    ]
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\chour\Desktop\BUT 2\SAE\SAE301\Controllers" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-b598e85cdad2-JavaScript-PS-252.25557.128" />
-        <option value="bundled-php-predefined-a98d8de5180a-ce40d0652d34-com.jetbrains.php.sharedIndexes-PS-252.25557.128" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-PS-252.26830.95" />
+        <option value="bundled-php-predefined-a98d8de5180a-9b563d34894c-com.jetbrains.php.sharedIndexes-PS-252.26830.95" />
       </set>
     </attachedChunks>
   </component>
@@ -61,10 +108,75 @@
       <workItem from="1758276450907" duration="125000" />
       <workItem from="1758276578596" duration="87000" />
       <workItem from="1758276675501" duration="362000" />
+      <workItem from="1760368484758" duration="5503000" />
+      <workItem from="1760383549440" duration="7064000" />
+      <workItem from="1760600709049" duration="4306000" />
+      <workItem from="1760711695284" duration="105000" />
+      <workItem from="1760962579340" duration="2605000" />
     </task>
+    <task id="LOCAL-00001" summary="FEAT (GestionCSV)">
+      <option name="closed" value="true" />
+      <created>1760358600961</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1760358600961</updated>
+    </task>
+    <task id="LOCAL-00002" summary="FEAT (Redirect) permet de rediriger vers la bonne page en fonction du role.">
+      <option name="closed" value="true" />
+      <created>1760393464508</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1760393464508</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/main" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="FEAT (GestionCSV)" />
+    <MESSAGE value="FEAT (Redirect) permet de rediriger vers la bonne page en fonction du role." />
+    <option name="LAST_COMMIT_MESSAGE" value="FEAT (Redirect) permet de rediriger vers la bonne page en fonction du role." />
   </component>
 </project>

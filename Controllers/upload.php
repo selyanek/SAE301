@@ -1,5 +1,7 @@
 <?php require ('../vendor/autoload.php');
-require ('../Models/Database.php'); ?>
+require ('../Models/Database.php');
+session_start();
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -10,10 +12,6 @@ require ('../Models/Database.php'); ?>
     <link href="../CSS/cssUpload.css" rel="stylesheet">
 </head>
 <?php
-session_start();
-require '../vendor/autoload.php';
-require '../Models/Database.php';
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 

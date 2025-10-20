@@ -1,15 +1,21 @@
 <?php
+
 class Redirect
 {
     private $roleNecessaire;
-    public function __construct($roleNecessaire){
+
+    public function __construct($roleNecessaire)
+    {
         $this->roleNecessaire = $roleNecessaire;
     }
-    public function redirect(){
+
+    public function redirect()
+    {
         if (!isset($_SESSION['login']) || !isset($_SESSION['role'])) {
             header('Location:../Views/index.php');
             exit();
-        }if ($_SESSION['role'] !== $this->roleNecessaire) {
+        }
+        if ($_SESSION['role'] !== $this->roleNecessaire) {
             switch ($_SESSION['role']) {
                 case 'etudiante':
                     header('Location: accueil_etudiant.php');

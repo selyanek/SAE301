@@ -20,24 +20,26 @@ $redirect->redirect();
     <img src="../img/logoedutrack.png" alt="Logo EduTrack">
 </div>
 <div class="sidebar">
-      <ul>
-          <li><a href="../Controllers/accueil_etudiant.php">Accueil</a></li>
-          <li><a href="../Views/gererAbsEtu.php">Gérer des absences</a></li>
-          <li><a href="#">Historique des absences</a></li>
-          <li><a href="../Views/aide.php">Aides</a></li>
-      </ul>
+    <ul>
+        <li><a href="../Controllers/accueil_etudiant.php">Accueil</a></li>
+        <li><a href="../Views/gererAbsEtu.php">Gérer des absences</a></li>
+        <li><a href="#">Historique des absences</a></li>
+        <li><a href="../Views/aide.php">Aides</a></li>
+    </ul>
 </div>
 
 <header class="text">
-<h1> Bonjour, <?php echo $_SESSION['nom'] ?> </h1>
-<a href="../Views/gererAbsEtu.php"><button type="submit" class="btn">Consulter vos justificatifs</button></a>
+    <h1> Bonjour, <?php echo $_SESSION['nom'] ?> </h1>
+    <a href="../Views/gererAbsEtu.php">
+        <button type="submit" class="btn">Consulter vos justificatifs</button>
+    </a>
 </header>
 <footer class="footer">
     <nav class="footer-nav">
-    <a href="/Controllers/accueil_etudiant.php">Accueil</a>
-    <span>|</span>
-    <a href="../Views/aide.php">Aides</a>
-  </nav>
+        <a href="/Controllers/accueil_etudiant.php">Accueil</a>
+        <span>|</span>
+        <a href="../Views/aide.php">Aides</a>
+    </nav>
 </footer>
 </body>
 </html>

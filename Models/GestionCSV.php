@@ -1,5 +1,4 @@
 <?php
-
 class GestionCSV
 {
     public function getCSV($files, $index)

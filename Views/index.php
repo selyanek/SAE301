@@ -5,7 +5,7 @@ $message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $identifiant = $_POST['identifiant'] ?? '';
-    $mot_de_passe = $_POST['mot_de_passe'] ?? '';
+    $mot_de_passe = password_hash(($_POST['mot_de_passe'] ?? ''), PASSWORD_DEFAULT);
     $login = new Login($identifiant, $mot_de_passe);
     try {
         $bd = new Database();

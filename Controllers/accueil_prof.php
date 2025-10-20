@@ -31,7 +31,9 @@ $redirect->redirect();
 
 <header class="text">
     <h1> Bonjour, <?php echo $_SESSION['nom'] ?> </h1>
-    <a href="../Views/gererAbsEtu.php"><button type="submit" class="btn">Consulter vos justificatifs</button></a>
+    <a href="../Views/gererAbsEtu.php">
+        <button type="submit" class="btn">Consulter vos justificatifs</button>
+    </a>
 </header>
 <footer class="footer">
     <nav class="footer-nav">
