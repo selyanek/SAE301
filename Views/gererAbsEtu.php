@@ -17,7 +17,17 @@
 <header class="text">
     <h1>Gérer mes absences </h1>
     <p>Cette page vous donne accès aux informations et réponses liées à vos absences justifiées.</p>
-    <a href="../Controllers/upload.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>
+    <?php
+    if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])) {
+        echo '<div class="error-messages">';
+        foreach ($_SESSION['errors'] as $error) {
+            echo '<p class="error">' . htmlspecialchars($error) . '</p>';
+        }
+        echo '</div>';
+        unset($_SESSION['errors']);
+    }
+    ?>
+    <a href="../Views/depotJustif.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>
 </header>
 <div class="sidebar">
     <ul>

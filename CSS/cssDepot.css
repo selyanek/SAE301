@@ -1,0 +1,43 @@
+.absence-form {
+    max-width: 600px;
+    margin: 20px auto;
+    background: #fafafa;
+    padding: 25px 30px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+.label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    color: #333;
+}
+.input,
+.textarea,
+.file-input {
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    box-sizing: border-box;
+}
+.textarea {
+    min-height: 60px;
+}
+.error {
+    color: #d9534f;
+    font-size: 13px;
+    margin-top: 5px;
+}
+.info {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 6px;
+}
