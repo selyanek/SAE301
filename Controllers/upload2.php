@@ -29,6 +29,16 @@ if (strtotime($date_end) < strtotime($date_start)) {
     exit;
 }
 
+// Vérification du délai de 48h
+$now = time();
+$date_start_timestamp = strtotime($date_start);
+$delai_48h = 48 * 60 * 60; // 48 heures en secondes
+
+if (($now - $date_start_timestamp) > $delai_48h) {
+    header('Location: ../Views/depotJustif.php?error=delai_depasse&motif=' . urlencode($motif) . '&date_start=' . urlencode($date_start) . '&date_end=' . urlencode($date_end));
+    exit;
+}
+
 // Validation du fichier
 if (!isset($_FILES['file']) || $_FILES['file']['error'] === UPLOAD_ERR_NO_FILE) {
     header('Location: ../Views/depotJustif.php?error=file_required&motif=' . urlencode($motif) . '&date_start=' . urlencode($date_start) . '&date_end=' . urlencode($date_end));
