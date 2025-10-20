@@ -27,7 +27,7 @@
         unset($_SESSION['errors']);
     }
     ?>
-    <a href="../Controllers/upload.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>
+    <a href="../Views/depotJustif.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>
 </header>
 <div class="sidebar">
     <ul>

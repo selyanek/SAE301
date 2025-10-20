@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Justifier une absence</title>
     <link href="../CSS/cssDeBase.css" rel="stylesheet">
-    <link href="../CSS/cssUpload.css" rel="stylesheet">
+    <link href="../CSS/cssDepot.css" rel="stylesheet">
 </head>
 <div class="uphf">
     <img src="../img/logouphf.png" alt="Logo uphf">
