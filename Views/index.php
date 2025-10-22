@@ -64,11 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </section>
 <div class="sidebar"></div>
 <div class="wapper">
-    <?php if (!empty($message)): ?>
-        <div class="message">
-            <?= htmlspecialchars($message) ?>
-        </div>
-    <?php endif; ?>
     <form action="index.php" method="post">
         <label for="identifiant">Identifiant :</label>
         <input type="text" id="identifiant" name="identifiant" required>
@@ -80,6 +75,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <br>
         <a href="mdpOublier.php">Mot de passe oublié ?</a>
     </form>
+    <?php if (!empty($message)): ?>
+        <div class="message">
+            <?= htmlspecialchars($message) ?>
+        </div>
+    <?php endif; ?>
 </div>
 </body>
 <section class="container">
