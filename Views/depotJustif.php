@@ -10,6 +10,21 @@
     <link href="../CSS/cssUpload.css" rel="stylesheet">
 </head>
 <body>
+<div class="uphf">
+    <img src="../img/logouphf.png" alt="Logo uphf">
+</div>
+<body>
+<div class="logoEdu">
+    <img src="../img/logoedutrack.png" alt="Logo EduTrack">
+</div>
+<div class="sidebar">
+    <ul>
+        <li><a href="../Controllers/accueil_etudiant.php">Accueil</a></li>
+        <li><a href="../Views/gererAbsEtu.php">Gérer des absences</a></li>
+        <li><a href="#">Historique des absences</a></li>
+        <li><a href="../Views/aide.php">Aides</a></li>
+    </ul>
+</div>
 <?php
 if (isset($_GET['success']) && $_GET['success'] == 1) {
     echo '<div class="success-message">Votre justificatif a été envoyé avec succès !</div>';
@@ -65,4 +80,11 @@ if (isset($_GET['error'])) {
 
 </form>
 </body>
+<footer class="footer">
+    <nav class="footer-nav">
+        <a href="../Controllers/accueil_etudiant.php">Accueil</a>
+        <span>|</span>
+        <a href="../Views/aide.php">Aides</a>
+    </nav>
+</footer>
 </html>
