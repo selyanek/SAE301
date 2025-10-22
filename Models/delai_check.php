@@ -51,7 +51,18 @@ function verifierEnBDD($id_absence){
     $db = new Database();
     $pdo = $db->getConnection();
     
-    $stmt = $pdo->prepare("SELECT date_fin, verrouille FROM Absence WHERE idAbsence = ?");
+    // Vérifier si la colonne verrouille existe
+    $checkColumn = $pdo->query("SELECT column_name 
+                               FROM information_schema.columns 
+                               WHERE table_name='absence' 
+                               AND column_name='verrouille'");
+    
+    if ($checkColumn->fetch()) {
+        $stmt = $pdo->prepare("SELECT date_fin, verrouille FROM Absence WHERE idAbsence = ?");
+    } else {
+        $stmt = $pdo->prepare("SELECT date_fin FROM Absence WHERE idAbsence = ?");
+    }
+    
     $stmt->execute([$id_absence]);
     $absence = $stmt->fetch(PDO::FETCH_ASSOC);
     
@@ -64,7 +75,7 @@ function verifierEnBDD($id_absence){
         ];
     }
     
-    if ($absence['verrouille'] == true){
+    if (isset($absence['verrouille']) && $absence['verrouille'] == true){
         return [
             'valide' => false,
             'heures' => 0,
@@ -126,11 +137,22 @@ function verrouillerAbsences() {
     $db = new Database();
     $pdo = $db->getConnection();
     
-    $sql = "UPDATE Absence 
-            SET verrouille = TRUE, date_verrouillage = NOW()
-            WHERE date_fin < NOW() - INTERVAL '48 hours'
-            AND justifie = FALSE
-            AND (verrouille = FALSE OR verrouille IS NULL)";
+    // Vérifier si la colonne verrouille existe
+    $checkColumn = $pdo->query("SELECT column_name FROM information_schema.columns 
+                               WHERE table_name='absence' AND column_name='verrouille'");
+    
+    if ($checkColumn->fetch()) {
+        $sql = "UPDATE Absence 
+                SET verrouille = TRUE, date_verrouillage = NOW()
+                WHERE date_fin < NOW() - INTERVAL '48 hours'
+                AND justifie = FALSE
+                AND (verrouille = FALSE OR verrouille IS NULL)";
+    } else {
+        $sql = "UPDATE Absence 
+                SET justifie = FALSE
+                WHERE date_fin < NOW() - INTERVAL '48 hours'
+                AND justifie = FALSE";
+    }
     
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
@@ -152,13 +174,19 @@ function envoyerRappels(){
     $db = new Database();
     $pdo = $db->getConnection();
     
-    $sql = "SELECT a.idAbsence, c.nom, c.prenom, a.idEtudiant
-            FROM Absence a
-            JOIN Etudiant e ON a.idEtudiant = e.idEtudiant
-            JOIN Compte c ON e.idEtudiant = c.idCompte
-            WHERE a.date_fin BETWEEN NOW() - INTERVAL '25 hours' AND NOW() - INTERVAL '23 hours'
-            AND a.justifie = FALSE
-            AND (a.verrouille = FALSE OR a.verrouille IS NULL)";
+    // Vérifier si la colonne verrouille existe
+    $checkColumn = $pdo->query("SELECT column_name FROM information_schema.columns WHERE table_name='absence' AND column_name='verrouille'");
+    
+    if ($checkColumn->fetch()) {
+        $sql = "SELECT a.idAbsence, c.nom, c.prenom, a.idEtudiantFROM Absence a 
+        JOIN Etudiant e ON a.idEtudiant = e.idEtudiant
+        JOIN Compte c ON e.idEtudiant = c.idCompte
+        WHERE a.date_fin BETWEEN NOW() - INTERVAL '25 hours' AND NOW() - INTERVAL '23 hours' AND a.justifie = FALSE AND (a.verrouille = FALSE OR a.verrouille IS NULL)";
+    } else {
+        $sql = "SELECT a.idAbsence, c.nom, c.prenom, a.idEtudiant FROM Absence a
+                JOIN Etudiant e ON a.idEtudiant = e.idEtudiant
+                JOIN Compte c ON e.idEtudiant = c.idCompte
+                WHERE a.date_fin BETWEEN NOW() - INTERVAL '25 hours' AND NOW() - INTERVAL '23 hours' AND a.justifie = FALSE";
     
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
@@ -181,5 +209,6 @@ function envoyerRappels(){
     }
     
     $_SESSION['dernier_rappel'] = time();
+}
 }
 ?>

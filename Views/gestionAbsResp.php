@@ -49,6 +49,34 @@
     <a href="gestionAbsResp.php"><button type="button">Réinitialiser</button></a>
 </form>
 
+<?php
+require_once '../Models/Database.php';
+
+try {
+    $db = new Database();
+    $pdo = $db->getConnection();
+    // Requête pour compter les absences en attente
+    $sql = "SELECT COUNT(*) as nbAttente FROM Absence 
+            WHERE justifie = false AND (verrouille = false OR verrouille IS NULL)";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    $demandesEnAttente = $result['nbattente'];
+} catch (PDOException $e) {
+    $demandesEnAttente = 0;
+    error_log("Erreur lors du comptage des absences : " . $e->getMessage());
+}
+?>
+
+<!-- Affichage du compteur -->
+<div style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+    <p style="margin: 0; font-size: 1.1em;">
+        <strong>Nombre total de demandes en attente : </strong>
+        <span style="color: orange; font-weight: bold;"><?php echo $demandesEnAttente; ?></span>
+    </p>
+</div>
+
 <!-- Tableau des absences -->
 <table id="tableAbsences">
     <thead>
