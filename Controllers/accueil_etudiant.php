@@ -1,7 +1,9 @@
 <?php
+// Page d'accueil pour les étudiants
+// Démarre la session utilisateur
 session_start();
+// Inclut le modèle de redirection pour vérifier les droits d'accès
 require "../Models/Redirect.php";
-
 
 ?>
 <!DOCTYPE html>

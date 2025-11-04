@@ -1,4 +1,5 @@
 <?php
+// Page d'authentification principale pour la connexion des utilisateurs
 require '../Models/Database.php';
 require '../Models/Login.php';
 $message = "";

@@ -1,4 +1,5 @@
 <?php
+//fichier de déconnexion pour nettoyer la session et les cookies, puis rediriger
 session_start();
 
 $_SESSION = [];

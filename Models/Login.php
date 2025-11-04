@@ -1,4 +1,5 @@
-<?php 
+<?php
+// Classe pour gérer l'authentification des utilisateurs
 class Login {
     private $identifiant;
     private $mot_de_passe;

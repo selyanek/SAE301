@@ -22,6 +22,7 @@
 <body>
     <h1>Vous êtes RP</h1>
 
+    <!-- Tableau pour afficher la liste des documents uploadés -->
     <table>
         <thead>
             <tr>
@@ -32,19 +33,22 @@
         </thead>
 
         <tbody>
-            <?php 
+            <?php
                 $folder = "../uploads/";
+                // Récupération des fichiers du dossier avec les extensions spécifiées (.txt, .pdf, .jpg), sans récursion
                 $files = $this->get_files($folder, [".txt", ".pdf", ".jpg"], false);
-                
                 if (count($files) > 0) {
+                    // si fichier trouvé boucle pour afficher chaque fichier dans une ligne du tableau
                     foreach ($files as $file) {
                         echo "<tr>";
+                        // Affichage du nom de l'étudiant basé sur le nom du fichier (sans extension)
                         echo "<td>Étudiant " . htmlspecialchars(basename($file, pathinfo($file, PATHINFO_EXTENSION))) . "</td>";
                         echo "<td>Justification d'absence</td>";
                         echo "<td><a href='" . htmlspecialchars($file) . "' target='_blank'>Voir le document</a></td>";
                         echo "</tr>";
                     }
                 } else {
+                    // Message si aucun document n'est trouvé
                     echo "<tr><td colspan='3'>Aucun document trouvé</td></tr>";
                 }
             ?>

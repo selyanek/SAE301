@@ -1,4 +1,5 @@
 <?php
+// Page de gestion des absences pour les étudiants
 session_start();
 require_once '../Models/delai_check.php';
 require_once '../Models/Database.php';

@@ -1,3 +1,5 @@
+<!-- Page de connexion pour les utilisateurs -->
+<!-- Formulaire HTML pour saisir nom d'utilisateur et mot de passe -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +9,7 @@
 </head>
 <body>
     <header>
-        <img src="../img/logouphf.png" alt="Logo UPHF" class="logo">    
+        <img src="../img/logouphf.png" alt="Logo UPHF" class="logo">
     </header>
     <h1> Connexion </h1>
 <form action="accueil_étudiant.php" method="post">
@@ -23,6 +25,7 @@
 
 </form>
 <?php
+    // Traitement du formulaire de connexion côté serveur
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
         $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);

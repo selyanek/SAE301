@@ -1,24 +1,25 @@
 <?php
+// Classe pour récupérer les fichiers dans un dossier selon des extensions
 class GetFiles {
     public function get_files($folder, $ext, $subfolders) {
         // Ajouter le / à la fin du nom du dossier
         if(substr($folder, -1) != '/')
             $folder .= '/';
-        
+
         // Ouverture du répertoire
         $rep = @opendir($folder);
         if(!$rep)
             return [];
-            
+
         $files = [];
-        
+
         // Parcourir les fichiers
         while($file = readdir($rep))
         {
             // Ignorer . et ..
             if($file == '.' || $file == '..')
                 continue;
-            
+
             // Si c'est un sous-dossier et qu'on veut les parcourir
             if(is_dir($folder . $file) && $subfolders)
                 $files = array_merge($files, $this->get_files($folder . $file, $ext, true));
@@ -29,11 +30,11 @@ class GetFiles {
                     $files[] = $folder . $file;
             }
         }
-        
+
         closedir($rep);
         return $files;
     }
-    
+
     public function count_files($folder, $ext, $subfolders)
     {
         return count($this->get_files($folder, $ext, $subfolders));
