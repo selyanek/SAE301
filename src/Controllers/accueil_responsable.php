@@ -1,5 +1,7 @@
 <?php
 //Inclusion du fichier contenant les fonctions ou données nécessaires (ex : récupération de fichiers)
+use src\Models\Redirect;
+
 session_start();
 require "../Models/Redirect.php";
 $redirect = new Redirect('responsable_pedagogique');
@@ -11,22 +13,22 @@ $redirect->redirect();
     <meta charset="UTF-8">
     <title>Accueil</title>
     <!-- Inclusion du css -->
-    <link href="/CSS/cssDeBase.css" rel="stylesheet">
-    <link href="/CSS/cssGestionAbsResp.css" rel="stylesheet">
+    <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
+    <link href="/public/asset/CSS/cssGestionAbsResp.css" rel="stylesheet">
 </head>
 <!-- Affichage du logo de l'université -->
 <div class="uphf">
-    <img src="../img/logouphf.png" alt="Logo uphf">
+    <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">
 </div>
 <body>
 <!-- Affichage du logo EduTrack -->
 <div class="logoEdu">
-    <img src="../img/logoedutrack.png" alt="Logo EduTrack">
+    <img src="../../public/asset/img/logoedutrack.png" alt="Logo EduTrack">
 </div>
 <!-- Barre latérale de navigation -->
 <div class="sidebar">
     <ul>
-        <li><a href="../Controllers/accueil_responsable.php">Accueil</a></li> <!-- Lien vers la page d'accueil -->
+        <li><a href="sable.php">Accueil</a></li> <!-- Lien vers la page d'accueil -->
         <li><a href="../Views/gestionAbsResp.php">Gestion des absences</a></li> <!-- Lien vers la gestion des absences -->
         <li><a href="../Views/traitementDesJustificatif.php">Traitement des Justificatifs</a></li> <!-- Lien vers le traitementDesJustificatif -->
         <li><a href="#">Historique des absences</a></li> <!-- Lien vers l'historique (à compléter) -->
@@ -46,7 +48,7 @@ $redirect->redirect();
 <!-- Pied de page avec navigation -->
 <footer class="footer">
     <nav class="footer-nav">
-        <a href="/Controllers/accueil_responsable.php">Accueil</a> <!-- Retour à l'accueil -->
+        <a href="/public/asset/img/Controllerslers/accueil_responsable.php">Accueil</a> <!-- Retour à l'accueil -->
         <span>|</span>
         <a href="../Views/aideResp.php">Aides</a> <!-- Lien vers la page d'aide -->
     </nav>

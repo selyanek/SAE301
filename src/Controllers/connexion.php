@@ -7,7 +7,7 @@
 </head>
 <body>
     <header>
-        <img src="../img/logouphf.png" alt="Logo UPHF" class="logo">    
+        <img src="../../public/asset/img/logouphf.png" alt="Logo UPHF" class="logo">
     </header>
     <h1> Connexion </h1>
 <form action="accueil_étudiant.php" method="post">

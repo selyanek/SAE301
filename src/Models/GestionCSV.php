@@ -1,4 +1,8 @@
 <?php
+
+namespace src\Models;
+use Models\Exception;
+
 class GestionCSV
 {
     public function getCSV($files, $index)
@@ -22,4 +26,5 @@ class GestionCSV
         }
     }
 }
+
 ?>

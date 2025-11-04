@@ -1,6 +1,7 @@
 <?php
-require '../Models/Database.php';
-require '../Models/Login.php';
+
+require '../src/Database/Database.php';
+require '../src/Models/Login.php';
 $message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -45,20 +46,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/CSS/cssDeBase.css" rel="stylesheet">
-    <link href="/CSS/cssConnexion.css" rel="stylesheet">
+    <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
+    <link href="/public/asset/CSS/cssConnexion.css" rel="stylesheet">
     <title>Authentification</title>
 </head>
 <header class="uphf">
-    <img src="../img/logouphf.png" alt="Logo uphf">
+    <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">
 </header>
 <body>
 <div class="logoEdu">
-    <img src="../img/logoedutrack.png" alt="Logo EduTrack">
+    <img src="../../public/asset/img/logoedutrack.png" alt="Logo EduTrack">
 </div>
 <section class="text-with-image-section">
     <div class="text-with-image">
-        <img src="../img/logoco.png" alt="Connexion">
+        <img src="../../public/asset/img/logoco.png" alt="Connexion">
         <h2>Connexion</h2>
     </div>
 </section>
@@ -87,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <nav class="footer-nav">
             <a href="#">Accueil</a>
             <span>|</span>
-            <a href="../Views/aide.php">Aides</a>
+            <a href="">Aides</a>
         </nav>
     </footer>
 </section>

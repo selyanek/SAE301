@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Aide</title>
-    <link href="/CSS/cssDeBase.css" rel="stylesheet">
+    <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
 </head>
 <div class="uphf">
-    <img src="../img/logouphf.png" alt="Logo uphf">
+    <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">
 </div>
 <body>
     <div class="logoEdu">
-        <img src="../img/logoedutrack.png" alt="Logo EduTrack">
+        <img src="../../public/asset/img/logoedutrack.png" alt="Logo EduTrack">
     </div>
     <div class="sidebar"></div>
     <section class="text">
@@ -29,15 +29,15 @@
 
         <p>Pensez à traiter les demandes dans les délais afin d’assurer le bon suivi des absences et la conformité avec le règlement.</p>
 
-        <a href="/Controllers/accueil_responsable.php"><button type="button" class="btn">Retour à l'accueil</button></a>
+        <a href="/src/Controllerslers/accueil_responsable.php"><button type="button" class="btn">Retour à l'accueil</button></a>
     </section>
 
 </body>
 <footer class="footer">
     <nav class="footer-nav">
-    <a href="/Controllers/accueil_responsable.php">Accueil</a>
+    <a href="/src/Controllerslers/accueil_responsable.php">Accueil</a>
     <span>|</span>
-    <a href="../Views/aideResp.php">Aides</a>
+    <a href=".php">Aides</a>
   </nav>
 </footer>
 </html>

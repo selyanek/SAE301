@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Aide</title>
-    <link href="/CSS/cssDeBase.css" rel="stylesheet">
+    <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
 </head>
 <div class="uphf">
-    <img src="../img/logouphf.png" alt="Logo uphf">
+    <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">
 </div>
 <body>
     <div class="logoEdu">
-        <img src="../img/logoedutrack.png" alt="Logo EduTrack">
+        <img src="../../public/asset/img/logoedutrack.png" alt="Logo EduTrack">
     </div>
     <div class="sidebar"></div>
     <section class="text">
@@ -35,9 +35,9 @@
 </body>
 <footer class="footer">
     <nav class="footer-nav">
-    <a href="/Controllers/accueil_etudiant.php">Accueil</a>
+    <a href="/src/Controllerslers/accueil_etudiant.php">Accueil</a>
     <span>|</span>
-    <a href="../Views/aide.php">Aides</a>
+    <a href="">Aides</a>
   </nav>
 </footer>
 </html>

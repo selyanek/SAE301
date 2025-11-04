@@ -1,5 +1,11 @@
 <?php
-class Database {
+
+namespace src\Database;
+use Models\PDO;
+use Models\PDOException;
+
+class Database
+{
     private $host = "node2.liruz.fr";
     private $port = "5435";
     private $dbname = "sae";
@@ -7,7 +13,8 @@ class Database {
     private $pass = "1zevkN&49b&&a*Pi97C";
     private $pdo;
 
-    public function __construct() {
+    public function __construct()
+    {
         try {
             $this->pdo = new PDO(
                 "pgsql:host={$this->host};port={$this->port};dbname={$this->dbname}",
@@ -20,11 +27,13 @@ class Database {
         }
     }
 
-    public function getConnection() {
+    public function getConnection()
+    {
         return $this->pdo;
     }
 
-    public function endConnection() {
+    public function endConnection()
+    {
         $this->pdo = null;
     }
 }

@@ -6,8 +6,8 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Depot Justificatif</title>
-    <link rel="stylesheet" href="../CSS/cssDeBase.css">
-    <link href="../CSS/cssUpload.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../public/asset/CSS/cssDeBase.css">
+    <link href="../../public/asset/CSS/cssUpload.css" rel="stylesheet">
 </head>
 <body>
 <?php

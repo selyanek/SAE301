@@ -4,22 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Accueil</title>
-    <link href="/CSS/cssTraitementDesJustificatifs.css" rel="stylesheet">
-    <link href="/CSS/cssDeBase.css" rel="stylesheet">
-    <link href="/CSS/cssGestionAbsResp.css" rel="stylesheet">
+    <link href="/public/asset/CSS/cssTraitementDesJustificatifs.css" rel="stylesheet">
+    <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
+    <link href="/public/asset/CSS/cssGestionAbsResp.css" rel="stylesheet">
 </head>
 <div class="uphf">
-    <img src="../img/logouphf.png" alt="Logo uphf">
+    <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">
 </div>
 <body>
 <div class="logoEdu">
-    <img src="../img/logoedutrack.png" alt="Logo EduTrack">
+    <img src="../../public/asset/img/logoedutrack.png" alt="Logo EduTrack">
 </div>
 <div class="sidebar">
       <ul>
         <li><a href="../Controllers/accueil_responsable.php">Accueil</a></li> <!-- Lien vers la page d'accueil -->
-        <li><a href="../Views/gestionAbsResp.php">Gestion des absences</a></li> <!-- Lien vers la gestion des absences -->
-        <li><a href="../Views/traitementDesJustificatif.php">Traitement des Justificatifs</a></li> <!-- Lien vers le traitementDesJustificatif -->
+        <li><a href="bsResp.php">Gestion des absences</a></li> <!-- Lien vers la gestion des absences -->
+        <li><a href="ntDesJustificatif.php">Traitement des Justificatifs</a></li> <!-- Lien vers le traitementDesJustificatif -->
         <li><a href="#">Historique des absences</a></li> <!-- Lien vers l'historique (à compléter) -->
         <li><a href="#">Statistiques</a></li> <!-- Lien vers les statistiques (à compléter) -->
       </ul>
@@ -84,9 +84,9 @@
 </div>
 <footer class="footer">
     <nav class="footer-nav">
-    <a href="/Controllers/accueil_responsable.php">Accueil</a>
+    <a href="/src/Controllerslers/accueil_responsable.php">Accueil</a>
     <span>|</span>
-    <a href="../Views/aide.php">Aides</a>
+    <a href="">Aides</a>
   </nav>
 </footer>
 </body>

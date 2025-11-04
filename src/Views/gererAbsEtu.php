@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Gérer mes absences</title>
-    <link href="/CSS/cssDeBase.css" rel="stylesheet">
-    <link href="/CSS/cssGererAbsEtu.css" rel="stylesheet">
+    <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
+    <link href="/public/asset/CSS/cssGererAbsEtu.css" rel="stylesheet">
 
 </head>
 <div class="uphf">
-    <img src="../img/logouphf.png" alt="Logo uphf">
+    <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">
 </div>
 <body>
 <div class="logoEdu">
-    <img src="../img/logoedutrack.png" alt="Logo EduTrack">
+    <img src="../../public/asset/img/logoedutrack.png" alt="Logo EduTrack">
 </div>
 <header class="text">
     <h1>Gérer mes absences </h1>
@@ -27,14 +27,14 @@
         unset($_SESSION['errors']);
     }
     ?>
-    <a href="../Views/depotJustif.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>
+    <a href="tif.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>
 </header>
 <div class="sidebar">
     <ul>
         <li><a href="../Controllers/accueil_etudiant.php">Accueil</a></li>
-        <li><a href="../Views/gererAbsEtu.php">Gérer des absences</a></li>
+        <li><a href="Etu.php">Gérer des absences</a></li>
         <li><a href="#">Historique des absences</a></li>
-        <li><a href="../Views/aide.php">Aides</a></li>
+        <li><a href="">Aides</a></li>
     </ul>
 </div>
 <table class="liste-absences"> 
@@ -75,7 +75,7 @@
     <nav class="footer-nav">
     <a href="../Controllers/accueil_etudiant.php">Accueil</a>
     <span>|</span>
-    <a href="../Views/aide.php">Aides</a>
+    <a href="">Aides</a>
   </nav>
 </footer>
 </html>

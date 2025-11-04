@@ -1,5 +1,7 @@
 <?php
 //Inclusion du fichier contenant les fonctions ou données nécessaires (ex : récupération de fichiers)
+use src\Models\Redirect;
+
 session_start();
 require "../Models/Redirect.php";
 $redirect = new Redirect('professeur');
@@ -11,18 +13,18 @@ $redirect->redirect();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>accueil prof</title>
-    <link href="/CSS/cssDeBase.css" rel="stylesheet">
+    <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
 </head>
 <div class="uphf">
-    <img src="../img/logouphf.png" alt="Logo uphf">
+    <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">
 </div>
 <body>
 <div class="logoEdu">
-    <img src="../img/logoedutrack.png" alt="Logo EduTrack">
+    <img src="../../public/asset/img/logoedutrack.png" alt="Logo EduTrack">
 </div>
 <div class="sidebar">
     <ul>
-        <li><a href="../Controllers/accueil_etudiant.php">Accueil</a></li>
+        <li><a href="nt.php">Accueil</a></li>
         <li><a href="../Views/gererAbsEtu.php">Gérer des absences</a></li>
         <li><a href="#">Historique des absences</a></li>
         <li><a href="../Views/aide.php">Aides</a></li>
@@ -37,7 +39,7 @@ $redirect->redirect();
 </header>
 <footer class="footer">
     <nav class="footer-nav">
-        <a href="/Controllers/accueil_etudiant.php">Accueil</a>
+        <a href="/public/asset/img/Controllerslers/accueil_etudiant.php">Accueil</a>
         <span>|</span>
         <a href="../Views/aide.php">Aides</a>
     </nav>

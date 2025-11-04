@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestion des absences</title>
-    <link href="/CSS/cssDeBase.css" rel="stylesheet">
-    <link href="/CSS/cssGestionAbsResp.css" rel="stylesheet">
+    <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
+    <link href="/public/asset/CSS/cssGestionAbsResp.css" rel="stylesheet">
 </head>
 <body>
 <!-- Affichage des logos -->
 <div class="uphf">
-    <img src="../img/logouphf.png" alt="Logo uphf">
+    <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">
 </div>
 <div class="logoEdu">
-    <img src="../img/logoedutrack.png" alt="Logo EduTrack">
+    <img src="../../public/asset/img/logoedutrack.png" alt="Logo EduTrack">
 </div>
 
 <!-- Barre latérale de navigation -->
 <div class="sidebar">
     <ul>
         <li><a href="../Controllers/accueil_responsable.php">Accueil</a></li>
-        <li><a href="../Views/gestionAbsResp.php">Gestion des absences</a></li>
+        <li><a href="bsResp.php">Gestion des absences</a></li>
         <li><a href="#">Historique des absences</a></li>
         <li><a href="#">Statistiques</a></li>
     </ul>
@@ -196,9 +196,9 @@
 <!-- Pied de page -->
 <footer class="footer">
     <nav class="footer-nav">
-        <a href="/Controllers/accueil_responsable.php">Accueil</a>
+        <a href="/src/Controllerslers/accueil_responsable.php">Accueil</a>
         <span>|</span>
-        <a href="../Views/aide.php">Aides</a>
+        <a href="">Aides</a>
     </nav>
 </footer>
 

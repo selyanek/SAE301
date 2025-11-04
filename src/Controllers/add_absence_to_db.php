@@ -1,4 +1,7 @@
 <?php
+
+use src\Database\Database;
+
 require 'Database.php';
 try {
     $db = new Database();
