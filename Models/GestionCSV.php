@@ -1,4 +1,5 @@
 <?php
+// Classe pour gérer la lecture et l'affichage de fichiers CSV
 class GestionCSV
 {
     public function getCSV($files, $index)

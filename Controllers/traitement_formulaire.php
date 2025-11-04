@@ -1,4 +1,5 @@
 <?php
+// fichier de traitement du formulaire d'absence pour les étudiants
 session_start();
 require_once('../Models/Database.php');
 require_once('../Models/EmailService.php');

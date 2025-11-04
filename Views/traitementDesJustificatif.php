@@ -1,12 +1,15 @@
-<?php require '../Models/GetFiles.php'?>
+<?php
+// Page de traitement des justificatifs pour les responsables pédagogiques
+require '../Models/GetFiles.php';
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Accueil</title>
-    <link href="/CSS/cssTraitementDesJustificatifs.css" rel="stylesheet">
-    <link href="/CSS/cssDeBase.css" rel="stylesheet">
-    <link href="/CSS/cssGestionAbsResp.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Accueil</title>
+  <link href="/CSS/cssTraitementDesJustificatifs.css" rel="stylesheet">
+  <link href="/CSS/cssDeBase.css" rel="stylesheet">
+  <link href="/CSS/cssGestionAbsResp.css" rel="stylesheet">
 </head>
 <div class="uphf">
     <img src="../img/logouphf.png" alt="Logo uphf">

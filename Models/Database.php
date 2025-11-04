@@ -1,4 +1,5 @@
 <?php
+// Classe pour gérer la connexion à la base de données PostgreSQL
 class Database {
     private $host = "node2.liruz.fr";
     private $port = "5435";

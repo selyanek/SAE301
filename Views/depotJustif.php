@@ -1,3 +1,4 @@
+<!-- Page de dépôt de justificatif d'absence pour les étudiants -->
 <!doctype html>
 <html lang="fr">
 <head>

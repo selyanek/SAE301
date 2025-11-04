@@ -1,3 +1,4 @@
+<!-- Page d'aide pour les responsables pédagogiques -->
 <!DOCTYPE html>
 <html lang="en">
 <head>

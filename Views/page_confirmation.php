@@ -1,3 +1,4 @@
+<!-- Page de confirmation après le dépôt d'un justificatif -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,7 +8,7 @@
     <link rel="stylesheet" href="../CSS/cssDeBase.css.css">
 </head>
 <body>
-<<div class="container">
+<div class="container">
     <?php
     session_start();
 

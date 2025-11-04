@@ -1,5 +1,5 @@
 <?php
-
+// Classe pour gérer les redirections selon le rôle de l'utilisateur
 class Redirect
 {
     private $roleNecessaire;

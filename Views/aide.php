@@ -1,3 +1,4 @@
+<!-- Page d'aide pour les étudiants expliquant l'utilisation d'EduTrack -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
