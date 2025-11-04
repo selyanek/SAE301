@@ -1,3 +1,5 @@
+
+
 <?php
 session_start();
 require_once '../';
@@ -15,10 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'refuser':
             $nouveauStatut = 'refuse';
             $message = 'Votre justificatif a été refusé.';
-            break;
-        case 'demander_supplémentaires':
-            $nouveauStatut = 'attente';
-            $message = 'Des justificatifs supplémentaires ont été demandés.';
             break;
         default:
             // Action inconnue
