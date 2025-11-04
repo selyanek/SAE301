@@ -76,12 +76,16 @@
 <div class="motif">
     <h3>Motif de l'absence</h3>
 </div>
+<form method="POST" action="../Controllers/traitementDesJustif.php">
+    
+
 
 <div class="boutons">
     <button>Valider</button>
     <button>Refuser</button>
-    <button>Justificatifs supplémentaires</button>
+    <button>Demander des justificatifs supplémentaires</button>
 </div>
+
 <footer class="footer">
     <nav class="footer-nav">
     <a href="/Controllers/accueil_responsable.php">Accueil</a>
