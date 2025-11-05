@@ -28,36 +28,14 @@ if ($id_etudiant) {
     $absences = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Gérer mes absences</title>
-    <link href="/CSS/cssDeBase.css" rel="stylesheet">
-    <link href="/CSS/cssGererAbsEtu.css" rel="stylesheet">
-    
-</head>
-<div class="uphf">
-    <img src="../img/logouphf.png" alt="Logo uphf">
-</div>
-<body>
-<div class="logoEdu">
-    <img src="../img/logoedutrack.png" alt="Logo EduTrack">
-</div>
+<?php include '../Views/layout/header.php';?>
 <header class="text">
     <h1>Gérer mes absences</h1>
     <p>Cette page vous donne accès aux informations et réponses liées à vos absences.</p>
     
     <a href="../Views/depotJustif.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>
 </header>
-<div class="sidebar">
-    <ul>
-        <li><a href="../Controllers/accueil_etudiant.php">Accueil</a></li>
-        <li><a href="../Views/gererAbsEtu.php">Gérer des absences</a></li>
-        <li><a href="#">Historique des absences</a></li>
-        <li><a href="../Views/aide.php">Aides</a></li>
-    </ul>
-</div>
+<?php include '../Views/layout/navigation.php';?>
 
 <table class="liste-absences"> 
     <tr>
@@ -124,11 +102,5 @@ if ($id_etudiant) {
     <a href="../Controllers/accueil_etudiant.php"><button type="button" class="btn">Retour à l'accueil</button></a>
 </div>
 </body>
-<footer class="footer">
-    <nav class="footer-nav">
-        <a href="../Controllers/accueil_etudiant.php">Accueil</a>
-        <span>|</span>
-        <a href="../Views/aide.php">Aides</a>
-    </nav>
-</footer>
+<?php include '../Views/layout/footer.php';?>
 </html>
