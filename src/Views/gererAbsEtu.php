@@ -31,7 +31,7 @@
 </header>
 <div class="sidebar">
     <ul>
-        <li><a href="../Controllers/accueil_etudiant.php">Accueil</a></li>
+        <li><a href="accueil_etudiant.php">Accueil</a></li>
         <li><a href="Etu.php">Gérer des absences</a></li>
         <li><a href="#">Historique des absences</a></li>
         <li><a href="">Aides</a></li>
@@ -68,12 +68,12 @@
 </table>
 <br>
 <div class="text">
-    <a href="../Controllers/accueil_etudiant.php"><button type="button" class="btn">Retour à l'accueil</button></a>
+    <a href="accueil_etudiant.php"><button type="button" class="btn">Retour à l'accueil</button></a>
 </div>
 </body>
 <footer class="footer">
     <nav class="footer-nav">
-    <a href="../Controllers/accueil_etudiant.php">Accueil</a>
+    <a href="accueil_etudiant.php">Accueil</a>
     <span>|</span>
     <a href="">Aides</a>
   </nav>

@@ -18,7 +18,7 @@
 <!-- Barre latérale de navigation -->
 <div class="sidebar">
     <ul>
-        <li><a href="../Controllers/accueil_responsable.php">Accueil</a></li>
+        <li><a href="accueil_responsable.php">Accueil</a></li>
         <li><a href="bsResp.php">Gestion des absences</a></li>
         <li><a href="#">Historique des absences</a></li>
         <li><a href="#">Statistiques</a></li>

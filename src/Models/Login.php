@@ -1,7 +1,7 @@
 <?php
 
 namespace src\Models;
-use Models\PDO;
+use PDO;
 
 class Login
 {

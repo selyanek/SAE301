@@ -17,7 +17,7 @@
 </div>
 <div class="sidebar">
       <ul>
-        <li><a href="../Controllers/accueil_responsable.php">Accueil</a></li> <!-- Lien vers la page d'accueil -->
+        <li><a href="accueil_responsable.php">Accueil</a></li> <!-- Lien vers la page d'accueil -->
         <li><a href="bsResp.php">Gestion des absences</a></li> <!-- Lien vers la gestion des absences -->
         <li><a href="ntDesJustificatif.php">Traitement des Justificatifs</a></li> <!-- Lien vers le traitementDesJustificatif -->
         <li><a href="#">Historique des absences</a></li> <!-- Lien vers l'historique (à compléter) -->

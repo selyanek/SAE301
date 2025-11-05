@@ -2,77 +2,85 @@
 
 --changeset Baptiste:1
 --comment: Table Compte
-CREATE TABLE Compte (
-    idCompte TEXT PRIMARY KEY,
+CREATE TABLE Compte
+(
+    idCompte     TEXT PRIMARY KEY,
     mot_de_passe TEXT NOT NULL,
-    nom TEXT NOT NULL,
-    prenom TEXT NOT NULL,
-    fonction TEXT NOT NULL
+    nom          TEXT NOT NULL,
+    prenom       TEXT NOT NULL,
+    fonction     TEXT NOT NULL
 );
 --rollback DROP TABLE Compte;
 
 --changeset Baptiste:2
 --comment: Table Etudiant
-CREATE TABLE Etudiant (
+CREATE TABLE Etudiant
+(
     idEtudiant TEXT PRIMARY KEY,
-    formation TEXT,
-    FOREIGN KEY (idEtudiant) REFERENCES Compte(idCompte) ON DELETE CASCADE
+    formation  TEXT,
+    FOREIGN KEY (idEtudiant) REFERENCES Compte (idCompte) ON DELETE CASCADE
 );
 --rollback DROP TABLE Etudiant;
 
 --changeset Baptiste:3
 --comment: Table Professeur
-CREATE TABLE Professeur (
+CREATE TABLE Professeur
+(
     idProfesseur TEXT PRIMARY KEY,
-    FOREIGN KEY (idProfesseur) REFERENCES Compte(idCompte) ON DELETE CASCADE
+    FOREIGN KEY (idProfesseur) REFERENCES Compte (idCompte) ON DELETE CASCADE
 );
 --rollback DROP TABLE Professeur;
 
 --changeset Baptiste:4
 --comment: Table Responsable_Pedagogique
-CREATE TABLE Responsable_Pedagogique (
+CREATE TABLE Responsable_Pedagogique
+(
     idResponsablePedagogique TEXT PRIMARY KEY,
-    FOREIGN KEY (idResponsablePedagogique) REFERENCES Compte(idCompte) ON DELETE CASCADE
+    FOREIGN KEY (idResponsablePedagogique) REFERENCES Compte (idCompte) ON DELETE CASCADE
 );
 --rollback DROP TABLE Responsable_Pedagogique;
 
 --changeset Baptiste:5
 --comment: Table Ressource
-CREATE TABLE Ressource (
+CREATE TABLE Ressource
+(
     idRessource SERIAL PRIMARY KEY,
-    nom TEXT NOT NULL
+    nom         TEXT NOT NULL
 );
 --rollback DROP TABLE Ressource;
 
 --changeset Baptiste:6
 --comment: Table Cours
-CREATE TABLE Cours (
-    idCours SERIAL PRIMARY KEY,
-    type TEXT NOT NULL,
-    seuil BOOLEAN NOT NULL,
-    date_debut TIMESTAMP NOT NULL,
-    date_fin TIMESTAMP NOT NULL,
-    idRessource INTEGER NOT NULL,
-    idProfesseur TEXT NOT NULL,
-    idResponsablePedagogique TEXT NOT NULL,
-    FOREIGN KEY (idRessource) REFERENCES Ressource(idRessource) ON DELETE CASCADE,
-    FOREIGN KEY (idProfesseur) REFERENCES Professeur(idProfesseur) ON DELETE CASCADE,
-    FOREIGN KEY (idResponsablePedagogique) REFERENCES Responsable_Pedagogique(idResponsablePedagogique) ON DELETE CASCADE
+CREATE TABLE Cours
+(
+    idCours                  SERIAL PRIMARY KEY,
+    type                     TEXT      NOT NULL,
+    seuil                    BOOLEAN   NOT NULL,
+    date_debut               TIMESTAMP NOT NULL,
+    date_fin                 TIMESTAMP NOT NULL,
+    idRessource              INTEGER   NOT NULL,
+    idProfesseur             TEXT      NOT NULL,
+    idResponsablePedagogique TEXT      NOT NULL,
+    FOREIGN KEY (idRessource) REFERENCES Ressource (idRessource) ON DELETE CASCADE,
+    FOREIGN KEY (idProfesseur) REFERENCES Professeur (idProfesseur) ON DELETE CASCADE,
+    FOREIGN KEY (idResponsablePedagogique) REFERENCES Responsable_Pedagogique (idResponsablePedagogique) ON DELETE CASCADE
 );
 --rollback DROP TABLE Cours;
 
 --changeset Baptiste:7
 --comment: Table Absence
-CREATE TABLE Absence (
-    idAbsence SERIAL PRIMARY KEY,
-    date_debut TIMESTAMP NOT NULL,
-    date_fin TIMESTAMP NOT NULL,
-    motif TEXT,
-    idEtudiant TEXT NOT NULL,
-    justifie BOOLEAN NOT NULL DEFAULT FALSE,
-    idCours INTEGER NOT NULL,
-    FOREIGN KEY (idEtudiant) REFERENCES Etudiant(idEtudiant) ON DELETE CASCADE,
-    FOREIGN KEY (idCours) REFERENCES Cours(idCours) ON DELETE CASCADE
+CREATE TABLE Absence
+(
+    idAbsence       SERIAL PRIMARY KEY,
+    idCours         INTEGER   NOT NULL,
+    idEtudiant      TEXT      NOT NULL,
+    date_debut      TIMESTAMP NOT NULL,
+    date_fin        TIMESTAMP NOT NULL,
+    motif           TEXT,
+    justifie        BOOLEAN   NOT NULL DEFAULT FALSE,
+    uriJustificatif TEXT NULL,
+    FOREIGN KEY (idEtudiant) REFERENCES Etudiant (idEtudiant) ON DELETE CASCADE,
+    FOREIGN KEY (idCours) REFERENCES Cours (idCours) ON DELETE CASCADE
 );
 --rollback DROP TABLE Absence;
 
@@ -88,7 +96,7 @@ VALUES ('dilara.simsek', 'Informatique');
 --changeset Selyane:9
 --comment: Insertion d'un compte professeur et de son profil Professeur
 INSERT INTO Compte (idCompte, mot_de_passe, nom, prenom, fonction)
-VALUES ('john.doe', 'x', 'Doe', 'John', 'professeur'); 
+VALUES ('john.doe', 'x', 'Doe', 'John', 'professeur');
 
 INSERT INTO Professeur (idProfesseur)
 VALUES ('john.doe');
@@ -112,9 +120,9 @@ VALUES ('Introduction to Programming');
 --changeset Selyane:12
 --comment: Insertion d'un cours associé au professeur John Doe
 INSERT INTO Cours (type, seuil, date_debut, date_fin, idRessource, idProfesseur, idResponsablePedagogique)
-VALUES ('CM', FALSE, '2024-09-01 09:30:00', '2024-09-01 11:00:00', 
+VALUES ('CM', FALSE, '2024-09-01 09:30:00', '2024-09-01 11:00:00',
         (SELECT idRessource FROM Ressource WHERE nom = 'Introduction to Programming'),
-        'john.doe', 
+        'john.doe',
         'jane.smith');
 --rollback DELETE FROM Cours WHERE idProfesseur = 'john.doe' AND date_debut = '2024-09-01 09:30:00';
 

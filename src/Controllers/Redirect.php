@@ -1,6 +1,6 @@
 <?php
 
-namespace src\Models;
+namespace src\Controllers;
 class Redirect
 {
     private $roleNecessaire;

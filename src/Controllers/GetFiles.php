@@ -1,6 +1,6 @@
 <?php
 
-namespace src\Models;
+namespace src\Controllers;
 class GetFiles
 {
     public function get_files($folder, $ext, $subfolders)

@@ -1,7 +1,6 @@
 <?php
 
 namespace src\Models;
-use Models\Exception;
 
 class GestionCSV
 {

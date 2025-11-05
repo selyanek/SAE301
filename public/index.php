@@ -1,12 +1,13 @@
 <?php
+require __DIR__ . '/../vendor/autoload.php';
+use src\Database\Database;
+use src\Models\Login;
 
-require '../src/Database/Database.php';
-require '../src/Models/Login.php';
 $message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $identifiant = $_POST['identifiant'] ?? '';
-    $mot_de_passe = password_hash(($_POST['mot_de_passe'] ?? ''), PASSWORD_DEFAULT);
+    $mot_de_passe = ($_POST['mot_de_passe'] ?? '');
     $login = new Login($identifiant, $mot_de_passe);
     try {
         $bd = new Database();
@@ -22,13 +23,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION["role"] = $login->getRole($pdo);
 
             if ($login->verifRole($pdo) == 'etudiante') {
-                header('Location: ../Controllers/accueil_etudiant.php');
+                header('Location: ../src/Views/accueil_etudiant.php');
                 exit();
             } elseif (($login->verifRole($pdo) == 'professeur')) {
-                header('Location: ../Controllers/accueil_prof.php');
+                header('Location: ../src/Views/accueil_prof.php');
                 exit();
             } elseif (($login->verifRole($pdo) == 'responsable_pedagogique')) {
-                header('Location: ../Controllers/accueil_responsable.php');
+                header('Location: ../src/Views/accueil_responsable.php');
                 exit();
             } else {
                 echo 'vous n exister pas';
