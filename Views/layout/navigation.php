@@ -1,3 +1,6 @@
+<!-- 
+    Navigation bar pour les étudiants
+-->
 <div class="sidebar">
     <ul>
         <li><a href="../Controllers/accueil_etudiant.php">Accueil</a></li>

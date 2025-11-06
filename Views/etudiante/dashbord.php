@@ -1,18 +1,18 @@
 <?php
+require "../../Models/Redirect.php";
+require '../layout/header.php';
+require '../layout/navigation.php';
 session_start();
-require "../Models/Redirect.php";
-include '../Views/layout/header.php';
-include '../Views/layout/navigation.php';
 ?>
 <header class="text">
     <h1> Bonjour, <?php echo $_SESSION['nom'] ?> </h1>
-    <a href="../Views/gererAbsEtu.php">
+    <a href="../gererAbsEtu.php">
         <button type="submit" class="btn">Consulter vos justificatifs</button>
     </a>
 </header>
 </body>
 <?php
-include '../Views/layout/footer.php';
+require '../layout/footer.php';
 ?>
 </html>
 
