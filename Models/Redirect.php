@@ -32,4 +32,24 @@ class Redirect
             }
         }
     }
+
+    private function redirectDashbord(){
+        switch ($_SESSION['role']) {
+            case 'etudiant':
+                header('Location: ../Views/etudiant/dashbord.php');
+                exit();
+            
+            case 'professeur':
+                header('Location: ../Controllers/accueil_professeur.php');
+                exit();
+            
+            case 'responsable_pedagogique':
+                header('Location: ../Controllers/accueil_responsable_pedagogique.php');
+                exit();
+            
+            default:
+                header('Location: ../Views/index.php');
+                exit();
+        }
+    }
 }
