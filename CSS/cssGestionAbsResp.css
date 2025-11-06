@@ -1,8 +1,12 @@
+/* Styles pour la gestion des absences - Responsable */
+
 .pipicaca{
     display: flex;
     margin-right: 5%;
     justify-content: flex-end;
 }
+
+/* Styles pour le calendrier */
 
 .calendar {
   background: white;
@@ -13,6 +17,9 @@
   text-align: center;
   width: 280px;
 }
+
+/* Styles pour le tableau des absences */
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -75,6 +82,8 @@ td.today {
   background-color: #0d4f94;
 }   
 
+/* Styles pour les écrans de petite taille */
+
 @media (max-width: 600px) {
   .ddd {
     flex-direction: column;
@@ -95,7 +104,9 @@ td.today {
     padding: 10px 0;
   }
 }
+
 /* Styles pour le tableau des absences */
+
 table {
 
     width: 100%;

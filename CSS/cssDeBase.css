@@ -4,6 +4,9 @@ body {
     background: #f7f9fb;
     padding-left: 150px;
 }
+
+/* Styles pour la barre latérale */
+
 .sidebar {
     position: fixed;
     left: 0;
@@ -32,6 +35,9 @@ body {
   color: #fff;
   margin: 0 8px;
 }
+
+/* Styles pour la barre supérieure */
+
 .uphf {
     position: fixed;
     left: 150px;
@@ -46,6 +52,9 @@ body {
     padding: 0 30px;
     z-index: 10;
 }
+
+/* Styles pour le logo et le profil utilisateur */
+
 .logo {
     display: flex;
     align-items: center;
@@ -80,6 +89,9 @@ body {
   height: 60px;
   width: auto;
 }
+
+/* Styles pour le pied de page */
+
 .footer {
   width: 100%;
   bottom: 0;
@@ -104,6 +116,9 @@ body {
   color: #ccc;
   margin: 0 5px;
 }
+
+/* Styles pour les boutons */
+
 .buttons {
   display: flex;
   justify-content: flex-end;
@@ -121,6 +136,7 @@ body {
   transition: background-color 0.3s ease;
   min-width: 100px;
 }
+
 .btn:hover {
   background-color: #0d4f94;
 }
@@ -130,6 +146,9 @@ body {
 .buttons a .btn:hover {
   background-color: #555;
 }
+
+/* Styles pour le texte à côté de l'image */
+
 .text{
   padding-left: 40px;
 }

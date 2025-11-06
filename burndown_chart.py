@@ -2,7 +2,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # BURNDOWN CHART
-# pourra être modifié en fonction de notre avancement
+# Auteur : selyanek
+
+# Ce graphique représente l'avancement idéal et réel du projet en termes de story points au fil des sprints.
+# Les valeurs initiales sont basées sur une estimation de 217 story points à répartir sur 4 sprints.
+# Cela pourra être modifié en fonction de notre avancement
 
 if __name__ == '__main__':
 

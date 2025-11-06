@@ -9,6 +9,7 @@ class Database {
     private $pdo;
 
     public function __construct() {
+        // Initialise la connexion PDO et gère les erreurs de connexion
         try {
             $this->pdo = new PDO(
                 "pgsql:host={$this->host};port={$this->port};dbname={$this->dbname}",
@@ -22,10 +23,12 @@ class Database {
     }
 
     public function getConnection() {
+        // Retourne la connexion PDO
         return $this->pdo;
     }
 
     public function endConnection() {
+        // Ferme la connexion en mettant l'objet PDO à null
         $this->pdo = null;
     }
 }

@@ -1,3 +1,5 @@
+/* Styles pour les messages d'erreur globaux */
+
 .error-messages {
     width: 80%;
     margin: 20px auto;
@@ -7,11 +9,15 @@
     border: 1px solid #ef5350;
 }
 
+/* Styles pour les messages d'erreur individuels */
+
 .error {
     color: #c62828;
     margin: 5px 0;
     font-weight: 500;
 }
+
+/* Styles pour la liste des absences */
 
 .liste-absences {
     width: 80%;

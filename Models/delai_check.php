@@ -2,6 +2,7 @@
 // Fonction de Gestion des délais de justification (48h)
 
 function creerCookieDelai($id_absence, $date_retour){
+    // Calcul de la date limite (48h après la fin de l'absence)
     $date_limite = strtotime($date_retour.' +48 hours');
     
     setcookie(
@@ -16,6 +17,7 @@ function verifieDelai($id_absence){
     $nom_cookie = 'delai_absence_'.$id_absence;
     
     if(!isset($_COOKIE[$nom_cookie])){
+        // Si le cookie n'existe pas, vérifier en base de données
         return verifierEnBDD($id_absence);
     }
     
@@ -24,6 +26,7 @@ function verifieDelai($id_absence){
     $temps_restant = $date_limite - $maintenant;
     
     if($temps_restant <= 0){
+        // Supprimer le cookie expiré
         setcookie($nom_cookie, "", time() - 3600, '/');
         
         return [
@@ -58,8 +61,10 @@ function verifierEnBDD($id_absence){
                                AND column_name='verrouille'");
     
     if ($checkColumn->fetch()) {
+        // La colonne verrouille existe
         $stmt = $pdo->prepare("SELECT date_fin, verrouille FROM Absence WHERE idAbsence = ?");
     } else {
+        // La colonne verrouille n'existe pas
         $stmt = $pdo->prepare("SELECT date_fin FROM Absence WHERE idAbsence = ?");
     }
     

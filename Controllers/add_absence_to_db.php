@@ -36,6 +36,7 @@ try {
 }
 
 function ajouterAbsence($pdo, $date_start, $date_end, $motif, $justificatif) {
+    // Insertion de l'absence dans la base de données
     $sql = "INSERT INTO Absence (date_debut, date_fin, motif, justificatif) VALUES (:date_debut, :date_fin, :motif, :justificatif)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([

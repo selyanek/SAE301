@@ -21,6 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION["mdp"] = $login->getPwd($pdo);
             $_SESSION["role"] = $login->getRole($pdo);
 
+            // Redirection en fonction du rôle (étudiant, professeur ou responsable pédagogique)
+
             if ($login->verifRole($pdo) == 'etudiante') {
                 header('Location: ../Controllers/accueil_etudiant.php');
                 exit();

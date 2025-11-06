@@ -1,6 +1,10 @@
+/* Styles pour le traitement des justificatifs */
+
 .titre h1 {
   padding-left: 20px;
 }
+
+/* Styles pour les encadrés */
 
 .encadre1 {
   display: flex;
@@ -25,6 +29,8 @@
   margin-left: 20px;
 }
 
+/* Styles pour le trait de séparation */
+
 .trait {
   height: 5px;
   background-color: #33a8c7;
@@ -33,12 +39,16 @@
   margin: 30px 0 20px 30px;
 }
 
+/* Styles pour le motif de refus */
+
 .motif {
   border: 2px solid black;
   width: 1000px;
   margin-left: 30px;
   padding: 10px 10px 30px 10px;
 }
+
+/* Styles pour les boutons */
 
 .boutons {
   margin: 20px 0 50px 30px;
