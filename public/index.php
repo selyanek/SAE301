@@ -22,13 +22,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION["mdp"] = $login->getPwd($pdo);
             $_SESSION["role"] = $login->getRole($pdo);
 
-            if ($login->verifRole($pdo) == 'etudiante') {
+            $role = $login->verifRole($pdo);
+            if ($role == 'etudiant' || $role == 'etudiante') {
                 header('Location: ../src/Views/accueil_etudiant.php');
                 exit();
-            } elseif (($login->verifRole($pdo) == 'professeur')) {
+            } elseif ($role == 'professeur') {
                 header('Location: ../src/Views/accueil_prof.php');
                 exit();
-            } elseif (($login->verifRole($pdo) == 'responsable_pedagogique')) {
+            } elseif ($role == 'responsable_pedagogique') {
                 header('Location: ../src/Views/accueil_responsable.php');
                 exit();
             } else {
@@ -41,23 +42,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = "Erreur de connexion : " . $e->getMessage();
     }
 }
+require '../src/Views/layout/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
-    <link href="/public/asset/CSS/cssConnexion.css" rel="stylesheet">
-    <title>Authentification</title>
-</head>
-<header class="uphf">
-    <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">
-</header>
+<link rel="stylesheet" href="/public/asset/CSS/cssConnexion.css">
 <body>
-<div class="logoEdu">
-    <img src="../../public/asset/img/logoedutrack.png" alt="Logo EduTrack">
-</div>
 <section class="text-with-image-section">
     <div class="text-with-image">
         <img src="../../public/asset/img/logoco.png" alt="Connexion">
@@ -84,13 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 </div>
 </body>
-<section class="container">
-    <footer class="footer">
-        <nav class="footer-nav">
-            <a href="#">Accueil</a>
-            <span>|</span>
-            <a href="">Aides</a>
-        </nav>
-    </footer>
-</section>
+<?php
+require '../src/Views/layout/footer.php';
+?>
 </html>

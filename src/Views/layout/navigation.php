@@ -9,15 +9,16 @@ $role = $_SESSION['role'];
 // Charger la sidebar appropriée selon le rôle
 switch ($role) {
     case 'etudiant':
-        include __DIR__ . '/sidebars/sidebar_etudiant.php';
+    case 'etudiante':
+        include __DIR__ . '/sidebar/nav_etudiant.php';
         break;
     
     case 'professeur':
-        include __DIR__ . '/sidebars/sidebar_professeur.php';
+        include __DIR__ . '/sidebar/nav_professeur.php';
         break;
     
     case 'responsable_pedagogique':
-        include __DIR__ . '/sidebars/sidebar_responsable.php';
+        include __DIR__ . '/sidebar/nav_responsable.php';
         break;
 }
 ?>

@@ -5,7 +5,7 @@ session_start();
 ?>
 <header class="text">
     <h1> Bonjour, <?php echo $_SESSION['nom'] ?> </h1>
-    <a href="../../gestionAbsResp.php">
+    <a href="gestionAbsence.php">
         <button type="submit" class="btn">Consulter les absences</button>
     </a>
 </header>

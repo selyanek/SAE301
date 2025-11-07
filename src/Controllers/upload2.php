@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+require_once __DIR__ . '/../../vendor/autoload.php';
+use src\Models\EmailService;
+use src\Database\Database;
+
 // Vérifier que c'est bien une requête POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../Views/depotJustif.php?error=invalid_request');
@@ -110,6 +114,43 @@ if ($fichierUtilisateurs) {
         $nomFichierUnique
     ], ';', '"', '');
     fclose($fichierUtilisateurs);
+}
+
+// Envoi de l'email de confirmation à l'étudiant
+if (isset($_SESSION['login']) && isset($_SESSION['nom'])) {
+    try {
+        $emailService = new EmailService();
+        
+        // Récupérer les informations de l'étudiant depuis la session
+        $studentId = $_SESSION['login'];
+        $studentName = $_SESSION['nom'] ?? 'Étudiant';
+        
+        // Construire l'email de l'étudiant
+        // Si vous avez un champ email dans la base, récupérez-le ici
+        // Sinon, construisez-le à partir de l'identifiant
+        $studentEmail = $studentId . '@etu.uphf.fr'; // À adapter selon votre configuration
+        
+        // Envoyer l'email de confirmation
+        $emailSent = $emailService->sendAbsenceConfirmationEmail(
+            $studentEmail,
+            $studentName,
+            $date_start,
+            $date_end,
+            $motif
+        );
+        
+        // Log pour le debug (à retirer en production)
+        if ($emailSent) {
+            error_log("Email de confirmation envoyé avec succès à : " . $studentEmail);
+        } else {
+            error_log("Échec de l'envoi de l'email de confirmation pour : " . $studentEmail);
+        }
+        
+    } catch (Exception $e) {
+        // Ne pas bloquer le processus si l'email échoue
+        error_log("Erreur lors de l'envoi de l'email: " . $e->getMessage());
+        error_log("Stack trace: " . $e->getTraceAsString());
+    }
 }
 
 // Redirection vers la page avec message de succès

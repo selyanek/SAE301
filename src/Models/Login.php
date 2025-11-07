@@ -16,7 +16,7 @@ class Login
 
     public function verifierConnexion($pdo)
     {
-        $stmt = $pdo->prepare("SELECT * FROM Compte WHERE idCompte = :id AND mot_de_passe = :mdp");
+        $stmt = $pdo->prepare("SELECT * FROM Compte WHERE identifiantCompte = :id AND mot_de_passe = :mdp");
         $stmt->execute([
             ':id' => $this->identifiant,
             ':mdp' => $this->mot_de_passe
@@ -26,7 +26,7 @@ class Login
 
     public function verifRole($pdo)
     {
-        $stmt = $pdo->prepare("SELECT fonction FROM Compte WHERE idCompte = :id AND mot_de_passe = :mdp");
+        $stmt = $pdo->prepare("SELECT fonction FROM Compte WHERE identifiantCompte = :id AND mot_de_passe = :mdp");
         $stmt->execute([
             ':id' => $this->identifiant,
             ':mdp' => $this->mot_de_passe
@@ -37,7 +37,7 @@ class Login
 
     public function getName($pdo)
     {
-        $stmt = $pdo->prepare("SELECT nom, prenom FROM Compte WHERE idCompte = :id AND mot_de_passe = :mdp");
+        $stmt = $pdo->prepare("SELECT nom, prenom FROM Compte WHERE identifiantCompte = :id AND mot_de_passe = :mdp");
         $stmt->execute([
             ':id' => $this->identifiant,
             ':mdp' => $this->mot_de_passe
@@ -48,7 +48,7 @@ class Login
 
     public function getPwd($pdo)
     {
-        $stmt = $pdo->prepare("SELECT mot_de_passe FROM Compte WHERE idCompte = :id AND mot_de_passe = :mdp");
+        $stmt = $pdo->prepare("SELECT mot_de_passe FROM Compte WHERE identifiantCompte = :id AND mot_de_passe = :mdp");
         $stmt->execute([
             ':id' => $this->identifiant,
             ':mdp' => $this->mot_de_passe
@@ -59,7 +59,7 @@ class Login
 
     public function getRole($pdo)
     {
-        $stmt = $pdo->prepare("SELECT fonction FROM Compte WHERE idCompte = :id");
+        $stmt = $pdo->prepare("SELECT fonction FROM Compte WHERE identifiantCompte = :id");
         $stmt->execute([
             ':id' => $this->identifiant
         ]);

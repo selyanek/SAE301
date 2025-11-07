@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Absences</title>
+    <title><?php echo isset($pageTitle) ? $pageTitle : 'Gestion des Absences'; ?></title>
     <link rel="stylesheet" href="../../../public/asset/CSS/cssDeBase.css">
+    <?php if (isset($additionalCSS)): ?>
+        <?php foreach ($additionalCSS as $css): ?>
+            <link rel="stylesheet" href="<?php echo htmlspecialchars($css); ?>">
+        <?php endforeach; ?>
+    <?php endif; ?>
 </head>
 <body>
 <div class="uphf">
