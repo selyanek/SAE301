@@ -1,3 +1,6 @@
+<!-- Page d'accueil responsable -->
+
+
 <?php
 require '../../Controllers/Redirect.php';
 require '../layout/header.php';

@@ -1,3 +1,5 @@
+<!-- Page d'historique des absences pour l'étudiant -->
+
 <?php
 session_start();
 $pageTitle = 'Historique des absences';

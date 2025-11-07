@@ -1,3 +1,5 @@
+<!-- Page d'accueil étudiant -->
+
 <?php
 session_start();
 require '../../Controllers/Redirect.php';

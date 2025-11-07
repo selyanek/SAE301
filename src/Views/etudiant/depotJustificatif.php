@@ -1,3 +1,5 @@
+<!-- Page de dépôt de justificatif pour l'étudiant -->
+
 <?php
 session_start();
 require '../layout/header.php';

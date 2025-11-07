@@ -1,3 +1,5 @@
+<!-- Page d'aide pour l'étudiant -->
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
