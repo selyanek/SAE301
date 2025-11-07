@@ -19,7 +19,7 @@ require '../layout/navigation.php';
         unset($_SESSION['errors']);
     }
     ?>
-    <a href="/src/Views/etudiant/depotJustificatif.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>    
+    <a href="depotJustificatif.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>    
 </header>
 
 <table class="liste-absences"> 

@@ -1,7 +1,7 @@
 <?php
+session_start();
 require '../layout/header.php';
 require '../layout/navigation.php';
-session_start();
 
 if (isset($_GET['success']) && $_GET['success'] == 1) {
     echo '<div class="success-message">Votre justificatif a été envoyé avec succès !</div>';
@@ -22,6 +22,8 @@ if (isset($_GET['error'])) {
     }
 }
 ?>
+
+<link rel="stylesheet" href="../../../public/asset/CSS/cssDepot.css">
 
 <form id="absenceForm" class="absence-form" action="../Controllers/upload2.php" method="post" enctype="multipart/form-data">
 
@@ -51,7 +53,7 @@ if (isset($_GET['error'])) {
     <div class="buttons">
         <button type="reset" class="btn">Réinitialiser</button>
         <button type="submit" class="btn">Valider</button>
-        <a href="accueil_etudiant.php"><button type="button" class="btn">Annuler</button></a>
+        <a href="dashbord.php"><button type="button" class="btn">Annuler</button></a>
     </div>
 
 </form>

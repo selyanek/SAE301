@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $role = $login->verifRole($pdo);
             if ($role == 'etudiant' || $role == 'etudiante') {
-                header('Location: ../src/Views/accueil_etudiant.php');
+                header('Location: ../src/Views/etudiant/dashbord.php');
                 exit();
             } elseif ($role == 'professeur') {
                 header('Location: ../src/Views/accueil_prof.php');

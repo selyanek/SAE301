@@ -10,7 +10,7 @@
         <img src="../../public/asset/img/logouphf.png" alt="Logo UPHF" class="logo">
     </header>
     <h1> Connexion </h1>
-<form action="accueil_étudiant.php" method="post">
+<form action="../Views/etudiant/dashbord.php" method="post">
     <label>Nom d'utilisateur :</label>
     <input name="username" id="username" type="text" />
     <br>

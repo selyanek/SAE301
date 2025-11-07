@@ -19,13 +19,13 @@ class Redirect
         if ($_SESSION['role'] !== $this->roleNecessaire) {
             switch ($_SESSION['role']) {
                 case 'etudiante':
-                    header('Location: accueil_etudiant.php');
+                    header('Location: ../Views/etudiant/dashbord.php');
                     exit();
                 case 'professeur':
-                    header('Location: accueil_professeur.php');
+                    header('Location: ../Views/professeur/dashboard.php');
                     exit();
                 case 'responsable_pedagogique':
-                    header('Location: accueil_responsable_pedagogique.php');
+                    header('Location: ../Views/reponsable/dashbord.php');
                     exit();
                 default:
                     header('Location: index.php');

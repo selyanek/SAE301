@@ -1,4 +1,5 @@
 <?php
+require '../../Controllers/Redirect.php';
 require '../layout/header.php';
 require '../layout/navigation.php';
 session_start();
