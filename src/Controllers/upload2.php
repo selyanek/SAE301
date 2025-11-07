@@ -7,7 +7,7 @@ use src\Database\Database;
 
 // Vérifier que c'est bien une requête POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../Views/depotJustif.php?error=invalid_request');
+    header('Location: ../Views/etudiant/depotJustificatif.php?error=invalid_request');
     exit;
 }
 
@@ -18,24 +18,24 @@ $motif = trim($_POST['motif'] ?? '');
 
 // Validation du motif
 if (empty($motif)) {
-    header('Location: ../Views/depotJustif.php?error=motif&date_start=' . urlencode($date_start) . '&date_end=' . urlencode($date_end));
+    header('Location: ../Views/etudiant/depotJustificatif.php?error=motif&date_start=' . urlencode($date_start) . '&date_end=' . urlencode($date_end));
     exit;
 }
 
 // Validation des dates
 if (empty($date_start) || empty($date_end)) {
-    header('Location: ../Views/depotJustif.php?error=dates&motif=' . urlencode($motif));
+    header('Location: ../Views/etudiant/depotJustificatif.php?error=dates&motif=' . urlencode($motif));
     exit;
 }
 
 if (strtotime($date_end) < strtotime($date_start)) {
-    header('Location: ../Views/depotJustif.php?error=dates_invalides&motif=' . urlencode($motif) . '&date_start=' . urlencode($date_start) . '&date_end=' . urlencode($date_end));
+    header('Location: ../Views/etudiant/depotJustificatif.php?error=dates_invalides&motif=' . urlencode($motif) . '&date_start=' . urlencode($date_start) . '&date_end=' . urlencode($date_end));
     exit;
 }
 
 // Validation du fichier
 if (!isset($_FILES['file']) || $_FILES['file']['error'] === UPLOAD_ERR_NO_FILE) {
-    header('Location: ../Views/depotJustif.php?error=file_required&motif=' . urlencode($motif) . '&date_start=' . urlencode($date_start) . '&date_end=' . urlencode($date_end));
+    header('Location: ../Views/etudiant/depotJustificatif.php?error=file_required&motif=' . urlencode($motif) . '&date_start=' . urlencode($date_start) . '&date_end=' . urlencode($date_end));
     exit;
 }
 
@@ -50,7 +50,7 @@ if ($file['error'] !== UPLOAD_ERR_OK) {
 // Vérifier la taille (5MB max)
 $maxSize = 5 * 1024 * 1024; // 5MB en octets
 if ($file['size'] > $maxSize) {
-    header('Location: ../Views/depotJustif.php?error=file_size&motif=' . urlencode($motif) . '&date_start=' . urlencode($date_start) . '&date_end=' . urlencode($date_end));
+    header('Location: ../Views/etudiant/depotJustificatif.php?error=file_size&motif=' . urlencode($motif) . '&date_start=' . urlencode($date_start) . '&date_end=' . urlencode($date_end));
     exit;
 }
 
@@ -61,7 +61,7 @@ $mimeType = finfo_file($finfo, $file['tmp_name']);
 finfo_close($finfo);
 
 if (!in_array($mimeType, $allowedTypes)) {
-    header('Location: ../Views/depotJustif.php?error=file_type&motif=' . urlencode($motif) . '&date_start=' . urlencode($date_start) . '&date_end=' . urlencode($date_end));
+    header('Location: ../Views/etudiant/depotJustificatif.php?error=file_type&motif=' . urlencode($motif) . '&date_start=' . urlencode($date_start) . '&date_end=' . urlencode($date_end));
     exit;
 }
 
@@ -78,7 +78,7 @@ $destination = $uploadDir . $nomFichierUnique;
 
 // Déplacer le fichier uploadé
 if (!move_uploaded_file($file['tmp_name'], $destination)) {
-    header('Location: ../Views/depotJustif.php?error=upload_failed&motif=' . urlencode($motif) . '&date_start=' . urlencode($date_start) . '&date_end=' . urlencode($date_end));
+    header('Location: ../Views/etudiant/depotJustificatif.php?error=upload_failed&motif=' . urlencode($motif) . '&date_start=' . urlencode($date_start) . '&date_end=' . urlencode($date_end));
     exit;
 }
 
@@ -154,6 +154,6 @@ if (isset($_SESSION['login']) && isset($_SESSION['nom'])) {
 }
 
 // Redirection vers la page avec message de succès
-header('Location: ../Views/depotJustif.php?success=1');
+header('Location: ../Views/etudiant/depotJustificatif.php?success=1');
 exit;
 ?>

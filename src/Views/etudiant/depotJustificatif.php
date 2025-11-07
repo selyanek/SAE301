@@ -25,7 +25,7 @@ if (isset($_GET['error'])) {
 
 <link rel="stylesheet" href="../../../public/asset/CSS/cssDepot.css">
 
-<form id="absenceForm" class="absence-form" action="../Controllers/upload2.php" method="post" enctype="multipart/form-data">
+<form id="absenceForm" class="absence-form" action="../../Controllers/upload2.php" method="post" enctype="multipart/form-data">
 
     <div class="form-group">
         <label class="label">Date et heure de début :</label>
