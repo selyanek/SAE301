@@ -127,15 +127,15 @@ require '../layout/navigation.php';
                 switch($absence['statut']) {
                     case 'en_attente':
                         $statutClass = 'statut-attente';
-                        $statutLabel = '⏳ En attente';
+                        $statutLabel = 'En attente';
                         break;
                     case 'valide':
                         $statutClass = 'statut-valide';
-                        $statutLabel = '✅ Validé';
+                        $statutLabel = 'Validé';
                         break;
                     case 'refuse':
                         $statutClass = 'statut-refuse';
-                        $statutLabel = '❌ Refusé';
+                        $statutLabel = 'Refusé';
                         break;
                 }
 
@@ -144,7 +144,7 @@ require '../layout/navigation.php';
                 echo "<td>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_start']))) . "</td>";
                 echo "<td>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_end']))) . "</td>";
                 echo "<td>" . htmlspecialchars($absence['motif']) . "</td>";
-                echo "<td><a href='" . htmlspecialchars($absence['fichier']) . "' target='_blank'>📄 Voir le justificatif</a></td>";
+                echo "<td><a href='" . htmlspecialchars($absence['fichier']) . "' target='_blank'>Voir le justificatif</a></td>";
                 echo "<td class='$statutClass'>$statutLabel</td>";
                 echo "</tr>";
             }
