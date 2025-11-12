@@ -28,7 +28,7 @@
         $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
         if ($username && $password) {
-            header('Location: accueil_etudiant.php');
+            header('Location: /src/Views/etudiant/dashbord.php');
         } else {
             echo "Identifiant ou mot de passe incorrect";
         }
