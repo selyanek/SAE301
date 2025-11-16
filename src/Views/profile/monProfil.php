@@ -1,6 +1,6 @@
 <?php
 // Affiche le profil utilisateur et formulaire de changement de mot de passe
-// Variables attendues : $user (assoc), $message (string)
+// Variables attendues : $user (assoc), $message (string), $messageType (string)
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -12,14 +12,25 @@
         .profile-card { max-width:600px; margin:30px auto; padding:20px; border:1px solid #ddd; border-radius:6px; }
         .profile-field { margin:8px 0; }
         .form-actions { margin-top:12px; }
+        .message { padding:10px 12px; margin:12px 0; border-radius:4px; }
+        .message.success { background:#e6ffed; border-left:4px solid #2e7d32; color:#155724; }
+        .message.error { background:#ffe6e6; border-left:4px solid #c62828; color:#721c24; }
     </style>
 </head>
 <body>
-<?php include __DIR__ . '/navigation.php'; ?>
+<?php include __DIR__ . '/../layout/navigation.php'; ?>
 <div class="profile-card">
     <h2>Mon profil</h2>
     <?php if (!empty($message)): ?>
-        <div class="message"><?php echo htmlspecialchars($message); ?></div>
+        <?php
+            $msgClass = 'message';
+            if (isset($messageType) && $messageType === 'success') {
+                $msgClass .= ' success';
+            } elseif (isset($messageType) && $messageType === 'error') {
+                $msgClass .= ' error';
+            }
+        ?>
+        <div class="<?php echo $msgClass; ?>"><?php echo htmlspecialchars($message); ?></div>
     <?php endif; ?>
 
     <?php if ($user): ?>
