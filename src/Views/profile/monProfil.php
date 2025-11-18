@@ -13,7 +13,12 @@
 <body>
 <?php include __DIR__ . '/../layout/navigation.php'; ?>
 <div class="profile-card">
-    <h2>Mon profil</h2>
+    <div class="profile-header-bar">
+        <h2>Mon profil</h2>
+        <a href="/src/Views/logout.php" class="btn-logout">
+            ← Déconnexion
+        </a>
+    </div>
     <?php if (!empty($message)): ?>
         <?php
             $msgClass = 'message';
