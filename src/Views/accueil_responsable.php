@@ -3,7 +3,7 @@
 use src\Controllers\Redirect;
 
 session_start();
-require "../Models/Redirect.php";
+require __DIR__ . "/../Controllers/Redirect.php";
 $redirect = new Redirect('responsable_pedagogique');
 $redirect->redirect();
 ?>
@@ -28,7 +28,7 @@ $redirect->redirect();
 <!-- Barre latérale de navigation -->
 <div class="sidebar">
     <ul>
-        <li><a href="sable.php">Accueil</a></li> <!-- Lien vers la page d'accueil -->
+        <li><a href="accueil_responsable.php">Accueil</a></li> <!-- Lien vers la page d'accueil -->
         <li><a href="gestionAbsResp.php">Gestion des absences</a></li> <!-- Lien vers la gestion des absences -->
         <li><a href="traitementDesJustificatif.php">Traitement des Justificatifs</a></li> <!-- Lien vers le traitementDesJustificatif -->
         <li><a href="#">Historique des absences</a></li> <!-- Lien vers l'historique (à compléter) -->
@@ -48,7 +48,7 @@ $redirect->redirect();
 <!-- Pied de page avec navigation -->
 <footer class="footer">
     <nav class="footer-nav">
-        <a href="/public/asset/img/Controllerslers/accueil_responsable.php">Accueil</a> <!-- Retour à l'accueil -->
+        <a href="accueil_responsable.php">Accueil</a> <!-- Retour à l'accueil -->
         <span>|</span>
         <a href="aideResp.php">Aides</a> <!-- Lien vers la page d'aide -->
     </nav>

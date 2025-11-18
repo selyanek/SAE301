@@ -3,7 +3,7 @@
 use src\Controllers\Redirect;
 
 session_start();
-require "../Models/Redirect.php";
+require __DIR__ . "/../Controllers/Redirect.php";
 $redirect = new Redirect('professeur');
 $redirect->redirect();
 ?>

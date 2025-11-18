@@ -19,7 +19,8 @@
 <div class="sidebar">
     <ul>
         <li><a href="accueil_responsable.php">Accueil</a></li>
-        <li><a href="bsResp.php">Gestion des absences</a></li>
+        <li><a href="gestionAbsResp.php">Gestion des absences</a></li>
+        <li><a href="traitementDesJustificatif.php">Traitement des Justificatifs</a></li>
         <li><a href="#">Historique des absences</a></li>
         <li><a href="#">Statistiques</a></li>
     </ul>
@@ -196,7 +197,7 @@
 <!-- Pied de page -->
 <footer class="footer">
     <nav class="footer-nav">
-        <a href="/src/Controllerslers/accueil_responsable.php">Accueil</a>
+        <a href="accueil_responsable.php">Accueil</a>
         <span>|</span>
         <a href="">Aides</a>
     </nav>
