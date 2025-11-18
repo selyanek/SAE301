@@ -2,106 +2,128 @@
 
 --changeset Baptiste:1
 --comment: Table Compte
-CREATE TABLE Compte (
-    idCompte TEXT PRIMARY KEY,
-    mot_de_passe TEXT NOT NULL,
-    nom TEXT NOT NULL,
-    prenom TEXT NOT NULL,
-    fonction TEXT NOT NULL
+CREATE TABLE Compte
+(
+    idCompte          SERIAL PRIMARY KEY,
+    identifiantCompte TEXT NOT NULL UNIQUE,
+    mot_de_passe      TEXT NOT NULL,
+    nom               TEXT NOT NULL,
+    prenom            TEXT NOT NULL,
+    fonction          TEXT NOT NULL
 );
 --rollback DROP TABLE Compte;
 
 --changeset Baptiste:2
 --comment: Table Etudiant
-CREATE TABLE Etudiant (
-    idEtudiant TEXT PRIMARY KEY,
-    formation TEXT,
-    FOREIGN KEY (idEtudiant) REFERENCES Compte(idCompte) ON DELETE CASCADE
+CREATE TABLE Etudiant
+(
+    idEtudiant     INT PRIMARY KEY,
+    identifiantEtu TEXT NOT NULL,
+    formation      TEXT NOT NULL,
+    FOREIGN KEY (idEtudiant) REFERENCES Compte (idCompte) ON DELETE CASCADE
 );
 --rollback DROP TABLE Etudiant;
 
 --changeset Baptiste:3
 --comment: Table Professeur
-CREATE TABLE Professeur (
-    idProfesseur TEXT PRIMARY KEY,
-    FOREIGN KEY (idProfesseur) REFERENCES Compte(idCompte) ON DELETE CASCADE
+CREATE TABLE Professeur
+(
+    idProfesseur    INT PRIMARY KEY,
+    identifiantProf TEXT NOT NULL,
+    FOREIGN KEY (idProfesseur) REFERENCES Compte (idCompte) ON DELETE CASCADE
 );
 --rollback DROP TABLE Professeur;
 
 --changeset Baptiste:4
 --comment: Table Responsable_Pedagogique
-CREATE TABLE Responsable_Pedagogique (
-    idResponsablePedagogique TEXT PRIMARY KEY,
-    FOREIGN KEY (idResponsablePedagogique) REFERENCES Compte(idCompte) ON DELETE CASCADE
+CREATE TABLE Responsable_Pedagogique
+(
+    idResponsablePedagogique INT PRIMARY KEY,
+    identifiantRp            TEXT NOT NULL,
+    FOREIGN KEY (idResponsablePedagogique) REFERENCES Compte (idCompte) ON DELETE CASCADE
 );
 --rollback DROP TABLE Responsable_Pedagogique;
 
 --changeset Baptiste:5
 --comment: Table Ressource
-CREATE TABLE Ressource (
+CREATE TABLE Ressource
+(
     idRessource SERIAL PRIMARY KEY,
-    nom TEXT NOT NULL
+    nom         TEXT NOT NULL UNIQUE
 );
 --rollback DROP TABLE Ressource;
 
 --changeset Baptiste:6
 --comment: Table Cours
-CREATE TABLE Cours (
-    idCours SERIAL PRIMARY KEY,
-    type TEXT NOT NULL,
-    seuil BOOLEAN NOT NULL,
-    date_debut TIMESTAMP NOT NULL,
-    date_fin TIMESTAMP NOT NULL,
-    idRessource INTEGER NOT NULL,
-    idProfesseur TEXT NOT NULL,
-    idResponsablePedagogique TEXT NOT NULL,
-    FOREIGN KEY (idRessource) REFERENCES Ressource(idRessource) ON DELETE CASCADE,
-    FOREIGN KEY (idProfesseur) REFERENCES Professeur(idProfesseur) ON DELETE CASCADE,
-    FOREIGN KEY (idResponsablePedagogique) REFERENCES Responsable_Pedagogique(idResponsablePedagogique) ON DELETE CASCADE
+CREATE TABLE Cours
+(
+    idCours                  SERIAL PRIMARY KEY,
+    idRessource              INT       NOT NULL,
+    idProfesseur             INT       NOT NULL,
+    idResponsablePedagogique INT       NOT NULL,
+    type                     TEXT      NOT NULL,
+    seuil                    BOOLEAN   NOT NULL,
+    date_debut               TIMESTAMP NOT NULL,
+    date_fin                 TIMESTAMP NOT NULL,
+    FOREIGN KEY (idRessource) REFERENCES Ressource (idRessource) ON DELETE CASCADE,
+    FOREIGN KEY (idProfesseur) REFERENCES Professeur (idProfesseur) ON DELETE CASCADE,
+    FOREIGN KEY (idResponsablePedagogique) REFERENCES Responsable_Pedagogique (idResponsablePedagogique) ON DELETE CASCADE
 );
 --rollback DROP TABLE Cours;
 
 --changeset Baptiste:7
 --comment: Table Absence
-CREATE TABLE Absence (
-    idAbsence SERIAL PRIMARY KEY,
-    date_debut TIMESTAMP NOT NULL,
-    date_fin TIMESTAMP NOT NULL,
-    motif TEXT,
-    idEtudiant TEXT NOT NULL,
-    justifie BOOLEAN NOT NULL DEFAULT FALSE,
-    idCours INTEGER NOT NULL,
-    FOREIGN KEY (idEtudiant) REFERENCES Etudiant(idEtudiant) ON DELETE CASCADE,
-    FOREIGN KEY (idCours) REFERENCES Cours(idCours) ON DELETE CASCADE
+CREATE TABLE Absence
+(
+    idAbsence       SERIAL PRIMARY KEY,
+    idCours         INT       NOT NULL,
+    idEtudiant      INT       NOT NULL,
+    date_debut      TIMESTAMP NOT NULL,
+    date_fin        TIMESTAMP NOT NULL,
+    motif           TEXT,
+    justifie        BOOLEAN   NOT NULL DEFAULT FALSE,
+    uriJustificatif TEXT      NULL,
+    FOREIGN KEY (idEtudiant) REFERENCES Etudiant (idEtudiant) ON DELETE CASCADE,
+    FOREIGN KEY (idCours) REFERENCES Cours (idCours) ON DELETE CASCADE
 );
 --rollback DROP TABLE Absence;
 
 --changeset Baptiste:8
 --comment: Insertion d'un compte etudiant et de son profil Etudiant
-INSERT INTO Compte (idCompte, mot_de_passe, nom, prenom, fonction)
-VALUES ('dilara.simsek', 'motdepasse123', 'Simsek', 'Dilara', 'etudiante');
+INSERT INTO Compte (identifiantCompte, mot_de_passe, nom, prenom, fonction)
+VALUES ('dilara.simsek', 'motdepasse123', 'Simsek', 'Dilara', 'etudiant');
 
-INSERT INTO Etudiant (idEtudiant, formation)
-VALUES ('dilara.simsek', 'Informatique');
---rollback DELETE FROM Etudiant WHERE idEtudiant = 'dilara.simsek'; DELETE FROM Compte WHERE idCompte = 'dilara.simsek';
+INSERT INTO Etudiant (idEtudiant, identifiantEtu, formation)
+VALUES (
+           (SELECT idCompte FROM Compte WHERE identifiantCompte = 'dilara.simsek'),
+           'dilara.simsek',
+           'Informatique'
+       );
+--rollback DELETE FROM Etudiant WHERE identifiantEtu = 'dilara.simsek'; DELETE FROM Compte WHERE identifiantCompte = 'dilara.simsek';
 
 --changeset Selyane:9
 --comment: Insertion d'un compte professeur et de son profil Professeur
-INSERT INTO Compte (idCompte, mot_de_passe, nom, prenom, fonction)
-VALUES ('john.doe', 'x', 'Doe', 'John', 'professeur'); 
+INSERT INTO Compte (identifiantCompte, mot_de_passe, nom, prenom, fonction)
+VALUES ('john.doe', 'x', 'Doe', 'John', 'professeur');
 
-INSERT INTO Professeur (idProfesseur)
-VALUES ('john.doe');
---rollback DELETE FROM Professeur WHERE idProfesseur = 'john.doe'; DELETE FROM Compte WHERE idCompte = 'john.doe';
+INSERT INTO Professeur (idProfesseur, identifiantProf)
+VALUES (
+           (SELECT idCompte FROM Compte WHERE identifiantCompte = 'john.doe'),
+           'john.doe'
+       );
+--rollback DELETE FROM Professeur WHERE identifiantProf = 'john.doe'; DELETE FROM Compte WHERE identifiantCompte = 'john.doe';
 
 --changeset Selyane:10
 --comment: Insertion d'un compte responsable pédagogique et de son profil Responsable_Pedagogique
-INSERT INTO Compte (idCompte, mot_de_passe, nom, prenom, fonction)
+INSERT INTO Compte (identifiantCompte, mot_de_passe, nom, prenom, fonction)
 VALUES ('jane.smith', 'anotherpassword', 'Smith', 'Jane', 'responsable_pedagogique');
 
-INSERT INTO Responsable_Pedagogique (idResponsablePedagogique)
-VALUES ('jane.smith');
---rollback DELETE FROM Responsable_Pedagogique WHERE idResponsablePedagogique = 'jane.smith'; DELETE FROM Compte WHERE idCompte = 'jane.smith';
+INSERT INTO Responsable_Pedagogique (idResponsablePedagogique, identifiantRp)
+VALUES (
+           (SELECT idCompte FROM Compte WHERE identifiantCompte = 'jane.smith'),
+           'jane.smith'
+       );
+--rollback DELETE FROM Responsable_Pedagogique WHERE identifiantRp = 'jane.smith'; DELETE FROM Compte WHERE identifiantCompte = 'jane.smith';
 
 --changeset Selyane:11
 --comment: Insertion d'une ressource
@@ -112,36 +134,41 @@ VALUES ('Introduction to Programming');
 --changeset Selyane:12
 --comment: Insertion d'un cours associé au professeur John Doe
 INSERT INTO Cours (type, seuil, date_debut, date_fin, idRessource, idProfesseur, idResponsablePedagogique)
-VALUES ('CM', FALSE, '2024-09-01 09:30:00', '2024-09-01 11:00:00', 
-        (SELECT idRessource FROM Ressource WHERE nom = 'Introduction to Programming'),
-        'john.doe', 
-        'jane.smith');
---rollback DELETE FROM Cours WHERE idProfesseur = 'john.doe' AND date_debut = '2024-09-01 09:30:00';
+VALUES (
+           'CM',
+           FALSE,
+           '2024-09-01 09:30:00',
+           '2024-09-01 11:00:00',
+           (SELECT idRessource FROM Ressource WHERE nom = 'Introduction to Programming'),
+           (SELECT idProfesseur FROM Professeur WHERE identifiantProf = 'john.doe'),
+           (SELECT idResponsablePedagogique FROM Responsable_Pedagogique WHERE identifiantRp = 'jane.smith')
+       );
+--rollback DELETE FROM Cours WHERE date_debut = '2024-09-01 09:30:00';
 
 --changeset Selyane:13
 --comment: Insertion d'une absence pour l'étudiant Dilara Simsek
 INSERT INTO Absence (date_debut, date_fin, motif, justifie, idEtudiant, idCours)
-VALUES ('2024-09-01 09:30:00', '2024-09-01 11:00:00', 'Maladie', FALSE,
-        'dilara.simsek',
-        (SELECT idCours FROM Cours WHERE idProfesseur = 'john.doe' AND date_debut = '2024-09-01 09:30:00'));
---rollback DELETE FROM Absence WHERE idEtudiant = 'dilara.simsek' AND idCours = (SELECT idCours FROM Cours WHERE idProfesseur = 'john.doe' AND date_debut = '2024-09-01 09:30:00');
+VALUES (
+           '2024-09-01 09:30:00',
+           '2024-09-01 11:00:00',
+           'Maladie',
+           FALSE,
+           (SELECT idEtudiant FROM Etudiant WHERE identifiantEtu = 'dilara.simsek'),
+           (SELECT idCours FROM Cours WHERE date_debut = '2024-09-01 09:30:00')
+       );
+--rollback DELETE FROM Absence WHERE idEtudiant = (SELECT idEtudiant FROM Etudiant WHERE identifiantEtu = 'dilara.simsek');
 
 --changeset Roman:14
---comment: Insertion d'un compte etudiant et de son profil Etudiant
-INSERT INTO Compte (idCompte, mot_de_passe, nom, prenom, fonction)
-VALUES ('alice.martin', 'securepass456', 'Martin', 'Alice', 'etudiante');
-INSERT INTO Etudiant (idEtudiant, formation)
-VALUES ('alice.martin', 'Mathematics');
---rollback DELETE FROM Etudiant WHERE idEtudiant = 'alice.martin'; DELETE FROM Compte WHERE idCompte = 'alice.martin';
+--comment: Insertion d'un autre compte etudiant et de son profil Etudiant
+INSERT INTO Compte (identifiantCompte, mot_de_passe, nom, prenom, fonction)
+VALUES ('alice.martin', 'securepass456', 'Martin', 'Alice', 'etudiant');
 
---changeset Enzo:15
---comment: Ajout de la colonne verrouille dans la table Absence
-ALTER TABLE Absence ADD COLUMN verrouille BOOLEAN DEFAULT FALSE;
---rollback ALTER TABLE Absence DROP COLUMN verrouille;
-
---changeset Enzo:16
---comment: Ajout de la colonne date_verrouillage dans la table Absence
-ALTER TABLE Absence ADD COLUMN date_verrouillage TIMESTAMP;
---rollback ALTER TABLE Absence DROP COLUMN date_verrouillage;
+INSERT INTO Etudiant (idEtudiant, identifiantEtu, formation)
+VALUES (
+           (SELECT idCompte FROM Compte WHERE identifiantCompte = 'alice.martin'),
+           'alice.martin',
+           'Mathematics'
+       );
+--rollback DELETE FROM Etudiant WHERE identifiantEtu = 'alice.martin'; DELETE FROM Compte WHERE identifiantCompte = 'alice.martin';
 
 -- End of changelog
