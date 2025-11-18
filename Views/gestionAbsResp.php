@@ -200,9 +200,10 @@ try {
 
                 // Actions
                 echo "<td class='actions'>";
-                if ($absence['statut'] == 'en_attente') {
-                    echo "<button class='btn-valider' onclick='validerAbsence($index)'>✓ Valider</button>";
-                    echo "<button class='btn-refuser' onclick='refuserAbsence($index)'>✗ Refuser</button>";
+
+                // Bouton pour voir les détails - toujours visible
+                if ($absence['statut'] == 'en_attente' or $absence['statut'] == '') {
+                    echo "<a href='../Views/traitementDesJustificatif.php?id=" . $index . "' class='btn_justif'>Détails</a>";
                 } else {
                     echo "<span class='traite'>Traité</span>";
                 }

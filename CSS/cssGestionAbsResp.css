@@ -118,3 +118,17 @@ tr:hover {
 
     background-color: #e8f4f5;
 }
+
+.btn_justif { 
+    background: #29acc8; 
+    color: white; 
+    border: none; 
+    padding: 5px 10px; 
+    cursor: pointer; 
+    border-radius: 3px;
+    text-decoration: none;
+    display: inline-block;
+}
+.btn_justif:hover { 
+    background: #29acc8; 
+}

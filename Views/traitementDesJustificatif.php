@@ -47,13 +47,13 @@ require '../Models/GetFiles.php';
     <div class="encadre2">
         <h3>Date de début de l'absence</h3>
         <div class="encadre3">
-        <p>09/12/2022</p>
+        <p><?php echo date('d/m/Y', strtotime($absence['date_start'])); ?></p>
         </div>
     </div>
     <div class="encadre2">
         <h3>Date de fin de l'absence</h3>
         <div class="encadre3">
-            <p>12/12/2022</p>
+            <p><?php echo $absence['date_end']; ?></p>
         </div>
     </div>
 </div>
