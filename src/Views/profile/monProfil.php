@@ -8,14 +8,7 @@
     <meta charset="UTF-8">
     <title>Mon profil</title>
     <link rel="stylesheet" href="/public/asset/CSS/cssDeBase.css">
-    <style>
-        .profile-card { max-width:600px; margin:30px auto; padding:20px; border:1px solid #ddd; border-radius:6px; }
-        .profile-field { margin:8px 0; }
-        .form-actions { margin-top:12px; }
-        .message { padding:10px 12px; margin:12px 0; border-radius:4px; }
-        .message.success { background:#e6ffed; border-left:4px solid #2e7d32; color:#155724; }
-        .message.error { background:#ffe6e6; border-left:4px solid #c62828; color:#721c24; }
-    </style>
+    <link rel="stylesheet" href="/public/asset/CSS/cssProfile.css">
 </head>
 <body>
 <?php include __DIR__ . '/../layout/navigation.php'; ?>
