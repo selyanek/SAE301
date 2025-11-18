@@ -5,6 +5,11 @@ use src\Models\Login;
 
 $message = "";
 
+// Vérifier si l'utilisateur a été déconnecté pour inactivité
+if (isset($_GET['timeout']) && $_GET['timeout'] == 1) {
+    $message = "Vous avez été déconnecté pour inactivité. Veuillez vous reconnecter.";
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $identifiant = $_POST['identifiant'] ?? '';
     $mot_de_passe = ($_POST['mot_de_passe'] ?? '');
@@ -21,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['nom'] = $login->getName($pdo);
             $_SESSION["mdp"] = $login->getPwd($pdo);
             $_SESSION["role"] = $login->getRole($pdo);
+            $_SESSION['last_activity'] = time(); // Initialiser le timestamp d'activité
 
             $role = $login->verifRole($pdo);
             if ($role == 'etudiant' || $role == 'etudiante') {

@@ -1,7 +1,8 @@
 <?php
+session_start();
+require '../Controllers/session_timeout.php'; // Gestion du timeout de session
 require '../layout/header.php';
 require '../layout/navigation.php';
-session_start();
 
 if (isset($_GET['success']) && $_GET['success'] == 1) {
     echo '<div class="success-message">Votre justificatif a été envoyé avec succès !</div>';

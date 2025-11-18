@@ -1,6 +1,7 @@
 <?php
 // Page d'historique des absences pour l'étudiant
 session_start();
+require '../../Controllers/session_timeout.php'; // Gestion du timeout de session
 $pageTitle = 'Historique des absences';
 $additionalCSS = ['../../../public/asset/CSS/cssGererAbsEtu.css'];
 require '../layout/header.php';

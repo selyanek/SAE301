@@ -1,6 +1,7 @@
 <?php
 // Page d'aide pour l'étudiant
 session_start();
+require '../../Controllers/session_timeout.php'; // Gestion du timeout de session
 ?>
 <!DOCTYPE html>
 <html lang="fr">

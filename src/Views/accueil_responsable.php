@@ -3,6 +3,7 @@
 use src\Controllers\Redirect;
 
 session_start();
+require __DIR__ . "/../Controllers/session_timeout.php"; // Gestion du timeout de session
 require __DIR__ . "/../Controllers/Redirect.php";
 $redirect = new Redirect('responsable_pedagogique');
 $redirect->redirect();

@@ -7,6 +7,10 @@
     <link href="/public/asset/CSS/cssGestionAbsResp.css" rel="stylesheet">
 </head>
 <body>
+<?php
+session_start();
+require __DIR__ . '/../Controllers/session_timeout.php'; // Gestion du timeout de session
+?>
 <!-- Affichage des logos -->
 <div class="uphf">
     <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">

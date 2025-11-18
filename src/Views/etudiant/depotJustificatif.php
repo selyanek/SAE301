@@ -1,6 +1,7 @@
 <?php
 // Page de dépôt de justificatif pour l'étudiant
 session_start();
+require '../../Controllers/session_timeout.php'; // Gestion du timeout de session
 require '../layout/header.php';
 require '../layout/navigation.php';
 

@@ -1,4 +1,8 @@
-<?php require __DIR__ . '/../Controllers/GetFiles.php'?>
+<?php
+session_start();
+require __DIR__ . '/../Controllers/session_timeout.php'; // Gestion du timeout de session
+require __DIR__ . '/../Controllers/GetFiles.php';
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>

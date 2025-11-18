@@ -1,5 +1,6 @@
 <?php
 session_start();
+require '../../Controllers/session_timeout.php'; // Gestion du timeout de session
 $pageTitle = 'Gestion des absences';
 $additionalCSS = ['../../../public/asset/CSS/cssGestionAbsResp.css'];
 require '../layout/header.php';
