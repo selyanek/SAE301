@@ -1,5 +1,9 @@
+<?php
+//require __DIR__ . './vendor/autoload.php';
 
-<?php require_once __DIR__ .'src/Models/GestionCSV.php';
+// ...existing code...
+use src\Models\GestionCSV as GestionCSV;
+
 
 // TODO
 

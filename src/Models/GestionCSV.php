@@ -1,6 +1,7 @@
 <?php
 
 namespace src\Models;
+use Exception;
 
 // Classe pour gérer la lecture et l'affichage de fichiers CSV
 class GestionCSV
@@ -45,8 +46,5 @@ class GestionCSV
         }
     }
 
-    public function filterEvals($files) {
-        //  TODO
-    }
 }
 ?>
