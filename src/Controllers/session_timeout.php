@@ -3,9 +3,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-//Durée d'inactivité maximale en secondes (5 minutes = 300 secondes)
-//Vous pouvez modifier cette valeur selon vos besoins
-define('TIMEOUT_DURATION', 300); // 5 minutes
+//Durée d'inactivité maximale
+define('TIMEOUT_DURATION', value: 840); // 14 minutes
 //Vérifier si l'utilisateur est connecté
 if (isset($_SESSION['login'])) {
     //Vérifier si le timestamp de dernière activité existe
