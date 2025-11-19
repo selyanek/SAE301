@@ -11,6 +11,15 @@
     <link rel="stylesheet" href="/public/asset/CSS/cssProfile.css">
 </head>
 <body>
+<!-- Affichage du logo de l'université -->
+<div class="uphf">
+    <img src="/public/asset/img/logouphf.png" alt="Logo uphf">
+</div>
+<!-- Affichage du logo EduTrack -->
+<div class="logoEdu">
+    <img src="/public/asset/img/logoedutrack.png" alt="Logo EduTrack">
+</div>
+
 <?php include __DIR__ . '/../layout/navigation.php'; ?>
 <div class="profile-card">
     <div class="profile-header-bar">
