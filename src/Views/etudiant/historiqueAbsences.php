@@ -1,6 +1,5 @@
-<!-- Page d'historique des absences pour l'étudiant -->
-
 <?php
+// Page d'historique des absences pour l'étudiant
 session_start();
 $pageTitle = 'Historique des absences';
 $additionalCSS = ['../../../public/asset/CSS/cssGererAbsEtu.css'];

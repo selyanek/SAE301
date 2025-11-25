@@ -1,11 +1,9 @@
-<!-- Page d'accueil responsable -->
-
-
 <?php
+// Page d'accueil responsable
+session_start();
 require '../../Controllers/Redirect.php';
 require '../layout/header.php';
 require '../layout/navigation.php';
-session_start();
 ?>
 <header class="text">
     <h1> Bonjour, <?php echo $_SESSION['nom'] ?> </h1>

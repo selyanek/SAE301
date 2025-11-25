@@ -1,6 +1,5 @@
-<!-- Page d'accueil étudiant -->
-
 <?php
+// Page d'accueil étudiant
 session_start();
 require '../../Controllers/Redirect.php';
 require '../layout/header.php';

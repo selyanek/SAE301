@@ -68,10 +68,10 @@ try {
 
 // 6. Redirection selon le résultat
 if ($success) {
-    header('Location: ../Views/etudiant/dashbord.php?message=success');
+    header('Location: ../Views/accueil_etudiant.php?message=success');
     exit();
 } else {
-    header('Location: ../Views/etudiant/depotJustificatif.php?error=' . urlencode($errorMessage));
+    header('Location: ../Views/depot_justificatif.php?error=' . urlencode($errorMessage));
     exit();
 }
 ?>

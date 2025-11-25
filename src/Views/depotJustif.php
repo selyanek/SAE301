@@ -51,7 +51,7 @@ if (isset($_GET['error'])) {
     <div class="buttons">
         <button type="reset" class="btn">Réinitialiser</button>
         <button type="submit" class="btn">Valider</button>
-        <a href="accueil_etudiant.php"><button type="button" class="btn">Annuler</button></a>
+    <a href="/src/Views/etudiant/dashbord.php"><button type="button" class="btn">Annuler</button></a>
     </div>
 
 </form>

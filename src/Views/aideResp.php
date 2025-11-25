@@ -29,15 +29,15 @@
 
         <p>Pensez à traiter les demandes dans les délais afin d’assurer le bon suivi des absences et la conformité avec le règlement.</p>
 
-        <a href="/src/Controllerslers/accueil_responsable.php"><button type="button" class="btn">Retour à l'accueil</button></a>
+    <a href="/src/Views/responsable/dashbord.php"><button type="button" class="btn">Retour à l'accueil</button></a>
     </section>
 
 </body>
 <footer class="footer">
-    <nav class="footer-nav">
-    <a href="/src/Controllerslers/accueil_responsable.php">Accueil</a>
-    <span>|</span>
-    <a href=".php">Aides</a>
-  </nav>
+        <nav class="footer-nav">
+        <a href="/src/Views/responsable/dashbord.php">Accueil</a>
+        <span>|</span>
+        <a href="/src/Views/aideResp.php">Aides</a>
+    </nav>
 </footer>
 </html>
