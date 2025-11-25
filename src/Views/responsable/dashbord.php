@@ -1,6 +1,7 @@
 <?php
 // Page d'accueil responsable
 session_start();
+require '../../Controllers/session_timeout.php'; // Gestion du timeout de session
 require '../../Controllers/Redirect.php';
 require '../layout/header.php';
 require '../layout/navigation.php';

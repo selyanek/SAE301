@@ -2,6 +2,7 @@
 namespace src\Controllers;
 
 session_start();
+require __DIR__ . '/session_timeout.php'; // Gestion du timeout de session
 
 require __DIR__ . '/../Database/Database.php';
 

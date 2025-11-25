@@ -3,7 +3,8 @@
 use src\Controllers\Redirect;
 
 session_start();
-require "../Models/Redirect.php";
+require __DIR__ . "/../Controllers/session_timeout.php"; // Gestion du timeout de session
+require __DIR__ . "/../Controllers/Redirect.php";
 $redirect = new Redirect('professeur');
 $redirect->redirect();
 ?>
