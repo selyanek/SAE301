@@ -35,7 +35,7 @@ class Absence
     public function ajouterAbsence()
     {
         try {
-            $sql = "INSERT INTO {$this->table}
+            $sql = "INSERT INTO absence
                 (idCours, idEtudiant, date_debut, date_fin, motif, justifie, uriJustificatif)
                 VALUES (:idCours, :idEtudiant, :date_debut, :date_fin, :motif, :justifie, :uriJustificatif)";
 
@@ -62,7 +62,7 @@ class Absence
     public function justifierAbsence($idAbsence)
     {
         try {
-            $sql = "UPDATE $this->table SET justifie = true WHERE idabsence = :idAbsence";
+            $sql = "UPDATE Absence SET justifie = true WHERE idabsence = :idAbsence";
             $stmt = $this->conn->prepare($sql);
             return $stmt->execute([':idAbsence' => $idAbsence]);
         } catch (PDOException $e) {

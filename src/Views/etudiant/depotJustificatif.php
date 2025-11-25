@@ -25,7 +25,7 @@ if (isset($_GET['error'])) {
 
 <link rel="stylesheet" href="../../../public/asset/CSS/cssDepot.css">
 
-<form id="absenceForm" class="absence-form" action="../../Controllers/upload2.php" method="post" enctype="multipart/form-data">
+<form id="absenceForm" class="absence-form" action="../../Controllers/upload.php" method="post" enctype="multipart/form-data">
 
     <div class="form-group">
         <label class="label">Date et heure de début :</label>
@@ -47,7 +47,7 @@ if (isset($_GET['error'])) {
     <div class="form-group">
         <label class="label" for="justification">Justification :</label>
         <p class="info">Veuillez joindre un justificatif (format accepté : .pdf, .jpg, .png | taille max : 5MB)</p>
-        <input class="file-input" type="file" id="justification" name="file" accept=".pdf,.jpg,.jpeg,.png" required />
+        <input class="file-input" type="file" id="justification" name="files" accept=".pdf,.jpg,.jpeg,.png" multiple required />
     </div>
 
     <div class="buttons">

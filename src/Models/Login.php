@@ -16,9 +16,9 @@ class Login
 
     public function verifierConnexion($pdo)
     {
-        $stmt = $pdo->prepare("SELECT * FROM Compte WHERE identifiantCompte = :id AND mot_de_passe = :mdp");
+        $stmt = $pdo->prepare("SELECT * FROM Compte WHERE identifiantCompte = :identifiant AND mot_de_passe = :mdp");
         $stmt->execute([
-            ':id' => $this->identifiant,
+            ':identifiant' => $this->identifiant,
             ':mdp' => $this->mot_de_passe
         ]);
         return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
