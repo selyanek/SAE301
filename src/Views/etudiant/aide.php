@@ -1,3 +1,7 @@
+<?php
+// Page d'aide pour l'étudiant
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -29,13 +33,13 @@
 
         <p>Pensez à transmettre vos justificatifs dans les délais afin que vos absences soient correctement prises en compte.</p>
 
-        <a href="accueil_etudiant.php"><button type="button" class="btn">Retour à l'accueil</button></a>
+    <a href="/src/Views/etudiant/dashbord.php"><button type="button" class="btn">Retour à l'accueil</button></a>
     </section>
 
 </body>
 <footer class="footer">
-    <nav class="footer-nav">
-    <a href="/src/Controllerslers/accueil_etudiant.php">Accueil</a>
+        <nav class="footer-nav">
+        <a href="/src/Views/etudiant/dashbord.php">Accueil</a>
     <span>|</span>
     <a href="">Aides</a>
   </nav>

@@ -1,4 +1,5 @@
 <?php
+// Page d'historique des absences pour l'étudiant
 session_start();
 $pageTitle = 'Gérer mes absences';
 $additionalCSS = ['../../../public/asset/CSS/cssGererAbsEtu.css'];

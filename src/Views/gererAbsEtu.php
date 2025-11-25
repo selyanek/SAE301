@@ -27,14 +27,14 @@
         unset($_SESSION['errors']);
     }
     ?>
-    <a href="depotJustif.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>
+    <a href="/src/Views/depotJustif.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>
 </header>
 <div class="sidebar">
     <ul>
-        <li><a href="accueil_etudiant.php">Accueil</a></li>
-        <li><a href="Etu.php">Gérer des absences</a></li>
-        <li><a href="#">Historique des absences</a></li>
-        <li><a href="">Aides</a></li>
+        <li><a href="/src/Views/etudiant/dashbord.php">Accueil</a></li>
+        <li><a href="/src/Views/gererAbsEtu.php">Gérer des absences</a></li>
+        <li><a href="/src/Views/etudiant/historiqueAbsences.php">Historique des absences</a></li>
+        <li><a href="/src/Views/etudiant/aide.php">Aides</a></li>
     </ul>
 </div>
 <table class="liste-absences"> 
@@ -67,15 +67,15 @@
     </tr>
 </table>
 <br>
-<div class="text">
-    <a href="accueil_etudiant.php"><button type="button" class="btn">Retour à l'accueil</button></a>
+    <div class="text">
+    <a href="/src/Views/etudiant/dashbord.php"><button type="button" class="btn">Retour à l'accueil</button></a>
 </div>
 </body>
 <footer class="footer">
-    <nav class="footer-nav">
-    <a href="accueil_etudiant.php">Accueil</a>
-    <span>|</span>
-    <a href="">Aides</a>
-  </nav>
+        <nav class="footer-nav">
+        <a href="/src/Views/etudiant/dashbord.php">Accueil</a>
+        <span>|</span>
+        <a href="/src/Views/etudiant/aide.php">Aides</a>
+    </nav>
 </footer>
 </html>

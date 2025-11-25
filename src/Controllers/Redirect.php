@@ -13,22 +13,25 @@ class Redirect
     public function redirect()
     {
         if (!isset($_SESSION['login']) || !isset($_SESSION['role'])) {
-            header('Location:../Views/index.php');
+            // redirect to public index (login page)
+            header('Location: /index.php');
             exit();
         }
         if ($_SESSION['role'] !== $this->roleNecessaire) {
             switch ($_SESSION['role']) {
                 case 'etudiante':
-                    header('Location: ../Views/etudiant/dashbord.php');
+                    header('Location: /src/Views/etudiant/dashbord.php');
                     exit();
                 case 'professeur':
-                    header('Location: ../Views/professeur/dashboard.php');
+                    // redirect to the professor's accueil page
+                    header('Location: /src/Views/accueil_prof.php');
                     exit();
                 case 'responsable_pedagogique':
-                    header('Location: ../Views/reponsable/dashbord.php');
+                    // redirect to the responsable's dashboard page
+                    header('Location: /src/Views/responsable/dashbord.php');
                     exit();
                 default:
-                    header('Location: index.php');
+                    header('Location: /index.php');
                     exit();
             }
         }

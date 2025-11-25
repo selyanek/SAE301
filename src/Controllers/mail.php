@@ -46,7 +46,7 @@ try {
             throw new Exception("Erreur lors du téléchargement du fichier");
         }
 
-        // 5. Envoi de l'email (exemple)
+        // 5. Envoi de l'email
         $to = "responsable@example.com";
         $subject = "Nouveau justificatif d'absence";
         $message = "Date début: $date_start\nDate fin: $date_end\nMotif: $motif";
