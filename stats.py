@@ -8,10 +8,10 @@ import datetime
 
 def repartition_absences_par_cours(nb : list[int]):
     
-    # la liste nb est censée contenir 4 éléments : le nombre d'absences aux CM, TD, TP et DS respectivement
+    # la liste nb est censée contenir 5 éléments : le nombre d'absences aux CM, TD, TP, DS et SAE respectivement
     
-    cours = ['CM', 'TD', 'TP', 'DS']
-    couleurs = ["#52BB7E", "#5EE9E0", "#5834DA", "#DD5A0E"]
+    cours = ['CM', 'TD', 'TP', 'DS', 'BEN']
+    couleurs = ["#52BB7E", "#5EE9E0", "#5834DA", "#DD5A0E", "#9B9217"]
 
     plt.bar(cours, nb, color=couleurs)
 
@@ -45,7 +45,7 @@ def repartition_absences_par_heure(nb : list[int]):
 
 def absences_14_derniers_jours(nb : list[int]):
     
-    # la liste nb est censée contenir 6 éléments : le nombre d'absences / jour les 14 derniers jours
+    # la liste nb est censée contenir 14 éléments : le nombre d'absences / jour les 14 derniers jours
 
     plt.plot(nb, color = 'black', linestyle = '-')
 
@@ -62,7 +62,7 @@ def absences_14_derniers_jours(nb : list[int]):
     plt.show()
     
 if __name__ == "__main__":
-    repartition_absences_par_cours([200,300,400,500])
+    repartition_absences_par_cours([200,300,400,500,1000])
     repartition_absences_par_heure([200,300,400,500,600,700])
     absences_14_derniers_jours([1,2,5,3,6,15,1,5,1,4,1,3,10,11])
 
