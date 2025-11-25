@@ -102,5 +102,51 @@ class GestionCSV
 
         return \mktime($heures, $minutes, 0, $mois, $jour, $annee);
     }
+
+
+    public function filtrerEvals($files) {
+        $csv = new GestionCSV();
+        $result = [];
+        $csv_array = $csv->getAllData($files);
+
+        // Filtrer que les absences qui ont des évaluations
+        foreach ($csv_array as $row) {
+            if ($row[23] == "Oui") {
+                $result += ($row);
+            }
+        }
+
+        return $result;
+    }
+
+
+    public function filtrerNom($files, string $nom) {
+        $csv = new GestionCSV();
+        $result = [];
+        $csv_array = $csv->getAllData("data/CSV/BUT1-240122-240223_anonymise.CSV");
+
+        // Filtrer que les absences qui ont le nom d'étudiant spécifié
+        foreach ($csv_array as $row) {
+            if ($row[0] == $nom) {
+                $result += ($row);
+            }
+        }
+        
+        return $result;
+    }
+
+    public function filtrerPrenom($files, string $prenom) {
+        $csv = new GestionCSV();
+        $result = [];
+        $csv_array = $csv->getAllData($files);
+
+        // Filtrer que les absences qui ont le prénom d'étudiant spécifié
+        foreach ($csv_array as $row) {
+            if ($row[1] == $prenom || $row[2] == $prenom ) {
+                $result += ($row);
+            }
+        }
+        
+        return $result;
+    }
 }
-?>
