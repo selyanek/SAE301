@@ -1,97 +1,128 @@
 <?php
 session_start();
 require __DIR__ . '/../Controllers/session_timeout.php'; // Gestion du timeout de session
-require __DIR__ . '/../Controllers/GetFiles.php';
+require __DIR__ . '/../Database/Database.php';
+require __DIR__ . '/../Models/Absence.php';
+
+// Instancier les classes sans l'usage de "use" pour garder la compatibilité dans le template
+$db = new \src\Database\Database();
+$pdo = $db->getConnection();
+$absenceModel = new \src\Models\Absence($pdo);
+
+// ID reçu depuis gestionAbsResp.php
+$id = isset($_GET['id']) ? intval($_GET['id']) : -1;
+
+// Absence correspondante depuis la DB
+$absence = ($id > 0) ? $absenceModel->getById($id) : null;
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Accueil</title>
+    <title>Traitement des justificatifs</title>
     <link href="/public/asset/CSS/cssTraitementDesJustificatifs.css" rel="stylesheet">
     <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
     <link href="/public/asset/CSS/cssGestionAbsResp.css" rel="stylesheet">
 </head>
+<body>
+
 <div class="uphf">
     <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">
 </div>
-<body>
 <div class="logoEdu">
     <img src="../../public/asset/img/logoedutrack.png" alt="Logo EduTrack">
 </div>
+
 <div class="sidebar">
-      <ul>
-        <li><a href="accueil_responsable.php">Accueil</a></li> <!-- Lien vers la page d'accueil -->
-        <li><a href="gestionAbsResp.php">Gestion des absences</a></li> <!-- Lien vers la gestion des absences -->
-        <li><a href="traitementDesJustificatif.php">Traitement des Justificatifs</a></li> <!-- Lien vers le traitementDesJustificatif -->
-        <li><a href="#">Historique des absences</a></li> <!-- Lien vers l'historique (à compléter) -->
-        <li><a href="#">Statistiques</a></li> <!-- Lien vers les statistiques (à compléter) -->
-      </ul>
+    <ul>
+        <li><a href="accueil_responsable.php">Accueil</a></li>
+        <li><a href="gestionAbsResp.php">Gestion des absences</a></li>
+        <li><a href="traitementDesJustificatif.php">Traitement des Justificatifs</a></li>
+        <li><a href="#">Historique des absences</a></li>
+        <li><a href="#">Statistiques</a></li>
+    </ul>
 </div>
 
 <header class="titre">
-<h1> Détails du justificatif des absences </h1>
+    <h1>Détails du justificatif des absences</h1>
 </header>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Sélecteur de date</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    
-<div class="trait">
-</div>
 
-<div class="encadre1">   
-    <div class="encadre2">
-        <h3>Date de début de l'absence</h3>
-        <div class="encadre3">
-        <p>09/12/2022</p>
+<div class="trait"></div>
+
+<?php if (!$absence): ?>
+    <div class="error-message">Absence introuvable.</div>
+    <div class="buttons">
+        <a href="gestionAbsResp.php"><button type="button" class="btn">Retour</button></a>
+    </div>
+
+<?php else: ?>
+
+    <div class="encadre1">
+        <div class="encadre2">
+            <h3>Date de début de l'absence</h3>
+            <div class="encadre3">
+                <p><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_debut']))); ?></p>
+            </div>
+        </div>
+
+        <div class="encadre2">
+            <h3>Date de fin de l'absence</h3>
+            <div class="encadre3">
+                <p><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_fin']))); ?></p>
+            </div>
         </div>
     </div>
-    <div class="encadre2">
-        <h3>Date de fin de l'absence</h3>
-        <div class="encadre3">
-            <p>12/12/2022</p>
+
+    <div class="encadre1">
+        <div class="encadre2">
+            <h3>Date de soumission</h3>
+            <div class="encadre3">
+                <p><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_debut']))); ?></p>
+            </div>
+        </div>
+
+        <div class="encadre2">
+            <h3>Motif</h3>
+            <div class="encadre3">
+                <p><?php echo htmlspecialchars($absence['motif'] ?? '—'); ?></p>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="encadre1">   
-    <div class="encadre2">
-        <h3>Date de soumission</h3>
-        <div class="encadre3">
-            <p>09/12/2022</p>
+    <div class="trait"></div>
+
+    <form action="../Controllers/traiter_absence.php" method="post">
+        <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
+
+        <div class="encadre1">
+            <div class="encadre2">
+                <h3>Document</h3>
+                <div class="encadre3">
+                    <p>
+                        <?php
+                        echo (!empty($absence['uriJustificatif']))? '<a href="' . htmlspecialchars($absence['uriJustificatif']) . '" target="_blank">📄 Voir le document</a>': '—';
+                        ?>
+                    </p>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="encadre2">
-        <h3>Cours concerné</h3>
-        <div class="encadre3">
-            <p>dev réseau</p>
+
+        <div class="boutons">
+            <button type="submit" name="action" value="valider">Valider</button>
+            <button type="submit" name="action" value="refuser">Refuser</button>
+            <button type="submit" name="action" value="Demande_justif">Demander justificatif</button>
+            <a href="gestionAbsResp.php"><button type="button">Retour</button></a>
         </div>
-    </div>
-</div>
+    </form>
 
-<div class="trait">
-</div>
+<?php endif; ?>
 
-<div class="motif">
-    <h3>Motif de l'absence</h3>
-</div>
-
-<div class="boutons">
-    <button>Valider</button>
-    <button>Refuser</button>
-    <button>Justificatifs supplémentaires</button>
-</div>
 <footer class="footer">
     <nav class="footer-nav">
-    <a href="accueil_responsable.php">Accueil</a>
-    <span>|</span>
-    <a href="">Aides</a>
-  </nav>
+        <a href="accueil_responsable.php">Accueil</a>
+        <span>|</span>
+        <a href="">Aides</a>
+    </nav>
 </footer>
 </body>
 </html>

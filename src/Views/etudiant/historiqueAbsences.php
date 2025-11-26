@@ -52,72 +52,31 @@ require '../layout/navigation.php';
     $studentId = $_SESSION['login'] ?? '';
     $studentName = $_SESSION['nom'] ?? '';
 
-    // Chemin vers les fichiers CSV (depuis etudiant/, remonter de 2 niveaux)
-    $csvFile = '../../data/uploads.csv';
-    $csvStatuts = '../../data/statuts.csv';
-
-    // Charger les statuts
-    $statuts = [];
-    if (file_exists($csvStatuts)) {
-        $handleStatuts = fopen($csvStatuts, 'r');
-        if ($handleStatuts) {
-            while (($data = fgetcsv($handleStatuts, 1000, ';', '"', '')) !== FALSE) {
-                if (count($data) >= 3) {
-                    // Clé: date_soumission|chemin_fichier
-                    $key = $data[0] . '|' . $data[1];
-                    $statuts[$key] = $data[2]; // statut
-                }
-            }
-            fclose($handleStatuts);
-        }
+    // Charger les absences depuis la BDD pour l'étudiant connecté
+    require __DIR__ . '/../../Database/Database.php';
+    require __DIR__ . '/../../Models/Absence.php';
+    // Instancier la BDD et le modèle en utilisant des noms fully-qualified (éviter 'use' après du code)
+    $db = new \src\Database\Database();
+    $pdo = $db->getConnection();
+    $absenceModel = new \src\Models\Absence($pdo);
+    $mesAbsences = [];
+    if (!empty($studentId)) {
+        // On suppose que $studentId correspond à identifiantEtu enregistré dans la session
+        $mesAbsences = $absenceModel->getByStudentIdentifiant($studentId);
     }
 
-    // Vérifier si le fichier existe
-    if (!file_exists($csvFile)) {
-        echo "<tr><td colspan='6'>Aucune absence enregistrée pour le moment.</td></tr>";
-    } else {
-        // Lecture du fichier CSV
-        $handle = fopen($csvFile, 'r');
-        $absences = [];
-
-        if ($handle) {
-            while (($data = fgetcsv($handle, 1000, ';', '"', '')) !== FALSE) {
-                // Structure: date_soumission, date_start, date_end, motif, chemin_fichier, nom_fichier_original
-                if (count($data) >= 6) {
-                    $key = $data[0] . '|' . $data[4];
-                    $absences[] = [
-                        'date_soumission' => $data[0],
-                        'date_start' => $data[1],
-                        'date_end' => $data[2],
-                        'motif' => $data[3],
-                        'fichier' => $data[4],
-                        'nom_fichier' => $data[5],
-                        'statut' => isset($statuts[$key]) ? $statuts[$key] : 'en_attente'
-                    ];
-                }
-            }
-            fclose($handle);
-
-            // Filtrer les absences de l'étudiant connecté
-            // Note: On suppose que les absences sont liées à l'étudiant via la session
-            // Si vous avez un système d'identification dans le CSV, adaptez cette partie
-            $mesAbsences = [];
-            foreach ($absences as $absence) {
-                // Pour l'instant, on affiche toutes les absences
-                // Vous pouvez ajouter un filtre basé sur l'identifiant de l'étudiant si disponible dans le CSV
-                $mesAbsences[] = $absence;
-            }
-
-            // Affichage des absences filtrées (les plus récentes en premier)
+            // Affichage des absences filtrées (les plus récentes en premier). We already ordered by date_debut desc
             $count = 0;
-            foreach (array_reverse($mesAbsences) as $absence) {
+            foreach ($mesAbsences as $absence) {
                 // Application des filtres
-                $dateDebut = date('Y-m-d', strtotime($absence['date_start']));
+                $dateDebut = date('Y-m-d', strtotime($absence['date_debut']));
                 if ($dateFiltre && $dateDebut != $dateFiltre) {
                     continue;
                 }
 
-                if ($statutFiltre && $absence['statut'] != $statutFiltre) {
+                // Use DB justifie boolean
+                $statut = (isset($absence['justifie']) && $absence['justifie']) ? 'valide' : 'en_attente';
+                if ($statutFiltre && $statut != $statutFiltre) {
                     continue;
                 }
 
@@ -126,7 +85,7 @@ require '../layout/navigation.php';
                 $statutClass = '';
                 $statutLabel = '';
 
-                switch($absence['statut']) {
+                switch($statut) {
                     case 'en_attente':
                         $statutClass = 'statut-attente';
                         $statutLabel = 'En attente';
@@ -142,11 +101,11 @@ require '../layout/navigation.php';
                 }
 
                 echo "<tr>";
-                echo "<td>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_soumission']))) . "</td>";
-                echo "<td>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_start']))) . "</td>";
-                echo "<td>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_end']))) . "</td>";
+                echo "<td>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_debut']))) . "</td>";
+                echo "<td>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_debut']))) . "</td>";
+                echo "<td>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_fin']))) . "</td>";
                 echo "<td>" . htmlspecialchars($absence['motif']) . "</td>";
-                echo "<td><a href='" . htmlspecialchars($absence['fichier']) . "' target='_blank'>Voir le justificatif</a></td>";
+                echo "<td><a href='" . htmlspecialchars($absence['uriJustificatif']) . "' target='_blank'>Voir le justificatif</a></td>";
                 echo "<td class='$statutClass'>$statutLabel</td>";
                 echo "</tr>";
             }
@@ -154,10 +113,6 @@ require '../layout/navigation.php';
             if ($count == 0) {
                 echo "<tr><td colspan='6'>Aucune absence ne correspond aux critères de filtrage.</td></tr>";
             }
-        } else {
-            echo "<tr><td colspan='6'>Erreur lors de la lecture du fichier CSV.</td></tr>";
-        }
-    }
     ?>
     </tbody>
 </table>
