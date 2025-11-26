@@ -1,8 +1,11 @@
 import matplotlib.pyplot as plt
 import psycopg
 import datetime
+import os
 
-
+# Créer le dossier de sortie s'il n'existe pas
+output_dir = os.path.join(os.path.dirname(__file__), 'public', 'asset', 'stats')
+os.makedirs(output_dir, exist_ok=True)
 
 # TODO importer données bdd avec psycopg
 
@@ -21,8 +24,8 @@ def repartition_absences_par_cours(nb : list[int]):
 
     # Sauvegarder l'image sous format png pour pouvoir l'afficher ultérieurement sur le site
 
-    plt.savefig("absences.png")
-    plt.show()
+    plt.savefig(os.path.join(output_dir, "absences.png"))
+    plt.close()
 
 
 def repartition_absences_par_heure(nb : list[int]):
@@ -40,8 +43,8 @@ def repartition_absences_par_heure(nb : list[int]):
 
     # Sauvegarder l'image sous format png pour pouvoir l'afficher ultérieurement sur le site
     
-    plt.savefig("absences2.png")
-    plt.show()
+    plt.savefig(os.path.join(output_dir, "absences2.png"))
+    plt.close()
 
 def absences_14_derniers_jours(nb : list[int]):
     
@@ -58,12 +61,32 @@ def absences_14_derniers_jours(nb : list[int]):
     
     plt.grid(True)
     
-    plt.savefig("absences3.png")
-    plt.show()
+    plt.savefig(os.path.join(output_dir, "absences3.png"))
+    plt.close()
+
+
+def top_3(etu : str, nb : list[int]):
+    
+    # la liste str est censée contenir 3 éléments : les noms des 3 élèves ayant le plus d'absences
+    # la liste nb est censée contenir 3 éléments : le nombre d'absences de ces 3 étudiant
+
+    couleurs = ["#996147", "#8A9796", "#E2B128"]
+
+    plt.bar(etu, nb, color=couleurs)
+
+    plt.title('Top 3 des absents')
+    plt.xlabel("Nom de l'étudiant", fontweight ='bold', fontsize = 15)
+    plt.ylabel("Nombre d'absences", fontweight ='bold', fontsize = 15)
+
+    # Sauvegarder l'image sous format png pour pouvoir l'afficher ultérieurement sur le site
+
+    plt.savefig(os.path.join(output_dir, "absences4.png"))
+    plt.close()
     
 if __name__ == "__main__":
     repartition_absences_par_cours([200,300,400,500,1000])
     repartition_absences_par_heure([200,300,400,500,600,700])
     absences_14_derniers_jours([1,2,5,3,6,15,1,5,1,4,1,3,10,11])
+    top_3(["Baby Rigger", "Gabagoo Diggeldoo", "Booga Wakaboomboom"], [30,52,84])
 
 
