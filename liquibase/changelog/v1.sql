@@ -62,7 +62,7 @@ CREATE TABLE Cours
     idProfesseur             INT       NOT NULL,
     idResponsablePedagogique INT       NOT NULL,
     type                     TEXT      NOT NULL,
-    seuil                    BOOLEAN   NOT NULL,
+    evaluation               BOOLEAN   NOT NULL,
     date_debut               TIMESTAMP NOT NULL,
     date_fin                 TIMESTAMP NOT NULL,
     FOREIGN KEY (idRessource) REFERENCES Ressource (idRessource) ON DELETE CASCADE,
@@ -116,14 +116,14 @@ VALUES (
 --changeset Selyane:10
 --comment: Insertion d'un compte responsable pédagogique et de son profil Responsable_Pedagogique
 INSERT INTO Compte (identifiantCompte, mot_de_passe, nom, prenom, fonction)
-VALUES ('jane.smith', 'anotherpassword', 'Smith', 'Jane', 'responsable_pedagogique');
+VALUES ('christelle.roze', 'anotherpassword', 'Roze', 'Christelle', 'responsable_pedagogique');
 
 INSERT INTO Responsable_Pedagogique (idResponsablePedagogique, identifiantRp)
 VALUES (
-           (SELECT idCompte FROM Compte WHERE identifiantCompte = 'jane.smith'),
-           'jane.smith'
+           (SELECT idCompte FROM Compte WHERE identifiantCompte = 'christelle.roze'),
+           'christelle.roze'
        );
---rollback DELETE FROM Responsable_Pedagogique WHERE identifiantRp = 'jane.smith'; DELETE FROM Compte WHERE identifiantCompte = 'jane.smith';
+--rollback DELETE FROM Responsable_Pedagogique WHERE identifiantRp = 'christelle.roze'; DELETE FROM Compte WHERE identifiantCompte = 'christelle.roze';
 
 --changeset Selyane:11
 --comment: Insertion d'une ressource
@@ -133,7 +133,7 @@ VALUES ('Introduction to Programming');
 
 --changeset Selyane:12
 --comment: Insertion d'un cours associé au professeur John Doe
-INSERT INTO Cours (type, seuil, date_debut, date_fin, idRessource, idProfesseur, idResponsablePedagogique)
+INSERT INTO Cours (type, evaluation, date_debut, date_fin, idRessource, idProfesseur, idResponsablePedagogique)
 VALUES (
            'CM',
            FALSE,
