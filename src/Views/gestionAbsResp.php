@@ -1,3 +1,43 @@
+<?php
+// IMPORTANT: Le code PHP doit être AVANT tout HTML pour éviter "headers already sent"
+// Démarrer la session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require __DIR__ . '/../Controllers/session_timeout.php';
+
+// Vérifier que l'utilisateur est connecté
+if (!isset($_SESSION['login']) || !isset($_SESSION['role'])) {
+    header('Location: /public/index.php');
+    exit();
+}
+
+// Vérifier le rôle responsable
+if ($_SESSION['role'] !== 'responsable_pedagogique') {
+    header('Location: /public/index.php');
+    exit();
+}
+
+// Charger les dépendances
+require __DIR__ . '/../Database/Database.php';
+require __DIR__ . '/../Models/Absence.php';
+
+// Connexion à la base de données
+$db = new \src\Database\Database();
+$pdo = $db->getConnection();
+$absenceModel = new \src\Models\Absence($pdo);
+
+// Récupérer toutes les absences
+$absences = $absenceModel->getAll();
+
+// MODE DEBUG - Décommenter pour voir les données brutes
+$debug_mode = isset($_GET['debug']) && $_GET['debug'] === '1';
+
+// Récupération des filtres
+$nomFiltre = isset($_POST['nom']) ? strtolower(trim($_POST['nom'])) : '';
+$dateFiltre = isset($_POST['date']) ? $_POST['date'] : '';
+$statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,10 +47,6 @@
     <link href="/public/asset/CSS/cssGestionAbsResp.css" rel="stylesheet">
 </head>
 <body>
-<?php
-session_start();
-require __DIR__ . '/../Controllers/session_timeout.php'; // Gestion du timeout de session
-?>
 <!-- Affichage des logos -->
 <div class="uphf">
     <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">
@@ -70,100 +106,121 @@ require __DIR__ . '/../Controllers/session_timeout.php'; // Gestion du timeout d
     </thead>
     <tbody>
     <?php
-    // Récupération des filtres
-    $nomFiltre = isset($_POST['nom']) ? strtolower(trim($_POST['nom'])) : '';
-    $dateFiltre = isset($_POST['date']) ? $_POST['date'] : '';
-    $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
-
     // Afficher les messages
     if (isset($_GET['success'])) {
-        echo "<div class='success-message'>✅ " . htmlspecialchars($_GET['success']) . "</div>";
+        echo "<tr><td colspan='8' class='success-message'>✅ " . htmlspecialchars($_GET['success']) . "</td></tr>";
     }
     if (isset($_GET['error'])) {
-        echo "<div class='error-message'>❌ Erreur lors du traitement</div>";
+        echo "<tr><td colspan='8' class='error-message'>❌ Erreur lors du traitement</td></tr>";
     }
 
-    // Nouvelle approche : charger les absences depuis la base de données
-    require __DIR__ . '/../Database/Database.php';
-    require __DIR__ . '/../Models/Absence.php';
-    // Instancier la BDD et le modèle en utilisant des noms fully-qualified (éviter 'use' après du code)
-    $db = new \src\Database\Database();
-    $pdo = $db->getConnection();
-    $absenceModel = new \src\Models\Absence($pdo);
-    $absences = $absenceModel->getAll();
+    // Vérifier si des absences existent
     if (!$absences || count($absences) === 0) {
-        echo "<tr><td colspan='8'>Aucune absence enregistrée pour le moment.</td></tr>";
+        echo "<tr><td colspan='8' style='text-align: center; padding: 20px;'>Aucune absence enregistrée pour le moment.</td></tr>";
     } else {
-
-            // Affichage des absences filtrées
-            $count = 0;
-            foreach ($absences as $absence) {
-                // Application des filtres
-                if ($nomFiltre && strpos(strtolower($absence['nom_fichier'] ?? ($absence['prenomCompte'] . ' ' . $absence['nomCompte'])), $nomFiltre) === false) {
-                    continue;
-                }
-
-                $dateDebut = date('Y-m-d', strtotime($absence['date_debut'] ?? $absence['date_start'] ?? 'now'));
-                if ($dateFiltre && $dateDebut != $dateFiltre) {
-                    continue;
-                }
-
-                // Convertir le booléen 'justifie' en libellé de statut
-                $statut = 'en_attente';
-                if (isset($absence['justifie'])) {
-                    $statut = $absence['justifie'] ? 'valide' : 'en_attente';
-                }
-                if ($statutFiltre && $statut != $statutFiltre) {
-                    continue;
-                }
-
-                // Affichage de la ligne
-                $count++;
-                $statutClass = '';
-                $statutLabel = '';
-
-                switch($statut) {
-                    case 'en_attente':
-                        $statutClass = 'statut-attente';
-                        $statutLabel = '⏳ En attente';
-                        break;
-                    case 'valide':
-                        $statutClass = 'statut-valide';
-                        $statutLabel = '✅ Validé';
-                        break;
-                    case 'refuse':
-                        $statutClass = 'statut-refuse';
-                        $statutLabel = '❌ Refusé';
-                        break;
-                }
-
-                echo "<tr>";
-                // Mappage aux champs de la BDD
-                echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_debut']))) . "</td>";
-                echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_debut']))) . "</td>";
-                echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_fin']))) . "</td>";
-                echo "<td>" . htmlspecialchars($absence['prenomCompte'] . ' ' . $absence['nomCompte']) . "</td>";
-                echo "<td>" . htmlspecialchars($absence['motif']) . "</td>";
-                echo "<td><a href='" . htmlspecialchars($absence['uriJustificatif']) . "' target='_blank'>📄 Voir le document</a></td>";
-                echo "<td class='$statutClass'>$statutLabel</td>";
-
-                // Actions
-                echo "<td class='actions'>";
-
-                // Bouton pour voir les détails - toujours visible
-                if ($statut == 'en_attente' || $statut == '') {
-                    echo "<a href='../Views/traitementDesJustificatif.php?id=" . $absence['idabsence'] . "' class='btn_justif'>Détails</a>";
-                } else {
-                    echo "<span class='traite'>Traité</span>";
-                }
-                echo "</td>";
-                echo "</tr>";
-            }
-
-            if ($count == 0) {
-                echo "<tr><td colspan='8'>Aucune absence ne correspond aux critères de filtrage.</td></tr>";
-            }
+        // MODE DEBUG - Afficher les données de la première absence
+        if ($debug_mode && count($absences) > 0) {
+            echo "<tr><td colspan='8' style='background: #fff3cd; padding: 15px;'>";
+            echo "<strong>🔍 MODE DEBUG - Données de la première absence :</strong><br>";
+            echo "<pre style='text-align: left; font-size: 11px;'>";
+            print_r($absences[0]);
+            echo "</pre>";
+            echo "<strong>Clés disponibles :</strong> " . implode(', ', array_keys($absences[0]));
+            echo "</td></tr>";
         }
+        
+        // Affichage des absences filtrées
+        $count = 0;
+        foreach ($absences as $absence) {
+            // DEBUG: Afficher les clés disponibles (à retirer après debug)
+            // Décommenter la ligne suivante pour voir les données disponibles :
+            // echo "<tr><td colspan='8'><pre>" . print_r(array_keys($absence), true) . "</pre></td></tr>";
+            
+            // Application des filtres
+            // Récupérer le nom et prénom de l'étudiant
+            $prenomEtudiant = $absence['prenomcompte'] ?? $absence['prenomCompte'] ?? '';
+            $nomEtudiantNom = $absence['nomcompte'] ?? $absence['nomCompte'] ?? '';
+            $nomEtudiant = trim($prenomEtudiant . ' ' . $nomEtudiantNom);
+            
+            // Si le nom est vide, essayer d'autres champs possibles
+            if (empty(trim($nomEtudiant))) {
+                $nomEtudiant = $absence['identifiantetu'] ?? $absence['identifiantEtu'] ?? 'Étudiant inconnu';
+            }
+            
+            if ($nomFiltre && strpos(strtolower($nomEtudiant), $nomFiltre) === false) {
+                continue;
+            }
+
+            $dateDebut = date('Y-m-d', strtotime($absence['date_debut'] ?? 'now'));
+            if ($dateFiltre && $dateDebut != $dateFiltre) {
+                continue;
+            }
+
+            // Déterminer le statut
+            $statut = 'en_attente';
+            if (isset($absence['justifie'])) {
+                // PostgreSQL retourne 't' ou 'f' pour les booléens
+                if ($absence['justifie'] === true || $absence['justifie'] === 't' || $absence['justifie'] === '1' || $absence['justifie'] === 1) {
+                    $statut = 'valide';
+                }
+            }
+            
+            if ($statutFiltre && $statut != $statutFiltre) {
+                continue;
+            }
+
+            // Affichage de la ligne
+            $count++;
+            $statutClass = '';
+            $statutLabel = '';
+
+            switch($statut) {
+                case 'en_attente':
+                    $statutClass = 'statut-attente';
+                    $statutLabel = '⏳ En attente';
+                    break;
+                case 'valide':
+                    $statutClass = 'statut-valide';
+                    $statutLabel = '✅ Validé';
+                    break;
+                case 'refuse':
+                    $statutClass = 'statut-refuse';
+                    $statutLabel = '❌ Refusé';
+                    break;
+            }
+
+            echo "<tr>";
+            // Date de soumission (pour l'instant = date_debut, à améliorer plus tard)
+            echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_debut']))) . "</td>";
+            echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_debut']))) . "</td>";
+            echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_fin']))) . "</td>";
+            echo "<td>" . htmlspecialchars($nomEtudiant) . "</td>";
+            echo "<td>" . htmlspecialchars($absence['motif'] ?? '—') . "</td>";
+            
+            // Document justificatif
+            if (!empty($absence['uriJustificatif'])) {
+                echo "<td><a href='" . htmlspecialchars($absence['uriJustificatif']) . "' target='_blank'>📄 Voir le document</a></td>";
+            } else {
+                echo "<td>—</td>";
+            }
+            
+            echo "<td class='$statutClass'>$statutLabel</td>";
+
+            // Actions
+            echo "<td class='actions'>";
+            if ($statut == 'en_attente') {
+                echo "<a href='traitementDesJustificatif.php?id=" . htmlspecialchars($absence['idabsence']) . "' class='btn_justif'>Détails</a>";
+            } else {
+                echo "<span class='traite'>Traité</span>";
+            }
+            echo "</td>";
+            echo "</tr>";
+        }
+
+        if ($count == 0) {
+            echo "<tr><td colspan='8' style='text-align: center; padding: 20px;'>Aucune absence ne correspond aux critères de filtrage.</td></tr>";
+        }
+    }
     ?>
     </tbody>
 </table>
