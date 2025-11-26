@@ -74,8 +74,18 @@ require '../layout/navigation.php';
                     continue;
                 }
 
-                // Use DB justifie boolean
-                $statut = (isset($absence['justifie']) && $absence['justifie']) ? 'valide' : 'en_attente';
+                // Déterminer le statut basé sur le champ justifie (null, true, false)
+                $statut = 'en_attente'; // Par défaut
+                if (isset($absence['justifie']) && $absence['justifie'] !== null) {
+                    // PostgreSQL retourne 't' ou 'f' pour les booléens
+                    if ($absence['justifie'] === true || $absence['justifie'] === 't' || $absence['justifie'] === '1' || $absence['justifie'] === 1) {
+                        $statut = 'valide';
+                    } elseif ($absence['justifie'] === false || $absence['justifie'] === 'f' || $absence['justifie'] === '0' || $absence['justifie'] === 0) {
+                        $statut = 'refuse';
+                    }
+                }
+                // Si justifie est null ou non défini, statut reste 'en_attente'
+                
                 if ($statutFiltre && $statut != $statutFiltre) {
                     continue;
                 }

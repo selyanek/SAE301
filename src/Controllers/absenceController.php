@@ -22,7 +22,8 @@ class AbsenceController
             $this->absence->setDateDebut($_POST['date_debut']);
             $this->absence->setDateFin($_POST['date_fin']);
             $this->absence->setMotif($_POST['motif'] ?? null);
-            $this->absence->setJustifie(isset($_POST['justifie']) ? (bool)$_POST['justifie'] : false);
+            // Par défaut, justifie est null (en attente)
+            $this->absence->setJustifie(isset($_POST['justifie']) && $_POST['justifie'] !== '' ? (bool)$_POST['justifie'] : null);
             $this->absence->setUriJustificatif($_POST['uriJustificatif'] ?? null);
 
             $result = $this->absence->ajouterAbsence();
@@ -30,11 +31,8 @@ class AbsenceController
             if ($result) {
                 echo json_encode(['message' => 'Absence ajoutée avec succès', 'id' => $result]);
             } else {
-                echo json_encode(['error' => 'Erreur lors de l’ajout de l’absence']);
+                echo json_encode(['error' => 'Erreur lors de l'ajout de l'absence']);
             }
         }
     }
 }
-
-
-

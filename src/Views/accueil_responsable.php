@@ -31,8 +31,7 @@ $redirect->redirect();
     <ul>
         <li><a href="accueil_responsable.php">Accueil</a></li> <!-- Lien vers la page d'accueil -->
         <li><a href="gestionAbsResp.php">Gestion des absences</a></li> <!-- Lien vers la gestion des absences -->
-        <li><a href="traitementDesJustificatif.php">Traitement des Justificatifs</a></li> <!-- Lien vers le traitementDesJustificatif -->
-        <li><a href="#">Historique des absences</a></li> <!-- Lien vers l'historique (à compléter) -->
+        <li><a href="historiqueAbsResp.php">Historique des absences</a></li> <!-- Lien vers l'historique -->
         <li><a href="#">Statistiques</a></li> <!-- Lien vers les statistiques (à compléter) -->
     </ul>
 </div>

@@ -10,7 +10,7 @@ class Absence
     private ?string $dateDebut;
     private ?string $dateFin;
     private ?string $motif;
-    private ?bool $justifie;
+    private ?bool $justifie; // null = en attente, true = validé, false = refusé
     private ?int $idEtudiant;
     private ?int $idCours;
     private ?string $uriJustificatif;
@@ -27,7 +27,7 @@ class Absence
     public function setDateDebut(string $dateDebut): void { $this->dateDebut = $dateDebut; }
     public function setDateFin(string $dateFin): void { $this->dateFin = $dateFin; }
     public function setMotif(?string $motif): void { $this->motif = $motif; }
-    public function setJustifie(bool $justifie): void { $this->justifie = $justifie; }
+    public function setJustifie(?bool $justifie): void { $this->justifie = $justifie; } // Accepte null
     public function setIdEtudiant(int $idEtudiant): void { $this->idEtudiant = $idEtudiant; }
     public function setIdCours(int $idCours): void { $this->idCours = $idCours; }
     public function setUriJustificatif(?string $uriJustificatif): void { $this->uriJustificatif = $uriJustificatif; }
@@ -46,7 +46,12 @@ class Absence
             $stmt->bindValue(':date_debut', $this->dateDebut);
             $stmt->bindValue(':date_fin', $this->dateFin);
             $stmt->bindValue(':motif', $this->motif);
-            $stmt->bindValue(':justifie', $this->justifie, PDO::PARAM_BOOL);
+            // Si justifie est null, on utilise PDO::PARAM_NULL
+            if ($this->justifie === null) {
+                $stmt->bindValue(':justifie', null, PDO::PARAM_NULL);
+            } else {
+                $stmt->bindValue(':justifie', $this->justifie, PDO::PARAM_BOOL);
+            }
             $stmt->bindValue(':uriJustificatif', $this->uriJustificatif);
 
             $stmt->execute();

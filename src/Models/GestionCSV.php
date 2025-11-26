@@ -378,7 +378,7 @@ class GestionCSV
     
     private function createAbsence(PDO $pdo, int $id_cours, int $id_etudiant, 
                                    string $date_debut, string $date_fin, 
-                                   string $motif, bool $justifie, array &$stats): void
+                                   string $motif, ?bool $justifie, array &$stats): void
     {
         // Vérifier si l'absence existe déjà
         $sql = "SELECT idAbsence FROM Absence 
@@ -397,13 +397,20 @@ class GestionCSV
         $sql = "INSERT INTO Absence (idCours, idEtudiant, date_debut, date_fin, motif, justifie) 
                 VALUES (:cours, :etudiant, :date_debut, :date_fin, :motif, :justifie)";
         $stmt = $pdo->prepare($sql);
+        
+        // Gérer null, true ou false pour justifie
+        $justifieValue = null;
+        if ($justifie !== null) {
+            $justifieValue = $justifie ? 1 : 0;
+        }
+        
         $stmt->execute([
             ':cours' => $id_cours,
             ':etudiant' => $id_etudiant,
             ':date_debut' => $date_debut,
             ':date_fin' => $date_fin,
             ':motif' => $motif,
-            ':justifie' => $justifie ? 1 : 0
+            ':justifie' => $justifieValue
         ]);
         $stats['absences']++;
     }

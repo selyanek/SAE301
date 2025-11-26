@@ -30,9 +30,6 @@ $absenceModel = new \src\Models\Absence($pdo);
 // Récupérer toutes les absences
 $absences = $absenceModel->getAll();
 
-// MODE DEBUG - Décommenter pour voir les données brutes
-$debug_mode = isset($_GET['debug']) && $_GET['debug'] === '1';
-
 // Récupération des filtres
 $nomFiltre = isset($_POST['nom']) ? strtolower(trim($_POST['nom'])) : '';
 $dateFiltre = isset($_POST['date']) ? $_POST['date'] : '';
@@ -42,7 +39,7 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Gestion des absences</title>
+    <title>Historique des absences</title>
     <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
     <link href="/public/asset/CSS/cssGestionAbsResp.css" rel="stylesheet">
 </head>
@@ -66,7 +63,8 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
 </div>
 
 <header class="text">
-    <h1>Gestion des absences</h1>
+    <h1>Historique des absences</h1>
+    <p>Consultez l'historique de toutes les absences validées ou refusées.</p>
 </header>
 
 <!-- Filtrage -->
@@ -80,13 +78,12 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
     <label for="statut">Statut :</label>
     <select name="statut" id="statut">
         <option value="">Tous</option>
-        <option value="en_attente" <?php echo (isset($_POST['statut']) && $_POST['statut'] == 'en_attente') ? 'selected' : ''; ?>>En attente</option>
         <option value="valide" <?php echo (isset($_POST['statut']) && $_POST['statut'] == 'valide') ? 'selected' : ''; ?>>Validé</option>
         <option value="refuse" <?php echo (isset($_POST['statut']) && $_POST['statut'] == 'refuse') ? 'selected' : ''; ?>>Refusé</option>
     </select>
 
     <button type="submit">Filtrer</button>
-    <a href="gestionAbsResp.php"><button type="button">Réinitialiser</button></a>
+    <a href="historiqueAbsResp.php"><button type="button">Réinitialiser</button></a>
 </form>
 
 <!-- Tableau des absences -->
@@ -100,41 +97,17 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
         <th scope='col'>Motif</th>
         <th scope='col'>Document</th>
         <th scope='col'>Statut</th>
-        <th scope='col'>Actions</th>
     </tr>
     </thead>
     <tbody>
     <?php
-    // Afficher les messages
-    if (isset($_GET['success'])) {
-        echo "<tr><td colspan='8' class='success-message'>✅ " . htmlspecialchars($_GET['success']) . "</td></tr>";
-    }
-    if (isset($_GET['error'])) {
-        echo "<tr><td colspan='8' class='error-message'>❌ Erreur lors du traitement</td></tr>";
-    }
-
     // Vérifier si des absences existent
     if (!$absences || count($absences) === 0) {
-        echo "<tr><td colspan='8' style='text-align: center; padding: 20px;'>Aucune absence enregistrée pour le moment.</td></tr>";
+        echo "<tr><td colspan='7' style='text-align: center; padding: 20px;'>Aucune absence enregistrée pour le moment.</td></tr>";
     } else {
-        // MODE DEBUG - Afficher les données de la première absence
-        if ($debug_mode && count($absences) > 0) {
-            echo "<tr><td colspan='8' style='background: #fff3cd; padding: 15px;'>";
-            echo "<strong>🔍 MODE DEBUG - Données de la première absence :</strong><br>";
-            echo "<pre style='text-align: left; font-size: 11px;'>";
-            print_r($absences[0]);
-            echo "</pre>";
-            echo "<strong>Clés disponibles :</strong> " . implode(', ', array_keys($absences[0]));
-            echo "</td></tr>";
-        }
-        
         // Affichage des absences filtrées
         $count = 0;
         foreach ($absences as $absence) {
-            // DEBUG: Afficher les clés disponibles (à retirer après debug)
-            // Décommenter la ligne suivante pour voir les données disponibles :
-            // echo "<tr><td colspan='8'><pre>" . print_r(array_keys($absence), true) . "</pre></td></tr>";
-            
             // Application des filtres
             // Récupérer le nom et prénom de l'étudiant
             $prenomEtudiant = $absence['prenomcompte'] ?? $absence['prenomCompte'] ?? '';
@@ -158,7 +131,7 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
             // Déterminer le statut basé sur le champ justifie (null, true, false)
             $statut = 'en_attente'; // Par défaut
             if (isset($absence['justifie']) && $absence['justifie'] !== null) {
-                // PostgreSQL retourne 't' ou 'f' pour les booléens, PHP peut les convertir en true/false
+                // PostgreSQL retourne 't' ou 'f' pour les booléens
                 if ($absence['justifie'] === true || $absence['justifie'] === 't' || $absence['justifie'] === '1' || $absence['justifie'] === 1) {
                     $statut = 'valide';
                 } elseif ($absence['justifie'] === false || $absence['justifie'] === 'f' || $absence['justifie'] === '0' || $absence['justifie'] === 0) {
@@ -167,10 +140,10 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
             }
             // Si justifie est null ou non défini, statut reste 'en_attente'
             
-            // Filtrer uniquement les absences en attente dans cet onglet
-            // Les absences validées ou refusées doivent apparaître dans l'historique
-            if ($statut !== 'en_attente') {
-                continue; // Ne pas afficher les absences déjà traitées
+            // Afficher uniquement les absences validées ou refusées dans l'historique
+            // Les absences en attente sont dans gestionAbsResp.php
+            if ($statut === 'en_attente') {
+                continue; // Ne pas afficher les absences en attente dans l'historique
             }
             
             if ($statutFiltre && $statut != $statutFiltre) {
@@ -183,10 +156,6 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
             $statutLabel = '';
 
             switch($statut) {
-                case 'en_attente':
-                    $statutClass = 'statut-attente';
-                    $statutLabel = '⏳ En attente';
-                    break;
                 case 'valide':
                     $statutClass = 'statut-valide';
                     $statutLabel = '✅ Validé';
@@ -213,20 +182,11 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
             }
             
             echo "<td class='$statutClass'>$statutLabel</td>";
-
-            // Actions
-            echo "<td class='actions'>";
-            if ($statut == 'en_attente') {
-                echo "<a href='traitementDesJustificatif.php?id=" . htmlspecialchars($absence['idabsence']) . "' class='btn_justif'>Détails</a>";
-            } else {
-                echo "<span class='traite'>Traité</span>";
-            }
-            echo "</td>";
             echo "</tr>";
         }
 
         if ($count == 0) {
-            echo "<tr><td colspan='8' style='text-align: center; padding: 20px;'>Aucune absence ne correspond aux critères de filtrage.</td></tr>";
+            echo "<tr><td colspan='7' style='text-align: center; padding: 20px;'>Aucune absence traitée ne correspond aux critères de filtrage.</td></tr>";
         }
     }
     ?>
@@ -242,32 +202,9 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
     </nav>
 </footer>
 
-<script>
-    function validerAbsence(index) {
-        if (confirm('Voulez-vous vraiment valider cette absence ?')) {
-            // À implémenter : appel AJAX vers un script PHP pour mettre à jour le statut
-            window.location.href = '../Controllers/traiter_absence.php?action=valider&id=' + index;
-        }
-    }
-
-    function refuserAbsence(index) {
-        if (confirm('Voulez-vous vraiment refuser cette absence ?')) {
-            // À implémenter : appel AJAX vers un script PHP pour mettre à jour le statut
-            window.location.href = '../Controllers/traiter_absence.php?action=refuser&id=' + index;
-        }
-    }
-</script>
-
 <style>
-    .statut-attente { color: orange; font-weight: bold; }
     .statut-valide { color: green; font-weight: bold; }
     .statut-refuse { color: red; font-weight: bold; }
-    .actions { display: flex; gap: 5px; }
-    .btn-valider { background: #4CAF50; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px; }
-    .btn-refuser { background: #f44336; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px; }
-    .btn-valider:hover { background: #45a049; }
-    .btn-refuser:hover { background: #da190b; }
-    .traite { color: #888; font-style: italic; }
 </style>
 
 </body>

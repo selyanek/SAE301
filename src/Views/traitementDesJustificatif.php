@@ -37,8 +37,7 @@ $absence = ($id > 0) ? $absenceModel->getById($id) : null;
     <ul>
         <li><a href="accueil_responsable.php">Accueil</a></li>
         <li><a href="gestionAbsResp.php">Gestion des absences</a></li>
-        <li><a href="traitementDesJustificatif.php">Traitement des Justificatifs</a></li>
-        <li><a href="#">Historique des absences</a></li>
+        <li><a href="historiqueAbsResp.php">Historique des absences</a></li>
         <li><a href="#">Statistiques</a></li>
     </ul>
 </div>
