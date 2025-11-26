@@ -5,6 +5,8 @@ $additionalCSS = ['../../../public/asset/CSS/cssGestionAbsResp.css'];
 // require '../layout/header.php';
 // require '../layout/navigation.php';
 
+// TODO intégrer le style du site
+
 // Exécuter le script Python pour générer les images
 $projectRoot = dirname(dirname(dirname(__DIR__)));
 $pythonScript = $projectRoot . '/stats.py';
@@ -33,11 +35,25 @@ if (file_exists($pythonScript)) {
         <img src="/public/asset/img/logouphf.png" alt="Logo UPHF" class="logo">
     </header>
     <h1> Statistiques </h1>
-    <img src="/public/asset/stats/absences.png" alt="Répartition par cours">
-    <img src="/public/asset/stats/absences2.png" alt="Répartition par heure">
-    <img src="/public/asset/stats/absences3.png" alt="Absences 14 derniers jours">
-    <img src="/public/asset/stats/absences4.png" alt="Top 3 des absents">
+    <div id = "stats_bar">
+        <img src="/public/asset/stats/absences.png" alt="Répartition par cours" id="1">
+        <img src="/public/asset/stats/absences2.png" alt="Répartition par heure" id="2">
+        <img src="/public/asset/stats/absences3.png" alt="Absences 14 derniers jours" id="3">
+        <img src="/public/asset/stats/absences4.png" alt="Top 3 des absents" id="4">
+    </div>
+    <style>
+        #stats_bar {
+            display: inline-block;
+            align-items: center;
 
+        }
+
+        img {
+            box-shadow: inset;
+            width: 35%;
+        }
+
+    </style>
 
 </body>
 </html>
