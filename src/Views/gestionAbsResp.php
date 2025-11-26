@@ -83,66 +83,37 @@ require __DIR__ . '/../Controllers/session_timeout.php'; // Gestion du timeout d
         echo "<div class='error-message'>❌ Erreur lors du traitement</div>";
     }
 
-    // Chemin vers les fichiers CSV
-    $csvFile = '../data/uploads.csv';
-    $csvStatuts = '../data/statuts.csv';
-
-    // Charger les statuts
-    $statuts = [];
-    if (file_exists($csvStatuts)) {
-        $handleStatuts = fopen($csvStatuts, 'r');
-        if ($handleStatuts) {
-            while (($data = fgetcsv($handleStatuts, 1000, ';', '"', '')) !== FALSE) {
-                if (count($data) >= 3) {
-                    // Clé: date_soumission|chemin_fichier
-                    $key = $data[0] . '|' . $data[1];
-                    $statuts[$key] = $data[2]; // statut
-                }
-            }
-            fclose($handleStatuts);
-        }
-    }
-
-    // Vérifier si le fichier existe
-    if (!file_exists($csvFile)) {
+    // Nouvelle approche : charger les absences depuis la base de données
+    require __DIR__ . '/../Database/Database.php';
+    require __DIR__ . '/../Models/Absence.php';
+    // Instancier la BDD et le modèle en utilisant des noms fully-qualified (éviter 'use' après du code)
+    $db = new \src\Database\Database();
+    $pdo = $db->getConnection();
+    $absenceModel = new \src\Models\Absence($pdo);
+    $absences = $absenceModel->getAll();
+    if (!$absences || count($absences) === 0) {
         echo "<tr><td colspan='8'>Aucune absence enregistrée pour le moment.</td></tr>";
     } else {
-        // Lecture du fichier CSV
-        $handle = fopen($csvFile, 'r');
-        $absences = [];
-
-        if ($handle) {
-            while (($data = fgetcsv($handle, 1000, ';', '"', '')) !== FALSE) {
-                // Structure: date_soumission, date_start, date_end, motif, chemin_fichier, nom_fichier_original
-                if (count($data) >= 6) {
-                    $key = $data[0] . '|' . $data[4];
-                    $absences[] = [
-                            'date_soumission' => $data[0],
-                            'date_start' => $data[1],
-                            'date_end' => $data[2],
-                            'motif' => $data[3],
-                            'fichier' => $data[4],
-                            'nom_fichier' => $data[5],
-                            'statut' => isset($statuts[$key]) ? $statuts[$key] : 'en_attente'
-                    ];
-                }
-            }
-            fclose($handle);
 
             // Affichage des absences filtrées
             $count = 0;
-            foreach (array_reverse($absences) as $index => $absence) {
+            foreach ($absences as $absence) {
                 // Application des filtres
-                if ($nomFiltre && strpos(strtolower($absence['nom_fichier']), $nomFiltre) === false) {
+                if ($nomFiltre && strpos(strtolower($absence['nom_fichier'] ?? ($absence['prenomCompte'] . ' ' . $absence['nomCompte'])), $nomFiltre) === false) {
                     continue;
                 }
 
-                $dateDebut = date('Y-m-d', strtotime($absence['date_start']));
+                $dateDebut = date('Y-m-d', strtotime($absence['date_debut'] ?? $absence['date_start'] ?? 'now'));
                 if ($dateFiltre && $dateDebut != $dateFiltre) {
                     continue;
                 }
 
-                if ($statutFiltre && $absence['statut'] != $statutFiltre) {
+                // Convertir le booléen 'justifie' en libellé de statut
+                $statut = 'en_attente';
+                if (isset($absence['justifie'])) {
+                    $statut = $absence['justifie'] ? 'valide' : 'en_attente';
+                }
+                if ($statutFiltre && $statut != $statutFiltre) {
                     continue;
                 }
 
@@ -151,7 +122,7 @@ require __DIR__ . '/../Controllers/session_timeout.php'; // Gestion du timeout d
                 $statutClass = '';
                 $statutLabel = '';
 
-                switch($absence['statut']) {
+                switch($statut) {
                     case 'en_attente':
                         $statutClass = 'statut-attente';
                         $statutLabel = '⏳ En attente';
@@ -167,20 +138,21 @@ require __DIR__ . '/../Controllers/session_timeout.php'; // Gestion du timeout d
                 }
 
                 echo "<tr>";
-                echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_soumission']))) . "</td>";
-                echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_start']))) . "</td>";
-                echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_end']))) . "</td>";
-                echo "<td>" . htmlspecialchars($absence['nom_fichier']) . "</td>";
+                // Mappage aux champs de la BDD
+                echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_debut']))) . "</td>";
+                echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_debut']))) . "</td>";
+                echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_fin']))) . "</td>";
+                echo "<td>" . htmlspecialchars($absence['prenomCompte'] . ' ' . $absence['nomCompte']) . "</td>";
                 echo "<td>" . htmlspecialchars($absence['motif']) . "</td>";
-                echo "<td><a href='" . htmlspecialchars($absence['fichier']) . "' target='_blank'>📄 Voir le document</a></td>";
+                echo "<td><a href='" . htmlspecialchars($absence['uriJustificatif']) . "' target='_blank'>📄 Voir le document</a></td>";
                 echo "<td class='$statutClass'>$statutLabel</td>";
 
                 // Actions
                 echo "<td class='actions'>";
 
                 // Bouton pour voir les détails - toujours visible
-                if ($absence['statut'] == 'en_attente' or $absence['statut'] == '') {
-                    echo "<a href='../Views/traitementDesJustificatif.php?id=" . $index . "' class='btn_justif'>Détails</a>";
+                if ($statut == 'en_attente' || $statut == '') {
+                    echo "<a href='../Views/traitementDesJustificatif.php?id=" . $absence['idabsence'] . "' class='btn_justif'>Détails</a>";
                 } else {
                     echo "<span class='traite'>Traité</span>";
                 }
@@ -191,10 +163,7 @@ require __DIR__ . '/../Controllers/session_timeout.php'; // Gestion du timeout d
             if ($count == 0) {
                 echo "<tr><td colspan='8'>Aucune absence ne correspond aux critères de filtrage.</td></tr>";
             }
-        } else {
-            echo "<tr><td colspan='8'>Erreur lors de la lecture du fichier CSV.</td></tr>";
         }
-    }
     ?>
     </tbody>
 </table>
@@ -212,14 +181,14 @@ require __DIR__ . '/../Controllers/session_timeout.php'; // Gestion du timeout d
     function validerAbsence(index) {
         if (confirm('Voulez-vous vraiment valider cette absence ?')) {
             // À implémenter : appel AJAX vers un script PHP pour mettre à jour le statut
-            window.location.href = '../Controllers/traiter_absence.php?action=valider&index=' + index;
+            window.location.href = '../Controllers/traiter_absence.php?action=valider&id=' + index;
         }
     }
 
     function refuserAbsence(index) {
         if (confirm('Voulez-vous vraiment refuser cette absence ?')) {
             // À implémenter : appel AJAX vers un script PHP pour mettre à jour le statut
-            window.location.href = '../Controllers/traiter_absence.php?action=refuser&index=' + index;
+            window.location.href = '../Controllers/traiter_absence.php?action=refuser&id=' + index;
         }
     }
 </script>

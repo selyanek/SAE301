@@ -11,7 +11,7 @@ class Database
     private string $dbname = "sae";
     private string $user = "sae";
     private string $pass = "1zevkN&49b&&a*Pi97C";
-    private PDO $pdo;
+    private ?PDO $pdo = null;
 
     public function __construct()
     {
@@ -27,12 +27,12 @@ class Database
         }
     }
 
-    public function getConnection()
+    public function getConnection(): ?PDO
     {
         return $this->pdo;
     }
 
-    public function endConnection()
+    public function endConnection(): void
     {
         $this->pdo = null;
     }
