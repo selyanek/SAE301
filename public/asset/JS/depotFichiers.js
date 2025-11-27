@@ -127,8 +127,11 @@ async function uploadFiles() {
 
         if (result.success) {
             messageDiv.innerHTML = `<div class="message success">${result.message}</div>`;
-            filesList = [];
-            updateFileList();
+            
+            // Rediriger vers l'historique des absences
+            setTimeout(() => {
+                window.location.href = '/src/Views/etudiant/historiqueAbsences.php';
+            }, 1500);
         } else {
             messageDiv.innerHTML = `<div class="message error">${result.message}</div>`;
         }
