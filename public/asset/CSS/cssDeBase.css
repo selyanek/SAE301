@@ -81,13 +81,12 @@ body {
   width: auto;
 }
 .footer {
-  width: 100%;
-  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   background: #e0e0e0;
-  padding-bottom: 20px;
-  padding-top: 20px;
-    text-align: center;
-    position: fixed;
+  padding: 1rem 2rem;
 }
 .footer-nav {
   display: inline-block;
