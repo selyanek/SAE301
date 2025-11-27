@@ -134,7 +134,7 @@ $idCours = $cours['idcours'] ?? 1;
 $absence->setDateDebut($dateStart);
 $absence->setDateFin($dateEnd);
 $absence->setMotif($motif);
-$absence->setJustifie(false);
+$absence->setJustifie(null); // null = en attente de traitement
 $absence->setIdEtudiant((int)$idEtudiant);
 $absence->setIdCours((int)$idCours);
 $absence->setUriJustificatif(json_encode($fileNamesSaved));

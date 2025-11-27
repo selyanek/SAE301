@@ -95,13 +95,23 @@ $absence = ($id > 0) ? $absenceModel->getById($id) : null;
 
         <div class="encadre1">
             <div class="encadre2">
-                <h3>Document</h3>
+                <h3>Document(s) justificatif(s)</h3>
                 <div class="encadre3">
-                    <p>
-                        <?php
-                        echo (!empty($absence['uriJustificatif']))? '<a href="' . htmlspecialchars($absence['uriJustificatif']) . '" target="_blank">📄 Voir le document</a>': '—';
-                        ?>
-                    </p>
+                    <?php
+                    if (!empty($absence['urijustificatif'])) {
+                        $fichiers = json_decode($absence['urijustificatif'], true);
+                        if (is_array($fichiers) && count($fichiers) > 0) {
+                            foreach ($fichiers as $index => $fichier) {
+                                $fichierPath = "../../uploads/" . htmlspecialchars($fichier);
+                                echo "<p><a href='" . $fichierPath . "' target='_blank' style='color: #0066cc; text-decoration: none;'>" . htmlspecialchars($fichier) . "</a></p>";
+                            }
+                        } else {
+                            echo "<p>—</p>";
+                        }
+                    } else {
+                        echo "<p>Aucun document fourni</p>";
+                    }
+                    ?>
                 </div>
             </div>
         </div>

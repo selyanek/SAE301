@@ -115,7 +115,24 @@ require '../layout/navigation.php';
                 echo "<td>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_debut']))) . "</td>";
                 echo "<td>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_fin']))) . "</td>";
                 echo "<td>" . htmlspecialchars($absence['motif']) . "</td>";
-                echo "<td><a href='" . htmlspecialchars($absence['uriJustificatif']) . "' target='_blank'>Voir le justificatif</a></td>";
+                
+                // Documents justificatifs
+                echo "<td>";
+                if (!empty($absence['urijustificatif'])) {
+                    $fichiers = json_decode($absence['urijustificatif'], true);
+                    if (is_array($fichiers) && count($fichiers) > 0) {
+                        foreach ($fichiers as $index => $fichier) {
+                            $fichierPath = "../../../uploads/" . htmlspecialchars($fichier);
+                            echo "<a href='" . $fichierPath . "' target='_blank'>" . htmlspecialchars($fichier) . "</a><br>";
+                        }
+                    } else {
+                        echo "—";
+                    }
+                } else {
+                    echo "—";
+                }
+                echo "</td>";
+                
                 echo "<td class='$statutClass'>$statutLabel</td>";
                 echo "</tr>";
             }

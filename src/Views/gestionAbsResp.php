@@ -205,12 +205,22 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
             echo "<td>" . htmlspecialchars($nomEtudiant) . "</td>";
             echo "<td>" . htmlspecialchars($absence['motif'] ?? '—') . "</td>";
             
-            // Document justificatif
-            if (!empty($absence['uriJustificatif'])) {
-                echo "<td><a href='" . htmlspecialchars($absence['uriJustificatif']) . "' target='_blank'>📄 Voir le document</a></td>";
+            // Documents justificatifs
+            echo "<td>";
+            if (!empty($absence['urijustificatif'])) {
+                $fichiers = json_decode($absence['urijustificatif'], true);
+                if (is_array($fichiers) && count($fichiers) > 0) {
+                    foreach ($fichiers as $index => $fichier) {
+                        $fichierPath = "../../uploads/" . htmlspecialchars($fichier);
+                        echo "<a href='" . $fichierPath . "' target='_blank'>" . htmlspecialchars($fichier) . "</a><br>";
+                    }
+                } else {
+                    echo "—";
+                }
             } else {
-                echo "<td>—</td>";
+                echo "—";
             }
+            echo "</td>";
             
             echo "<td class='$statutClass'>$statutLabel</td>";
 

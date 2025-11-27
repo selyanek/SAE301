@@ -132,3 +132,15 @@ tr:hover {
 .btn_justif:hover { 
     background: #29acc8; 
 }
+
+/* Styles pour l'affichage des documents */
+td a[target="_blank"] {
+    color: #0066cc;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+td a[target="_blank"]:hover {
+    color: #004499;
+    text-decoration: underline;
+}

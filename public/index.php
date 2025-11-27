@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Récupérer l'idCompte de l'utilisateur
             $user = $login->getIdUtilisateur($pdo);
             
-            if ($user) {
+            if ($user && is_array($user)) {
                 $_SESSION['idCompte'] = $user['idcompte'];
                 $_SESSION['idEtudiant'] = $user['idcompte']; // Pour les étudiants, idEtudiant = idCompte
             }
