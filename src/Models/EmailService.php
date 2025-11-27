@@ -12,7 +12,6 @@ class EmailService
     
     /**
      * Configuration SMTP par défaut
-     * À modifier selon votre configuration serveur
      */
     private $smtpConfig = [
         'host' => 'smtp.gmail.com',

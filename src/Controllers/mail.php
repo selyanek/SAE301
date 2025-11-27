@@ -46,7 +46,7 @@ try {
             throw new Exception("Erreur lors du téléchargement du fichier");
         }
 
-        // 5. Envoi de l'email (exemple)
+        // 5. Envoi de l'email
         $to = "responsable@example.com";
         $subject = "Nouveau justificatif d'absence";
         $message = "Date début: $date_start\nDate fin: $date_end\nMotif: $motif";
@@ -67,11 +67,11 @@ try {
 }
 
 // 6. Redirection selon le résultat
-    if ($success) {
-    header('Location: /src/Views/etudiant/dashbord.php?message=success');
+if ($success) {
+    header('Location: ../Views/accueil_etudiant.php?message=success');
     exit();
 } else {
-    header('Location: /src/Views/depotJustif.php?error=' . urlencode($errorMessage));
+    header('Location: ../Views/depot_justificatif.php?error=' . urlencode($errorMessage));
     exit();
 }
 ?>

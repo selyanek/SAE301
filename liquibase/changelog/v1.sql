@@ -83,6 +83,7 @@ CREATE TABLE Absence
     motif           TEXT,
     justifie        BOOLEAN   NOT NULL DEFAULT FALSE,
     uriJustificatif TEXT      NULL,
+    CHECK ( date_fin > date_debut ),
     FOREIGN KEY (idEtudiant) REFERENCES Etudiant (idEtudiant) ON DELETE CASCADE,
     FOREIGN KEY (idCours) REFERENCES Cours (idCours) ON DELETE CASCADE
 );
@@ -94,11 +95,9 @@ INSERT INTO Compte (identifiantCompte, mot_de_passe, nom, prenom, fonction)
 VALUES ('dilara.simsek', 'motdepasse123', 'Simsek', 'Dilara', 'etudiant');
 
 INSERT INTO Etudiant (idEtudiant, identifiantEtu, formation)
-VALUES (
-           (SELECT idCompte FROM Compte WHERE identifiantCompte = 'dilara.simsek'),
-           'dilara.simsek',
-           'Informatique'
-       );
+VALUES ((SELECT idCompte FROM Compte WHERE identifiantCompte = 'dilara.simsek'),
+        'dilara.simsek',
+        'Informatique');
 --rollback DELETE FROM Etudiant WHERE identifiantEtu = 'dilara.simsek'; DELETE FROM Compte WHERE identifiantCompte = 'dilara.simsek';
 
 --changeset Selyane:9
@@ -107,10 +106,8 @@ INSERT INTO Compte (identifiantCompte, mot_de_passe, nom, prenom, fonction)
 VALUES ('john.doe', 'x', 'Doe', 'John', 'professeur');
 
 INSERT INTO Professeur (idProfesseur, identifiantProf)
-VALUES (
-           (SELECT idCompte FROM Compte WHERE identifiantCompte = 'john.doe'),
-           'john.doe'
-       );
+VALUES ((SELECT idCompte FROM Compte WHERE identifiantCompte = 'john.doe'),
+        'john.doe');
 --rollback DELETE FROM Professeur WHERE identifiantProf = 'john.doe'; DELETE FROM Compte WHERE identifiantCompte = 'john.doe';
 
 --changeset Selyane:10
@@ -148,14 +145,12 @@ VALUES (
 --changeset Selyane:13
 --comment: Insertion d'une absence pour l'étudiant Dilara Simsek
 INSERT INTO Absence (date_debut, date_fin, motif, justifie, idEtudiant, idCours)
-VALUES (
-           '2024-09-01 09:30:00',
-           '2024-09-01 11:00:00',
-           'Maladie',
-           FALSE,
-           (SELECT idEtudiant FROM Etudiant WHERE identifiantEtu = 'dilara.simsek'),
-           (SELECT idCours FROM Cours WHERE date_debut = '2024-09-01 09:30:00')
-       );
+VALUES ('2024-09-01 09:30:00',
+        '2024-09-01 11:00:00',
+        'Maladie',
+        FALSE,
+        (SELECT idEtudiant FROM Etudiant WHERE identifiantEtu = 'dilara.simsek'),
+        (SELECT idCours FROM Cours WHERE date_debut = '2024-09-01 09:30:00'));
 --rollback DELETE FROM Absence WHERE idEtudiant = (SELECT idEtudiant FROM Etudiant WHERE identifiantEtu = 'dilara.simsek');
 
 --changeset Roman:14
@@ -164,11 +159,9 @@ INSERT INTO Compte (identifiantCompte, mot_de_passe, nom, prenom, fonction)
 VALUES ('alice.martin', 'securepass456', 'Martin', 'Alice', 'etudiant');
 
 INSERT INTO Etudiant (idEtudiant, identifiantEtu, formation)
-VALUES (
-           (SELECT idCompte FROM Compte WHERE identifiantCompte = 'alice.martin'),
-           'alice.martin',
-           'Mathematics'
-       );
+VALUES ((SELECT idCompte FROM Compte WHERE identifiantCompte = 'alice.martin'),
+        'alice.martin',
+        'Mathematics');
 --rollback DELETE FROM Etudiant WHERE identifiantEtu = 'alice.martin'; DELETE FROM Compte WHERE identifiantCompte = 'alice.martin';
 
 -- End of changelog

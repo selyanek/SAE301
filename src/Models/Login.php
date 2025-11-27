@@ -16,9 +16,9 @@ class Login
 
     public function verifierConnexion($pdo)
     {
-        $stmt = $pdo->prepare("SELECT * FROM Compte WHERE identifiantCompte = :id AND mot_de_passe = :mdp");
+        $stmt = $pdo->prepare("SELECT * FROM Compte WHERE identifiantCompte = :identifiant AND mot_de_passe = :mdp");
         $stmt->execute([
-            ':id' => $this->identifiant,
+            ':identifiant' => $this->identifiant,
             ':mdp' => $this->mot_de_passe
         ]);
         return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
@@ -65,5 +65,13 @@ class Login
         ]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ? $result['fonction'] : false;
+    }
+
+    public function getIdUtilisateur($pdo)
+    {
+        $stmt = $pdo->prepare("SELECT idcompte FROM compte WHERE identifiantcompte = :identifiant");
+        $stmt->execute([':identifiant' => $this->identifiant]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user ? $user['idcompte'] : false;
     }
 }
