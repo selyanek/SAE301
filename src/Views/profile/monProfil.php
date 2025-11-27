@@ -43,7 +43,7 @@
     <?php if ($user): ?>
         <div class="profile-field"><strong>Prénom :</strong> <?php echo htmlspecialchars($user['prenom'] ?? ''); ?></div>
         <div class="profile-field"><strong>Nom :</strong> <?php echo htmlspecialchars($user['nom'] ?? ''); ?></div>
-        <div class="profile-field"><strong>Email :</strong> <?php echo htmlspecialchars($user['email'] ?? ($_SESSION['login'] . '@etu.uphf.fr')); ?></div>
+        <div class="profile-field"><strong>Email :</strong> <?php echo htmlspecialchars($user['email'] ?? ($_SESSION['login'] . '@uphf.fr')); ?></div>
         <div class="profile-field"><strong>Rôle :</strong> <?php echo htmlspecialchars($user['fonction'] ?? $_SESSION['role']); ?></div>
 
         <?php if (isset($user['fonction']) && (strtolower($user['fonction']) === 'etudiant' || strtolower($user['fonction']) === 'etudiante')): ?>

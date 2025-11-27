@@ -49,7 +49,7 @@ if (isset($_GET['error'])) {
     </div>
 
     <div class="form-group">
-        <label class="label">Justificatifs :</label>
+        <label class="label">Justificatifs (optionnel) :</label>
         <p class="info">Formats acceptés : .pdf, .jpg, .png | Taille max par fichier : 5MB | Taille totale max : 20MB</p>
         
         <!-- Input pour sélectionner un fichier -->
@@ -67,7 +67,7 @@ if (isset($_GET['error'])) {
 
     <div class="buttons">
         <button type="button" class="btn" onclick="resetForm()">Réinitialiser</button>
-        <button type="submit" class="btn" id="submitBtn" disabled>Valider</button>
+        <button type="submit" class="btn" id="submitBtn">Valider</button>
         <a href="dashbord.php"><button type="button" class="btn">Annuler</button></a>
     </div>
 
