@@ -59,7 +59,6 @@ function updateFileList() {
 
     if (filesList.length === 0) {
         container.innerHTML = '<div class="empty-state">Aucun fichier ajouté</div>';
-        submitBtn.disabled = true;
         fileCount.textContent = '';
         return;
     }
@@ -90,16 +89,17 @@ function updateFileList() {
 }
 
 async function uploadFiles() {
-    if (filesList.length === 0) return;
-
     const messageDiv = document.getElementById('message');
     const submitBtn = document.getElementById('submitBtn');
 
     const formData = new FormData();
 
-    filesList.forEach(file => {
-        formData.append('files[]', file);
-    });
+    // Ajouter les fichiers uniquement s'il y en a
+    if (filesList.length > 0) {
+        filesList.forEach(file => {
+            formData.append('files[]', file);
+        });
+    }
 
     formData.append('date_start', document.getElementById('date_start').value);
     formData.append('date_end', document.getElementById('date_end').value);
