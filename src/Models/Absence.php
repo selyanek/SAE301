@@ -92,11 +92,12 @@ class Absence
 
     public function getAll() {
         try {
-            $sql = "SELECT a.*, e.identifiantEtu, c.type AS cours_type, c.date_debut AS cours_date_debut, comp.nom AS nomCompte, comp.prenom AS prenomCompte
+            $sql = "SELECT a.*, e.identifiantEtu, c.type AS cours_type, r.nom AS ressource_nom, c.date_debut AS cours_date_debut, comp.nom AS nomCompte, comp.prenom AS prenomCompte
                     FROM $this->table a
                     JOIN Etudiant e ON a.idEtudiant = e.idEtudiant
                     JOIN Compte comp ON e.idEtudiant = comp.idCompte
                     JOIN Cours c ON a.idCours = c.idCours
+                    LEFT JOIN Ressource r ON c.idRessource = r.idRessource
                     ORDER BY a.date_debut DESC";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
@@ -125,10 +126,12 @@ class Absence
     public function getById($idAbsence)
     {
         try {
-            $sql = "SELECT a.*, e.identifiantEtu, comp.nom AS nomCompte, comp.prenom AS prenomCompte, comp.identifiantCompte
+            $sql = "SELECT a.*, e.identifiantEtu, comp.nom AS nomCompte, comp.prenom AS prenomCompte, comp.identifiantCompte, c.type AS cours_type, r.nom AS ressource_nom
                     FROM $this->table a
                     JOIN Etudiant e ON a.idEtudiant = e.idEtudiant
                     JOIN Compte comp ON e.idEtudiant = comp.idCompte
+                    JOIN Cours c ON a.idCours = c.idCours
+                    LEFT JOIN Ressource r ON c.idRessource = r.idRessource
                     WHERE a.idAbsence = :idAbsence";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([':idAbsence' => $idAbsence]);

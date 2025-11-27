@@ -33,6 +33,7 @@ $redirect->redirect();
         <li><a href="gestionAbsResp.php">Gestion des absences</a></li> <!-- Lien vers la gestion des absences -->
         <li><a href="historiqueAbsResp.php">Historique des absences</a></li> <!-- Lien vers l'historique -->
         <li><a href="#">Statistiques</a></li> <!-- Lien vers les statistiques (à compléter) -->
+
     </ul>
 </div>
 <header class="text">

@@ -114,6 +114,13 @@ $absence = ($id > 0) ? $absenceModel->getById($id) : null;
                     ?>
                 </div>
             </div>
+            <div class="encadre2">
+                <h3>Cours</h3>
+                    <div class="encadre3">
+                        <p><?php echo htmlspecialchars($absence['cours_type'] ?? '—'); ?></p>
+                        <p><?php echo htmlspecialchars($absence['ressource_nom'] ?? '—'); ?></p>
+                    </div>
+            </div>
         </div>
 
         <div class="boutons">
