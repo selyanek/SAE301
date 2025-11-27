@@ -1,8 +1,8 @@
 <?php
 session_start();
 require '../Controllers/session_timeout.php'; // Gestion du timeout de session
-require '../layout/header.php';
-require '../layout/navigation.php';
+require __DIR__ . '/layout/header.php';
+require __DIR__ . '/layout/navigation.php';
 
 // Gestion des messages de succès / erreur
 if (!empty($_GET['success']) && $_GET['success'] == 1) {
@@ -60,6 +60,6 @@ if (!empty($_GET['error'])) {
 
 </div
 
-<?php require '../layout/footer.php'; ?>
+<?php require __DIR__ . '/layout/footer.php'; ?>
 </body>
 </html>
