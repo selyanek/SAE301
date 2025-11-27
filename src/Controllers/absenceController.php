@@ -31,7 +31,7 @@ class AbsenceController
             if ($result) {
                 echo json_encode(['message' => 'Absence ajoutée avec succès', 'id' => $result]);
             } else {
-                echo json_encode(['error' => 'Erreur lors de l'ajout de l'absence']);
+                echo json_encode(['error' => "Erreur lors de l'ajout de l'absence"]);
             }
         }
     }
