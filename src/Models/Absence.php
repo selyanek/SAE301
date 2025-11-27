@@ -36,7 +36,7 @@ class Absence
     {
         try {
             $sql = "INSERT INTO absence
-                (idCours, idEtudiant, date_debut, date_fin, motif, justifie, uriJustificatif)
+                (idcours, idetudiant, date_debut, date_fin, motif, justifie, urijustificatif)
                 VALUES (:idCours, :idEtudiant, :date_debut, :date_fin, :motif, :justifie, :uriJustificatif)";
 
             $stmt = $this->conn->prepare($sql);
@@ -54,8 +54,8 @@ class Absence
             return $this->conn->lastInsertId();
 
         } catch (PDOException $e) {
-            error_log("Erreur d’insertion dans Absence : " . $e->getMessage());
-            return false;
+            error_log("Erreur d'insertion dans Absence : " . $e->getMessage());
+            throw new \Exception("Erreur BDD: " . $e->getMessage());
         }
     }
 

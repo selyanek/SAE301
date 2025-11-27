@@ -14,13 +14,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo = $bd->getConnection();
 
         if ($login->verifierConnexion($pdo)) {
-            $message = "Connexion réussie !";
             session_start();
             $idSession = session_id();
             $_SESSION['login'] = $identifiant;
             $_SESSION['nom'] = $login->getName($pdo);
             $_SESSION["mdp"] = $login->getPwd($pdo);
             $_SESSION["role"] = $login->getRole($pdo);
+
+            // Récupérer l'idCompte de l'utilisateur
+            $user = $login->getIdUtilisateur($pdo);
+            
+            if ($user) {
+                $_SESSION['idCompte'] = $user['idcompte'];
+                $_SESSION['idEtudiant'] = $user['idcompte']; // Pour les étudiants, idEtudiant = idCompte
+            }
 
             $role = $login->verifRole($pdo);
             if ($role == 'etudiant' || $role == 'etudiante') {

@@ -66,4 +66,12 @@ class Login
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ? $result['fonction'] : false;
     }
+
+    public function getIdUtilisateur($pdo)
+    {
+        $stmt = $pdo->prepare("SELECT idcompte FROM compte WHERE identifiantcompte = :identifiant");
+        $stmt->execute([':identifiant' => $this->identifiant]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user ? $user['idcompte'] : false;
+    }
 }

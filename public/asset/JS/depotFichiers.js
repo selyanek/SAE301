@@ -5,49 +5,43 @@ const allowedTypes = ["application/pdf", "image/jpeg", "image/png"];
 
 function addFile() {
     const fileInput = document.getElementById('fileInput');
-    const file = fileInput.files[0];
+    const files = fileInput.files;
 
-    if (!file) {
+    if (!files || files.length === 0) {
         alert('Veuillez sélectionner un fichier');
         return;
     }
 
-    // Vérification type
-    if (!allowedTypes.includes(file.type)) {
-        alert("Format non accepté (.pdf, .jpg, .png)");
-        fileInput.value = '';
-        return;
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+
+        if (!allowedTypes.includes(file.type)) {
+            alert(`Format non accepté pour "${file.name}" (.pdf, .jpg, .png uniquement)`);
+            continue;
+        }
+
+        if (file.size > MAX_FILE_SIZE) {
+            alert(`Fichier "${file.name}" trop volumineux (max 5MB).`);
+            continue;
+        }
+
+        const totalSize = filesList.reduce((sum, f) => sum + f.size, 0) + file.size;
+        if (totalSize > MAX_TOTAL_SIZE) {
+            alert("Taille totale dépassée (max 20MB).");
+            continue;
+        }
+
+        const isDuplicate = filesList.some(f =>
+            f.name === file.name && f.size === file.size
+        );
+        if (isDuplicate) {
+            alert(`Le fichier "${file.name}" est déjà dans la liste`);
+            continue;
+        }
+
+        filesList.push(file);
     }
 
-    // Vérification taille individuelle
-    if (file.size > MAX_FILE_SIZE) {
-        alert("Fichier trop volumineux (max 5MB).");
-        fileInput.value = '';
-        return;
-    }
-
-    // Vérification taille totale
-    const totalSize = filesList.reduce((sum, f) => sum + f.size, 0) + file.size;
-    if (totalSize > MAX_TOTAL_SIZE) {
-        alert("Taille totale dépassée (max 20MB).");
-        fileInput.value = '';
-        return;
-    }
-
-    // Vérification doublon (nom + taille)
-    const isDuplicate = filesList.some(f =>
-        f.name === file.name && f.size === file.size
-    );
-    if (isDuplicate) {
-        alert('Ce fichier est déjà dans la liste');
-        fileInput.value = '';
-        return;
-    }
-
-    // Ajouter
-    filesList.push(file);
-
-    // Reset input
     fileInput.value = '';
 
     updateFileList();
@@ -103,12 +97,10 @@ async function uploadFiles() {
 
     const formData = new FormData();
 
-    // Ajouter fichiers
     filesList.forEach(file => {
         formData.append('files[]', file);
     });
 
-    // Ajouter champs du formulaire
     formData.append('date_start', document.getElementById('date_start').value);
     formData.append('date_end', document.getElementById('date_end').value);
     formData.append('motif', document.getElementById('motif').value);
@@ -117,12 +109,21 @@ async function uploadFiles() {
     submitBtn.disabled = true;
 
     try {
-        const response = await fetch('../../src/Controllers/upload.php', {
+        const response = await fetch('../../Controllers/upload.php', {
             method: 'POST',
             body: formData
         });
 
-        const result = await response.json();
+        const text = await response.text();
+        let result;
+        try {
+            result = JSON.parse(text);
+        } catch (e) {
+            console.error('Réponse serveur:', text);
+            messageDiv.innerHTML = `<div class="message error">Erreur serveur: ${text}</div>`;
+            submitBtn.disabled = false;
+            return;
+        }
 
         if (result.success) {
             messageDiv.innerHTML = `<div class="message success">${result.message}</div>`;
@@ -139,6 +140,13 @@ async function uploadFiles() {
     submitBtn.disabled = false;
 }
 
+function resetForm() {
+    filesList = [];
+    updateFileList();
+    document.getElementById('absenceForm').reset();
+    document.getElementById('message').innerHTML = '';
+}
 
-// Ajout automatique après sélection
-document.getElementById('fileInput').addEventListener('change', addFile);
+document.addEventListener('DOMContentLoaded', function() {
+    updateFileList();
+});

@@ -25,8 +25,10 @@ if (isset($_GET['error'])) {
 ?>
 
 <link rel="stylesheet" href="../../../public/asset/CSS/cssDepot.css">
+<link rel="stylesheet" href="../../../public/asset/CSS/cssEnvoieFichier.css">
 
-<form id="absenceForm" class="absence-form" action="../../Controllers/upload.php" method="post" enctype="multipart/form-data">
+
+<form id="absenceForm" class="absence-form" onsubmit="event.preventDefault(); uploadFiles();">
 
     <div class="form-group">
         <label class="label">Date et heure de début :</label>
@@ -46,18 +48,32 @@ if (isset($_GET['error'])) {
     </div>
 
     <div class="form-group">
-        <label class="label" for="justification">Justification :</label>
-        <p class="info">Veuillez joindre un justificatif (format accepté : .pdf, .jpg, .png | taille max : 5MB)</p>
-        <input class="file-input" type="file" id="justification" name="files" accept=".pdf,.jpg,.jpeg,.png" multiple required />
+        <label class="label">Justificatifs :</label>
+        <p class="info">Formats acceptés : .pdf, .jpg, .png | Taille max par fichier : 5MB | Taille totale max : 20MB</p>
+        
+        <!-- Input pour sélectionner un fichier -->
+        <input class="file-input" type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" />
+        <button type="button" class="btn-add" onclick="addFile()">+ Ajouter ce fichier</button>
+        
+        <!-- Liste des fichiers ajoutés -->
+        <div class="file-list-container" id="fileListContainer">
+            <div class="empty-state">Aucun fichier ajouté</div>
+        </div>
+        <div class="file-count" id="fileCount"></div>
     </div>
 
+    <div id="message"></div>
+
     <div class="buttons">
-        <button type="reset" class="btn">Réinitialiser</button>
-        <button type="submit" class="btn">Valider</button>
+        <button type="button" class="btn" onclick="resetForm()">Réinitialiser</button>
+        <button type="submit" class="btn" id="submitBtn" disabled>Valider</button>
         <a href="dashbord.php"><button type="button" class="btn">Annuler</button></a>
     </div>
 
 </form>
+
+<script src="../../../public/asset/JS/depotFichiers.js"></script>
+
 </body>
 <?php
 require '../layout/footer.php';

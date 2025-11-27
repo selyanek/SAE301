@@ -6,7 +6,6 @@ use src\Database\Database;
 
 require_once '../../vendor/autoload.php';
 
-// Réponse JSON par défaut
 header('Content-Type: application/json');
 
 
@@ -37,7 +36,6 @@ if ($dateEnd <= $dateStart) {
     exit;
 }
 
-// Configuration upload
 $uploadDir = '../../uploads/';
 $maxFileSize = 5 * 1024 * 1024;
 $allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf'];
@@ -104,34 +102,60 @@ foreach ($_FILES['files']['name'] as $index => $originalName) {
 }
 
 
-// -------- SAUVEGARDE EN BDD --------
-
 $bd = new Database();
 $pdo = $bd->getConnection();
 $absence = new Absence($pdo);
 
 $idEtudiant = $_SESSION['idEtudiant'] ?? null;
-$idCours = $_POST['idCours'] ?? 1;
 
-// On stocke les noms des fichiers en JSON (ou autre format selon ta BDD)
+if ($idEtudiant === null) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Vous devez être connecté pour envoyer un justificatif."
+    ]);
+    exit;
+}
+
+$stmt = $pdo->query("SELECT idcours FROM cours LIMIT 1");
+$cours = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$cours) {
+    $pdo->exec("INSERT INTO ressource (nom) VALUES ('Ressource par défaut') ON CONFLICT DO NOTHING");
+    $pdo->exec("INSERT INTO professeur (idprofesseur, identifiantprof) VALUES (1, 'prof.defaut') ON CONFLICT DO NOTHING");
+    $pdo->exec("INSERT INTO responsable_pedagogique (idresponsablepedagogique, identifiantrp) VALUES (1, 'rp.defaut') ON CONFLICT DO NOTHING");
+    $pdo->exec("INSERT INTO cours (idressource, idprofesseur, idresponsablepedagogique, type, seuil, date_debut, date_fin) 
+                VALUES (1, 1, 1, 'CM', false, NOW(), NOW() + INTERVAL '2 hours') ON CONFLICT DO NOTHING");
+    $stmt = $pdo->query("SELECT idcours FROM cours LIMIT 1");
+    $cours = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+$idCours = $cours['idcours'] ?? 1;
+
 $absence->setDateDebut($dateStart);
 $absence->setDateFin($dateEnd);
 $absence->setMotif($motif);
 $absence->setJustifie(false);
-$absence->setIdEtudiant($idEtudiant);
-$absence->setIdCours($idCours);
+$absence->setIdEtudiant((int)$idEtudiant);
+$absence->setIdCours((int)$idCours);
 $absence->setUriJustificatif(json_encode($fileNamesSaved));
 
-$idAbsence = $absence->ajouterAbsence();
+try {
+    $idAbsence = $absence->ajouterAbsence();
 
-if ($idAbsence) {
-    echo json_encode([
-        "success" => true,
-        "message" => "Justificatif envoyé avec succès !"
-    ]);
-} else {
+    if ($idAbsence) {
+        echo json_encode([
+            "success" => true,
+            "message" => "Justificatif envoyé avec succès !"
+        ]);
+    } else {
+        echo json_encode([
+            "success" => false,
+            "message" => "Erreur lors de l'enregistrement en BDD. Vérifiez les logs."
+        ]);
+    }
+} catch (Exception $e) {
     echo json_encode([
         "success" => false,
-        "message" => "Erreur lors de l'enregistrement en BDD."
+        "message" => "Erreur: " . $e->getMessage()
     ]);
 }
