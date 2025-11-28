@@ -36,9 +36,9 @@ $absence = ($id > 0) ? $absenceModel->getById($id) : null;
 <div class="sidebar">
     <ul>
         <li><a href="accueil_responsable.php">Accueil</a></li>
-        <li><a href="gestionAbsResp.php">Gestion des absences</a></li>
+        <li><a href="/src/Controllers/profile.php">Mon profil</a></li>
         <li><a href="historiqueAbsResp.php">Historique des absences</a></li>
-        <li><a href="#">Statistiques</a></li>
+        <!-- <li><a href="#">Statistiques</a></li> -->
     </ul>
 </div>
 

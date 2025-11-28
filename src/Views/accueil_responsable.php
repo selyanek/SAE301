@@ -30,9 +30,9 @@ $redirect->redirect();
 <div class="sidebar">
     <ul>
         <li><a href="accueil_responsable.php">Accueil</a></li> <!-- Lien vers la page d'accueil -->
-        <li><a href="gestionAbsResp.php">Gestion des absences</a></li> <!-- Lien vers la gestion des absences -->
+        <li><a href="/src/Controllers/profile.php">Mon profil</a></li>
         <li><a href="historiqueAbsResp.php">Historique des absences</a></li> <!-- Lien vers l'historique -->
-        <li><a href="#">Statistiques</a></li> <!-- Lien vers les statistiques (à compléter) -->
+        <!-- <li><a href="#">Statistiques</a></li> --> <!-- Lien vers les statistiques (à venir) -->
 
     </ul>
 </div>
@@ -42,8 +42,8 @@ $redirect->redirect();
 </header>
 <!-- Bouton pour consulter les absences -->
 <div class="text">
-    <a href="#">
-        <button type="submit" class="btn">Consulter les absences</button>
+    <a href="gestionAbsResp.php">
+        <button type="submit" class="btn">Consulter les absences en cours</button>
     </a>
 </div>
 <!-- Pied de page avec navigation -->
