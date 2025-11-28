@@ -292,5 +292,40 @@ class EmailService
         $this->smtpConfig = array_merge($this->smtpConfig, $config);
         $this->configureSMTP();
     }
+
+    /**
+     * Envoie un email contenant le nouveau mot de passe après réinitialisation.
+     *
+     * @param string $toEmail
+     * @param string $toName
+     * @param string $newPassword
+     * @return bool
+     */
+    public function sendPasswordResetEmail($toEmail, $toName, $newPassword)
+    {
+        try {
+            $this->mailer->clearAddresses();
+            $this->mailer->clearAttachments();
+            $this->mailer->addAddress($toEmail, $toName);
+
+            $this->mailer->Subject = 'Réinitialisation de votre mot de passe';
+
+            $html = "<p>Bonjour " . htmlspecialchars($toName) . ",</p>";
+            $html .= "<p>Votre mot de passe a été réinitialisé. Voici votre nouveau mot de passe temporaire :</p>";
+            $html .= "<p style='font-weight:bold; font-size:1.1em;'>" . htmlspecialchars($newPassword) . "</p>";
+            $html .= "<p>Pour des raisons de sécurité, veuillez vous connecter et modifier votre mot de passe dès que possible.</p>";
+            $html .= "<p>Cordialement,<br> votre université</p>";
+
+            $this->mailer->isHTML(true);
+            $this->mailer->Body = $html;
+            $this->mailer->AltBody = "Bonjour " . $toName . "\n\nVotre mot de passe a été réinitialisé. Nouveau mot de passe : " . $newPassword . "\n\nVeuillez le changer après connexion.\n\nEduTrack";
+
+            $this->mailer->send();
+            return true;
+        } catch (Exception $e) {
+            error_log('Erreur lors de l envoi email reset: ' . $this->mailer->ErrorInfo);
+            return false;
+        }
+    }
 }
 
