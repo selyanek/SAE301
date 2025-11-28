@@ -37,6 +37,7 @@ require '../layout/navigation.php';
             <th>Date de soumission</th>
             <th>Date de début</th>
             <th>Date de fin</th>
+            <th>Cours</th>
             <th>Motif</th>
             <th>Justificatif</th>
             <th>Statut</th>
@@ -114,7 +115,22 @@ require '../layout/navigation.php';
                 echo "<td>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_debut']))) . "</td>";
                 echo "<td>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_debut']))) . "</td>";
                 echo "<td>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_fin']))) . "</td>";
-                echo "<td>" . htmlspecialchars($absence['motif']) . "</td>";
+
+                // Compose course string from resource name and course type
+                $ressourceNom = $absence['ressource_nom'] ?? null;
+                $coursType = $absence['cours_type'] ?? null;
+                $coursAffiche = '';
+                if (!empty($coursType)) {
+                    $coursAffiche .= $coursType;
+                }
+                if (!empty($ressourceNom)) {
+                    $coursAffiche .= (!empty($coursAffiche) ? ' - ' : '') . $ressourceNom;
+                }
+                if (empty($coursAffiche)) {
+                    $coursAffiche = '—';
+                }
+                echo "<td>" . htmlspecialchars($coursAffiche) . "</td>";
+                echo "<td>" . htmlspecialchars($absence['motif'] ?? '—') . "</td>";
                 
                 // Documents justificatifs
                 echo "<td>";
@@ -138,7 +154,7 @@ require '../layout/navigation.php';
             }
 
             if ($count == 0) {
-                echo "<tr><td colspan='6'>Aucune absence ne correspond aux critères de filtrage.</td></tr>";
+                echo "<tr><td colspan='7'>Aucune absence ne correspond aux critères de filtrage.</td></tr>";
             }
     ?>
     </tbody>
