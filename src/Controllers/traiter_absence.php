@@ -45,7 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idPost = isset($_POST['id']) ? (int)$_POST['id'] : null;
     if ($idPost !== null && ($action === 'valider' || $action === 'refuser')) {
         $value = ($action === 'valider');
-        $absenceModel->updateJustifie($idPost, $value);
+        // Récupérer la raison du refus si elle est fournie
+        $raisonRefus = ($action === 'refuser' && isset($_POST['raison_refus'])) ? trim($_POST['raison_refus']) : null;
+        $absenceModel->updateJustifie($idPost, $value, $raisonRefus);
     }
     header('Location: ../Views/gestionAbsResp.php');
     exit();

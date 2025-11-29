@@ -10,12 +10,12 @@ require '../../Controllers/session_timeout.php'; // Gestion du timeout de sessio
     <title>Aide</title>
     <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
 </head>
-<div class="uphf">
-    <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">
-</div>
 <body>
+    <div class="uphf">
+        <img src="/public/asset/img/logouphf.png" alt="Logo uphf">
+    </div>
     <div class="logoEdu">
-        <img src="../../public/asset/img/logoedutrack.png" alt="Logo EduTrack">
+        <img src="/public/asset/img/logoedutrack.png" alt="Logo EduTrack">
     </div>
     <div class="sidebar"></div>
     <section class="text">
@@ -37,12 +37,12 @@ require '../../Controllers/session_timeout.php'; // Gestion du timeout de sessio
     <a href="/src/Views/etudiant/dashbord.php"><button type="button" class="btn">Retour à l'accueil</button></a>
     </section>
 
-</body>
-<footer class="footer">
+    <footer class="footer">
         <nav class="footer-nav">
-        <a href="/src/Views/etudiant/dashbord.php">Accueil</a>
-    <span>|</span>
-    <a href="">Aides</a>
-  </nav>
-</footer>
+            <a href="/src/Views/etudiant/dashbord.php">Accueil</a>
+            <span>|</span>
+            <a href="">Aides</a>
+        </nav>
+    </footer>
+</body>
 </html>

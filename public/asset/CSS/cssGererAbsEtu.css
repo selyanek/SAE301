@@ -21,3 +21,75 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     text-align: left;
 }
+
+/* Styles pour l'historique des absences (cartes) */
+.filtre-form {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+.filtre-form label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+.filtre-form input,
+.filtre-form select {
+    margin-right: 15px;
+    padding: 5px;
+}
+.filtre-form button {
+    padding: 6px 16px;
+    margin-right: 10px;
+}
+
+.absences-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 12px;
+}
+.absence-card {
+    display: grid;
+    grid-template-columns: 1.2fr 3fr 0.8fr;
+    gap: 16px;
+    align-items: center;
+    padding: 18px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    border: 1px solid #e6e6e6;
+    font-size: 15px;
+}
+.absence-card .card-dates div {
+    margin-bottom: 6px;
+}
+.absence-card .card-info {
+    color: #333;
+}
+.absence-card .motif {
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+.absence-card .justif a {
+    color: #1a73e8;
+    text-decoration: none;
+}
+.absence-card .justif a:hover {
+    text-decoration: underline;
+}
+.card-status { text-align: right; }
+.status-badge {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+}
+
+.statut-attente .status-badge { background: #ff9800; }
+.statut-valide .status-badge { background: #4caf50; }
+.statut-refuse .status-badge { background: #f44336; }
+
+.no-results { color: #666; padding: 18px; background: #fff; border-radius: 8px; border: 1px dashed #ddd; }

@@ -62,6 +62,8 @@
         <h3>Changer le mot de passe</h3>
         <form method="post" action="">
             <input type="hidden" name="action" value="update_password">
+            <label>Ancien mot de passe :</label><br>
+            <input type="password" name="old_password" required><br>
             <label>Nouveau mot de passe :</label><br>
             <input type="password" name="new_password" required><br>
             <label>Confirmer :</label><br>

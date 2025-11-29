@@ -26,26 +26,37 @@ class ProfileController {
 
         // Traitement de la mise à jour du mot de passe
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_password') {
+            $old = $_POST['old_password'] ?? '';
             $new = $_POST['new_password'] ?? '';
             $confirm = $_POST['confirm_password'] ?? '';
 
-            if (empty($new) || empty($confirm)) {
+            if (empty($old) || empty($new) || empty($confirm)) {
                 $message = 'Veuillez remplir tous les champs.';
                 $messageType = 'error';
-            } elseif ($new !== $confirm) {
-                $message = 'Les mots de passe ne correspondent pas.';
-                $messageType = 'error';
             } else {
-                // Mise à jour (le projet stocke le mot de passe en clair actuellement)
-                $stmt = $pdo->prepare('UPDATE Compte SET mot_de_passe = :mdp WHERE identifiantCompte = :id');
-                $updated = $stmt->execute([':mdp' => $new, ':id' => $identifiant]);
-                if ($updated) {
-                    $_SESSION['mdp'] = $new;
-                    $message = 'Mot de passe mis à jour avec succès.';
-                    $messageType = 'success';
-                } else {
-                    $message = 'Erreur lors de la mise à jour du mot de passe.';
+                // Vérifier l'ancien mot de passe
+                $stmt = $pdo->prepare('SELECT mot_de_passe FROM Compte WHERE identifiantCompte = :id');
+                $stmt->execute([':id' => $identifiant]);
+                $currentPassword = $stmt->fetchColumn();
+
+                if ($currentPassword !== $old) {
+                    $message = 'L\'ancien mot de passe est incorrect.';
                     $messageType = 'error';
+                } elseif ($new !== $confirm) {
+                    $message = 'Les nouveaux mots de passe ne correspondent pas.';
+                    $messageType = 'error';
+                } else {
+                    // Mise à jour (le projet stocke le mot de passe en clair actuellement)
+                    $stmt = $pdo->prepare('UPDATE Compte SET mot_de_passe = :mdp WHERE identifiantCompte = :id');
+                    $updated = $stmt->execute([':mdp' => $new, ':id' => $identifiant]);
+                    if ($updated) {
+                        $_SESSION['mdp'] = $new;
+                        $message = 'Mot de passe mis à jour avec succès.';
+                        $messageType = 'success';
+                    } else {
+                        $message = 'Erreur lors de la mise à jour du mot de passe.';
+                        $messageType = 'error';
+                    }
                 }
             }
         }
@@ -71,9 +82,8 @@ class ProfileController {
         $idCompte = $user['idCompte'] ?? null;
         $fonction = $user['fonction'] ?? ($_SESSION['role'] ?? '');
 
-        // Email fallback
-        $isEtudiant = stripos((string)$fonction, 'etudiant') !== false;
-        $user['email'] = $identFromDb . ($isEtudiant ? '@etu.uphf.fr' : '@uphf.fr');
+        // Email fallback - tous les utilisateurs ont @uphf.fr
+        $user['email'] = $identFromDb . '@uphf.fr';
 
         // Récupérer les informations spécifiques selon le rôle si possible
         $role = strtolower((string)$fonction);

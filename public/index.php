@@ -85,7 +85,4 @@ require '../src/Views/layout/header.php';
     </form>
 </div>
 </body>
-<?php
-require '../src/Views/layout/footer.php';
-?>
 </html>
