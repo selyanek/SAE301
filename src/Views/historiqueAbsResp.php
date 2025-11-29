@@ -105,10 +105,10 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
     if (!$absences || count($absences) === 0) {
         echo "<tr><td colspan='7' style='text-align: center; padding: 20px;'>Aucune absence enregistrée pour le moment.</td></tr>";
     } else {
-        // Affichage des absences filtrées
-        $count = 0;
+        // Regrouper les absences par étudiant et par période continue
+        $absencesParEtudiant = [];
+        
         foreach ($absences as $absence) {
-            // Application des filtres
             // Récupérer le nom et prénom de l'étudiant
             $prenomEtudiant = $absence['prenomcompte'] ?? $absence['prenomCompte'] ?? '';
             $nomEtudiantNom = $absence['nomcompte'] ?? $absence['nomCompte'] ?? '';
@@ -119,12 +119,16 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
                 $nomEtudiant = $absence['identifiantetu'] ?? $absence['identifiantEtu'] ?? 'Étudiant inconnu';
             }
             
+            // Application du filtre nom
             if ($nomFiltre && strpos(strtolower($nomEtudiant), $nomFiltre) === false) {
                 continue;
             }
 
-            $dateDebut = date('Y-m-d', strtotime($absence['date_debut'] ?? 'now'));
-            if ($dateFiltre && $dateDebut != $dateFiltre) {
+            // Extraire la date (jour uniquement, sans heure)
+            $dateJour = date('Y-m-d', strtotime($absence['date_debut'] ?? 'now'));
+            
+            // Application du filtre date
+            if ($dateFiltre && $dateJour != $dateFiltre) {
                 continue;
             }
 
@@ -138,20 +142,165 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
                     $statut = 'refuse';
                 }
             }
-            // Si justifie est null ou non défini, statut reste 'en_attente'
             
             // Afficher uniquement les absences validées ou refusées dans l'historique
-            // Les absences en attente sont dans gestionAbsResp.php
             if ($statut === 'en_attente') {
-                continue; // Ne pas afficher les absences en attente dans l'historique
+                continue;
             }
             
+            // Application du filtre statut
             if ($statutFiltre && $statut != $statutFiltre) {
                 continue;
             }
-
-            // Affichage de la ligne
+            
+            // Récupérer l'ID étudiant
+            $idEtudiant = $absence['idetudiant'] ?? $absence['idEtudiant'] ?? 0;
+            
+            // Initialiser le tableau pour cet étudiant si nécessaire
+            if (!isset($absencesParEtudiant[$idEtudiant])) {
+                $absencesParEtudiant[$idEtudiant] = [
+                    'nom' => $nomEtudiant,
+                    'absences' => []
+                ];
+            }
+            
+            // Ajouter l'absence avec ses informations
+            $absencesParEtudiant[$idEtudiant]['absences'][] = [
+                'date_debut' => $absence['date_debut'],
+                'date_fin' => $absence['date_fin'],
+                'motif' => $absence['motif'] ?? '—',
+                'urijustificatif' => $absence['urijustificatif'] ?? '',
+                'statut' => $statut,
+                'idabsence' => $absence['idabsence'],
+                'cours_type' => $absence['cours_type'] ?? '',
+                'ressource_nom' => $absence['ressource_nom'] ?? ''
+            ];
+        }
+        
+        // Fonction pour regrouper les absences consécutives
+        function regrouperAbsencesConsecutivesHistorique($absences) {
+            if (empty($absences)) {
+                return [];
+            }
+            
+            // Trier les absences par date de début
+            usort($absences, function($a, $b) {
+                return strtotime($a['date_debut']) - strtotime($b['date_debut']);
+            });
+            
+            $periodes = [];
+            $periodeActuelle = null;
+            
+            foreach ($absences as $absence) {
+                $debutActuel = strtotime($absence['date_debut']);
+                $finActuelle = strtotime($absence['date_fin']);
+                
+                if ($periodeActuelle === null) {
+                    // Première absence, créer une nouvelle période
+                    $periodeActuelle = [
+                        'date_debut' => $absence['date_debut'],
+                        'date_fin' => $absence['date_fin'],
+                        'motif' => $absence['motif'],
+                        'urijustificatif' => $absence['urijustificatif'],
+                        'statut' => $absence['statut'],
+                        'idabsence' => $absence['idabsence'],
+                        'cours' => []
+                    ];
+                    
+                    // Ajouter le cours
+                    $coursInfo = '';
+                    if (!empty($absence['cours_type'])) {
+                        $coursInfo .= $absence['cours_type'];
+                    }
+                    if (!empty($absence['ressource_nom'])) {
+                        $coursInfo .= ' - ' . $absence['ressource_nom'];
+                    }
+                    if (!empty($coursInfo)) {
+                        $periodeActuelle['cours'][] = $coursInfo;
+                    }
+                } else {
+                    // Vérifier si cette absence est consécutive à la période actuelle
+                    $finPeriode = strtotime($periodeActuelle['date_fin']);
+                    
+                    // Considérer comme consécutif si moins de 24h d'écart
+                    $ecart = $debutActuel - $finPeriode;
+                    
+                    if ($ecart <= 86400) { // 86400 secondes = 24 heures
+                        // Fusionner avec la période actuelle
+                        $periodeActuelle['date_fin'] = $absence['date_fin'];
+                        
+                        // Garder le même motif et justificatif (généralement identiques)
+                        if ($absence['motif'] !== '—' && ($periodeActuelle['motif'] === '—' || empty($periodeActuelle['motif']))) {
+                            $periodeActuelle['motif'] = $absence['motif'];
+                        }
+                        if (!empty($absence['urijustificatif']) && empty($periodeActuelle['urijustificatif'])) {
+                            $periodeActuelle['urijustificatif'] = $absence['urijustificatif'];
+                        }
+                        
+                        // Ajouter le cours
+                        $coursInfo = '';
+                        if (!empty($absence['cours_type'])) {
+                            $coursInfo .= $absence['cours_type'];
+                        }
+                        if (!empty($absence['ressource_nom'])) {
+                            $coursInfo .= ' - ' . $absence['ressource_nom'];
+                        }
+                        if (!empty($coursInfo)) {
+                            $periodeActuelle['cours'][] = $coursInfo;
+                        }
+                    } else {
+                        // Nouvelle période non consécutive
+                        $periodes[] = $periodeActuelle;
+                        
+                        $periodeActuelle = [
+                            'date_debut' => $absence['date_debut'],
+                            'date_fin' => $absence['date_fin'],
+                            'motif' => $absence['motif'],
+                            'urijustificatif' => $absence['urijustificatif'],
+                            'statut' => $absence['statut'],
+                            'idabsence' => $absence['idabsence'],
+                            'cours' => []
+                        ];
+                        
+                        // Ajouter le cours
+                        $coursInfo = '';
+                        if (!empty($absence['cours_type'])) {
+                            $coursInfo .= $absence['cours_type'];
+                        }
+                        if (!empty($absence['ressource_nom'])) {
+                            $coursInfo .= ' - ' . $absence['ressource_nom'];
+                        }
+                        if (!empty($coursInfo)) {
+                            $periodeActuelle['cours'][] = $coursInfo;
+                        }
+                    }
+                }
+            }
+            
+            // Ajouter la dernière période
+            if ($periodeActuelle !== null) {
+                $periodes[] = $periodeActuelle;
+            }
+            
+            return $periodes;
+        }
+        
+        // Regrouper les absences par périodes continues pour chaque étudiant
+        $periodesTotales = [];
+        foreach ($absencesParEtudiant as $idEtudiant => $data) {
+            $periodesEtudiant = regrouperAbsencesConsecutivesHistorique($data['absences']);
+            
+            foreach ($periodesEtudiant as $periode) {
+                $periodesTotales[] = array_merge($periode, ['etudiant' => $data['nom']]);
+            }
+        }
+        
+        // Affichage des périodes d'absence
+        $count = 0;
+        foreach ($periodesTotales as $periode) {
             $count++;
+            
+            $statut = $periode['statut'];
             $statutClass = '';
             $statutLabel = '';
 
@@ -167,20 +316,34 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
             }
 
             echo "<tr>";
-            // Date de soumission (pour l'instant = date_debut, à améliorer plus tard)
-            echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_debut']))) . "</td>";
-            echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_debut']))) . "</td>";
-            echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_fin']))) . "</td>";
-            echo "<td>" . htmlspecialchars($nomEtudiant) . "</td>";
-            echo "<td>" . htmlspecialchars($absence['motif'] ?? '—') . "</td>";
+            // Date de soumission (utilise la date de début)
+            echo "<td>" . htmlspecialchars(date('d/m/Y', strtotime($periode['date_debut']))) . "</td>";
+            // Date début
+            echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($periode['date_debut']))) . "</td>";
+            // Date fin
+            echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($periode['date_fin']))) . "</td>";
+            // Nom de l'étudiant
+            echo "<td>" . htmlspecialchars($periode['etudiant']) . "</td>";
+            // Motif + liste des cours
+            echo "<td>";
+            echo htmlspecialchars($periode['motif']);
+            if (!empty($periode['cours'])) {
+                echo "<br><small style='color: #666; display: block; margin-top: 5px;'>";
+                echo "<strong>Cours concernés:</strong><br>";
+                foreach (array_unique($periode['cours']) as $cours) {
+                    echo "• " . htmlspecialchars($cours) . "<br>";
+                }
+                echo "</small>";
+            }
+            echo "</td>";
             
             // Documents justificatifs
             echo "<td>";
-            if (!empty($absence['urijustificatif'])) {
-                $fichiers = json_decode($absence['urijustificatif'], true);
+            if (!empty($periode['urijustificatif'])) {
+                $fichiers = json_decode($periode['urijustificatif'], true);
                 if (is_array($fichiers) && count($fichiers) > 0) {
                     foreach ($fichiers as $index => $fichier) {
-                        $fichierPath = "../../uploads/" . htmlspecialchars($fichier);
+                        $fichierPath = "/uploads/" . htmlspecialchars($fichier);
                         echo "<a href='" . $fichierPath . "' target='_blank'>" . htmlspecialchars($fichier) . "</a><br>";
                     }
                 } else {
