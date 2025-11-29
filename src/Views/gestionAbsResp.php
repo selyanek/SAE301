@@ -403,6 +403,8 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
     </tbody>
 </table>
 
+<div style="height: 150px;"></div>
+
 <!-- Pied de page -->
 <footer class="footer">
     <nav class="footer-nav">

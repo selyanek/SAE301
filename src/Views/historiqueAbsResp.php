@@ -68,7 +68,7 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
 </header>
 
 <!-- Filtrage -->
-<form method="post">
+<form method="post" style="max-width: 1200px; margin: 0 auto 20px auto; padding: 0 20px;">
     <label for="nom">Nom étudiant :</label>
     <input type="text" name="nom" id="nom" value="<?php echo isset($_POST['nom']) ? htmlspecialchars($_POST['nom']) : ''; ?>">
 
@@ -173,7 +173,8 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
                 'statut' => $statut,
                 'idabsence' => $absence['idabsence'],
                 'cours_type' => $absence['cours_type'] ?? '',
-                'ressource_nom' => $absence['ressource_nom'] ?? ''
+                'ressource_nom' => $absence['ressource_nom'] ?? '',
+                'raison_refus' => $absence['raison_refus'] ?? null
             ];
         }
         
@@ -204,6 +205,7 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
                         'urijustificatif' => $absence['urijustificatif'],
                         'statut' => $absence['statut'],
                         'idabsence' => $absence['idabsence'],
+                        'raison_refus' => $absence['raison_refus'] ?? null,
                         'cours' => []
                     ];
                     
@@ -259,6 +261,7 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
                             'urijustificatif' => $absence['urijustificatif'],
                             'statut' => $absence['statut'],
                             'idabsence' => $absence['idabsence'],
+                            'raison_refus' => $absence['raison_refus'] ?? null,
                             'cours' => []
                         ];
                         
@@ -354,7 +357,20 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
             }
             echo "</td>";
             
-            echo "<td class='$statutClass'>$statutLabel</td>";
+            // Statut + raison du refus
+            echo "<td class='$statutClass' style='min-width: 200px; vertical-align: top;'>";
+            echo $statutLabel;
+            
+            // Afficher la raison du refus si elle existe
+            if ($statut === 'refuse' && !empty($periode['raison_refus'])) {
+                $raisonRefus = htmlspecialchars($periode['raison_refus']);
+                echo "<div style='margin-top: 10px; padding: 8px; background-color: #ffe6e6; border-left: 3px solid #f44336; border-radius: 3px;'>";
+                echo "<strong style='color: #d32f2f; font-size: 12px;'>Raison du refus :</strong><br>";
+                echo "<span style='color: #333; font-size: 12px;'>{$raisonRefus}</span>";
+                echo "</div>";
+            }
+            
+            echo "</td>";
             echo "</tr>";
         }
 
@@ -365,6 +381,8 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
     ?>
     </tbody>
 </table>
+
+<div style="height: 150px;"></div>
 
 <!-- Pied de page -->
 <footer class="footer">
