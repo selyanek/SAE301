@@ -43,7 +43,7 @@
     <?php if ($user): ?>
         <div class="profile-field"><strong>Prénom :</strong> <?php echo htmlspecialchars($user['prenom'] ?? ''); ?></div>
         <div class="profile-field"><strong>Nom :</strong> <?php echo htmlspecialchars($user['nom'] ?? ''); ?></div>
-        <div class="profile-field"><strong>Email :</strong> <?php echo htmlspecialchars($user['email'] ?? ($_SESSION['login'] . '@etu.uphf.fr')); ?></div>
+        <div class="profile-field"><strong>Email :</strong> <?php echo htmlspecialchars($user['email'] ?? ($_SESSION['login'] . '@uphf.fr')); ?></div>
         <div class="profile-field"><strong>Rôle :</strong> <?php echo htmlspecialchars($user['fonction'] ?? $_SESSION['role']); ?></div>
 
         <?php if (isset($user['fonction']) && (strtolower($user['fonction']) === 'etudiant' || strtolower($user['fonction']) === 'etudiante')): ?>
@@ -62,6 +62,8 @@
         <h3>Changer le mot de passe</h3>
         <form method="post" action="">
             <input type="hidden" name="action" value="update_password">
+            <label>Ancien mot de passe :</label><br>
+            <input type="password" name="old_password" required><br>
             <label>Nouveau mot de passe :</label><br>
             <input type="password" name="new_password" required><br>
             <label>Confirmer :</label><br>

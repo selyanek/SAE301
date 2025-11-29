@@ -3,8 +3,6 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use src\Database\Database;
 use src\Models\EmailService;
-use PDO;
-use Exception;
 
 $message = '';
 
@@ -23,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare('SELECT identifiantcompte AS identifiant, nom, prenom, fonction FROM compte WHERE identifiantcompte = :identifiant');
             $stmt->execute([':identifiant' => $input]);
             
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
             if (!$user) {
                 $message = 'Aucun utilisateur trouvé pour cet identifiant.';
@@ -36,9 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $updated = $update->execute([':pwd' => $newPwd, ':identifiant' => $user['identifiant']]);
 
                 if ($updated) {
-                    // Générer l'email selon la fonction
-                    $isEtudiant = ($user['fonction'] === 'etudiant' || $user['fonction'] === 'etudiante');
-                    $email = $user['identifiant'] . ($isEtudiant ? '@etu.uphf.fr' : '@uphf.fr');
+                    // Générer l'email - tous les utilisateurs ont @uphf.fr
+                    $email = $user['identifiant'] . '@uphf.fr';
                     
                     // Envoyer l'email
                     $emailService = new EmailService();
@@ -55,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $message = 'Erreur serveur : ' . $e->getMessage();
         }
     }
