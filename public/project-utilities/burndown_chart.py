@@ -6,14 +6,14 @@ import numpy as np
 
 if __name__ == '__main__':
 
-    ideal = [217 * (4 - i) / 4 for i in range(0, 5)]
-    real = [217,217,217,220,217]
+    ideal = [217 * (7 - i) / 7 for i in range(0, 7)]
+    real = [217,190,188,167,161,112,98]
     heure = [0,4,8,12,16,20,24]
 
     plt.plot(heure, ideal, label='Avancement idéal', color='red', linestyle='--')
     plt.plot(heure, real, label='Avancement réel', color='blue', linestyle='--')
 
-    plt.xlabel('heure')
+    plt.xlabel('Heures')
     plt.ylabel('Story Points')
     plt.legend()
 
@@ -23,6 +23,6 @@ if __name__ == '__main__':
 
 
 
-    plt.title('Burndown chart pour le projet')
+    plt.title('Burndown chart pour le projet (Sprint 3)')
 
     plt.show()
