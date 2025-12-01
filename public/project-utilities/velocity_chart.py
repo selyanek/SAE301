@@ -6,10 +6,10 @@ if __name__ == "__main__":
     # ...existing code...
     # données et style pour reproduire exactement le graphique fourni
     sprints = list(range(1, 5))
-    pred_x = [1, 2, 3]
-    pred_y = [112, 115, 155]
-    res_x = [2, 3]
-    res_y = [14, 119]
+    pred_x = [1, 2, 3, 4]
+    pred_y = [112, 115, 155, 88]
+    res_x = [2, 3, 4]
+    res_y = [14, 119, 1]
 
     fig, ax = plt.subplots(figsize=(10, 8))
 
