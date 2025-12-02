@@ -13,6 +13,8 @@ class Database
     private string $pass = "1zevkN&49b&&a*Pi97C";
     private ?PDO $pdo = null;
 
+    //  Constructeur
+
     public function __construct()
     {
         try {
@@ -27,10 +29,14 @@ class Database
         }
     }
 
+    // Retourne la connexion PDO courante
+
     public function getConnection(): ?PDO
     {
         return $this->pdo;
     }
+
+    // Met la connexion courante à null
 
     public function endConnection(): void
     {
