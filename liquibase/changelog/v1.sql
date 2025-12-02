@@ -164,4 +164,10 @@ VALUES ((SELECT idCompte FROM Compte WHERE identifiantCompte = 'alice.martin'),
         'Mathematics');
 --rollback DELETE FROM Etudiant WHERE identifiantEtu = 'alice.martin'; DELETE FROM Compte WHERE identifiantCompte = 'alice.martin';
 
+changeset Roman:15
+--comment: Ajouter le champ raison_refus à la table Absence
+ALTER TABLE Absence 
+ADD COLUMN raison_refus TEXT;
+--rollback ALTER TABLE Absence DROP COLUMN raison_refus;
+
 -- End of changelog

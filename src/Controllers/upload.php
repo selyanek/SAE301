@@ -9,12 +9,11 @@ require_once '../../vendor/autoload.php';
 header('Content-Type: application/json');
 
 
-// Vérification champs obligatoires
+// Vérification champs obligatoires (sauf fichiers qui sont optionnels)
 if (
     empty($_POST['date_start']) ||
     empty($_POST['date_end']) ||
-    empty($_POST['motif']) ||
-    empty($_FILES['files'])
+    empty($_POST['motif'])
 ) {
     echo json_encode([
         "success" => false,
@@ -66,24 +65,26 @@ function generateUniqueFileName($uploadDir, $filename) {
 // --- TRAITEMENT DE TOUS LES FICHIERS ENVOYÉS ---
 $fileNamesSaved = [];
 
-foreach ($_FILES['files']['name'] as $index => $originalName) {
+// Vérifier si des fichiers ont été envoyés
+if (!empty($_FILES['files']['name'][0])) {
+    foreach ($_FILES['files']['name'] as $index => $originalName) {
 
-    $tmpName = $_FILES['files']['tmp_name'][$index];
-    $size    = $_FILES['files']['size'][$index];
-    $type    = $_FILES['files']['type'][$index];
-    $error   = $_FILES['files']['error'][$index];
+        $tmpName = $_FILES['files']['tmp_name'][$index];
+        $size    = $_FILES['files']['size'][$index];
+        $type    = $_FILES['files']['type'][$index];
+        $error   = $_FILES['files']['error'][$index];
 
-    if ($error !== UPLOAD_ERR_OK) {
-        echo json_encode(["success" => false, "message" => "Erreur lors de l'upload d'un fichier."]);
-        exit;
-    }
+        if ($error !== UPLOAD_ERR_OK) {
+            echo json_encode(["success" => false, "message" => "Erreur lors de l'upload d'un fichier."]);
+            exit;
+        }
 
-    if ($size > $maxFileSize) {
-        echo json_encode(["success" => false, "message" => "Un fichier dépasse 5MB."]);
-        exit;
-    }
+        if ($size > $maxFileSize) {
+            echo json_encode(["success" => false, "message" => "Un fichier dépasse 5MB."]);
+            exit;
+        }
 
-    $ext = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+        $ext = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
 
     if (!in_array($ext, $allowedExtensions) || !in_array($type, $allowedTypes)) {
         echo json_encode(["success" => false, "message" => "Format non accepté."]);
@@ -99,6 +100,7 @@ foreach ($_FILES['files']['name'] as $index => $originalName) {
     }
 
     $fileNamesSaved[] = $uniqueName;
+    }
 }
 
 

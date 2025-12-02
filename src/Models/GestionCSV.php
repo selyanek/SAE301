@@ -417,7 +417,7 @@ class GestionCSV
 
     private function convertToSeconds(string $str): int
     {
-        return match($str) { // R
+        return match($str) { // Retourne nombre de secondes correspondant
             '1H30' => 5400,
             '3H00' => 10800,
             default => 0
