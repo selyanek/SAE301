@@ -222,6 +222,16 @@ require '../layout/navigation.php';
         echo "  <div class='card-info'>";
         echo "    <div class='motif'><strong>Motif :</strong> {$motif}</div>";
         echo "    <div class='justif'><strong>Justificatif :</strong><br>{$justificatifsHtml}</div>";
+        
+        // Afficher la raison du refus si l'absence est refusée
+        if ($statut === 'refuse' && !empty($absence['raison_refus'])) {
+            $raisonRefus = htmlspecialchars($absence['raison_refus']);
+            echo "    <div class='raison-refus' style='margin-top: 15px; padding: 12px; background-color: #ffe6e6; border-left: 4px solid #f44336; border-radius: 4px;'>";
+            echo "      <strong style='color: #d32f2f;'> Raison du refus :</strong><br>";
+            echo "      <span style='color: #333; display: block; margin-top: 5px;'>{$raisonRefus}</span>";
+            echo "    </div>";
+        }
+        
         echo "  </div>";
         echo "  <div class='card-status'>";
         echo "    <span class='status-badge'>{$statutLabel}</span>";

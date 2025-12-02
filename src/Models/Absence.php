@@ -76,13 +76,23 @@ class Absence
         }
     }
 
-    public function updateJustifie($idAbsence, bool $value)
+    public function updateJustifie($idAbsence, bool $value, ?string $raisonRefus = null)
     {
         try {
-            $sql = "UPDATE $this->table SET justifie = :value WHERE idabsence = :idAbsence";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindValue(':value', $value, PDO::PARAM_BOOL);
-            $stmt->bindValue(':idAbsence', $idAbsence, PDO::PARAM_INT);
+            if ($value === false && $raisonRefus !== null && trim($raisonRefus) !== '') {
+                // Si refusé avec une raison
+                $sql = "UPDATE $this->table SET justifie = :value, raison_refus = :raisonRefus WHERE idabsence = :idAbsence";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bindValue(':value', $value, PDO::PARAM_BOOL);
+                $stmt->bindValue(':raisonRefus', trim($raisonRefus), PDO::PARAM_STR);
+                $stmt->bindValue(':idAbsence', $idAbsence, PDO::PARAM_INT);
+            } else {
+                // Si validé ou refusé sans raison
+                $sql = "UPDATE $this->table SET justifie = :value WHERE idabsence = :idAbsence";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bindValue(':value', $value, PDO::PARAM_BOOL);
+                $stmt->bindValue(':idAbsence', $idAbsence, PDO::PARAM_INT);
+            }
             return $stmt->execute();
         } catch (PDOException $e) {
             error_log("Erreur Update Justifie (value) : " . $e->getMessage());
