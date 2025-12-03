@@ -138,7 +138,7 @@ VALUES (
            '2024-09-01 11:00:00',
            (SELECT idRessource FROM Ressource WHERE nom = 'Introduction to Programming'),
            (SELECT idProfesseur FROM Professeur WHERE identifiantProf = 'john.doe'),
-           (SELECT idResponsablePedagogique FROM Responsable_Pedagogique WHERE identifiantRp = 'jane.smith')
+           (SELECT idResponsablePedagogique FROM Responsable_Pedagogique WHERE identifiantRp = 'christelle.roze')
        );
 --rollback DELETE FROM Cours WHERE date_debut = '2024-09-01 09:30:00';
 
@@ -164,10 +164,30 @@ VALUES ((SELECT idCompte FROM Compte WHERE identifiantCompte = 'alice.martin'),
         'Mathematics');
 --rollback DELETE FROM Etudiant WHERE identifiantEtu = 'alice.martin'; DELETE FROM Compte WHERE identifiantCompte = 'alice.martin';
 
-changeset Roman:15
+--changeset Roman:15
 --comment: Ajouter le champ raison_refus à la table Absence
 ALTER TABLE Absence 
 ADD COLUMN raison_refus TEXT;
 --rollback ALTER TABLE Absence DROP COLUMN raison_refus;
+
+--changeset Roman:16
+--comment: Création de la table Secretaire
+CREATE TABLE Secretaire
+(
+    idSecretaire     INT PRIMARY KEY,
+    identifiantSec   TEXT NOT NULL,
+    FOREIGN KEY (idSecretaire) REFERENCES Compte (idCompte) ON DELETE CASCADE
+);
+--rollback DROP TABLE Secretaire;
+
+--changeset Roman:17
+--comment: Insertion d'un compte secrétaire
+INSERT INTO Compte (identifiantCompte, mot_de_passe, nom, prenom, fonction)
+VALUES ('delphine.milice', 'motdepasse123', 'Milice', 'Delphine', 'secretaire');
+
+INSERT INTO Secretaire (idSecretaire, identifiantSec)
+VALUES ((SELECT idCompte FROM Compte WHERE identifiantCompte = 'delphine.milice'),
+        'delphine.milice');
+--rollback DELETE FROM Secretaire WHERE identifiantSec = 'delphine.milice'; DELETE FROM Compte WHERE identifiantCompte = 'delphine.milice';
 
 -- End of changelog

@@ -30,6 +30,10 @@ class Redirect
                     // redirect to the responsable's dashboard page
                     header('Location: /src/Views/responsable/dashbord.php');
                     exit();
+                case 'secretaire':
+                    // redirect to the secretaire's dashboard page
+                    header('Location: /src/Views/secretaire/dashboard.php');
+                    exit();
                 default:
                     header('Location: /index.php');
                     exit();

@@ -45,6 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } elseif ($role == 'responsable_pedagogique') {
                 header('Location: ../src/Views/accueil_responsable.php');
                 exit();
+            } elseif ($role == 'secretaire') {
+                header('Location: ../src/Views/secretaire/dashboard.php');
+                exit();
             } else {
                 echo 'vous n exister pas';
             }

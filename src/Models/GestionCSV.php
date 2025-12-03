@@ -63,6 +63,14 @@ class GestionCSV
             'cours' => 0,
             'absences' => 0
         ];
+        
+        // Cache pour éviter les requêtes SQL répétitives
+        $cache = [
+            'etudiants' => [],
+            'professeurs' => [],
+            'ressources' => [],
+            'cours' => []
+        ];
 
         foreach ($csv_array as $row) {
             try {
@@ -79,14 +87,15 @@ class GestionCSV
                 }
                 // Créer l'identifiant au format prenom.nom
                 $identifiant = strtolower($this->normalizeString($prenom) . '.' . $this->normalizeString($nom));
-                // 1. Créer ou récupérer le compte étudiant
-                $id_etudiant = $this->getOrCreateEtudiant($pdo, $identifiant, $nom, $prenom, $formation, $stats);
                 
-                // 2. Créer ou récupérer la ressource (matière)
+                // 1. Créer ou récupérer le compte étudiant (avec cache)
+                $id_etudiant = $this->getOrCreateEtudiant($pdo, $identifiant, $nom, $prenom, $formation, $stats, $cache);
+                
+                // 2. Créer ou récupérer la ressource (matière) (avec cache)
                 $matiere = trim($row[12]);
-                $id_ressource = $this->getOrCreateRessource($pdo, $matiere, $stats);
+                $id_ressource = $this->getOrCreateRessource($pdo, $matiere, $stats, $cache);
                 
-                // 3. Créer ou récupérer le professeur
+                // 3. Créer ou récupérer le professeur (avec cache)
                 $nomProf = trim($row[22]);
                 
                 // Si le champ professeur est vide, utiliser le responsable pédagogique comme prof par défaut
@@ -95,7 +104,7 @@ class GestionCSV
                     $nomProf = 'ROZE CHRISTELLE';
                 }
                 
-                $id_professeur = $this->getOrCreateProfesseur($pdo, $nomProf, $stats);
+                $id_professeur = $this->getOrCreateProfesseur($pdo, $nomProf, $stats, $cache);
                 
                 // 4. Récupérer le responsable pédagogique (on prend le premier disponible)
                 $id_responsable = $this->getFirstResponsable($pdo);
@@ -112,14 +121,27 @@ class GestionCSV
                 $date_fin = date('Y-m-d H:i:s', $d + $this->convertToSeconds($duree_str));
                 
                 $id_cours = $this->getOrCreateCours($pdo, $id_ressource, $id_professeur, $id_responsable, 
-                                                     $type_cours, $evaluation, $date_debut, $date_fin, $stats);
+                                                     $type_cours, $evaluation, $date_debut, $date_fin, $stats, $cache);
                 
                 // 6. Créer l'absence si la personne était absente
                 $absent = trim($row[16]) === 'Absence';
                 if ($absent) {
-                    $motif = trim($row[18]);
+                    $motif_base = isset($row[18]) ? trim($row[18]) : '';
+                    $commentaire = isset($row[19]) ? trim($row[19]) : '';
                     $justification = trim($row[17]);
                     $justifie = ($justification === 'Absence justifiée');
+                    
+                    // Construire le motif complet
+                    // Si il y a un commentaire et que le motif n'est pas "?", combiner les deux
+                    if (!empty($commentaire) && $motif_base !== '?') {
+                        $motif = $motif_base . ' - ' . $commentaire;
+                    } elseif (!empty($commentaire)) {
+                        $motif = $commentaire;
+                    } elseif ($motif_base !== '?' && !empty($motif_base)) {
+                        $motif = $motif_base;
+                    } else {
+                        $motif = 'Non spécifié';
+                    }
                     
                     $this->createAbsence($pdo, $id_cours, $id_etudiant, $date_debut, $date_fin, 
                                         $motif, $justifie, $stats);
@@ -154,8 +176,13 @@ class GestionCSV
     }
     
     private function getOrCreateEtudiant(PDO $pdo, string $identifiant, string $nom, 
-                                         string $prenom, string $formation, array &$stats): int
+                                         string $prenom, string $formation, array &$stats, array &$cache): int
     {
+        // Vérifier d'abord dans le cache
+        if (isset($cache['etudiants'][$identifiant])) {
+            return $cache['etudiants'][$identifiant];
+        }
+        
         // Vérifier si le compte existe déjà
         $sql = "SELECT idCompte FROM Compte WHERE identifiantCompte = :identifiant";
         $stmt = $pdo->prepare($sql);
@@ -163,6 +190,14 @@ class GestionCSV
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($result && isset($result['idcompte'])) {
+            // L'étudiant existe déjà, mais on compte quand même pour les statistiques
+            if (!isset($stats['etudiants_existants'])) {
+                $stats['etudiants_existants'] = [];
+            }
+            if (!in_array($identifiant, $stats['etudiants_existants'])) {
+                $stats['etudiants_existants'][] = $identifiant;
+            }
+            $cache['etudiants'][$identifiant] = (int)$result['idcompte'];
             return (int)$result['idcompte'];
         }
         
@@ -193,10 +228,13 @@ class GestionCSV
         ]);
         $stats['etudiants']++;
         
+        // Mettre en cache
+        $cache['etudiants'][$identifiant] = $id_compte;
+        
         return $id_compte;
     }
     
-    private function getOrCreateRessource(PDO $pdo, string $nom, array &$stats): int
+    private function getOrCreateRessource(PDO $pdo, string $nom, array &$stats, array &$cache): int
     {
         if (empty($nom)) {
             $nom = 'Ressource inconnue';
@@ -206,6 +244,11 @@ class GestionCSV
         $nom = str_replace("'", "'", $nom); // Remplacer les apostrophes typographiques
         $nom = html_entity_decode($nom, ENT_QUOTES, 'UTF-8'); // Décoder les entités HTML
         
+        // Vérifier d'abord dans le cache
+        if (isset($cache['ressources'][$nom])) {
+            return $cache['ressources'][$nom];
+        }
+        
         // Vérifier si la ressource existe
         $sql = "SELECT idRessource FROM Ressource WHERE nom = :nom";
         $stmt = $pdo->prepare($sql);
@@ -213,6 +256,14 @@ class GestionCSV
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($result && isset($result['idressource'])) {
+            // La ressource existe déjà, compter pour les statistiques
+            if (!isset($stats['ressources_existantes'])) {
+                $stats['ressources_existantes'] = [];
+            }
+            if (!in_array($nom, $stats['ressources_existantes'])) {
+                $stats['ressources_existantes'][] = $nom;
+            }
+            $cache['ressources'][$nom] = (int)$result['idressource'];
             return (int)$result['idressource'];
         }
         
@@ -223,10 +274,13 @@ class GestionCSV
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         $stats['ressources']++;
         
-        return (int)$result['idressource'];
+        $id_ressource = (int)$result['idressource'];
+        $cache['ressources'][$nom] = $id_ressource;
+        
+        return $id_ressource;
     }
     
-    private function getOrCreateProfesseur(PDO $pdo, string $nomComplet, array &$stats): int
+    private function getOrCreateProfesseur(PDO $pdo, string $nomComplet, array &$stats, array &$cache): int
     {
         // Le champ vide devrait être traité avant d'appeler cette fonction
         // Mais par sécurité, on vérifie quand même
@@ -241,6 +295,11 @@ class GestionCSV
         
         $identifiant = strtolower($this->normalizeString($prenom) . '.' . $this->normalizeString($nom));
         
+        // Vérifier d'abord dans le cache
+        if (isset($cache['professeurs'][$identifiant])) {
+            return $cache['professeurs'][$identifiant];
+        }
+        
         // Vérifier si le compte existe
         $sql = "SELECT idCompte FROM Compte WHERE identifiantCompte = :identifiant";
         $stmt = $pdo->prepare($sql);
@@ -248,6 +307,14 @@ class GestionCSV
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($result && isset($result['idcompte'])) {
+            // Le professeur existe déjà, compter pour les statistiques
+            if (!isset($stats['professeurs_existants'])) {
+                $stats['professeurs_existants'] = [];
+            }
+            if (!in_array($identifiant, $stats['professeurs_existants'])) {
+                $stats['professeurs_existants'][] = $identifiant;
+            }
+            $cache['professeurs'][$identifiant] = (int)$result['idcompte'];
             return (int)$result['idcompte'];
         }
         
@@ -276,6 +343,9 @@ class GestionCSV
             ':identifiant' => $identifiant
         ]);
         $stats['professeurs']++;
+        
+        // Mettre en cache
+        $cache['professeurs'][$identifiant] = $id_compte;
         
         return $id_compte;
     }
@@ -334,8 +404,14 @@ class GestionCSV
     
     private function getOrCreateCours(PDO $pdo, int $id_ressource, int $id_professeur, 
                                       int $id_responsable, string $type, bool $evaluation,
-                                      string $date_debut, string $date_fin, array &$stats): int
+                                      string $date_debut, string $date_fin, array &$stats, array &$cache): int
     {
+        // Vérifier le cache d'abord
+        $cours_key = "{$id_ressource}_{$id_professeur}_{$type}_{$date_debut}";
+        if (isset($cache['cours'][$cours_key])) {
+            return $cache['cours'][$cours_key];
+        }
+        
         // Vérifier si le cours existe déjà (même ressource, prof, type et date)
         $sql = "SELECT idCours FROM Cours 
                 WHERE idRessource = :ressource 
@@ -352,6 +428,14 @@ class GestionCSV
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($result && isset($result['idcours'])) {
+            // Le cours existe déjà, compter pour les statistiques
+            if (!isset($stats['cours_existants'])) {
+                $stats['cours_existants'] = [];
+            }
+            if (!in_array($cours_key, $stats['cours_existants'])) {
+                $stats['cours_existants'][] = $cours_key;
+            }
+            $cache['cours'][$cours_key] = (int)$result['idcours'];
             return (int)$result['idcours'];
         }
         
@@ -373,12 +457,17 @@ class GestionCSV
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         $stats['cours']++;
         
-        return (int)$result['idcours'];
+        $id_cours = (int)$result['idcours'];
+        
+        // Mettre en cache
+        $cache['cours'][$cours_key] = $id_cours;
+        
+        return $id_cours;
     }
     
     private function createAbsence(PDO $pdo, int $id_cours, int $id_etudiant, 
                                    string $date_debut, string $date_fin, 
-                                   string $motif, ?bool $justifie, array &$stats): void
+                                   string $motif, bool $justifie, array &$stats): void
     {
         // Vérifier si l'absence existe déjà
         $sql = "SELECT idAbsence FROM Absence 
@@ -398,19 +487,13 @@ class GestionCSV
                 VALUES (:cours, :etudiant, :date_debut, :date_fin, :motif, :justifie)";
         $stmt = $pdo->prepare($sql);
         
-        // Gérer null, true ou false pour justifie
-        $justifieValue = null;
-        if ($justifie !== null) {
-            $justifieValue = $justifie ? 1 : 0;
-        }
-        
         $stmt->execute([
             ':cours' => $id_cours,
             ':etudiant' => $id_etudiant,
             ':date_debut' => $date_debut,
             ':date_fin' => $date_fin,
             ':motif' => $motif,
-            ':justifie' => $justifieValue
+            ':justifie' => $justifie ? 1 : 0
         ]);
         $stats['absences']++;
     }
@@ -418,8 +501,13 @@ class GestionCSV
     private function convertToSeconds(string $str): int
     {
         return match($str) { // Retourne nombre de secondes correspondant
+            '1H00' => 3600,
             '1H30' => 5400,
+            '2H00' => 7200,
+            '2H30' => 9000,
             '3H00' => 10800,
+            '3H30' => 12600,
+            '4H00' => 14400,
             default => 0
         };
     }
