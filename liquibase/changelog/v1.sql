@@ -199,4 +199,15 @@ ALTER TABLE Absence
 ALTER COLUMN justifie DROP DEFAULT;
 --rollback ALTER TABLE Absence ALTER COLUMN justifie SET NOT NULL; ALTER TABLE Absence ALTER COLUMN justifie SET DEFAULT FALSE;
 
+--changeset YourName:19
+--comment: Insertion d'un compte etudiant et de son profil Etudiant pour Oscar Maesse
+INSERT INTO Compte (identifiantCompte, mot_de_passe, nom, prenom, fonction)
+VALUES ('oscar.maesse', 'motdepasse123', 'Maesse', 'Oscar', 'etudiant');
+
+INSERT INTO Etudiant (idEtudiant, identifiantEtu, formation)
+VALUES ((SELECT idCompte FROM Compte WHERE identifiantCompte = 'oscar.maesse'),
+        'oscar.maesse',
+        'Informatique');
+--rollback DELETE FROM Etudiant WHERE identifiantEtu = 'oscar.maesse'; DELETE FROM Compte WHERE identifiantCompte = 'oscar.maesse';
+
 -- End of changelog

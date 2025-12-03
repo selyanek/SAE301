@@ -171,4 +171,83 @@ class Absence
             return [];
         }
     }
+
+    /**
+     * Compte le nombre de périodes d'absences en attente de traitement (justifie IS NULL)
+     * Les absences consécutives (moins de 24h d'écart) sont regroupées en une seule période
+     * @return int Nombre de périodes d'absences en attente
+     */
+    public function countEnAttente(): int
+    {
+        try {
+            // Récupérer toutes les absences en attente, triées par étudiant et date
+            $sql = "SELECT idabsence, idetudiant, date_debut, date_fin
+                    FROM $this->table 
+                    WHERE justifie IS NULL
+                    ORDER BY idetudiant, date_debut";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $absences = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            if (empty($absences)) {
+                return 0;
+            }
+            
+            // Regrouper par étudiant
+            $absencesParEtudiant = [];
+            foreach ($absences as $absence) {
+                $idEtudiant = $absence['idetudiant'];
+                if (!isset($absencesParEtudiant[$idEtudiant])) {
+                    $absencesParEtudiant[$idEtudiant] = [];
+                }
+                $absencesParEtudiant[$idEtudiant][] = $absence;
+            }
+            
+            // Compter les périodes regroupées
+            $nombrePeriodes = 0;
+            foreach ($absencesParEtudiant as $absencesEtudiant) {
+                $periodeActuelle = null;
+                
+                foreach ($absencesEtudiant as $absence) {
+                    $debutActuel = strtotime($absence['date_debut']);
+                    $finActuelle = strtotime($absence['date_fin']);
+                    
+                    if ($periodeActuelle === null) {
+                        // Première absence, créer une nouvelle période
+                        $periodeActuelle = [
+                            'date_debut' => $absence['date_debut'],
+                            'date_fin' => $absence['date_fin']
+                        ];
+                    } else {
+                        // Vérifier si cette absence est consécutive (moins de 24h d'écart)
+                        $finPeriode = strtotime($periodeActuelle['date_fin']);
+                        $ecart = $debutActuel - $finPeriode;
+                        
+                        if ($ecart <= 86400) { // 24h
+                            // Fusionner avec la période actuelle
+                            $periodeActuelle['date_fin'] = $absence['date_fin'];
+                        } else {
+                            // Nouvelle période non consécutive
+                            $nombrePeriodes++;
+                            $periodeActuelle = [
+                                'date_debut' => $absence['date_debut'],
+                                'date_fin' => $absence['date_fin']
+                            ];
+                        }
+                    }
+                }
+                
+                // Ajouter la dernière période
+                if ($periodeActuelle !== null) {
+                    $nombrePeriodes++;
+                }
+            }
+            
+            return $nombrePeriodes;
+            
+        } catch (PDOException $e) {
+            error_log("Erreur countEnAttente Absence : " . $e->getMessage());
+            return 0;
+        }
+    }
 }

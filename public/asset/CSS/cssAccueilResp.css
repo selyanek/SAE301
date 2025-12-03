@@ -1,0 +1,241 @@
+/* Styles spécifiques pour la page d'accueil du responsable */
+
+/* Container principal */
+.main-content {
+    padding: 80px 40px 40px;
+    max-width: 1200px;
+}
+
+/* En-tête de bienvenue */
+header.text h1 {
+    color: #29acc8;
+    font-size: 2.5em;
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding-top: 20px;
+}
+
+/* Boîte d'information pour les statistiques */
+.info-box {
+    background: linear-gradient(135deg, #29acc8 0%, #238ca3 100%);
+    border-radius: 16px;
+    padding: 30px 40px;
+    margin: 30px 0;
+    box-shadow: 0 8px 25px rgba(41, 172, 200, 0.25);
+    max-width: 450px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Effet de brillance au survol */
+.info-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+}
+
+.info-box:hover::before {
+    left: 100%;
+}
+
+.info-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(41, 172, 200, 0.35);
+}
+
+.info-label {
+    font-size: 18px;
+    font-weight: 500;
+    color: #ffffff;
+    margin: 0 0 15px 0;
+    opacity: 0.95;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    font-size: 56px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.2;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    animation: fadeInScale 0.5s ease-out;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Section des boutons d'action */
+.action-section {
+    margin: 40px 0;
+}
+
+.action-section .btn {
+    background: linear-gradient(135deg, #29acc8 0%, #238ca3 100%);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(41, 172, 200, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.action-section .btn:hover {
+    background: linear-gradient(135deg, #238ca3 0%, #1a7084 100%);
+    box-shadow: 0 6px 20px rgba(41, 172, 200, 0.4);
+    transform: translateY(-2px);
+}
+
+.action-section .btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(41, 172, 200, 0.3);
+}
+
+/* Card pour informations supplémentaires */
+.welcome-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    margin: 30px 0;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    border-left: 4px solid #29acc8;
+    max-width: 800px;
+}
+
+.welcome-card h2 {
+    color: #29acc8;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.welcome-card p {
+    color: #666;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+/* Grille de statistiques (si vous voulez ajouter plus de stats) */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-top: 3px solid #29acc8;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.stat-card h3 {
+    color: #29acc8;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.stat-card .number {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: #333;
+    margin: 10px 0;
+}
+
+.stat-card .description {
+    color: #666;
+    font-size: 0.9em;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    header.text h1 {
+        font-size: 2em;
+    }
+    
+    .info-box {
+        max-width: 100%;
+        padding: 25px 30px;
+    }
+    
+    .info-value {
+        font-size: 48px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Animation d'entrée pour les éléments */
+.fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Badge de notification */
+.notification-badge {
+    background: #ff6b6b;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-left: 10px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
