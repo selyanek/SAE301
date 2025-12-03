@@ -80,7 +80,26 @@ $redirect->redirect();
     </nav>
 </footer>
 
+<!-- Overlay de chargement -->
+<div id="loadingOverlay" class="loading-overlay" style="display: none;">
+    <div class="loading-content">
+        <div class="spinner"></div>
+        <h2>Import en cours</h2>
+        <p>Veuillez patienter, traitement des fichiers CSV...</p>
+        <p style="margin-top: 10px; font-size: 14px; color: #999;">Cela peut prendre quelques secondes...</p>
+    </div>
+</div>
+
 <script>
+    // Test au chargement de la page - à retirer après test
+    window.addEventListener('DOMContentLoaded', function() {
+        const overlay = document.getElementById('loadingOverlay');
+        console.log('Overlay trouvé:', overlay !== null);
+        if (overlay) {
+            console.log('Style display initial:', overlay.style.display);
+        }
+    });
+    
     const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('fileInput');
     const fileList = document.getElementById('fileList');
@@ -157,14 +176,40 @@ $redirect->redirect();
     }
 
     // Soumission du formulaire
-    uploadForm.addEventListener('submit', (e) => {
+    uploadForm.addEventListener('submit', function(e) {
+        console.log('=== FORMULAIRE SOUMIS ===');
+        
         if (selectedFiles.length === 0) {
             e.preventDefault();
             alert('Veuillez sélectionner au moins un fichier CSV.');
-        } else {
-            // Afficher l'overlay de chargement
-            document.getElementById('loadingOverlay').style.display = 'flex';
+            return false;
         }
+        
+        console.log('Fichiers sélectionnés:', selectedFiles.length);
+        
+        // Afficher l'overlay de chargement IMMÉDIATEMENT
+        const overlay = document.getElementById('loadingOverlay');
+        console.log('Overlay élément:', overlay);
+        
+        if (overlay) {
+            overlay.style.display = 'flex';
+            overlay.style.visibility = 'visible';
+            overlay.style.opacity = '1';
+            console.log('✅ Overlay affiché!');
+        } else {
+            console.error('❌ Overlay non trouvé!');
+            alert('ERREUR: Overlay non trouvé!');
+        }
+        
+        // Désactiver le bouton pour éviter les double-clics
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Import en cours...';
+            submitBtn.style.opacity = '0.6';
+        }
+        
+        // Le formulaire continue sa soumission normale
+        return true;
     });
 </script>
 </body>

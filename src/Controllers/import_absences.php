@@ -169,6 +169,6 @@ try {
     $_SESSION['message_type'] = 'error';
 }
 
-// Rediriger vers la page d'envoi
-header('Location: /src/Views/secretaire/envoie_des_absences.php');
+// Rediriger vers la page de succès qui redirigera automatiquement vers le dashboard
+header('Location: /src/Views/secretaire/import_success.php');
 exit();
