@@ -254,5 +254,47 @@ class EmailService
             return false;
         }
     }
+
+    /**
+     * Méthode générique pour envoyer un email personnalisé
+     * 
+     * @param string $toEmail Email du destinataire
+     * @param string $subject Sujet de l'email
+     * @param string $htmlBody Corps de l'email en HTML
+     * @param string $toName Nom du destinataire (optionnel)
+     * @param string $textBody Version texte de l'email (optionnel)
+     * @return bool True si l'email a été envoyé avec succès, false sinon
+     */
+    public function envoyerEmail($toEmail, $subject, $htmlBody, $toName = '', $textBody = '')
+    {
+        try {
+            // Réinitialiser les destinataires pour chaque envoi
+            $this->mailer->clearAddresses();
+            $this->mailer->clearAttachments();
+            
+            // Destinataire
+            $this->mailer->addAddress($toEmail, $toName);
+            
+            // Sujet
+            $this->mailer->Subject = $subject;
+            
+            // Corps du message HTML
+            $this->mailer->isHTML(true);
+            $this->mailer->Body = $htmlBody;
+            
+            // Version texte si fournie
+            if (!empty($textBody)) {
+                $this->mailer->AltBody = $textBody;
+            }
+            
+            // Envoi
+            $this->mailer->send();
+            return true;
+            
+        } catch (Exception $e) {
+            error_log("Erreur lors de l'envoi de l'email: " . $this->mailer->ErrorInfo);
+            return false;
+        }
+    }
 }
 

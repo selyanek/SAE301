@@ -13,8 +13,9 @@ $redirect->redirect();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>accueil prof</title>
+    <title>Accueil Professeur</title>
     <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
+    <link href="/public/asset/CSS/professeur.css" rel="stylesheet">
 </head>
 <div class="uphf">
     <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">
@@ -25,18 +26,21 @@ $redirect->redirect();
 </div>
 <div class="sidebar">
     <ul>
-        <li><a href="nt.php">Accueil</a></li>
-        <li><a href="gererAbsEtu.php">Gérer des absences</a></li>
-        <li><a href="#">Historique des absences</a></li>
+        <li><a href="accueil_prof.php">Accueil</a></li>
+        <li><a href="rattrapage_prof.php">Rattrapages</a></li>
+        <li><a href="/src/Controllers/profile.php">Mon profil</a></li>
         <li><a href="aide.php">Aides</a></li>
     </ul>
 </div>
 
 <header class="text">
     <h1> Bonjour, <?php echo $_SESSION['nom'] ?> </h1>
-    <a href="gererAbsEtu.php">
-        <button type="submit" class="btn">Consulter vos justificatifs</button>
-    </a>
+    <p class="welcome-message">Gérez les rattrapages pour vos évaluations</p>
+    <div class="action-buttons">
+        <a href="rattrapage_prof.php">
+            <button type="button" class="btn">Gérer les rattrapages</button>
+        </a>
+    </div>
 </header>
 <footer class="footer">
     <nav class="footer-nav">

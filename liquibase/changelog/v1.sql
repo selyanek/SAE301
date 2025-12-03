@@ -210,4 +210,21 @@ VALUES ((SELECT idCompte FROM Compte WHERE identifiantCompte = 'oscar.maesse'),
         'Informatique');
 --rollback DELETE FROM Etudiant WHERE identifiantEtu = 'oscar.maesse'; DELETE FROM Compte WHERE identifiantCompte = 'oscar.maesse';
 
+--changeset Baptiste:20
+--comment: Table Rattrapage pour gérer les rattrapages d'évaluations
+CREATE TABLE Rattrapage
+(
+    idRattrapage    SERIAL PRIMARY KEY,
+    idAbsence       INT       NOT NULL,
+    date_rattrapage TIMESTAMP,
+    salle           TEXT,
+    remarque        TEXT,
+    statut          TEXT DEFAULT 'a_planifier' CHECK (statut IN ('a_planifier', 'planifie', 'effectue', 'annule')),
+    date_creation   TIMESTAMP NOT NULL DEFAULT NOW(),
+    FOREIGN KEY (idAbsence) REFERENCES Absence (idAbsence) ON DELETE CASCADE,
+    UNIQUE(idAbsence)
+);
+--rollback DROP TABLE Rattrapage;
+
 -- End of changelog
+
