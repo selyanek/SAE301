@@ -38,6 +38,15 @@ $redirect->redirect();
 </header>
 
 <main class="content">
+    <!-- Overlay de chargement -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h2>Import en cours</h2>
+            <p>Veuillez patienter, traitement des fichiers CSV...</p>
+        </div>
+    </div>
+
     <?php if (isset($_SESSION['message'])): ?>
         <div class="message <?php echo $_SESSION['message_type']; ?>">
             <?php 
@@ -152,6 +161,9 @@ $redirect->redirect();
         if (selectedFiles.length === 0) {
             e.preventDefault();
             alert('Veuillez sélectionner au moins un fichier CSV.');
+        } else {
+            // Afficher l'overlay de chargement
+            document.getElementById('loadingOverlay').style.display = 'flex';
         }
     });
 </script>
