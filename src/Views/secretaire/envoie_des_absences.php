@@ -195,9 +195,9 @@ $redirect->redirect();
             overlay.style.display = 'flex';
             overlay.style.visibility = 'visible';
             overlay.style.opacity = '1';
-            console.log('✅ Overlay affiché!');
+            console.log('Overlay affiché!');
         } else {
-            console.error('❌ Overlay non trouvé!');
+            console.error('Overlay non trouvé!');
             alert('ERREUR: Overlay non trouvé!');
         }
         

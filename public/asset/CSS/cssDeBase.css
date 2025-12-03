@@ -82,22 +82,14 @@ body {
 }
 .footer {
   display: flex;
-<<<<<<< HEAD
-  flex-wrap: wrap; 
-  justify-content: center; 
-  align-items: center; 
-  width: 100%;
-  bottom: 0;
-  background: #e0e0e0;
-  text-align: center; 
-  padding: 1rem 2rem; 
-=======
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  bottom: 0;
   background: #e0e0e0;
+  text-align: center;
   padding: 1rem 2rem;
->>>>>>> cfae0f52f964bd825426c8daae882da584684267
 }
 .footer-nav {
   display: inline-block;

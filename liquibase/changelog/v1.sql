@@ -190,4 +190,13 @@ VALUES ((SELECT idCompte FROM Compte WHERE identifiantCompte = 'delphine.milice'
         'delphine.milice');
 --rollback DELETE FROM Secretaire WHERE identifiantSec = 'delphine.milice'; DELETE FROM Compte WHERE identifiantCompte = 'delphine.milice';
 
+--changeset Roman:18
+--comment: Modifier la colonne justifie pour accepter NULL (absence en attente)
+ALTER TABLE Absence 
+ALTER COLUMN justifie DROP NOT NULL;
+
+ALTER TABLE Absence 
+ALTER COLUMN justifie DROP DEFAULT;
+--rollback ALTER TABLE Absence ALTER COLUMN justifie SET NOT NULL; ALTER TABLE Absence ALTER COLUMN justifie SET DEFAULT FALSE;
+
 -- End of changelog

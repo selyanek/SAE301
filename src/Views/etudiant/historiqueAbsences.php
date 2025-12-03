@@ -30,27 +30,9 @@ require '../layout/navigation.php';
     <a href="historiqueAbsences.php"><button type="button">Réinitialiser</button></a>
 </form>
 
-<<<<<<< HEAD
-<!-- Tableau de l'historique -->
-<table class="liste-absences">
-    <thead>
-        <tr>
-            <th>Date de soumission</th>
-            <th>Date de début</th>
-            <th>Date de fin</th>
-            <th>Cours</th>
-            <th>Motif</th>
-            <th>Justificatif</th>
-            <th>Statut</th>
-        </tr>
-    </thead>
-    <tbody>
-    <?php
-=======
 <!-- Liste des absences sous forme de cartes -->
 <div class="absences-container">
 <?php
->>>>>>> 38e7799923f213b154ac355487afa59093ff58eb
     // Récupération des filtres
     $dateFiltre = isset($_POST['date']) ? $_POST['date'] : '';
     $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
@@ -78,84 +60,6 @@ require '../layout/navigation.php';
             continue;
         }
 
-<<<<<<< HEAD
-                // Déterminer le statut basé sur le champ justifie (null, true, false)
-                $statut = 'en_attente'; // Par défaut
-                if (isset($absence['justifie']) && $absence['justifie'] !== null) {
-                    // PostgreSQL retourne 't' ou 'f' pour les booléens
-                    if ($absence['justifie'] === true || $absence['justifie'] === 't' || $absence['justifie'] === '1' || $absence['justifie'] === 1) {
-                        $statut = 'valide';
-                    } elseif ($absence['justifie'] === false || $absence['justifie'] === 'f' || $absence['justifie'] === '0' || $absence['justifie'] === 0) {
-                        $statut = 'refuse';
-                    }
-                }
-                // Si justifie est null ou non défini, statut reste 'en_attente'
-                
-                if ($statutFiltre && $statut != $statutFiltre) {
-                    continue;
-                }
-
-                // Affichage de la ligne
-                $count++;
-                $statutClass = '';
-                $statutLabel = '';
-
-                switch($statut) {
-                    case 'en_attente':
-                        $statutClass = 'statut-attente';
-                        $statutLabel = 'En attente';
-                        break;
-                    case 'valide':
-                        $statutClass = 'statut-valide';
-                        $statutLabel = 'Validé';
-                        break;
-                    case 'refuse':
-                        $statutClass = 'statut-refuse';
-                        $statutLabel = 'Refusé';
-                        break;
-                }
-
-                echo "<tr>";
-                echo "<td>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_debut']))) . "</td>";
-                echo "<td>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_debut']))) . "</td>";
-                echo "<td>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_fin']))) . "</td>";
-
-                // Compose course string from resource name and course type
-                $ressourceNom = $absence['ressource_nom'] ?? null;
-                $coursType = $absence['cours_type'] ?? null;
-                $coursAffiche = '';
-                if (!empty($coursType)) {
-                    $coursAffiche .= $coursType;
-                }
-                if (!empty($ressourceNom)) {
-                    $coursAffiche .= (!empty($coursAffiche) ? ' - ' : '') . $ressourceNom;
-                }
-                if (empty($coursAffiche)) {
-                    $coursAffiche = '—';
-                }
-                echo "<td>" . htmlspecialchars($coursAffiche) . "</td>";
-                echo "<td>" . htmlspecialchars($absence['motif'] ?? '—') . "</td>";
-                
-                // Documents justificatifs
-                echo "<td>";
-                if (!empty($absence['urijustificatif'])) {
-                    $fichiers = json_decode($absence['urijustificatif'], true);
-                    if (is_array($fichiers) && count($fichiers) > 0) {
-                        foreach ($fichiers as $index => $fichier) {
-                            $fichierPath = "../../../uploads/" . htmlspecialchars($fichier);
-                            echo "<a href='" . $fichierPath . "' target='_blank'>" . htmlspecialchars($fichier) . "</a><br>";
-                        }
-                    } else {
-                        echo "—";
-                    }
-                } else {
-                    echo "—";
-                }
-                echo "</td>";
-                
-                echo "<td class='$statutClass'>$statutLabel</td>";
-                echo "</tr>";
-=======
         // Déterminer le statut
         $statut = 'en_attente';
         if (isset($absence['justifie']) && $absence['justifie'] !== null) {
@@ -163,14 +67,9 @@ require '../layout/navigation.php';
                 $statut = 'valide';
             } elseif ($absence['justifie'] === false || $absence['justifie'] === 'f' || $absence['justifie'] === '0' || $absence['justifie'] === 0) {
                 $statut = 'refuse';
->>>>>>> 38e7799923f213b154ac355487afa59093ff58eb
             }
         }
 
-<<<<<<< HEAD
-            if ($count == 0) {
-                echo "<tr><td colspan='7'>Aucune absence ne correspond aux critères de filtrage.</td></tr>";
-=======
         if ($statutFiltre && $statut != $statutFiltre) {
             continue;
         }
@@ -209,7 +108,6 @@ require '../layout/navigation.php';
                     $links[] = "<a href='" . $fichierPath . "' target='_blank'>" . htmlspecialchars($fichier) . "</a>";
                 }
                 $justificatifsHtml = implode('<br>', $links);
->>>>>>> 38e7799923f213b154ac355487afa59093ff58eb
             }
         }
 
@@ -222,16 +120,6 @@ require '../layout/navigation.php';
         echo "  <div class='card-info'>";
         echo "    <div class='motif'><strong>Motif :</strong> {$motif}</div>";
         echo "    <div class='justif'><strong>Justificatif :</strong><br>{$justificatifsHtml}</div>";
-        
-        // Afficher la raison du refus si l'absence est refusée
-        if ($statut === 'refuse' && !empty($absence['raison_refus'])) {
-            $raisonRefus = htmlspecialchars($absence['raison_refus']);
-            echo "    <div class='raison-refus' style='margin-top: 15px; padding: 12px; background-color: #ffe6e6; border-left: 4px solid #f44336; border-radius: 4px;'>";
-            echo "      <strong style='color: #d32f2f;'> Raison du refus :</strong><br>";
-            echo "      <span style='color: #333; display: block; margin-top: 5px;'>{$raisonRefus}</span>";
-            echo "    </div>";
-        }
-        
         echo "  </div>";
         echo "  <div class='card-status'>";
         echo "    <span class='status-badge'>{$statutLabel}</span>";
