@@ -1,6 +1,6 @@
 <?php
 session_start();
-require __DIR__ . "/../../Controllers/session_timeout.php"; // Gestion du timeout de session
+require __DIR__ . "/../../Controllers/session_timeout.php";
 require __DIR__ . "/../../Controllers/Redirect.php";
 
 use src\Controllers\Redirect;
@@ -38,15 +38,6 @@ $redirect->redirect();
 </header>
 
 <main class="content">
-    <!-- Overlay de chargement -->
-    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
-        <div class="loading-content">
-            <div class="spinner"></div>
-            <h2>Import en cours</h2>
-            <p>Veuillez patienter, traitement des fichiers CSV...</p>
-        </div>
-    </div>
-
     <?php if (isset($_SESSION['message'])): ?>
         <div class="message <?php echo $_SESSION['message_type']; ?>">
             <?php 
@@ -91,22 +82,24 @@ $redirect->redirect();
 </div>
 
 <script>
-    // Test au chargement de la page - à retirer après test
-    window.addEventListener('DOMContentLoaded', function() {
-        const overlay = document.getElementById('loadingOverlay');
-        console.log('Overlay trouvé:', overlay !== null);
-        if (overlay) {
-            console.log('Style display initial:', overlay.style.display);
-        }
-    });
-    
     const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('fileInput');
     const fileList = document.getElementById('fileList');
     const submitBtn = document.getElementById('submitBtn');
     const uploadForm = document.getElementById('uploadForm');
+    const overlay = document.getElementById('loadingOverlay');
     
     let selectedFiles = [];
+    let isSubmitting = false;
+    
+    // Garder l'overlay visible pendant la navigation
+    window.addEventListener('beforeunload', function() {
+        if (isSubmitting && overlay) {
+            overlay.style.display = 'flex';
+            overlay.style.visibility = 'visible';
+            overlay.style.opacity = '1';
+        }
+    });
 
     // Clic sur la zone de drop
     dropZone.addEventListener('click', () => fileInput.click());
@@ -177,18 +170,20 @@ $redirect->redirect();
 
     // Soumission du formulaire
     uploadForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // Bloquer la soumission immédiate
         console.log('=== FORMULAIRE SOUMIS ===');
         
         if (selectedFiles.length === 0) {
-            e.preventDefault();
             alert('Veuillez sélectionner au moins un fichier CSV.');
             return false;
         }
         
         console.log('Fichiers sélectionnés:', selectedFiles.length);
         
+        // Marquer qu'on est en train de soumettre
+        isSubmitting = true;
+        
         // Afficher l'overlay de chargement IMMÉDIATEMENT
-        const overlay = document.getElementById('loadingOverlay');
         console.log('Overlay élément:', overlay);
         
         if (overlay) {
@@ -196,9 +191,6 @@ $redirect->redirect();
             overlay.style.visibility = 'visible';
             overlay.style.opacity = '1';
             console.log('Overlay affiché!');
-        } else {
-            console.error('Overlay non trouvé!');
-            alert('ERREUR: Overlay non trouvé!');
         }
         
         // Désactiver le bouton pour éviter les double-clics
@@ -208,8 +200,13 @@ $redirect->redirect();
             submitBtn.style.opacity = '0.6';
         }
         
-        // Le formulaire continue sa soumission normale
-        return true;
+        // Attendre 100ms pour que l'overlay soit visible, puis soumettre
+        setTimeout(function() {
+            console.log('Soumission du formulaire après délai...');
+            uploadForm.submit(); // Soumettre le formulaire de manière native
+        }, 100);
+        
+        return false; // Empêcher la soumission immédiate
     });
 </script>
 </body>

@@ -128,21 +128,9 @@ class GestionCSV
                 if ($absent) {
                     $motif_base = isset($row[18]) ? trim($row[18]) : '';
                     $commentaire = isset($row[19]) ? trim($row[19]) : '';
-                    $justification = isset($row[17]) ? trim($row[17]) : '';
                     
-                    // DEBUG: Log pour vérifier les valeurs
-                    error_log("DEBUG - Justification brute: '" . $justification . "'");
-                    
-                    // Déterminer le statut de justification
-                    // SEULES les absences avec "Absence justifiée" sont validées (true)
-                    // TOUT LE RESTE est en attente (null) : "Non justifié", "?", vide, etc.
-                    $justifie = null;  // Par défaut : en attente
-                    if ($justification === 'Absence justifiée') {
-                        $justifie = true;  // Validé avec justificatif
-                        error_log("DEBUG - Justifie = TRUE (validé avec justificatif)");
-                    } else {
-                        error_log("DEBUG - Justifie = NULL (en attente) pour: '" . $justification . "'");
-                    }
+                    // TOUTES les absences importées sont en attente (null)
+                    $justifie = null;
                     
                     // Construire le motif complet
                     // Si il y a un commentaire et que le motif n'est pas "?", combiner les deux
@@ -508,9 +496,6 @@ class GestionCSV
             $justifieValue = 0;
         }
         // Sinon reste null
-        
-        // DEBUG: Log pour vérifier la valeur finale
-        error_log("DEBUG createAbsence - justifie input: " . var_export($justifie, true) . " -> SQL value: " . var_export($justifieValue, true));
         
         $stmt->execute([
             ':cours' => $id_cours,
