@@ -43,12 +43,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     $idPost = isset($_POST['id']) ? (int)$_POST['id'] : null;
-    if ($idPost !== null && ($action === 'valider' || $action === 'refuser')) {
-        $value = ($action === 'valider');
-        // Récupérer la raison du refus si elle est fournie
-        $raisonRefus = ($action === 'refuser' && isset($_POST['raison_refus'])) ? trim($_POST['raison_refus']) : null;
-        $absenceModel->updateJustifie($idPost, $value, $raisonRefus);
+    
+    if ($idPost !== null) {
+        if ($action === 'valider') {
+            $result = $absenceModel->updateJustifie($idPost, true);
+            if ($result) {
+                header('Location: ../Views/gestionAbsResp.php?success=' . urlencode('Absence validée avec succès'));
+            } else {
+                header('Location: ../Views/gestionAbsResp.php?error=' . urlencode('Erreur lors de la validation'));
+            }
+            exit();
+        } elseif ($action === 'refuser') {
+            // Récupérer la raison du refus si elle est fournie
+            $raisonRefus = isset($_POST['raison_refus']) ? trim($_POST['raison_refus']) : null;
+            $result = $absenceModel->updateJustifie($idPost, false, $raisonRefus);
+            if ($result) {
+                header('Location: ../Views/gestionAbsResp.php?success=' . urlencode('Absence refusée avec succès'));
+            } else {
+                header('Location: ../Views/gestionAbsResp.php?error=' . urlencode('Erreur lors du refus'));
+            }
+            exit();
+        } elseif ($action === 'Demande_justif') {
+            // TODO: Implémenter la logique pour demander un justificatif
+            // Pour l'instant, on redirige simplement
+            header('Location: ../Views/gestionAbsResp.php?info=' . urlencode('Demande de justificatif envoyée'));
+            exit();
+        }
     }
+    
+    // Si aucune action valide, rediriger sans message
     header('Location: ../Views/gestionAbsResp.php');
     exit();
 }

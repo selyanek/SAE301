@@ -2,6 +2,11 @@
 
 namespace src\Models;
 
+// Charger l'autoloader de Composer si ce n'est pas déjà fait
+if (!class_exists('PHPMailer\PHPMailer\PHPMailer')) {
+    require_once __DIR__ . '/../../vendor/autoload.php';
+}
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;

@@ -93,6 +93,7 @@ class Absence
                 $stmt->bindValue(':value', $value, PDO::PARAM_BOOL);
                 $stmt->bindValue(':idAbsence', $idAbsence, PDO::PARAM_INT);
             }
+            
             return $stmt->execute();
         } catch (PDOException $e) {
             error_log("Erreur Update Justifie (value) : " . $e->getMessage());

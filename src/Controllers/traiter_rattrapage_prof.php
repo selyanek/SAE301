@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // Connexion à la base de données
+require __DIR__ . '/../../vendor/autoload.php'; // Charger l'autoloader de Composer pour PHPMailer
 require __DIR__ . '/../Database/Database.php';
 require __DIR__ . '/../Models/EmailService.php';
 
@@ -109,7 +110,6 @@ try {
         }
     } else {
         // Création d'un nouveau rattrapage
-        // Vérifier qu'il n'existe pas déjà un rattrapage pour cette absence
         $checkRattrapageStmt = $pdo->prepare("SELECT idrattrapage FROM Rattrapage WHERE idabsence = :idAbsence");
         $checkRattrapageStmt->execute([':idAbsence' => $idAbsence]);
         
@@ -157,11 +157,6 @@ try {
                 $sujet = "Rattrapage effectué - " . $info['ressource_nom'];
                 $action = "marqué comme effectué";
                 $couleur = "#28a745";
-                break;
-            case 'annule':
-                $sujet = "Rattrapage annulé - " . $info['ressource_nom'];
-                $action = "annulé";
-                $couleur = "#dc3545";
                 break;
             default:
                 $sujet = "Rattrapage à planifier - " . $info['ressource_nom'];
@@ -211,7 +206,7 @@ try {
                     
                     <div class='footer'>
                         <p>Ceci est un email automatique, merci de ne pas y répondre.</p>
-                        <p>Système de Gestion des Absences - UPHF</p>
+                        <p>UPHF</p>
                     </div>
                 </div>
             </div>
@@ -225,11 +220,8 @@ try {
             $corpsEmail
         );
         
-        error_log("Email envoyé à {$emailEtudiant} pour le rattrapage");
-        
     } catch (Exception $emailError) {
         // Si l'email échoue, on log l'erreur mais on ne bloque pas le processus
-        error_log("Erreur envoi email rattrapage : " . $emailError->getMessage());
         $message .= " (Email de notification non envoyé)";
     }
 
@@ -238,7 +230,6 @@ try {
     exit();
 
 } catch (Exception $e) {
-    error_log("Erreur traitement rattrapage professeur : " . $e->getMessage());
     header('Location: /src/Views/rattrapage_prof.php?error=' . urlencode($e->getMessage()));
     exit();
 }

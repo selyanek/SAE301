@@ -132,12 +132,11 @@ $absence = ($id > 0) ? $absenceModel->getById($id) : null;
         
         <!-- Zone pour saisir la raison du refus (cachée par défaut) -->
         <div id="zone-raison-refus" style="display: none; margin-top: 20px; padding: 15px; border: 2px solid #f44336; border-radius: 8px; background-color: #fff5f5; max-width: 600px;">
-            <h3 style="color: #f44336; margin-top: 0;"> Raison du refus</h3>
+            <h3 style="color: #f44336; margin-top: 0;">Raison du refus</h3>
             <p style="margin-bottom: 10px; color: #666;">Indiquer la raison du refus :</p>
             <textarea name="raison_refus" id="raison_refus" rows="4" 
                       style="width: 100%; padding: 3px; border: 1px solid #ddd; border-radius: 4px; font-family: Arial, sans-serif; font-size: 14px;" 
-                      placeholder="Ex: usage de faux, document(s) illisible(s) ..."
-                      required></textarea>
+                      placeholder="Ex: usage de faux, document(s) illisible(s) ..."></textarea>
             <div style="margin-top: 10px; display: flex; gap: 10px;">
                 <button type="submit" name="action" value="refuser" style="background: #f44336; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Confirmer le refus</button>
                 <button type="button" onclick="cacherRaisonRefus()" style="background: #999; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Annuler</button>
@@ -155,6 +154,24 @@ $absence = ($id > 0) ? $absenceModel->getById($id) : null;
             document.getElementById('zone-raison-refus').style.display = 'none';
             document.getElementById('raison_refus').value = '';
         }
+        
+        // Validation côté client pour s'assurer qu'une raison est fournie lors du refus
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    const action = e.submitter ? e.submitter.value : null;
+                    const raisonRefus = document.getElementById('raison_refus');
+                    
+                    if (action === 'refuser' && raisonRefus && raisonRefus.value.trim() === '') {
+                        e.preventDefault();
+                        alert('Veuillez indiquer une raison pour le refus.');
+                        raisonRefus.focus();
+                        return false;
+                    }
+                });
+            }
+        });
     </script>
 
 <?php endif; ?>

@@ -239,7 +239,7 @@ $absencesEvaluations = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
             <div class="form-group">
                 <label for="salle">Salle :</label>
-                <input type="text" name="salle" id="salle" placeholder="Ex: A101, B203, Amphi 1...">
+                <input type="text" name="salle" id="salle" placeholder="Ex: 113, Amphi...">
             </div>
             
             <div class="form-group">

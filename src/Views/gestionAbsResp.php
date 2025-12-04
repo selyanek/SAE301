@@ -69,6 +69,20 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
     <h1>Gestion des absences</h1>
 </header>
 
+<!-- Messages de succès/erreur/info -->
+<?php
+// Afficher les messages en haut de la page
+if (isset($_GET['success'])) {
+    echo "<div class='alert alert-success' style='background: #d4edda; color: #155724; padding: 15px; margin: 20px 30px; border: 1px solid #c3e6cb; border-radius: 5px; text-align: center; font-weight: bold;'>" . htmlspecialchars($_GET['success']) . "</div>";
+}
+if (isset($_GET['error'])) {
+    echo "<div class='alert alert-error' style='background: #f8d7da; color: #721c24; padding: 15px; margin: 20px 30px; border: 1px solid #f5c6cb; border-radius: 5px; text-align: center; font-weight: bold;'>" . htmlspecialchars($_GET['error']) . "</div>";
+}
+if (isset($_GET['info'])) {
+    echo "<div class='alert alert-info' style='background: #d1ecf1; color: #0c5460; padding: 15px; margin: 20px 30px; border: 1px solid #bee5eb; border-radius: 5px; text-align: center; font-weight: bold;'>" . htmlspecialchars($_GET['info']) . "</div>";
+}
+?>
+
 <!-- Filtrage -->
 <form method="post">
     <label for="nom">Nom étudiant :</label>
@@ -105,14 +119,6 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
     </thead>
     <tbody>
     <?php
-    // Afficher les messages
-    if (isset($_GET['success'])) {
-        echo "<tr><td colspan='8' class='success-message'>✅ " . htmlspecialchars($_GET['success']) . "</td></tr>";
-    }
-    if (isset($_GET['error'])) {
-        echo "<tr><td colspan='8' class='error-message'>❌ Erreur lors du traitement</td></tr>";
-    }
-
     // Vérifier si des absences existent
     if (!$absences || count($absences) === 0) {
         echo "<tr><td colspan='8' style='text-align: center; padding: 20px;'>Aucune absence enregistrée pour le moment.</td></tr>";
