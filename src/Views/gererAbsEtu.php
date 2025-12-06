@@ -32,40 +32,11 @@
 <div class="sidebar">
     <ul>
         <li><a href="/src/Views/etudiant/dashbord.php">Accueil</a></li>
-        <li><a href="/src/Views/gererAbsEtu.php">Gérer des absences</a></li>
+        <li><a href="/src/Views/gererAbsEtu.php">Gérer mes absences</a></li>
         <li><a href="/src/Views/etudiant/historiqueAbsences.php">Historique des absences</a></li>
         <li><a href="/src/Views/etudiant/aide.php">Aides</a></li>
     </ul>
 </div>
-<table class="liste-absences"> 
-    <tr>
-        <th>Date de début</th>
-        <th>Date de fin</th>
-        <th>Motif</th>
-        <th>Justificatif</th>
-        <th>Actions</th>
-    </tr>
-    <tr>
-        <td>2024-01-15 09:00</td>
-        <td>2024-01-15 12:00</td>
-        <td>Rendez-vous médical</td>
-        <td><a href="justificatif1.pdf" target="_blank">Voir le justificatif</a></td>
-        <td>
-            <button type="button">Modifier</button>
-            <button type="button">Supprimer</button>
-        </td>
-    </tr>
-    <tr>
-        <td>2024-02-10 14:00</td>
-        <td>2024-02-10 16:00</td>
-        <td>Problème familial</td>
-        <td><a href="justificatif2.jpg" target="_blank">Voir le justificatif</a></td>
-        <td>
-            <button type="button">Modifier</button>
-            <button type="button">Supprimer</button>
-        </td>
-    </tr>
-</table>
 <br>
     <div class="text">
     <a href="/src/Views/etudiant/dashbord.php"><button type="button" class="btn">Retour à l'accueil</button></a>
