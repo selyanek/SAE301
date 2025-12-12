@@ -261,6 +261,43 @@ class EmailService
     }
 
     /**
+     * Envoie un email à l'étudiant pour demander des justificatifs supplémentaires
+     * Inspiré de sendPasswordResetEmail
+     * 
+     * @param string $toEmail Email de l'étudiant
+     * @param string $toName Nom de l'étudiant
+     * @param string $motif Motif de la demande
+     * @return bool True si l'email a été envoyé avec succès
+     */
+    public function sendJustificationRequestEmail($toEmail, $toName, $motif)
+    {
+        try {
+            $this->mailer->clearAddresses();
+            $this->mailer->clearAttachments();
+            $this->mailer->addAddress($toEmail, $toName);
+
+            $this->mailer->Subject = 'Demande de justificatifs supplémentaires';
+
+            $html = "<p>Bonjour " . htmlspecialchars($toName) . ",</p>";
+            $html .= "<p>Le responsable pédagogique vous demande de fournir des justificatifs supplémentaires concernant votre absence.</p>";
+            $html .= "<p><strong>Motif de la demande :</strong></p>";
+            $html .= "<p style='background-color:#f8f9fa; padding:15px; border-left:4px solid #007bff; margin:15px 0;'>" . nl2br(htmlspecialchars($motif)) . "</p>";
+            $html .= "<p>Veuillez envoyer les documents nécessaires dès que possible via la plateforme de gestion des absences.</p>";
+            $html .= "<p>Cordialement,<br>Le service de gestion des absences</p>";
+
+            $this->mailer->isHTML(true);
+            $this->mailer->Body = $html;
+            $this->mailer->AltBody = "Bonjour " . $toName . ",\n\nLe responsable pédagogique vous demande de fournir des justificatifs supplémentaires.\n\nMotif : " . $motif . "\n\nCordialement,\nLe service de gestion des absences";
+
+            $this->mailer->send();
+            return true;
+        } catch (Exception $e) {
+            error_log('Erreur lors de l\'envoi de la demande de justificatif: ' . $this->mailer->ErrorInfo);
+            return false;
+        }
+    }
+
+    /**
      * Méthode générique pour envoyer un email personnalisé
      * 
      * @param string $toEmail Email du destinataire

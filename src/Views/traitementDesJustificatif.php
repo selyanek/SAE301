@@ -103,7 +103,7 @@ $absence = ($id > 0) ? $absenceModel->getById($id) : null;
                         if (is_array($fichiers) && count($fichiers) > 0) {
                             foreach ($fichiers as $index => $fichier) {
                                 $fichierPath = "../../uploads/" . htmlspecialchars($fichier);
-                                echo "<p><a href='" . $fichierPath . "' target='_blank' style='color: #0066cc; text-decoration: none;'>" . htmlspecialchars($fichier) . "</a></p>";
+                                echo "<p><a href='" . $fichierPath . "' target='_blank'>" . htmlspecialchars($fichier) . "</a></p>";
                             }
                         } else {
                             echo "<p>—</p>";
@@ -131,15 +131,14 @@ $absence = ($id > 0) ? $absenceModel->getById($id) : null;
         </div>
         
         <!-- Zone pour saisir la raison du refus (cachée par défaut) -->
-        <div id="zone-raison-refus" style="display: none; margin-top: 20px; padding: 15px; border: 2px solid #f44336; border-radius: 8px; background-color: #fff5f5; max-width: 600px;">
-            <h3 style="color: #f44336; margin-top: 0;">Raison du refus</h3>
-            <p style="margin-bottom: 10px; color: #666;">Indiquer la raison du refus :</p>
+        <div id="zone-raison-refus">
+            <h3>Raison du refus</h3>
+            <p>Indiquer la raison du refus :</p>
             <textarea name="raison_refus" id="raison_refus" rows="4" 
-                      style="width: 100%; padding: 3px; border: 1px solid #ddd; border-radius: 4px; font-family: Arial, sans-serif; font-size: 14px;" 
                       placeholder="Ex: usage de faux, document(s) illisible(s) ..."></textarea>
-            <div style="margin-top: 10px; display: flex; gap: 10px;">
-                <button type="submit" name="action" value="refuser" style="background: #f44336; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Confirmer le refus</button>
-                <button type="button" onclick="cacherRaisonRefus()" style="background: #999; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Annuler</button>
+            <div class="btn-actions">
+                <button type="submit" name="action" value="refuser" class="btn-confirmer-refus">Confirmer le refus</button>
+                <button type="button" onclick="cacherRaisonRefus()" class="btn-annuler-refus">Annuler</button>
             </div>
         </div>
     </form>
@@ -176,7 +175,91 @@ $absence = ($id > 0) ? $absenceModel->getById($id) : null;
 
 <?php endif; ?>
 
-<div style="height: 150px;"></div>
+<!-- Formulaire de demande de justificatifs -->
+<?php if (isset($_GET['demande']) && $_GET['demande'] === 'true'): ?>
+    <div class="zone-demande-justif">
+        <h3>Envoyer une demande de justificatifs à l'étudiant</h3>
+        
+        <?php if (isset($_GET['error'])): ?>
+            <div class="message-erreur">
+                <strong>Erreur :</strong>
+                <?php 
+                switch($_GET['error']) {
+                    case 'champ_vide':
+                        echo 'Veuillez remplir le motif de la demande.';
+                        break;
+                    case 'email_invalide':
+                        echo 'L\'adresse email de l\'étudiant est invalide.';
+                        break;
+                    case 'identifiant_manquant':
+                        echo 'L\'identifiant de l\'étudiant est manquant.';
+                        break;
+                    case 'envoi_echoue':
+                        echo 'L\'envoi de l\'email a échoué. Veuillez réessayer.';
+                        break;
+                    default:
+                        echo 'Une erreur s\'est produite.';
+                }
+                ?>
+            </div>
+        <?php endif; ?>
+        
+        <p class="info-etudiant">
+            <strong>Étudiant :</strong> <?php echo htmlspecialchars(($absence['prenomcompte'] ?? '') . ' ' . ($absence['nomcompte'] ?? '')); ?><br>
+            <strong>Email :</strong> <?php 
+                $identifiant = $absence['identifiantcompte'] ?? '';
+                $emailEtudiant = (strpos($identifiant, '@') !== false) ? $identifiant : $identifiant . '@uphf.fr';
+                echo htmlspecialchars($emailEtudiant); 
+            ?>
+        </p>
+        
+        <form action="../Controllers/traiter_absence.php" method="post">
+            <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
+            <input type="hidden" name="action" value="envoyer_demande_justif">
+            
+            <div class="form-group">
+                <label for="motif_demande">
+                    Motif de la demande : <span class="obligatoire">*</span>
+                </label>
+                <p class="aide-texte">
+                    Indiquez à l'étudiant la raison pour laquelle vous demandez des justificatifs supplémentaires.
+                </p>
+                <textarea 
+                    id="motif_demande" 
+                    name="motif_demande" 
+                    rows="6" 
+                    required
+                    placeholder="Exemple : Le certificat médical fourni ne couvre pas toute la période d'absence. Veuillez fournir un justificatif complet pour les dates manquantes du 10/12/2025 au 12/12/2025."></textarea>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-envoyer">
+                    Envoyer la demande
+                </button>
+                <a href="traitementDesJustificatif.php?id=<?php echo htmlspecialchars($id); ?>" class="btn-annuler">
+                    Annuler
+                </a>
+            </div>
+        </form>
+    </div>
+<?php endif; ?>
+
+<!-- Message de confirmation d'envoi -->
+<?php if (isset($_GET['email_sent']) && $_GET['email_sent'] === 'true'): ?>
+    <div class="message-succes">
+        <h3>✓ Email envoyé avec succès</h3>
+        <p>
+            La demande de justificatifs supplémentaires a été envoyée à <strong><?php echo htmlspecialchars(($absence['prenomcompte'] ?? '') . ' ' . ($absence['nomcompte'] ?? '')); ?></strong>.
+        </p>
+        <div class="actions">
+            <a href="gestionAbsResp.php" class="btn-retour">
+                Retour à la liste des absences
+            </a>
+        </div>
+    </div>
+<?php endif; ?>
+
+<div class="espacement-footer"></div>
 
 <footer class="footer">
     <nav class="footer-nav">

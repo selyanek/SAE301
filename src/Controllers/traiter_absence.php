@@ -1,5 +1,6 @@
 <?php
 session_start();
+require __DIR__ . '/../../vendor/autoload.php';
 require __DIR__ . '/../Database/Database.php';
 require __DIR__ . '/../Models/Absence.php';
 require __DIR__ . '/session_timeout.php';
@@ -64,9 +65,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             exit();
         } elseif ($action === 'Demande_justif') {
-            // TODO: Implémenter la logique pour demander un justificatif
-            // Pour l'instant, on redirige simplement
-            header('Location: ../Views/gestionAbsResp.php?info=' . urlencode('Demande de justificatif envoyée'));
+            // Rediriger vers le formulaire de demande
+            header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&demande=true');
+            exit();
+        } elseif ($action === 'envoyer_demande_justif') {
+            // Envoyer l'email à l'étudiant
+            $absence = $absenceModel->getById($idPost);
+            
+            if (!$absence) {
+                header('Location: ../Views/gestionAbsResp.php?error=' . urlencode('Absence non trouvée'));
+                exit();
+            }
+            
+            $motif = trim($_POST['motif_demande'] ?? '');
+            
+            if (empty($motif)) {
+                header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&demande=true&error=champ_vide');
+                exit();
+            }
+            
+            $emailService = new \src\Models\EmailService();
+            
+            // Récupérer l'identifiant de l'étudiant (comme dans monProfil.php)
+            $identifiant = $absence['identifiantcompte'] ?? '';
+            $studentName = trim(($absence['prenomcompte'] ?? '') . ' ' . ($absence['nomcompte'] ?? ''));
+            
+            // Construire l'email comme dans monProfil.php : si ce n'est pas déjà un email, ajouter @uphf.fr
+            if (empty($identifiant)) {
+                header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&demande=true&error=identifiant_manquant');
+                exit();
+            }
+            
+            // Si l'identifiant contient déjà un @, c'est un email, sinon on ajoute @uphf.fr
+            $studentEmail = (strpos($identifiant, '@') !== false) ? $identifiant : $identifiant . '@uphf.fr';
+            
+            // Valider l'email final
+            if (!filter_var($studentEmail, FILTER_VALIDATE_EMAIL)) {
+                header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&demande=true&error=email_invalide');
+                exit();
+            }
+            
+            $success = $emailService->sendJustificationRequestEmail($studentEmail, $studentName, $motif);
+            
+            if ($success) {
+                header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&email_sent=true');
+            } else {
+                header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&demande=true&error=envoi_echoue');
+            }
             exit();
         }
     }
