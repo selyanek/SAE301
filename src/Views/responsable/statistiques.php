@@ -4,8 +4,10 @@ require_once __DIR__ . '/../../Controllers/session_timeout.php';
 
 // Charger le modèle
 require_once __DIR__ . '/../../Models/Statistiques.php';
+require_once __DIR__ . '/../../Database/Database.php';
 
 use src\Models\Statistiques;
+use src\Database\Database;
 
 // Récupérer les filtres
 $filtres = [
@@ -17,13 +19,14 @@ $filtres = [
     'date_fin' => $_GET['date_fin'] ?? ''
 ];
 
-// Charger les statistiques
-$stats = new Statistiques();
+// Charger les statistiques depuis la base de données
+$db = new Database();
+$pdo = $db->getConnection();
+$stats = new Statistiques($pdo);
 $stats->chargerAbsences($filtres);
 $globales = $stats->calculerStatistiquesGlobales();
 $matieres = $stats->getListeMatieres();
 $groupes = $stats->getListeGroupes();
-$rattrapages = $stats->getRattrapages();
 
 // Données pour les graphiques
 $donneesGraphiques = $stats->getDonneesAPI();
@@ -144,33 +147,6 @@ require_once __DIR__ . '/../layout/navigation.php';
             </div>
         </div>
     </div>
-
-    <!-- Rattrapages à planifier -->
-    <?php if (!empty($rattrapages)): ?>
-    <div class="stats-rattrapages">
-        <h2>Rattrapages à planifier (absences justifiées lors d'évaluations)</h2>
-        <table class="table-rattrapages">
-            <thead>
-                <tr>
-                    <th>Ressource</th>
-                    <th>Type</th>
-                    <th>Nb étudiants</th>
-                    <th>Statut</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($rattrapages as $rattrapage): ?>
-                <tr>
-                    <td><?= htmlspecialchars($rattrapage['ressource']) ?></td>
-                    <td><?= htmlspecialchars($rattrapage['type_cours']) ?></td>
-                    <td><?= $rattrapage['nb_etudiants'] ?></td>
-                    <td><span class="badge badge-warning"><?= $rattrapage['statut'] ?></span></td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-    <?php endif; ?>
 </div>
 
 <!-- Chart.js -->

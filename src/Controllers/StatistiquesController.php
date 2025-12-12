@@ -29,7 +29,6 @@ class StatistiquesController
         $stats_globales = $this->statistiques->calculerStatistiquesGlobales();
         $matieres = $this->statistiques->getListeMatieres();
         $groupes = $this->statistiques->getListeGroupes();
-        $rattrapages = $this->statistiques->getRattrapages();
 
         // Inclusion de la vue
         require_once __DIR__ . '/../Views/responsable/statistiques.php';

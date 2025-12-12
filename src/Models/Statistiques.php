@@ -2,151 +2,150 @@
 
 namespace src\Models;
 
+use PDO;
+use PDOException;
+
 class Statistiques
 {
     private $absences = [];
-    private $cheminCSV;
+    private $pdo;
 
     public function __construct($pdo = null)
     {
-        // On n'utilise plus PDO, mais on garde le paramètre pour compatibilité
-        $this->cheminCSV = __DIR__ . '/../../data/CSV/';
+        $this->pdo = $pdo;
     }
 
     /**
-     * Charge les absences depuis les fichiers CSV VT
+     * Charge les absences depuis la base de données
      */
     public function chargerAbsences($filtres = [])
     {
         $this->absences = [];
         
-        // Liste des fichiers CSV à charger
-        $fichiers = [
-            'BUT1' => $this->cheminCSV . 'BUT1-240122-240223_anonymise.CSV',
-            'BUT2' => $this->cheminCSV . 'BUT2-240122-240223_anonymise.CSV',
-            'BUT3' => $this->cheminCSV . 'BUT3-240122-240223_anonymise.CSV'
-        ];
+        if (!$this->pdo) {
+            return $this->absences;
+        }
 
-        foreach ($fichiers as $annee => $fichier) {
-            // Filtre par année BUT si spécifié
-            if (!empty($filtres['annee_but']) && $filtres['annee_but'] !== $annee) {
-                continue;
+        try {
+            // Construction de la requête SQL avec les jointures nécessaires
+            $sql = "SELECT 
+                        comp.nom,
+                        comp.prenom,
+                        e.identifiantEtu as identifiant,
+                        e.formation as diplome,
+                        a.date_debut,
+                        a.date_fin,
+                        c.type,
+                        r.nom as matiere,
+                        a.justifie,
+                        a.motif,
+                        c.evaluation as controle,
+                        prof.nom as prof_nom,
+                        prof.prenom as prof_prenom
+                    FROM Absence a
+                    JOIN Cours c ON a.idCours = c.idCours
+                    JOIN Ressource r ON c.idRessource = r.idRessource
+                    JOIN Etudiant e ON a.idEtudiant = e.idEtudiant
+                    JOIN Compte comp ON e.idEtudiant = comp.idCompte
+                    JOIN Professeur p ON c.idProfesseur = p.idProfesseur
+                    JOIN Compte prof ON p.idProfesseur = prof.idCompte
+                    WHERE 1=1";
+            
+            $params = [];
+
+            // Application des filtres SQL
+            if (!empty($filtres['annee_but'])) {
+                $sql .= " AND e.formation LIKE :formation";
+                $params[':formation'] = '%' . $filtres['annee_but'] . '%';
             }
 
-            if (file_exists($fichier)) {
-                $this->lireCSV($fichier, $annee, $filtres);
+            if (!empty($filtres['type_cours'])) {
+                $sql .= " AND c.type = :type";
+                $params[':type'] = strtoupper($filtres['type_cours']);
             }
+
+            if (!empty($filtres['matiere'])) {
+                $sql .= " AND r.nom LIKE :matiere";
+                $params[':matiere'] = '%' . $filtres['matiere'] . '%';
+            }
+
+            if (!empty($filtres['date_debut'])) {
+                $sql .= " AND a.date_debut >= :date_debut";
+                $params[':date_debut'] = $filtres['date_debut'];
+            }
+
+            if (!empty($filtres['date_fin'])) {
+                $sql .= " AND a.date_fin <= :date_fin";
+                $params[':date_fin'] = $filtres['date_fin'];
+            }
+
+            $sql .= " ORDER BY a.date_debut DESC";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute($params);
+            $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Transformer les résultats au format attendu par les méthodes existantes
+            foreach ($resultats as $row) {
+                $this->absences[] = [
+                    'nom' => $row['nom'],
+                    'prenom' => $row['prenom'],
+                    'identifiant' => $row['identifiant'],
+                    'diplome' => $row['diplome'],
+                    'date' => date('d/m/Y', strtotime($row['date_debut'])),
+                    'heure' => date('G\Hi', strtotime($row['date_debut'])),
+                    'duree' => $this->calculerDuree($row['date_debut'], $row['date_fin']),
+                    'type' => strtoupper($row['type']),
+                    'matiere' => $row['matiere'],
+                    'justification' => $this->getJustificationText($row['justifie']),
+                    'motif' => $row['motif'] ?? '',
+                    'groupe' => '', // Non disponible dans la BDD actuelle
+                    'prof' => $row['prof_nom'] . ' ' . $row['prof_prenom'],
+                    'controle' => $row['controle'] ? 'Oui' : 'Non',
+                    'annee_but' => $this->extractAnnee($row['diplome'])
+                ];
+            }
+
+        } catch (PDOException $e) {
+            error_log("Erreur lors du chargement des absences : " . $e->getMessage());
         }
 
         return $this->absences;
     }
 
     /**
-     * Lit un fichier CSV et extrait les absences
+     * Convertit le booléen justifie en texte
      */
-    private function lireCSV($fichier, $annee, $filtres)
+    private function getJustificationText($justifie)
     {
-        $handle = fopen($fichier, 'r');
-        if (!$handle) return;
-
-        // Sauter la ligne d'en-tête (PHP 8.4+ compatible)
-        $header = fgetcsv($handle, 0, ';', '"', '');
-
-        while (($ligne = fgetcsv($handle, 0, ';', '"', '')) !== false) {
-            if (count($ligne) < 24) continue;
-
-            // Extraction des colonnes importantes
-            $absence = [
-                'nom' => $ligne[0],
-                'prenom' => $ligne[1],
-                'identifiant' => $ligne[4],
-                'diplome' => $ligne[5],
-                'date' => $ligne[8],           // Format: JJ/MM/AAAA
-                'heure' => $ligne[9],          // Format: 8H00, 9H30...
-                'duree' => $ligne[10],
-                'type' => strtoupper($ligne[11]),  // CM, TD, TP, DS, BEN
-                'matiere' => $this->simplifierMatiere($ligne[12]),
-                'justification' => $ligne[17], // "Absence justifiée" ou "Non justifié"
-                'motif' => $ligne[18],
-                'groupe' => $ligne[20],
-                'prof' => $ligne[22],
-                'controle' => $ligne[23],      // Oui/Non = évaluation
-                'annee_but' => $annee
-            ];
-
-            // Application des filtres
-            if (!$this->appliquerFiltres($absence, $filtres)) {
-                continue;
-            }
-
-            $this->absences[] = $absence;
+        if ($justifie === null) {
+            return 'En attente';
         }
-
-        fclose($handle);
+        return $justifie ? 'Absence justifiée' : 'Non justifié';
     }
 
     /**
-     * Simplifie le nom de la matière (enlève les codes)
+     * Extrait l'année BUT de la formation (BUT1, BUT2, BUT3)
      */
-    private function simplifierMatiere($matiere)
+    private function extractAnnee($formation)
     {
-        // Extrait juste le nom principal avant les parenthèses
-        if (preg_match('/^[A-Z]+-(.+?)\s*\(/', $matiere, $matches)) {
-            return trim($matches[1]);
+        if (preg_match('/BUT\s*(\d)/', $formation, $matches)) {
+            return 'BUT' . $matches[1];
         }
-        return $matiere;
+        return 'BUT1'; // Valeur par défaut
     }
 
     /**
-     * Applique les filtres sur une absence
+     * Calcule la durée entre deux timestamps
      */
-    private function appliquerFiltres($absence, $filtres)
+    private function calculerDuree($debut, $fin)
     {
-        // Filtre par type de cours
-        if (!empty($filtres['type_cours']) && $absence['type'] !== strtoupper($filtres['type_cours'])) {
-            return false;
-        }
-
-        // Filtre par matière
-        if (!empty($filtres['matiere']) && stripos($absence['matiere'], $filtres['matiere']) === false) {
-            return false;
-        }
-
-        // Filtre par groupe
-        if (!empty($filtres['groupe']) && stripos($absence['groupe'], $filtres['groupe']) === false) {
-            return false;
-        }
-
-        // Filtre par date début
-        if (!empty($filtres['date_debut'])) {
-            $dateAbsence = $this->convertirDate($absence['date']);
-            if ($dateAbsence < $filtres['date_debut']) {
-                return false;
-            }
-        }
-
-        // Filtre par date fin
-        if (!empty($filtres['date_fin'])) {
-            $dateAbsence = $this->convertirDate($absence['date']);
-            if ($dateAbsence > $filtres['date_fin']) {
-                return false;
-            }
-        }
-
-        return true;
+        $diff = strtotime($fin) - strtotime($debut);
+        $heures = floor($diff / 3600);
+        $minutes = floor(($diff % 3600) / 60);
+        return sprintf('%dh%02d', $heures, $minutes);
     }
 
-    /**
-     * Convertit une date JJ/MM/AAAA en AAAA-MM-JJ
-     */
-    private function convertirDate($date)
-    {
-        $parts = explode('/', $date);
-        if (count($parts) === 3) {
-            return $parts[2] . '-' . $parts[1] . '-' . $parts[0];
-        }
-        return $date;
-    }
 
     /**
      * Calcule les statistiques globales
@@ -292,7 +291,8 @@ class Statistiques
         $tendances = [];
         
         foreach ($this->absences as $absence) {
-            $dateISO = $this->convertirDate($absence['date']);
+            // La date est déjà au format JJ/MM/AAAA, on la convertit en timestamp
+            $dateISO = $this->convertirDateJJMMAAAA($absence['date']);
             
             if ($granularite === 'mois') {
                 $mois = (int)date('n', strtotime($dateISO));
@@ -312,7 +312,19 @@ class Statistiques
     }
 
     /**
-     * Liste des matières disponibles (depuis les CSV)
+     * Convertit une date JJ/MM/AAAA en AAAA-MM-JJ
+     */
+    private function convertirDateJJMMAAAA($date)
+    {
+        $parts = explode('/', $date);
+        if (count($parts) === 3) {
+            return $parts[2] . '-' . $parts[1] . '-' . $parts[0];
+        }
+        return $date;
+    }
+
+    /**
+     * Liste des matières disponibles
      */
     public function getListeMatieres()
     {
@@ -324,49 +336,17 @@ class Statistiques
     }
 
     /**
-     * Liste des groupes disponibles (depuis les CSV)
+     * Liste des groupes disponibles
      */
     public function getListeGroupes()
     {
         $groupes = [];
         foreach ($this->absences as $absence) {
-            $groupes[$absence['groupe']] = true;
-        }
-        return array_keys($groupes);
-    }
-
-    /**
-     * Rattrapages à planifier (absences justifiées lors d'évaluations)
-     */
-    public function getRattrapages()
-    {
-        $rattrapages = [];
-
-        foreach ($this->absences as $absence) {
-            // Seulement les absences justifiées lors d'évaluations
-            $estJustifiee = stripos($absence['justification'], 'justifiée') !== false;
-            $estEvaluation = $absence['controle'] === 'Oui' || $absence['type'] === 'DS';
-
-            if ($estJustifiee && $estEvaluation) {
-                $cle = $absence['matiere'] . '|' . $absence['type'];
-                if (!isset($rattrapages[$cle])) {
-                    $rattrapages[$cle] = [
-                        'ressource' => $absence['matiere'],
-                        'type_cours' => $absence['type'],
-                        'nb_etudiants' => 0,
-                        'statut' => 'À planifier'
-                    ];
-                }
-                $rattrapages[$cle]['nb_etudiants']++;
+            if (!empty($absence['groupe'])) {
+                $groupes[$absence['groupe']] = true;
             }
         }
-
-        // Trier par nombre d'étudiants
-        usort($rattrapages, function($a, $b) {
-            return $b['nb_etudiants'] - $a['nb_etudiants'];
-        });
-
-        return array_values($rattrapages);
+        return array_keys($groupes);
     }
 
     /**
