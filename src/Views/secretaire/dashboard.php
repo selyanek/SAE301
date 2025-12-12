@@ -28,7 +28,7 @@ $redirect->redirect();
     <ul>
         <li><a href="dashboard.php">Accueil</a></li>
         <li><a href="/src/Controllers/profile.php">Mon profil</a></li>
-        <li><a href="#">Aides</a></li>
+        <li><a href="src/Views/secretaire/aideSecr.php">Aide</a></li>
     </ul>
 </div>
 

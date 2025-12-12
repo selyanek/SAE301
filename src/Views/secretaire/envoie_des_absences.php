@@ -67,7 +67,7 @@ $redirect->redirect();
     <nav class="footer-nav">
         <a href="dashboard.php">Accueil</a>
         <span>|</span>
-        <a href="#">Aides</a>
+        <a href="#">Aide</a>
     </nav>
 </footer>
 
