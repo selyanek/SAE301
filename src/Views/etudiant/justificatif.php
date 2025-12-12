@@ -1,15 +1,7 @@
 <?php
-// Page de gestion des justificatifs pour l'étudiant
+// Page d'historique des absences pour l'étudiant
 session_start();
 require '../../Controllers/session_timeout.php'; // Gestion du timeout de session
-
-// Utilisation du contrôleur pour récupérer les données
-require_once __DIR__ . '/../../Controllers/JustificatifController.php';
-
-$controller = new \src\Controllers\JustificatifController();
-$studentId = $_SESSION['login'] ?? '';
-$absencesEnAttente = $controller->getAbsencesEnAttente($studentId);
-
 $pageTitle = 'Gérer mes absences';
 $additionalCSS = ['../../../public/asset/CSS/cssGererAbsEtu.css'];
 require '../layout/header.php';
@@ -18,7 +10,7 @@ require '../layout/navigation.php';
 
 <header class="text">
     <h1>Gérer mes absences</h1>
-    <p>Cette page vous donnes accès aux absences actuelles en attentes.</p>
+    <p>Cette page vous donne accès aux informations et réponses liées à vos absences justifiées.</p>
     <?php
     if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])) {
         echo '<div class="error-messages">';
@@ -29,46 +21,38 @@ require '../layout/navigation.php';
         unset($_SESSION['errors']);
     }
     ?>
+    <a href="depotJustificatif.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>    
 </header>
 
-<!-- Liste des absences en attente -->
-<div class="absences-container">
-<?php
-    if (count($absencesEnAttente) > 0) {
-        foreach ($absencesEnAttente as $absence) {
-            echo "<div class='absence-card {$absence['statut_class']}'>";
-            echo "  <div class='card-dates'>";
-            echo "    <div><strong>Soumission</strong><br>{$absence['date_soumission']}</div>";
-            echo "    <div><strong>Début</strong><br>{$absence['date_debut']}</div>";
-            echo "    <div><strong>Fin</strong><br>{$absence['date_fin']}</div>";
-            echo "  </div>";
-            echo "  <div class='card-info'>";
-            echo "    <div class='motif'><strong>Motif :</strong> " . htmlspecialchars($absence['motif']) . "</div>";
-            echo "    <div class='justif'><strong>Justificatif :</strong><br>";
-            
-            if (count($absence['justificatifs']) > 0) {
-                foreach ($absence['justificatifs'] as $justif) {
-                    echo "<a href='{$justif['path']}' target='_blank'>{$justif['nom']}</a><br>";
-                }
-            } else {
-                echo "—";
-            }
-            
-            echo "    </div>";
-            echo "  </div>";
-            echo "  <div class='card-status'>";
-            echo "    <span class='status-badge'>{$absence['statut_label']}</span>";
-            echo "  </div>";
-            echo "</div>";
-        }
-    } else {
-        echo "<div class='no-results'>";
-        echo "    <p>Vous n'avez aucune absence en attente de traitement.</p>";
-        echo "    <p>Toutes vos absences ont été traitées ou vous n'avez pas encore soumis de justificatif.</p>";
-        echo "</div>";
-    }
-?>
-</div>
+<table class="liste-absences"> 
+    <tr>
+        <th>Date de début</th>
+        <th>Date de fin</th>
+        <th>Motif</th>
+        <th>Justificatif</th>
+        <th>Actions</th>
+    </tr>
+    <tr>
+        <td>2024-01-15 09:00</td>
+        <td>2024-01-15 12:00</td>
+        <td>Rendez-vous médical</td>
+        <td><a href="justificatif1.pdf" target="_blank">Voir le justificatif</a></td>
+        <td>
+            <button type="button">Modifier</button>
+            <button type="button">Supprimer</button>
+        </td>
+    </tr>
+    <tr>
+        <td>2024-02-10 14:00</td>
+        <td>2024-02-10 16:00</td>
+        <td>Problème familial</td>
+        <td><a href="justificatif2.jpg" target="_blank">Voir le justificatif</a></td>
+        <td>
+            <button type="button">Modifier</button>
+            <button type="button">Supprimer</button>
+        </td>
+    </tr>
+</table>
 
 <br>
 

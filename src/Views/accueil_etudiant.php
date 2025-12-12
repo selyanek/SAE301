@@ -22,7 +22,7 @@ require "../Controllers/Redirect.php";
 <div class="sidebar">
     <ul>
         <li><a href="nt.php">Accueil</a></li>
-        <li><a href="gererAbsEtu.php">Gérer mes absences</a></li>
+        <li><a href="gererAbsEtu.php">Gérer des absences</a></li>
         <li><a href="#">Historique des absences</a></li>
         <li><a href="aide.php">Aides</a></li>
     </ul>
