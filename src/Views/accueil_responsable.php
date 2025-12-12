@@ -41,11 +41,10 @@ $nombreAbsencesEnAttente = $absenceModel->countEnAttente();
 <!-- Barre latérale de navigation -->
 <div class="sidebar">
     <ul>
-        <li><a href="accueil_responsable.php">Accueil</a></li> <!-- Lien vers la page d'accueil -->
+        <li><a href="accueil_responsable.php">Accueil</a></li>
         <li><a href="/src/Controllers/profile.php">Mon profil</a></li>
-        <li><a href="historiqueAbsResp.php">Historique des absences</a></li> <!-- Lien vers l'historique -->
-        <!-- <li><a href="#">Statistiques</a></li> --> <!-- Lien vers les statistiques (à venir) -->
-
+        <li><a href="historiqueAbsResp.php">Historique des absences</a></li>
+        <li><a href="/src/Views/responsable/statistiques.php">Statistiques</a></li>
     </ul>
 </div>
 <header class="text fade-in">
@@ -70,9 +69,9 @@ $nombreAbsencesEnAttente = $absenceModel->countEnAttente();
 <!-- Pied de page avec navigation -->
 <footer class="footer">
     <nav class="footer-nav">
-        <a href="accueil_responsable.php">Accueil</a> <!-- Retour à l'accueil -->
+        <a href="accueil_responsable.php">Accueil</a>
         <span>|</span>
-        <a href="aideResp.php">Aides</a> <!-- Lien vers la page d'aide -->
+        <a href="aideResp.php">Aides</a>
     </nav>
 </footer>
 </body>
