@@ -581,4 +581,62 @@ class GestionCSV
         }
         return $result;
     }
+
+    public function filtrerMatiere($files, string $matiere) {
+        $csv = new GestionCSV();
+        $result = [];
+        $csv_array = $csv->getAllData($files);
+
+        // Filtrer que les absences qui ont la matière spécifiée
+        foreach ($csv_array as $row) {
+            if ($row[12] == $matiere) {
+                $result += ($row);
+            }
+        }
+        return $result;
+    }
+
+    public function filtrerDate($files, string $date) {
+        $csv = new GestionCSV();
+        $result = [];
+        $csv_array = $csv->getAllData($files);
+
+        // Filtrer que les absences qui ont la date spécifiée
+        foreach ($csv_array as $row) {
+            if ($row[8] == $date) {
+                $result += ($row);
+            }
+        }
+        return $result;
+    }
+
+    public function filtrerGroupe($files, string $groupe) {
+        $csv = new GestionCSV();
+        $result = [];
+        $csv_array = $csv->getAllData($files);
+
+        // Filtrer que les absences qui ont le groupe spécifié
+        foreach ($csv_array as $row) {
+            if ($row[20] == $groupe) {
+                $result += ($row);
+            }
+        }
+        return $result;
+    }
+
+    public function check_if_valid_csv($files): bool {
+        $csv = new GestionCSV();
+        $csv_array = $csv->getAllData($files);
+
+        if (file_exists($files) === false) {
+            return false;
+        }
+
+        // Vérifier si le fichier CSV contient au moins une ligne de données et 23 colonnes correspondantes
+        if ((count($csv_array) > 1) || (count($csv_array[0]) >= 24) || $csv_array[0][0] !== "Nom") {
+            return false;
+        }
+
+        return true;
+    }
 }
