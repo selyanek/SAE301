@@ -43,6 +43,7 @@ $nombreAbsencesEnAttente = $absenceModel->countEnAttente();
     <ul>
         <li><a href="accueil_responsable.php">Accueil</a></li>
         <li><a href="/src/Controllers/profile.php">Mon profil</a></li>
+        <li><a href="/src/Views/gestionAbsResp.php">Gestion des absences</a></li>
         <li><a href="historiqueAbsResp.php">Historique des absences</a></li>
         <li><a href="/src/Views/responsable/statistiques.php">Statistiques</a></li>
     </ul>
