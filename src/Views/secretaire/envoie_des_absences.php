@@ -29,7 +29,6 @@ $redirect->redirect();
     <ul>
         <li><a href="dashboard.php">Accueil</a></li>
         <li><a href="/src/Controllers/profile.php">Mon profil</a></li>
-        <li><a href="#">Aides</a></li>
     </ul>
 </div>
 
@@ -67,7 +66,7 @@ $redirect->redirect();
     <nav class="footer-nav">
         <a href="dashboard.php">Accueil</a>
         <span>|</span>
-        <a href="#">Aide</a>
+        <a href="/src/Views/secretaire/aideSecr.php">Aide</a>
     </nav>
 </footer>
 

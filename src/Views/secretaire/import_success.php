@@ -37,7 +37,6 @@ unset($_SESSION['message_type']);
     <ul>
         <li><a href="dashboard.php">Accueil</a></li>
         <li><a href="/src/Controllers/profile.php">Mon profil</a></li>
-        <li><a href="/src/Views/secretaire/aideSecr.php">Aide</a></li>
     </ul>
 </div>
 
@@ -63,7 +62,7 @@ unset($_SESSION['message_type']);
     <nav class="footer-nav">
         <a href="dashboard.php">Accueil</a>
         <span>|</span>
-        <a href="src/Views/secretaire/aideSecr.php">Aide</a>
+        <a href="/src/Views/secretaire/aideSecr.php">Aide</a>
     </nav>
 </footer>
 

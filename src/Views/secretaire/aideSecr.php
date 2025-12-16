@@ -21,8 +21,6 @@
     <ul>
         <li><a href="/src/Views/secretaire/dashboard.php">Accueil</a></li>
         <li><a href="/src/Controllers/profile.php">Mon profil</a></li>
-        <li><a href="/src/Views/secretaire/aideSecr.php">Aide</a></li>
-        <!-- <li><a href="#">Statistiques</a></li> -->
     </ul>
 </div>
 
