@@ -55,11 +55,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             exit();
         } elseif ($action === 'refuser') {
-            // Récupérer la raison du refus si elle est fournie
+            // Récupérer la raison du refus et le type de refus
             $raisonRefus = isset($_POST['raison_refus']) ? trim($_POST['raison_refus']) : null;
-            $result = $absenceModel->updateJustifie($idPost, false, $raisonRefus);
+            $typeRefus = isset($_POST['type_refus']) ? trim($_POST['type_refus']) : 'definitif'; // Par défaut : définitif
+            
+            // Valider le type de refus
+            if (!in_array($typeRefus, ['definitif', 'ressoumission'])) {
+                $typeRefus = 'definitif';
+            }
+            
+            $result = $absenceModel->updateJustifie($idPost, false, $raisonRefus, $typeRefus);
             if ($result) {
-                header('Location: ../Views/gestionAbsResp.php?success=' . urlencode('Absence refusée avec succès'));
+                $message = ($typeRefus === 'ressoumission') 
+                    ? 'Absence refusée - L\'étudiant peut la resoumettre' 
+                    : 'Absence refusée définitivement';
+                header('Location: ../Views/gestionAbsResp.php?success=' . urlencode($message));
             } else {
                 header('Location: ../Views/gestionAbsResp.php?error=' . urlencode('Erreur lors du refus'));
             }

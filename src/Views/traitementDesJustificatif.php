@@ -136,6 +136,19 @@ $absence = ($id > 0) ? $absenceModel->getById($id) : null;
             <p>Indiquer la raison du refus :</p>
             <textarea name="raison_refus" id="raison_refus" rows="4" 
                       placeholder="Ex: usage de faux, document(s) illisible(s) ..."></textarea>
+            
+            <h3>Type de refus</h3>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="type_refus" value="definitif" checked>
+                    <strong>Refus définitif</strong> - L'étudiant ne pourra pas resoumettre cette absence
+                </label>
+                <label>
+                    <input type="radio" name="type_refus" value="ressoumission">
+                    <strong>Refus avec possibilité de ressoumission</strong> - L'étudiant pourra modifier et resoumettre son justificatif
+                </label>
+            </div>
+            
             <div class="btn-actions">
                 <button type="submit" name="action" value="refuser" class="btn-confirmer-refus">Confirmer le refus</button>
                 <button type="button" onclick="cacherRaisonRefus()" class="btn-annuler-refus">Annuler</button>

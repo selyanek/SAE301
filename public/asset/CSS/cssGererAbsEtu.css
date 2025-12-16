@@ -13,6 +13,52 @@
     font-weight: 500;
 }
 
+.success-messages {
+    width: 80%;
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #e8f5e9;
+    border: 1px solid #4caf50;
+}
+
+.success {
+    color: #2e7d32;
+    margin: 5px 0;
+    font-weight: 500;
+}
+
+.alert-ressoumission {
+    width: 80%;
+    margin: 20px auto;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #fff3e0;
+    border: 2px solid #ff9800;
+    color: #e65100;
+    font-weight: 500;
+}
+
+.alert-ressoumission a {
+    color: #0066cc;
+    text-decoration: underline;
+}
+
+.btn-resoumettre {
+    background: #ff9800;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.btn-resoumettre:hover {
+    background: #f57c00;
+}
+
 /* Styles pour l'historique des absences (cartes) */
 .filtre-form {
     margin: 20px 0;
@@ -69,6 +115,36 @@
 .absence-card .justif a:hover {
     text-decoration: underline;
 }
+
+.raison-refus-historique {
+    margin-top: 10px;
+    padding: 8px;
+    background-color: #ffebee;
+    border-left: 3px solid #d32f2f;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #d32f2f;
+}
+
+.info-type-refus {
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.info-type-refus.ressoumission {
+    background-color: #fff3e0;
+    border-left: 3px solid #ff9800;
+    color: #e65100;
+}
+
+.info-type-refus.definitif {
+    background-color: #fce4ec;
+    border-left: 3px solid #c2185b;
+    color: #880e4f;
+}
+
 .card-status { text-align: right; }
 .status-badge {
     display: inline-block;

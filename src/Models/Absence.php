@@ -76,15 +76,16 @@ class Absence
         }
     }
 
-    public function updateJustifie($idAbsence, bool $value, ?string $raisonRefus = null)
+    public function updateJustifie($idAbsence, bool $value, ?string $raisonRefus = null, ?string $typeRefus = null)
     {
         try {
             if ($value === false && $raisonRefus !== null && trim($raisonRefus) !== '') {
-                // Si refusé avec une raison
-                $sql = "UPDATE $this->table SET justifie = :value, raison_refus = :raisonRefus WHERE idabsence = :idAbsence";
+                // Si refusé avec une raison et type de refus
+                $sql = "UPDATE $this->table SET justifie = :value, raison_refus = :raisonRefus, type_refus = :typeRefus WHERE idabsence = :idAbsence";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->bindValue(':value', $value, PDO::PARAM_BOOL);
                 $stmt->bindValue(':raisonRefus', trim($raisonRefus), PDO::PARAM_STR);
+                $stmt->bindValue(':typeRefus', $typeRefus, PDO::PARAM_STR);
                 $stmt->bindValue(':idAbsence', $idAbsence, PDO::PARAM_INT);
             } else {
                 // Si validé ou refusé sans raison
@@ -97,6 +98,34 @@ class Absence
             return $stmt->execute();
         } catch (PDOException $e) {
             error_log("Erreur Update Justifie (value) : " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Permet à l'étudiant de modifier une absence refusée avec possibilité de ressoumission
+     * Remet l'absence en attente (justifie = NULL) et efface le type de refus
+     */
+    public function resoumettre($idAbsence, $nouveauMotif, $nouvelleUriJustificatif)
+    {
+        try {
+            $sql = "UPDATE $this->table 
+                    SET motif = :motif, 
+                        urijustificatif = :uriJustificatif, 
+                        justifie = NULL, 
+                        type_refus = NULL,
+                        raison_refus = NULL
+                    WHERE idabsence = :idAbsence 
+                    AND justifie = false 
+                    AND type_refus = 'ressoumission'";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindValue(':motif', $nouveauMotif, PDO::PARAM_STR);
+            $stmt->bindValue(':uriJustificatif', $nouvelleUriJustificatif, PDO::PARAM_STR);
+            $stmt->bindValue(':idAbsence', $idAbsence, PDO::PARAM_INT);
+            
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Erreur resoumettre : " . $e->getMessage());
             return false;
         }
     }

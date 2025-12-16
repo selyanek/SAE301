@@ -186,8 +186,7 @@ INSERT INTO Compte (identifiantCompte, mot_de_passe, nom, prenom, fonction)
 VALUES ('delphine.milice', 'motdepasse123', 'Milice', 'Delphine', 'secretaire');
 
 INSERT INTO Secretaire (idSecretaire, identifiantSec)
-VALUES ((SELECT idCompte FROM Compte WHERE identifiantCompte = 'delphine.milice'),
-        'delphine.milice');
+VALUES ((SELECT idCompte FROM Compte WHERE identifiantCompte = 'delphine.milice'),'delphine.milice');
 --rollback DELETE FROM Secretaire WHERE identifiantSec = 'delphine.milice'; DELETE FROM Compte WHERE identifiantCompte = 'delphine.milice';
 
 --changeset Roman:18
@@ -199,7 +198,7 @@ ALTER TABLE Absence
 ALTER COLUMN justifie DROP DEFAULT;
 --rollback ALTER TABLE Absence ALTER COLUMN justifie SET NOT NULL; ALTER TABLE Absence ALTER COLUMN justifie SET DEFAULT FALSE;
 
---changeset YourName:19
+--changeset Roman:19
 --comment: Insertion d'un compte etudiant et de son profil Etudiant pour Oscar Maesse
 INSERT INTO Compte (identifiantCompte, mot_de_passe, nom, prenom, fonction)
 VALUES ('oscar.maesse', 'motdepasse123', 'Maesse', 'Oscar', 'etudiant');
@@ -210,7 +209,7 @@ VALUES ((SELECT idCompte FROM Compte WHERE identifiantCompte = 'oscar.maesse'),
         'Informatique');
 --rollback DELETE FROM Etudiant WHERE identifiantEtu = 'oscar.maesse'; DELETE FROM Compte WHERE identifiantCompte = 'oscar.maesse';
 
---changeset Baptiste:20
+--changeset Roman:20
 --comment: Table Rattrapage pour gérer les rattrapages d'évaluations
 CREATE TABLE Rattrapage
 (
@@ -226,5 +225,11 @@ CREATE TABLE Rattrapage
 );
 --rollback DROP TABLE Rattrapage;
 
+--changeset Roman:21
+--comment: Ajout du champ type_refus pour distinguer refus définitif et refus avec ressoumission
+ALTER TABLE Absence ADD COLUMN type_refus TEXT CHECK (type_refus IN ('definitif', 'ressoumission'));
+--rollback ALTER TABLE Absence DROP COLUMN type_refus;
+
 -- End of changelog
+
 

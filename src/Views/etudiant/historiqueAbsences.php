@@ -110,6 +110,22 @@ require '../layout/navigation.php';
                 $justificatifsHtml = implode('<br>', $links);
             }
         }
+        
+        // Afficher les informations sur le type de refus
+        $infoRefusHtml = '';
+        if ($statut === 'refuse' && !empty($absence['type_refus'])) {
+            if ($absence['type_refus'] === 'ressoumission') {
+                $infoRefusHtml = "<div class='info-type-refus ressoumission'><strong>Type de refus :</strong> Vous pouvez resoumettre cette absence</div>";
+            } elseif ($absence['type_refus'] === 'definitif') {
+                $infoRefusHtml = "<div class='info-type-refus definitif'><strong>Type de refus :</strong> Refus définitif</div>";
+            }
+        }
+        
+        // Afficher la raison du refus si elle existe
+        $raisonRefusHtml = '';
+        if ($statut === 'refuse' && !empty($absence['raison_refus'])) {
+            $raisonRefusHtml = "<div class='raison-refus-historique'><strong>Raison :</strong> " . htmlspecialchars($absence['raison_refus']) . "</div>";
+        }
 
         echo "<div class='absence-card {$statutClass}'>";
         echo "  <div class='card-dates'>";
@@ -120,6 +136,8 @@ require '../layout/navigation.php';
         echo "  <div class='card-info'>";
         echo "    <div class='motif'><strong>Motif :</strong> {$motif}</div>";
         echo "    <div class='justif'><strong>Justificatif :</strong><br>{$justificatifsHtml}</div>";
+        echo "    {$raisonRefusHtml}";
+        echo "    {$infoRefusHtml}";
         echo "  </div>";
         echo "  <div class='card-status'>";
         echo "    <span class='status-badge'>{$statutLabel}</span>";

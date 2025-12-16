@@ -224,6 +224,38 @@
   font-size: 14px;
 }
 
+#zone-raison-refus .radio-group {
+  margin: 15px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#zone-raison-refus .radio-group label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+#zone-raison-refus .radio-group label:hover {
+  border-color: #0066cc;
+  background-color: #f0f7ff;
+}
+
+#zone-raison-refus .radio-group input[type="radio"] {
+  margin-top: 3px;
+  cursor: pointer;
+}
+
+#zone-raison-refus .radio-group input[type="radio"]:checked + strong {
+  color: #0066cc;
+}
+
 #zone-raison-refus .btn-actions {
   margin-top: 10px;
   display: flex;
