@@ -1,3 +1,41 @@
+<?php
+// Activer l'affichage des erreurs pour le debug
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+session_start();
+require_once __DIR__ . '/../Database/Database.php';
+require_once __DIR__ . '/../Models/Absence.php';
+
+use src\Database\Database;
+use src\Models\Absence;
+
+// Vérifier que l'utilisateur est connecté et est un étudiant
+if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'etudiant' && $_SESSION['role'] !== 'etudiante')) {
+    header('Location: /public/index.php');
+    exit();
+}
+
+// Récupérer les absences en attente de l'étudiant
+try {
+    $db = new Database();
+    $absenceModel = new Absence($db->getConnection());
+    $identifiantEtu = $_SESSION['identifiantEtu'] ?? $_SESSION['login']; // Utiliser identifiantEtu ou login en fallback
+    
+    $absences = $absenceModel->getByStudentIdentifiant($identifiantEtu);
+    
+    // Filtrer uniquement les absences en attente (justifie IS NULL)
+    $absencesEnAttente = array_filter($absences, function($absence) {
+        return $absence['justifie'] === null;
+    });
+    
+} catch (Exception $e) {
+    // En cas d'erreur, initialiser un tableau vide
+    $absencesEnAttente = [];
+    // Afficher l'erreur en commentaire HTML
+    echo "<!-- Erreur: " . htmlspecialchars($e->getMessage()) . " -->";
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,7 +54,10 @@
 </div>
 <header class="text">
     <h1>Gérer mes absences </h1>
-    <p>Cette page vous donne accès aux informations et réponses liées à vos absences justifiées.</p>
+    <div style="background: red; color: white; padding: 10px; margin: 10px 0; font-weight: bold;">
+        🔴 FICHIER MODIFIÉ - VERSION DU 16 DEC 2025 🔴
+    </div>
+    <p>Cette page vous donne accès aux informations et réponses liées à vos absences en attente de validation.</p>
     <?php
     if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])) {
         echo '<div class="error-messages">';
@@ -37,35 +78,40 @@
         <li><a href="/src/Views/etudiant/aide.php">Aides</a></li>
     </ul>
 </div>
+
+<?php if (empty($absencesEnAttente)): ?>
+    <div class="text">
+        <p>Vous n'avez aucune absence en attente de validation.</p>
+    </div>
+<?php else: ?>
 <table class="liste-absences"> 
     <tr>
         <th>Date de début</th>
         <th>Date de fin</th>
+        <th>Cours</th>
         <th>Motif</th>
         <th>Justificatif</th>
-        <th>Actions</th>
+        <th>Statut</th>
     </tr>
+    <?php foreach ($absencesEnAttente as $absence): ?>
     <tr>
-        <td>2024-01-15 09:00</td>
-        <td>2024-01-15 12:00</td>
-        <td>Rendez-vous médical</td>
-        <td><a href="justificatif1.pdf" target="_blank">Voir le justificatif</a></td>
+        <td><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_debut']))); ?></td>
+        <td><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_fin']))); ?></td>
+        <td><?php echo htmlspecialchars($absence['ressource_nom'] ?? $absence['cours_type'] ?? 'N/A'); ?></td>
+        <td><?php echo htmlspecialchars($absence['motif'] ?? 'Non renseigné'); ?></td>
         <td>
-            <button type="button">Modifier</button>
-            <button type="button">Supprimer</button>
+            <?php if (!empty($absence['urijustificatif'])): ?>
+                <a href="<?php echo htmlspecialchars($absence['urijustificatif']); ?>" target="_blank">Voir le justificatif</a>
+            <?php else: ?>
+                Aucun justificatif
+            <?php endif; ?>
         </td>
+        <td><span class="statut-attente">En attente</span></td>
     </tr>
-    <tr>
-        <td>2024-02-10 14:00</td>
-        <td>2024-02-10 16:00</td>
-        <td>Problème familial</td>
-        <td><a href="justificatif2.jpg" target="_blank">Voir le justificatif</a></td>
-        <td>
-            <button type="button">Modifier</button>
-            <button type="button">Supprimer</button>
-        </td>
-    </tr>
+    <?php endforeach; ?>
 </table>
+<?php endif; ?>
+
 <br>
     <div class="text">
     <a href="/src/Views/etudiant/dashbord.php"><button type="button" class="btn">Retour à l'accueil</button></a>

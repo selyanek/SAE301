@@ -1,7 +1,37 @@
 <?php
-// Page d'historique des absences pour l'étudiant
+// Page de gestion des absences en attente pour l'étudiant
 session_start();
-require '../../Controllers/session_timeout.php'; // Gestion du timeout de session
+require '../../Controllers/session_timeout.php';
+
+require_once __DIR__ . '/../../Database/Database.php';
+require_once __DIR__ . '/../../Models/Absence.php';
+
+use src\Database\Database;
+use src\Models\Absence;
+
+// Vérifier que l'utilisateur est connecté et est un étudiant
+if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'etudiant' && $_SESSION['role'] !== 'etudiante')) {
+    header('Location: /public/index.php');
+    exit();
+}
+
+// Récupérer les absences en attente de l'étudiant
+try {
+    $db = new Database();
+    $absenceModel = new Absence($db->getConnection());
+    $identifiantEtu = $_SESSION['identifiantEtu'] ?? $_SESSION['login'];
+    
+    $absences = $absenceModel->getByStudentIdentifiant($identifiantEtu);
+    
+    // Filtrer uniquement les absences en attente (justifie IS NULL)
+    $absencesEnAttente = array_filter($absences, function($absence) {
+        return $absence['justifie'] === null;
+    });
+    
+} catch (Exception $e) {
+    $absencesEnAttente = [];
+}
+
 $pageTitle = 'Gérer mes absences';
 $additionalCSS = ['../../../public/asset/CSS/cssGererAbsEtu.css'];
 require '../layout/header.php';
@@ -10,7 +40,7 @@ require '../layout/navigation.php';
 
 <header class="text">
     <h1>Gérer mes absences</h1>
-    <p>Cette page vous donne accès aux informations et réponses liées à vos absences justifiées.</p>
+    <p>Cette page vous donne accès aux informations et réponses liées à vos absences en attente de validation.</p>
     <?php
     if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])) {
         echo '<div class="error-messages">';
@@ -24,35 +54,54 @@ require '../layout/navigation.php';
     <a href="depotJustificatif.php"><button type="button" class="btn">Soumettre un nouveau justificatif</button></a>    
 </header>
 
-<table class="liste-absences"> 
-    <tr>
-        <th>Date de début</th>
-        <th>Date de fin</th>
-        <th>Motif</th>
-        <th>Justificatif</th>
-        <th>Actions</th>
-    </tr>
-    <tr>
-        <td>2024-01-15 09:00</td>
-        <td>2024-01-15 12:00</td>
-        <td>Rendez-vous médical</td>
-        <td><a href="justificatif1.pdf" target="_blank">Voir le justificatif</a></td>
-        <td>
-            <button type="button">Modifier</button>
-            <button type="button">Supprimer</button>
-        </td>
-    </tr>
-    <tr>
-        <td>2024-02-10 14:00</td>
-        <td>2024-02-10 16:00</td>
-        <td>Problème familial</td>
-        <td><a href="justificatif2.jpg" target="_blank">Voir le justificatif</a></td>
-        <td>
-            <button type="button">Modifier</button>
-            <button type="button">Supprimer</button>
-        </td>
-    </tr>
-</table>
+<!-- Liste des absences en attente sous forme de cartes -->
+<div class="absences-container">
+<?php if (empty($absencesEnAttente)): ?>
+    <p class='no-results'>Vous n'avez aucune absence en attente de validation.</p>
+<?php else: ?>
+    <?php foreach ($absencesEnAttente as $absence): ?>
+        <?php
+        // Préparer les données
+        $dateDebut = htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_debut'])));
+        $dateFin = htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_fin'])));
+        $cours = htmlspecialchars($absence['ressource_nom'] ?? $absence['cours_type'] ?? 'N/A');
+        $motif = htmlspecialchars($absence['motif'] ?? 'Non renseigné');
+        
+        // Justificatifs
+        $justificatifsHtml = '—';
+        if (!empty($absence['urijustificatif'])) {
+            $fichiers = json_decode($absence['urijustificatif'], true);
+            if (is_array($fichiers) && count($fichiers) > 0) {
+                $links = [];
+                foreach ($fichiers as $fichier) {
+                    $fichierPath = "../../../uploads/" . htmlspecialchars($fichier);
+                    $links[] = "<a href='" . $fichierPath . "' target='_blank'>" . htmlspecialchars($fichier) . "</a>";
+                }
+                $justificatifsHtml = implode('<br>', $links);
+            } elseif (is_string($absence['urijustificatif'])) {
+                // Si c'est juste un string (ancien format)
+                $justificatifsHtml = "<a href='" . htmlspecialchars($absence['urijustificatif']) . "' target='_blank'>Voir le justificatif</a>";
+            }
+        }
+        ?>
+        
+        <div class='absence-card statut-attente'>
+            <div class='card-dates'>
+                <div><strong>Cours</strong><br><?php echo $cours; ?></div>
+                <div><strong>Début</strong><br><?php echo $dateDebut; ?></div>
+                <div><strong>Fin</strong><br><?php echo $dateFin; ?></div>
+            </div>
+            <div class='card-info'>
+                <div class='motif'><strong>Motif :</strong> <?php echo $motif; ?></div>
+                <div class='justif'><strong>Justificatif :</strong><br><?php echo $justificatifsHtml; ?></div>
+            </div>
+            <div class='card-status'>
+                <span class='status-badge'>En attente</span>
+            </div>
+        </div>
+    <?php endforeach; ?>
+<?php endif; ?>
+</div>
 
 <br>
 

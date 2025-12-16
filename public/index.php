@@ -35,8 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['idEtudiant'] = $user['idcompte']; // Pour les étudiants, idEtudiant = idCompte
             }
 
+            // Si l'utilisateur est un étudiant, récupérer son identifiantEtu
             $role = $login->verifRole($pdo);
             if ($role == 'etudiant' || $role == 'etudiante') {
+                $identifiantEtu = $login->getIdentifiantEtu($pdo);
+                if ($identifiantEtu) {
+                    $_SESSION['identifiantEtu'] = $identifiantEtu;
+                }
                 header('Location: ../src/Views/etudiant/dashbord.php');
                 exit();
             } elseif ($role == 'professeur') {

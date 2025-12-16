@@ -74,4 +74,17 @@ class Login
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         return $user ?: null;
     }
+
+    public function getIdentifiantEtu($pdo)
+    {
+        $stmt = $pdo->prepare("
+            SELECT e.identifiantEtu 
+            FROM Etudiant e 
+            JOIN Compte c ON e.idEtudiant = c.idCompte 
+            WHERE c.identifiantCompte = :identifiant
+        ");
+        $stmt->execute([':identifiant' => $this->identifiant]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['identifiantetu'] : null;
+    }
 }
