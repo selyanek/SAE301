@@ -1,5 +1,11 @@
 <?php
 // Page de gestion des absences en attente pour l'étudiant
+
+// Empêcher la mise en cache de la page
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 session_start();
 require '../../Controllers/session_timeout.php';
 
@@ -23,9 +29,11 @@ try {
     
     $absences = $absenceModel->getByStudentIdentifiant($identifiantEtu);
     
-    // Filtrer uniquement les absences en attente (justifie IS NULL)
+    // Filtrer les absences en attente (justifie IS NULL) OU en révision (revision = true)
     $absencesEnAttente = array_filter($absences, function($absence) {
-        return $absence['justifie'] === null;
+        $enRevision = isset($absence['revision']) && ($absence['revision'] === true || $absence['revision'] === 't' || $absence['revision'] === '1' || $absence['revision'] === 1);
+        $enAttente = $absence['justifie'] === null && !$enRevision;
+        return $enAttente || $enRevision;
     });
     
     // Filtrer les absences refusées avec possibilité de ressoumission
@@ -48,7 +56,7 @@ require '../layout/navigation.php';
 
 <header class="text">
     <h1>Gérer mes absences</h1>
-    <p>Cette page vous donne accès aux informations et réponses liées à vos absences en attente de validation.</p>
+    <p>Cette page vous donne accès aux informations et réponses liées à vos absences en attente de validation ou en révision.</p>
     <?php
     if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])) {
         echo '<div class="error-messages">';
@@ -79,9 +87,12 @@ require '../layout/navigation.php';
 <!-- Liste des absences en attente sous forme de cartes -->
 <div class="absences-container">
 <?php if (empty($absencesEnAttente)): ?>
-    <p class='no-results'>Vous n'avez aucune absence en attente de validation.</p>
+    <p class='no-results'>Vous n'avez aucune absence en attente de validation ou en révision.</p>
 <?php else: ?>
-    <?php foreach ($absencesEnAttente as $absence): ?>
+    <?php foreach ($absencesEnAttente as $absence): 
+        // Déterminer si c'est en révision
+        $enRevision = isset($absence['revision']) && ($absence['revision'] === true || $absence['revision'] === 't' || $absence['revision'] === '1' || $absence['revision'] === 1);
+    ?>
         <?php
         // Préparer les données
         $dateDebut = htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_debut'])));
@@ -107,7 +118,7 @@ require '../layout/navigation.php';
         }
         ?>
         
-        <div class='absence-card statut-attente'>
+        <div class='absence-card <?php echo $enRevision ? 'statut-revision' : 'statut-attente'; ?>'>
             <div class='card-dates'>
                 <div><strong>Cours</strong><br><?php echo $cours; ?></div>
                 <div><strong>Début</strong><br><?php echo $dateDebut; ?></div>
@@ -116,9 +127,24 @@ require '../layout/navigation.php';
             <div class='card-info'>
                 <div class='motif'><strong>Motif :</strong> <?php echo $motif; ?></div>
                 <div class='justif'><strong>Justificatif :</strong><br><?php echo $justificatifsHtml; ?></div>
+                
+                <?php if ($enRevision): 
+                    $idAbsence = htmlspecialchars($absence['idabsence']);
+                    $dateDebutUrl = htmlspecialchars($absence['date_debut']);
+                    $dateFinUrl = htmlspecialchars($absence['date_fin']);
+                    $motifUrl = urlencode($absence['motif']);
+                ?>
+                    <div style='margin-top: 15px;'>
+                        <a href="depotJustificatif.php?id=<?php echo $idAbsence; ?>&date_start=<?php echo $dateDebutUrl; ?>&date_end=<?php echo $dateFinUrl; ?>&motif=<?php echo $motifUrl; ?>&ressoumission=1" class="btn-resoumettre">📎 Resoumettre un justificatif</a>
+                    </div>
+                <?php endif; ?>
             </div>
             <div class='card-status'>
-                <span class='status-badge'>En attente</span>
+                <?php if ($enRevision): ?>
+                    <span class='status-badge' style='background-color: #fff3cd; color: #856404; font-weight: bold; padding: 8px 12px; border-radius: 4px; border: 1px solid #ffc107;'>⚠️ En révision</span>
+                <?php else: ?>
+                    <span class='status-badge'>En attente</span>
+                <?php endif; ?>
             </div>
         </div>
     <?php endforeach; ?>

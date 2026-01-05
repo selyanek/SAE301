@@ -118,6 +118,68 @@ if ($idEtudiant === null) {
     exit;
 }
 
+// Vérifier si c'est une ressoumission
+$isRessoumission = isset($_POST['ressoumission']) && $_POST['ressoumission'] == 1;
+$idAbsenceToUpdate = isset($_POST['id_absence']) ? intval($_POST['id_absence']) : null;
+
+if ($isRessoumission && $idAbsenceToUpdate) {
+    // MODE RESSOUMISSION : Mettre à jour l'absence existante
+    try {
+        // Récupérer l'absence existante pour fusionner les fichiers
+        $absenceExistante = $absence->getById($idAbsenceToUpdate);
+        
+        if (!$absenceExistante) {
+            echo json_encode([
+                "success" => false,
+                "message" => "Absence introuvable."
+            ]);
+            exit;
+        }
+        
+        // Fusionner les anciens fichiers avec les nouveaux
+        $anciensFichiers = [];
+        if (!empty($absenceExistante['urijustificatif'])) {
+            $anciensFichiers = json_decode($absenceExistante['urijustificatif'], true);
+            if (!is_array($anciensFichiers)) {
+                $anciensFichiers = [];
+            }
+        }
+        
+        $tousLesFichiers = array_merge($anciensFichiers, $fileNamesSaved);
+        
+        // Mettre à jour l'absence : nouveaux fichiers + remettre revision à false et justifie à null
+        $sql = "UPDATE Absence 
+                SET urijustificatif = :uriJustificatif, 
+                    revision = false, 
+                    justifie = NULL,
+                    motif = :motif
+                WHERE idabsence = :idAbsence";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':uriJustificatif', json_encode($tousLesFichiers), PDO::PARAM_STR);
+        $stmt->bindValue(':motif', $motif, PDO::PARAM_STR);
+        $stmt->bindValue(':idAbsence', $idAbsenceToUpdate, PDO::PARAM_INT);
+        
+        if ($stmt->execute()) {
+            echo json_encode([
+                "success" => true,
+                "message" => "Justificatif ressoumis avec succès ! Votre absence est de nouveau en attente de traitement."
+            ]);
+        } else {
+            echo json_encode([
+                "success" => false,
+                "message" => "Erreur lors de la mise à jour."
+            ]);
+        }
+    } catch (Exception $e) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Erreur: " . $e->getMessage()
+        ]);
+    }
+    exit;
+}
+
+// MODE CRÉATION : Créer une nouvelle absence
 $stmt = $pdo->query("SELECT idcours FROM cours LIMIT 1");
 $cours = $stmt->fetch(PDO::FETCH_ASSOC);
 

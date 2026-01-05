@@ -75,6 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             exit();
         } elseif ($action === 'Demande_justif') {
+            // Mettre l'absence en révision avant de rediriger vers le formulaire
+            $absenceModel->setEnRevision($idPost, true);
             // Rediriger vers le formulaire de demande
             header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&demande=true');
             exit();

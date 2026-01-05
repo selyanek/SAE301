@@ -96,6 +96,7 @@ if (isset($_GET['info'])) {
     <select name="statut" id="statut">
         <option value="">Tous</option>
         <option value="en_attente" <?php echo (isset($_POST['statut']) && $_POST['statut'] == 'en_attente') ? 'selected' : ''; ?>>En attente</option>
+        <option value="en_revision" <?php echo (isset($_POST['statut']) && $_POST['statut'] == 'en_revision') ? 'selected' : ''; ?>>En révision</option>
         <option value="valide" <?php echo (isset($_POST['statut']) && $_POST['statut'] == 'valide') ? 'selected' : ''; ?>>Validé</option>
         <option value="refuse" <?php echo (isset($_POST['statut']) && $_POST['statut'] == 'refuse') ? 'selected' : ''; ?>>Refusé</option>
     </select>
@@ -162,9 +163,14 @@ if (isset($_GET['info'])) {
                 continue;
             }
 
-            // Déterminer le statut basé sur le champ justifie (null, true, false)
+            // Déterminer le statut basé sur les colonnes revision puis justifie
             $statut = 'en_attente'; // Par défaut
-            if (isset($absence['justifie']) && $absence['justifie'] !== null) {
+            
+            // Vérifier d'abord si l'absence est en révision
+            if (isset($absence['revision']) && ($absence['revision'] === true || $absence['revision'] === 't' || $absence['revision'] === '1' || $absence['revision'] === 1)) {
+                $statut = 'en_revision';
+            }
+            elseif (isset($absence['justifie']) && $absence['justifie'] !== null) {
                 // PostgreSQL retourne 't' ou 'f' pour les booléens, PHP peut les convertir en true/false
                 if ($absence['justifie'] === true || $absence['justifie'] === 't' || $absence['justifie'] === '1' || $absence['justifie'] === 1) {
                     $statut = 'valide';
@@ -173,8 +179,8 @@ if (isset($_GET['info'])) {
                 }
             }
             
-            // Filtrer uniquement les absences en attente dans cet onglet
-            if ($statut !== 'en_attente') {
+            // Filtrer uniquement les absences en attente ou en révision dans cet onglet
+            if ($statut !== 'en_attente' && $statut !== 'en_revision') {
                 continue;
             }
             
@@ -340,6 +346,10 @@ if (isset($_GET['info'])) {
                     $statutClass = 'statut-attente';
                     $statutLabel = '⏳ En attente';
                     break;
+                case 'en_revision':
+                    $statutClass = 'statut-revision';
+                    $statutLabel = '⚠️ En révision';
+                    break;
                 case 'valide':
                     $statutClass = 'statut-valide';
                     $statutLabel = '✅ Validé';
@@ -393,7 +403,7 @@ if (isset($_GET['info'])) {
 
             // Actions
             echo "<td class='actions'>";
-            if ($statut == 'en_attente') {
+            if ($statut == 'en_attente' || $statut == 'en_revision') {
                 echo "<a href='traitementDesJustificatif.php?id=" . htmlspecialchars($periode['idabsence']) . "' class='btn_justif'>Détails</a>";
             } else {
                 echo "<span class='traite'>Traité</span>";
@@ -439,6 +449,7 @@ if (isset($_GET['info'])) {
 
 <style>
     .statut-attente { color: orange; font-weight: bold; }
+    .statut-revision { background-color: #fff3cd; color: #856404; font-weight: bold; padding: 5px 10px; border-radius: 4px; border: 1px solid #ffc107; }
     .statut-valide { color: green; font-weight: bold; }
     .statut-refuse { color: red; font-weight: bold; }
     .actions { display: flex; gap: 5px; }

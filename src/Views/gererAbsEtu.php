@@ -24,9 +24,11 @@ try {
     
     $absences = $absenceModel->getByStudentIdentifiant($identifiantEtu);
     
-    // Filtrer uniquement les absences en attente (justifie IS NULL)
-    $absencesEnAttente = array_filter($absences, function($absence) {
-        return $absence['justifie'] === null;
+    // Filtrer les absences en attente (justifie IS NULL) OU en révision (revision = true)
+    $absencesATraiter = array_filter($absences, function($absence) {
+        $enRevision = isset($absence['revision']) && ($absence['revision'] === true || $absence['revision'] === 't' || $absence['revision'] === '1' || $absence['revision'] === 1);
+        $enAttente = $absence['justifie'] === null && !$enRevision;
+        return $enAttente || $enRevision;
     });
     
 } catch (Exception $e) {
@@ -54,10 +56,7 @@ try {
 </div>
 <header class="text">
     <h1>Gérer mes absences </h1>
-    <div style="background: red; color: white; padding: 10px; margin: 10px 0; font-weight: bold;">
-        🔴 FICHIER MODIFIÉ - VERSION DU 16 DEC 2025 🔴
-    </div>
-    <p>Cette page vous donne accès aux informations et réponses liées à vos absences en attente de validation.</p>
+    <p>Cette page vous donne accès aux informations et réponses liées à vos absences en attente de validation ou en révision.</p>
     <?php
     if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])) {
         echo '<div class="error-messages">';
@@ -79,9 +78,9 @@ try {
     </ul>
 </div>
 
-<?php if (empty($absencesEnAttente)): ?>
+<?php if (empty($absencesATraiter)): ?>
     <div class="text">
-        <p>Vous n'avez aucune absence en attente de validation.</p>
+        <p>Vous n'avez aucune absence en attente de validation ou en révision.</p>
     </div>
 <?php else: ?>
 <table class="liste-absences"> 
@@ -92,21 +91,50 @@ try {
         <th>Motif</th>
         <th>Justificatif</th>
         <th>Statut</th>
+        <th>Actions</th>
     </tr>
-    <?php foreach ($absencesEnAttente as $absence): ?>
+    <?php foreach ($absencesATraiter as $absence): 
+        // Déterminer le statut
+        $enRevision = isset($absence['revision']) && ($absence['revision'] === true || $absence['revision'] === 't' || $absence['revision'] === '1' || $absence['revision'] === 1);
+    ?>
     <tr>
         <td><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_debut']))); ?></td>
         <td><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_fin']))); ?></td>
         <td><?php echo htmlspecialchars($absence['ressource_nom'] ?? $absence['cours_type'] ?? 'N/A'); ?></td>
         <td><?php echo htmlspecialchars($absence['motif'] ?? 'Non renseigné'); ?></td>
         <td>
-            <?php if (!empty($absence['urijustificatif'])): ?>
-                <a href="<?php echo htmlspecialchars($absence['urijustificatif']); ?>" target="_blank">Voir le justificatif</a>
-            <?php else: ?>
+            <?php if (!empty($absence['urijustificatif'])): 
+                $fichiers = json_decode($absence['urijustificatif'], true);
+                if (is_array($fichiers) && count($fichiers) > 0):
+                    foreach ($fichiers as $fichier):
+                        $fichierPath = "../../uploads/" . htmlspecialchars($fichier);
+            ?>
+                        <a href="<?php echo $fichierPath; ?>" target="_blank"><?php echo htmlspecialchars($fichier); ?></a><br>
+            <?php   endforeach;
+                endif;
+            else: ?>
                 Aucun justificatif
             <?php endif; ?>
         </td>
-        <td><span class="statut-attente">En attente</span></td>
+        <td>
+            <?php if ($enRevision): ?>
+                <span class="statut-revision" style="background-color: #fff3cd; color: #856404; font-weight: bold; padding: 5px 10px; border-radius: 4px; border: 1px solid #ffc107;">⚠️ En révision</span>
+            <?php else: ?>
+                <span class="statut-attente">En attente</span>
+            <?php endif; ?>
+        </td>
+        <td>
+            <?php if ($enRevision): 
+                $idAbsence = htmlspecialchars($absence['idabsence']);
+                $dateDebut = htmlspecialchars($absence['date_debut']);
+                $dateFin = htmlspecialchars($absence['date_fin']);
+                $motifUrl = urlencode($absence['motif']);
+            ?>
+                <a href="etudiant/depotJustificatif.php?id=<?php echo $idAbsence; ?>&date_start=<?php echo $dateDebut; ?>&date_end=<?php echo $dateFin; ?>&motif=<?php echo $motifUrl; ?>&ressoumission=1" class="btn-resoumettre" style="background: #ff9800; color: white; padding: 8px 16px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">📎 Resoumettre un justificatif</a>
+            <?php else: ?>
+                <span style="color: #888;">—</span>
+            <?php endif; ?>
+        </td>
     </tr>
     <?php endforeach; ?>
 </table>

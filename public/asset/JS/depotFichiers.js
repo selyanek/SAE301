@@ -105,6 +105,16 @@ async function uploadFiles() {
     formData.append('date_end', document.getElementById('date_end').value);
     formData.append('motif', document.getElementById('motif').value);
 
+    // Ajouter l'ID d'absence et le flag ressoumission si présents
+    const idAbsenceInput = document.getElementById('id_absence');
+    const ressoumissionInput = document.getElementById('ressoumission');
+    if (idAbsenceInput) {
+        formData.append('id_absence', idAbsenceInput.value);
+    }
+    if (ressoumissionInput) {
+        formData.append('ressoumission', ressoumissionInput.value);
+    }
+
     messageDiv.innerHTML = '<p>Envoi en cours...</p>';
     submitBtn.disabled = true;
 
@@ -127,7 +137,7 @@ async function uploadFiles() {
 
         if (result.success) {
             messageDiv.innerHTML = `<div class="message success">${result.message}</div>`;
-            
+
             // Rediriger vers l'historique des absences
             setTimeout(() => {
                 window.location.href = '/src/Views/etudiant/historiqueAbsences.php';
@@ -150,6 +160,6 @@ function resetForm() {
     document.getElementById('message').innerHTML = '';
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     updateFileList();
 });

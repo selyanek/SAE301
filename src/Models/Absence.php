@@ -80,16 +80,16 @@ class Absence
     {
         try {
             if ($value === false && $raisonRefus !== null && trim($raisonRefus) !== '') {
-                // Si refusé avec une raison et type de refus
-                $sql = "UPDATE $this->table SET justifie = :value, raison_refus = :raisonRefus, type_refus = :typeRefus WHERE idabsence = :idAbsence";
+                // Si refusé avec une raison et type de refus - réinitialiser revision à false
+                $sql = "UPDATE $this->table SET justifie = :value, raison_refus = :raisonRefus, type_refus = :typeRefus, revision = false WHERE idabsence = :idAbsence";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->bindValue(':value', $value, PDO::PARAM_BOOL);
                 $stmt->bindValue(':raisonRefus', trim($raisonRefus), PDO::PARAM_STR);
                 $stmt->bindValue(':typeRefus', $typeRefus, PDO::PARAM_STR);
                 $stmt->bindValue(':idAbsence', $idAbsence, PDO::PARAM_INT);
             } else {
-                // Si validé ou refusé sans raison
-                $sql = "UPDATE $this->table SET justifie = :value WHERE idabsence = :idAbsence";
+                // Si validé ou refusé sans raison - réinitialiser revision à false
+                $sql = "UPDATE $this->table SET justifie = :value, revision = false WHERE idabsence = :idAbsence";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->bindValue(':value', $value, PDO::PARAM_BOOL);
                 $stmt->bindValue(':idAbsence', $idAbsence, PDO::PARAM_INT);
@@ -98,6 +98,24 @@ class Absence
             return $stmt->execute();
         } catch (PDOException $e) {
             error_log("Erreur Update Justifie (value) : " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Met à jour l'état de révision d'une absence
+     * Utilisé quand le responsable demande un justificatif supplémentaire
+     */
+    public function setEnRevision($idAbsence, bool $value)
+    {
+        try {
+            $sql = "UPDATE $this->table SET revision = :value WHERE idabsence = :idAbsence";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindValue(':value', $value, PDO::PARAM_BOOL);
+            $stmt->bindValue(':idAbsence', $idAbsence, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Erreur setEnRevision : " . $e->getMessage());
             return false;
         }
     }

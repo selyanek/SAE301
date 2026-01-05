@@ -5,6 +5,10 @@ require '../../Controllers/session_timeout.php'; // Gestion du timeout de sessio
 require '../layout/header.php';
 require '../layout/navigation.php';
 
+// Vérifier si c'est une ressoumission
+$isRessoumission = isset($_GET['ressoumission']) && $_GET['ressoumission'] == 1;
+$idAbsence = isset($_GET['id']) ? intval($_GET['id']) : null;
+
 if (isset($_GET['success']) && $_GET['success'] == 1) {
     echo '<div class="success-message">Votre justificatif a été envoyé avec succès !</div>';
 }
@@ -23,6 +27,14 @@ if (isset($_GET['error'])) {
         echo '<div class="error-message">' . $error_messages[$error] . '</div>';
     }
 }
+
+// Afficher un message pour les ressoumissions
+if ($isRessoumission) {
+    echo '<div class="alert-ressoumission" style="background: #fff3cd; color: #856404; padding: 15px; margin: 20px auto; max-width: 800px; border-radius: 5px; border: 1px solid #ffc107;">';
+    echo '⚠️ <strong>Ressoumission de justificatif</strong><br>';
+    echo 'Vous pouvez ajouter de nouveaux documents pour compléter votre justification.';
+    echo '</div>';
+}
 ?>
 
 <link rel="stylesheet" href="../../../public/asset/CSS/cssDepot.css">
@@ -30,6 +42,11 @@ if (isset($_GET['error'])) {
 
 
 <form id="absenceForm" class="absence-form" onsubmit="event.preventDefault(); uploadFiles();">
+    
+    <?php if ($isRessoumission && $idAbsence): ?>
+        <input type="hidden" id="id_absence" name="id_absence" value="<?php echo htmlspecialchars($idAbsence); ?>" />
+        <input type="hidden" id="ressoumission" name="ressoumission" value="1" />
+    <?php endif; ?>
 
     <div class="form-group">
         <label class="label">Date et heure de début :</label>
