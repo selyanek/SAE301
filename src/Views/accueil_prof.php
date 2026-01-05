@@ -44,7 +44,7 @@ $redirect->redirect();
 </header>
 <footer class="footer">
     <nav class="footer-nav">
-        <a href="/public/asset/img/Controllerslers/accueil_etudiant.php">Accueil</a>
+        <a href="accueil_prof.php">Accueil</a>
         <span>|</span>
         <a href="aide.php">Aides</a>
     </nav>

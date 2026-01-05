@@ -17,7 +17,17 @@ require '../../Controllers/session_timeout.php'; // Gestion du timeout de sessio
     <div class="logoEdu">
         <img src="/public/asset/img/logoedutrack.png" alt="Logo EduTrack">
     </div>
-    <div class="sidebar"></div>
+    
+    <!-- Barre latérale de navigation -->
+    <div class="sidebar">
+        <ul>
+            <li><a href="/src/Views/etudiant/dashbord.php">Accueil</a></li>
+            <li><a href="/src/Controllers/profile.php">Mon profil</a></li>
+            <li><a href="/src/Views/etudiant/justificatif.php">Gérer des absences</a></li>
+            <li><a href="/src/Views/etudiant/historiqueAbsences.php">Historique des absences</a></li>
+        </ul>
+    </div>
+    
     <section class="text">
         <h1>Aide </h1>
         <p>EduTrack est l’application officielle de l’IUT qui permet aux étudiants de justifier leurs absences en ligne. Plus besoin de passer au secrétariat : tout se fait directement depuis la plateforme.</p>
@@ -41,7 +51,7 @@ require '../../Controllers/session_timeout.php'; // Gestion du timeout de sessio
         <nav class="footer-nav">
             <a href="/src/Views/etudiant/dashbord.php">Accueil</a>
             <span>|</span>
-            <a href="">Aides</a>
+            <a href="/src/Views/etudiant/aide.php">Aides</a>
         </nav>
     </footer>
 </body>
