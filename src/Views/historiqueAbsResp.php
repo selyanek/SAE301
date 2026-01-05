@@ -390,7 +390,7 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
     <nav class="footer-nav">
         <a href="accueil_responsable.php">Accueil</a>
         <span>|</span>
-        <a href="">Aides</a>
+        <a href="aideResp.php">Aides</a>
     </nav>
 </footer>
 
