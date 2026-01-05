@@ -230,6 +230,11 @@ CREATE TABLE Rattrapage
 ALTER TABLE Absence ADD COLUMN type_refus TEXT CHECK (type_refus IN ('definitif', 'ressoumission'));
 --rollback ALTER TABLE Absence DROP COLUMN type_refus;
 
+--changeset Roman:22
+--comment: Ajout du champ revision pour indiquer si l'absence est en révision
+ALTER TABLE Absence ADD COLUMN revision BOOLEAN;
+--rollback ALTER TABLE Absence DROP COLUMN revision;
+
 -- End of changelog
 
 

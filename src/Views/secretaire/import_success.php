@@ -36,7 +36,9 @@ unset($_SESSION['message_type']);
 <div class="sidebar">
     <ul>
         <li><a href="dashboard.php">Accueil</a></li>
+        <li><a href="envoie_des_absences.php">Envoie des absences</a></li>
         <li><a href="/src/Controllers/profile.php">Mon profil</a></li>
+        <li><a href="/src/Views/secretaire/aideSecr.php">Aides</a></li>
     </ul>
 </div>
 

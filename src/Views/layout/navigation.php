@@ -20,5 +20,9 @@ switch ($role) {
     case 'responsable_pedagogique':
         include __DIR__ . '/sidebar/nav_responsable.php';
         break;
+    
+    case 'secretaire':
+        include __DIR__ . '/sidebar/nav_secretaire.php';
+        break;
 }
 ?>

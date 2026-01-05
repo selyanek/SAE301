@@ -1,3 +1,13 @@
+<?php
+session_start();
+require __DIR__ . "/../../Controllers/session_timeout.php"; // Gestion du timeout de session
+require __DIR__ . "/../../Controllers/Redirect.php";
+
+use src\Controllers\Redirect;
+
+$redirect = new Redirect('secretaire');
+$redirect->redirect();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -20,7 +30,9 @@
 <div class="sidebar">
     <ul>
         <li><a href="/src/Views/secretaire/dashboard.php">Accueil</a></li>
+        <li><a href="/src/Views/secretaire/envoie_des_absences.php">Envoie des absences</a></li>
         <li><a href="/src/Controllers/profile.php">Mon profil</a></li>
+        <li><a href="/src/Views/secretaire/aideSecr.php">Aides</a></li>
     </ul>
 </div>
 
@@ -40,7 +52,7 @@
 
     <p>Pensez à importer régulièrement de nouvelles absences afin de garder à jour la liste des absences.</p>
 
-    <a href="accueil_responsable.php"><button type="button" class="btn">Retour à l'accueil</button></a>
+    <a href="dashboard.php"><button type="button" class="btn">Retour à l'accueil</button></a>
 </section>
 
 <!-- Pied de page avec navigation -->

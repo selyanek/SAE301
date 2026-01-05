@@ -11,7 +11,11 @@ if (isset($_SESSION['role'])) {
             break;
         case 'professeur':
             $pageLienAccueil = '/src/Views/accueil_prof.php';
-            $pageLienAide = '/src/Views/aide.php'; // À créer si nécessaire
+            $pageLienAide = '/src/Views/aide.php';
+            break;
+        case 'secretaire':
+            $pageLienAccueil = '/src/Views/secretaire/dashboard.php';
+            $pageLienAide = '/src/Views/secretaire/aideSecr.php';
             break;
         case 'etudiant':
         case 'etudiante':
