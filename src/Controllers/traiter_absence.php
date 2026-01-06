@@ -3,35 +3,125 @@ session_start();
 require __DIR__ . '/../../vendor/autoload.php';
 require __DIR__ . '/../Database/Database.php';
 require __DIR__ . '/../Models/Absence.php';
+require __DIR__ . '/../Models/HistoriqueDecision.php';
 require __DIR__ . '/session_timeout.php';
 require __DIR__ . '/GetFiles.php';
 
-// Noms de classes fully-qualified pour éviter d'utiliser 'use' après du code exécutable
+// Init des modeles
 $dbClass = '\\src\\Database\\Database';
 $absenceClass = '\\src\\Models\\Absence';
+$historiqueClass = '\\src\\Models\\HistoriqueDecision';
+
 $db = new $dbClass();
 $pdo = $db->getConnection();
 $absenceModel = new $absenceClass($pdo);
+$historiqueModel = new $historiqueClass($pdo);
 
 $absence = null;
 $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+$idResp = $_SESSION['idCompte'] ?? null;
 
-// A présent, nous opérons sur la base de données via le modèle Absence ($absenceModel)
-
-// Gérer la compatibilité GET : action=valider/refuser&id=<id>
+// GET : actions
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && isset($_GET['id'])) {
     $action = $_GET['action'];
     $id = (int)$_GET['id'];
+    
     if ($action === 'valider') {
         $absenceModel->updateJustifie($id, true);
-    } elseif ($action === 'refuser') {
+        header('Location: ../Views/gestionAbsResp.php');
+        exit();
+    } 
+    elseif ($action === 'refuser') {
         $absenceModel->updateJustifie($id, false);
+        header('Location: ../Views/gestionAbsResp.php');
+        exit();
     }
-    header('Location: ../Views/gestionAbsResp.php');
-    exit();
+    // US-9 : verrouiller
+    elseif ($action === 'verrouiller') {
+        if (!$idResp) {
+            header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Session expiree'));
+            exit();
+        }
+        
+        $abs = $absenceModel->getById($id);
+        if (!$abs) {
+            header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Absence introuvable'));
+            exit();
+        }
+        
+        if ($abs['justifie'] === null) {
+            header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Impossible de verrouiller une absence en attente'));
+            exit();
+        }
+        
+        $ok = $absenceModel->verrouiller($id, $idResp);
+        
+        if ($ok) {
+            $historiqueModel->ajouter([
+                'id_absence' => $id,
+                'id_responsable' => $idResp,
+                'ancien_verrouillage' => false,
+                'nouveau_verrouillage' => true,
+                'type_action' => 'verrouillage',
+                'ip_address' => $_SERVER['REMOTE_ADDR'] ?? null,
+                'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null
+            ]);
+            header('Location: ../Views/historiqueAbsResp.php?success=' . urlencode('Decision verrouillee'));
+        } else {
+            header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Erreur verrouillage'));
+        }
+        exit();
+    }
+    // US-9 : deverrouiller
+    elseif ($action === 'deverrouiller') {
+        if (!$idResp) {
+            header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Session expiree'));
+            exit();
+        }
+        
+        $abs = $absenceModel->getById($id);
+        if (!$abs) {
+            header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Absence introuvable'));
+            exit();
+        }
+        
+        $ok = $absenceModel->deverrouiller($id);
+        
+        if ($ok) {
+            $historiqueModel->ajouter([
+                'id_absence' => $id,
+                'id_responsable' => $idResp,
+                'ancien_verrouillage' => true,
+                'nouveau_verrouillage' => false,
+                'type_action' => 'deverrouillage',
+                'ip_address' => $_SERVER['REMOTE_ADDR'] ?? null,
+                'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null
+            ]);
+            
+            // Email a l'etudiant
+            $emailService = new \src\Models\EmailService();
+            $identifiant = $abs['identifiantcompte'] ?? '';
+            $nomEtu = trim(($abs['prenomcompte'] ?? '') . ' ' . ($abs['nomcompte'] ?? ''));
+            $emailEtu = (strpos($identifiant, '@') !== false) ? $identifiant : $identifiant . '@uphf.fr';
+            
+            $emailService->sendDeverrouillageEmail($emailEtu, $nomEtu, $abs['date_debut'], $abs['date_fin']);
+            
+            header('Location: ../Views/historiqueAbsResp.php?success=' . urlencode('Deverrouille - Email envoye'));
+        } else {
+            header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Erreur deverrouillage'));
+        }
+        exit();
+    }
+    // US-9 : historique JSON
+    elseif ($action === 'voir_historique') {
+        header('Content-Type: application/json');
+        $historique = $historiqueModel->getByAbsence($id);
+        echo json_encode(['success' => true, 'historique' => $historique]);
+        exit();
+    }
 }
 
-// Vue des détails - GET
+// GET sans action = afficher details
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if ($id !== null) {
         $absence = $absenceModel->getById($id);
@@ -40,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     exit();
 }
 
-// POST : mise à jour du statut via la BDD (champ boolean 'justifie')
+// POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     $idPost = isset($_POST['id']) ? (int)$_POST['id'] : null;
@@ -48,70 +138,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($idPost !== null) {
         if ($action === 'valider') {
             $result = $absenceModel->updateJustifie($idPost, true);
-            if ($result) {
-                header('Location: ../Views/gestionAbsResp.php?success=' . urlencode('Absence validée avec succès'));
-            } else {
-                header('Location: ../Views/gestionAbsResp.php?error=' . urlencode('Erreur lors de la validation'));
-            }
+            $msg = $result ? 'success=' . urlencode('Validee') : 'error=' . urlencode('Erreur');
+            header('Location: ../Views/gestionAbsResp.php?' . $msg);
             exit();
-        } elseif ($action === 'refuser') {
-            // Récupérer la raison du refus et le type de refus
+        } 
+        elseif ($action === 'refuser') {
             $raisonRefus = isset($_POST['raison_refus']) ? trim($_POST['raison_refus']) : null;
-            $typeRefus = isset($_POST['type_refus']) ? trim($_POST['type_refus']) : 'definitif'; // Par défaut : définitif
+            $typeRefus = isset($_POST['type_refus']) ? trim($_POST['type_refus']) : 'definitif';
             
-            // Valider le type de refus
             if (!in_array($typeRefus, ['definitif', 'ressoumission'])) {
                 $typeRefus = 'definitif';
             }
             
             $result = $absenceModel->updateJustifie($idPost, false, $raisonRefus, $typeRefus);
-            if ($result) {
-                $message = ($typeRefus === 'ressoumission') 
-                    ? 'Absence refusée - L\'étudiant peut la resoumettre' 
-                    : 'Absence refusée définitivement';
-                header('Location: ../Views/gestionAbsResp.php?success=' . urlencode($message));
-            } else {
-                header('Location: ../Views/gestionAbsResp.php?error=' . urlencode('Erreur lors du refus'));
-            }
+            $message = ($typeRefus === 'ressoumission') 
+                ? 'Refusee - Ressoumission possible' 
+                : 'Refusee definitivement';
+            $msg = $result ? 'success=' . urlencode($message) : 'error=' . urlencode('Erreur');
+            header('Location: ../Views/gestionAbsResp.php?' . $msg);
             exit();
-        } elseif ($action === 'Demande_justif') {
-            // Mettre l'absence en révision avant de rediriger vers le formulaire
+        } 
+        elseif ($action === 'Demande_justif') {
             $absenceModel->setEnRevision($idPost, true);
-            // Rediriger vers le formulaire de demande
             header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&demande=true');
             exit();
-        } elseif ($action === 'envoyer_demande_justif') {
-            // Envoyer l'email à l'étudiant
+        } 
+        elseif ($action === 'envoyer_demande_justif') {
             $absence = $absenceModel->getById($idPost);
-            
             if (!$absence) {
-                header('Location: ../Views/gestionAbsResp.php?error=' . urlencode('Absence non trouvée'));
+                header('Location: ../Views/gestionAbsResp.php?error=' . urlencode('Absence non trouvee'));
                 exit();
             }
             
             $motif = trim($_POST['motif_demande'] ?? '');
-            
             if (empty($motif)) {
                 header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&demande=true&error=champ_vide');
                 exit();
             }
             
             $emailService = new \src\Models\EmailService();
-            
-            // Récupérer l'identifiant de l'étudiant 
             $identifiant = $absence['identifiantcompte'] ?? '';
             $studentName = trim(($absence['prenomcompte'] ?? '') . ' ' . ($absence['nomcompte'] ?? ''));
             
-            // Construire l'email
             if (empty($identifiant)) {
                 header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&demande=true&error=identifiant_manquant');
                 exit();
             }
             
-            // Si l'identifiant contient déjà un @ c'est un email sinon on ajoute @uphf.fr
             $studentEmail = (strpos($identifiant, '@') !== false) ? $identifiant : $identifiant . '@uphf.fr';
             
-            // Valider l'email final
             if (!filter_var($studentEmail, FILTER_VALIDATE_EMAIL)) {
                 header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&demande=true&error=email_invalide');
                 exit();
@@ -126,11 +201,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             exit();
         }
+        // US-9 : reviser
+        elseif ($action === 'reviser') {
+            if (!$idResp) {
+                header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Session expiree'));
+                exit();
+            }
+            
+            $abs = $absenceModel->getById($idPost);
+            if (!$abs) {
+                header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Absence introuvable'));
+                exit();
+            }
+            
+            $nouveauStatut = $_POST['nouveau_statut'] ?? '';
+            $nouvelleRaison = trim($_POST['nouvelle_raison'] ?? '');
+            $justif = trim($_POST['justification_revision'] ?? '');
+            
+            if (empty($justif)) {
+                header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Justification obligatoire'));
+                exit();
+            }
+            
+            $ancienStatut = $abs['justifie'];
+            if ($nouveauStatut === 'valide') {
+                $nouveauStatutBool = true;
+            } elseif ($nouveauStatut === 'refuse') {
+                $nouveauStatutBool = false;
+            } else {
+                $nouveauStatutBool = null;
+            }
+            
+            $ok = $absenceModel->reviserDecision($idPost, $nouveauStatutBool, $nouvelleRaison, $idResp);
+            
+            if ($ok) {
+                $historiqueModel->ajouter([
+                    'id_absence' => $idPost,
+                    'id_responsable' => $idResp,
+                    'ancien_statut' => $ancienStatut === true ? 'valide' : ($ancienStatut === false ? 'refuse' : 'en_attente'),
+                    'ancienne_raison' => $abs['raison_refus'] ?? null,
+                    'nouveau_statut' => $nouveauStatut,
+                    'nouvelle_raison' => $nouvelleRaison,
+                    'type_action' => 'revision',
+                    'justification' => $justif,
+                    'ip_address' => $_SERVER['REMOTE_ADDR'] ?? null,
+                    'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null
+                ]);
+                
+                // Email
+                $emailService = new \src\Models\EmailService();
+                $identifiant = $abs['identifiantcompte'] ?? '';
+                $nomEtu = trim(($abs['prenomcompte'] ?? '') . ' ' . ($abs['nomcompte'] ?? ''));
+                $emailEtu = (strpos($identifiant, '@') !== false) ? $identifiant : $identifiant . '@uphf.fr';
+                
+                $ancienLabel = $ancienStatut === true ? 'valide' : ($ancienStatut === false ? 'refuse' : 'en_attente');
+                $emailService->sendRevisionDecisionEmail($emailEtu, $nomEtu, $abs['date_debut'], $abs['date_fin'], $ancienLabel, $nouveauStatut, $justif);
+                
+                header('Location: ../Views/historiqueAbsResp.php?success=' . urlencode('Revisee - Email envoye'));
+            } else {
+                header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Erreur revision'));
+            }
+            exit();
+        }
     }
     
-    // Si aucune action valide, rediriger sans message
     header('Location: ../Views/gestionAbsResp.php');
     exit();
 }
-
 ?>

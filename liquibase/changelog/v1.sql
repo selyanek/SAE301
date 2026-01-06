@@ -237,4 +237,57 @@ ALTER TABLE Absence ADD COLUMN revision BOOLEAN;
 
 -- End of changelog
 
+--changeset US9:22
+--comment: US-9 - Ajout colonne verrouille pour bloquer les resoumissions
+ALTER TABLE Absence ADD COLUMN IF NOT EXISTS verrouille BOOLEAN NOT NULL DEFAULT FALSE;
+--rollback ALTER TABLE Absence DROP COLUMN verrouille;
 
+--changeset US9:23
+--comment: US-9 - Ajout colonne date_decision pour tracer quand la decision a ete prise
+ALTER TABLE Absence ADD COLUMN IF NOT EXISTS date_decision TIMESTAMP;
+--rollback ALTER TABLE Absence DROP COLUMN date_decision;
+
+--changeset US9:24
+--comment: US-9 - Ajout colonne id_responsable_decision pour savoir qui a pris la decision
+ALTER TABLE Absence ADD COLUMN IF NOT EXISTS id_responsable_decision INT;
+--rollback ALTER TABLE Absence DROP COLUMN id_responsable_decision;
+
+--changeset US9:25
+--comment: US-9 - Ajout FK sur id_responsable_decision
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_responsable_decision') THEN
+        ALTER TABLE Absence ADD CONSTRAINT fk_responsable_decision 
+        FOREIGN KEY (id_responsable_decision) REFERENCES Compte(idCompte);
+    END IF;
+END $$;
+--rollback ALTER TABLE Absence DROP CONSTRAINT IF EXISTS fk_responsable_decision;
+
+--changeset US9:26 Enzo
+--comment: US-9 - Table Historique_Decision pour audit trail des decisions
+CREATE TABLE IF NOT EXISTS Historique_Decision (
+    id_historique        SERIAL PRIMARY KEY,
+    id_absence           INT NOT NULL,
+    id_responsable       INT NOT NULL,
+    ancien_statut        VARCHAR(20),
+    ancienne_raison      TEXT,
+    ancien_verrouillage  BOOLEAN,
+    nouveau_statut       VARCHAR(20),
+    nouvelle_raison      TEXT,
+    nouveau_verrouillage BOOLEAN,
+    type_action          VARCHAR(20) NOT NULL,
+    justification        TEXT,
+    date_action          TIMESTAMP DEFAULT NOW(),
+    ip_address           VARCHAR(45),
+    user_agent           TEXT,
+    
+    FOREIGN KEY (id_absence) REFERENCES Absence(idAbsence) ON DELETE CASCADE,
+    FOREIGN KEY (id_responsable) REFERENCES Compte(idCompte),
+    CHECK (type_action IN ('validation', 'refus', 'revision', 'verrouillage', 'deverrouillage'))
+);
+--rollback DROP TABLE IF EXISTS Historique_Decision;
+
+--changeset US9:27
+--comment: US-9 - Index sur Historique_Decision
+CREATE INDEX IF NOT EXISTS idx_historique_absence ON Historique_Decision(id_absence);
+CREATE INDEX IF NOT EXISTS idx_historique_date ON Historique_Decision(date_action DESC);
