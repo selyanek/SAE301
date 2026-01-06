@@ -1,7 +1,7 @@
-.pipicaca{
-    display: flex;
-    margin-right: 5%;
-    justify-content: flex-end;
+.pipicaca {
+  display: flex;
+  margin-right: 5%;
+  justify-content: flex-end;
 }
 
 .calendar {
@@ -9,23 +9,27 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   text-align: center;
   width: 280px;
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
 }
+
 th {
   background-color: #f0f0f0;
   padding: 6px;
 }
+
 td {
   padding: 8px;
   text-align: center;
   border-radius: 4px;
 }
+
 td.today {
   background-color: #007BFF;
   color: white;
@@ -47,13 +51,17 @@ td.today {
   max-width: 100%;
   box-sizing: border-box;
 }
+
 .ddd:hover {
   background-color: #f0f0f0;
 }
-.ddd label, .ddd input {
+
+.ddd label,
+.ddd input {
   margin-right: 10px;
   font-size: 16px;
 }
+
 .ddd input {
   padding: 5px;
   border: 1px solid #ccc;
@@ -62,6 +70,7 @@ td.today {
   max-width: 100%;
   box-sizing: border-box;
 }
+
 .ddd button {
   background-color: #29acc8;
   color: white;
@@ -71,9 +80,10 @@ td.today {
   border-radius: 5px;
   flex-shrink: 0;
 }
+
 .ddd button:hover {
   background-color: #0d4f94;
-}   
+}
 
 @media (max-width: 600px) {
   .ddd {
@@ -83,64 +93,138 @@ td.today {
     padding: 8px;
     gap: 8px;
   }
-  .ddd label, .ddd input {
+
+  .ddd label,
+  .ddd input {
     margin-right: 0;
     font-size: 15px;
   }
+
   .ddd input {
     width: 100%;
   }
+
   .ddd button {
     width: 100%;
     padding: 10px 0;
   }
 }
+
 /* Styles pour le tableau des absences */
 table {
 
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
-th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
 }
+
 th {
-    background-color: #f2f2f2;
-}   
-tr:nth-child(even) {
-    background-color: #f9f9f9;
+  background-color: #f2f2f2;
 }
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
 tr:hover {
 
 
-    background-color: #e8f4f5;
+  background-color: #e8f4f5;
 }
 
-.btn_justif { 
-    background: #29acc8; 
-    color: white; 
-    border: none; 
-    padding: 5px 10px; 
-    cursor: pointer; 
-    border-radius: 3px;
-    text-decoration: none;
-    display: inline-block;
+.btn_justif {
+  background: #29acc8;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  text-decoration: none;
+  display: inline-block;
 }
-.btn_justif:hover { 
-    background: #29acc8; 
+
+.btn_justif:hover {
+  background: #29acc8;
 }
 
 /* Styles pour l'affichage des documents */
 td a[target="_blank"] {
-    color: #0066cc;
-    text-decoration: none;
-    transition: color 0.2s;
+  color: #0066cc;
+  text-decoration: none;
+  transition: color 0.2s;
 }
 
 td a[target="_blank"]:hover {
-    color: #004499;
-    text-decoration: underline;
+  color: #004499;
+  text-decoration: underline;
+}
+
+/* Alertes - Messages de succès/erreur/info */
+.alert-success {
+  background: #d4edda;
+  color: #155724;
+  padding: 15px;
+  margin: 20px 30px;
+  border: 1px solid #c3e6cb;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.alert-error {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  margin: 20px 30px;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.alert-info {
+  background: #d1ecf1;
+  color: #0c5460;
+  padding: 15px;
+  margin: 20px 30px;
+  border: 1px solid #bee5eb;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Messages vides */
+.empty-message {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Mode debug */
+.debug-box {
+  background: #fff3cd;
+  padding: 15px;
+}
+
+.debug-pre {
+  text-align: left;
+  font-size: 11px;
+}
+
+/* Small text pour les cours */
+.small-gray {
+  color: #666;
+  display: block;
+  margin-top: 5px;
+}
+
+/* Spacer */
+.spacer-150 {
+  height: 150px;
 }

@@ -74,13 +74,13 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
 <?php
 // Afficher les messages en haut de la page
 if (isset($_GET['success'])) {
-    echo "<div class='alert alert-success' style='background: #d4edda; color: #155724; padding: 15px; margin: 20px 30px; border: 1px solid #c3e6cb; border-radius: 5px; text-align: center; font-weight: bold;'>" . htmlspecialchars($_GET['success']) . "</div>";
+    echo "<div class='alert-success'>" . htmlspecialchars($_GET['success']) . "</div>";
 }
 if (isset($_GET['error'])) {
-    echo "<div class='alert alert-error' style='background: #f8d7da; color: #721c24; padding: 15px; margin: 20px 30px; border: 1px solid #f5c6cb; border-radius: 5px; text-align: center; font-weight: bold;'>" . htmlspecialchars($_GET['error']) . "</div>";
+    echo "<div class='alert-error'>" . htmlspecialchars($_GET['error']) . "</div>";
 }
 if (isset($_GET['info'])) {
-    echo "<div class='alert alert-info' style='background: #d1ecf1; color: #0c5460; padding: 15px; margin: 20px 30px; border: 1px solid #bee5eb; border-radius: 5px; text-align: center; font-weight: bold;'>" . htmlspecialchars($_GET['info']) . "</div>";
+    echo "<div class='alert-info'>" . htmlspecialchars($_GET['info']) . "</div>";
 }
 ?>
 
@@ -123,13 +123,13 @@ if (isset($_GET['info'])) {
     <?php
     // Vérifier si des absences existent
     if (!$absences || count($absences) === 0) {
-        echo "<tr><td colspan='8' style='text-align: center; padding: 20px;'>Aucune absence enregistrée pour le moment.</td></tr>";
+        echo "<tr><td colspan='8' class='empty-message'>Aucune absence enregistrée pour le moment.</td></tr>";
     } else {
         // MODE DEBUG - Afficher les données de la première absence
         if ($debug_mode && count($absences) > 0) {
-            echo "<tr><td colspan='8' style='background: #fff3cd; padding: 15px;'>";
+            echo "<tr><td colspan='8' class='debug-box'>";
             echo "<strong>MODE DEBUG - Données de la première absence :</strong><br>";
-            echo "<pre style='text-align: left; font-size: 11px;'>";
+            echo "<pre class='debug-pre'>";
             print_r($absences[0]);
             echo "</pre>";
             echo "<strong>Clés disponibles :</strong> " . implode(', ', array_keys($absences[0]));
@@ -332,6 +332,21 @@ if (isset($_GET['info'])) {
             }
         }
         
+        // Trier les périodes : d'abord "en_revision", puis "en_attente"
+        usort($periodesTotales, function($a, $b) {
+            // Ordre de priorité : en_revision > en_attente
+            $ordre = ['en_revision' => 1, 'en_attente' => 2];
+            $prioriteA = $ordre[$a['statut']] ?? 3;
+            $prioriteB = $ordre[$b['statut']] ?? 3;
+            
+            // Si même statut, trier par date de début (plus récent d'abord)
+            if ($prioriteA === $prioriteB) {
+                return strtotime($b['date_debut']) - strtotime($a['date_debut']);
+            }
+            
+            return $prioriteA - $prioriteB;
+        });
+        
         // Affichage des périodes d'absence
         $count = 0;
         foreach ($periodesTotales as $periode) {
@@ -373,7 +388,7 @@ if (isset($_GET['info'])) {
             echo "<td>";
             echo htmlspecialchars($periode['motif']);
             if (!empty($periode['cours'])) {
-                echo "<br><small style='color: #666; display: block; margin-top: 5px;'>";
+                echo "<br><small class='small-gray'>";
                 echo "<strong>Cours concernés:</strong><br>";
                 foreach (array_unique($periode['cours']) as $cours) {
                     echo "• " . htmlspecialchars($cours) . "<br>";
@@ -413,14 +428,14 @@ if (isset($_GET['info'])) {
         }
 
         if ($count == 0) {
-            echo "<tr><td colspan='8' style='text-align: center; padding: 20px;'>Aucune absence ne correspond aux critères de filtrage.</td></tr>";
+            echo "<tr><td colspan='8' class='empty-message'>Aucune absence ne correspond aux critères de filtrage.</td></tr>";
         }
     }
     ?>
     </tbody>
 </table>
 
-<div style="height: 150px;"></div>
+<div class="spacer-150"></div>
 
 <?php // Pied de page ?>
 <footer class="footer">
