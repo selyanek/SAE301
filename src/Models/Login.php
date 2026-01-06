@@ -1,4 +1,6 @@
 <?php
+// Modèle Login
+// Gère l'authentification et les informations de connexion des utilisateurs
 
 namespace src\Models;
 use PDO;
@@ -8,12 +10,14 @@ class Login
     private $identifiant;
     private $mot_de_passe;
 
+    // Constructeur - Initialise l'identifiant et le mot de passe
     public function __construct($identifiant, $mot_de_passe)
     {
         $this->identifiant = $identifiant;
         $this->mot_de_passe = $mot_de_passe;
     }
 
+    // Vérifie si les identifiants de connexion sont corrects
     public function verifierConnexion($pdo)
     {
         $stmt = $pdo->prepare("SELECT * FROM Compte WHERE identifiantCompte = :identifiant AND mot_de_passe = :mdp");
@@ -24,6 +28,7 @@ class Login
         return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
     }
 
+    // Retourne le rôle (fonction) de l'utilisateur connecté
     public function verifRole($pdo)
     {
         $stmt = $pdo->prepare("SELECT fonction FROM Compte WHERE identifiantCompte = :id AND mot_de_passe = :mdp");
@@ -35,6 +40,7 @@ class Login
         return $result ? $result['fonction'] : false;
     }
 
+    // Retourne le nom complet de l'utilisateur connecté
     public function getName($pdo)
     {
         $stmt = $pdo->prepare("SELECT nom, prenom FROM Compte WHERE identifiantCompte = :id AND mot_de_passe = :mdp");
@@ -46,6 +52,7 @@ class Login
         return $result ? $result['prenom'] . ' ' . $result['nom'] : false;
     }
 
+    // Retourne le mot de passe de l'utilisateur
     public function getPwd($pdo)
     {
         $stmt = $pdo->prepare("SELECT mot_de_passe FROM Compte WHERE identifiantCompte = :id AND mot_de_passe = :mdp");

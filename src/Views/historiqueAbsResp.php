@@ -44,7 +44,7 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
     <link href="/public/asset/CSS/cssGestionAbsResp.css" rel="stylesheet">
 </head>
 <body>
-<!-- Affichage des logos -->
+<?php // Affichage des logos ?>
 <div class="uphf">
     <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">
 </div>
@@ -52,7 +52,7 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
     <img src="../../public/asset/img/logoedutrack.png" alt="Logo EduTrack">
 </div>
 
-<!-- Barre latérale de navigation -->
+<?php // Barre latérale de navigation ?>
 <div class="sidebar">
     <ul>
         <li><a href="accueil_responsable.php">Accueil</a></li>
@@ -68,7 +68,7 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
     <p>Consultez l'historique de toutes les absences validées ou refusées.</p>
 </header>
 
-<!-- Filtrage -->
+<?php // Filtrage ?>
 <form method="post" style="max-width: 1200px; margin: 0 auto 20px auto; padding: 0 20px;">
     <label for="nom">Nom étudiant :</label>
     <input type="text" name="nom" id="nom" value="<?php echo isset($_POST['nom']) ? htmlspecialchars($_POST['nom']) : ''; ?>">
@@ -87,7 +87,7 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
     <a href="historiqueAbsResp.php"><button type="button">Réinitialiser</button></a>
 </form>
 
-<!-- Tableau des absences -->
+<?php // Tableau des absences ?>
 <table id="tableAbsences">
     <thead>
     <tr>
@@ -311,11 +311,11 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
             switch($statut) {
                 case 'valide':
                     $statutClass = 'statut-valide';
-                    $statutLabel = '✅ Validé';
+                    $statutLabel = 'Validé';
                     break;
                 case 'refuse':
                     $statutClass = 'statut-refuse';
-                    $statutLabel = '❌ Refusé';
+                    $statutLabel = 'Refusé';
                     break;
             }
 
@@ -385,7 +385,7 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
 
 <div style="height: 150px;"></div>
 
-<!-- Pied de page -->
+<?php // Pied de page ?>
 <footer class="footer">
     <nav class="footer-nav">
         <a href="accueil_responsable.php">Accueil</a>

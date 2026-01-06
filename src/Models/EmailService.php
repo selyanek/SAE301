@@ -1,4 +1,6 @@
 <?php
+// Service d'envoi d'emails
+// Gère l'envoi de notifications par email via SMTP (Gmail)
 
 namespace src\Models;
 
@@ -15,9 +17,7 @@ class EmailService
 {
     private $mailer;
     
-    /**
-     * Configuration SMTP par défaut
-     */
+    // Configuration SMTP par défaut (Gmail)
     private $smtpConfig = [
         'host' => 'smtp.gmail.com',
         'port' => 587,
@@ -28,15 +28,14 @@ class EmailService
         'smtp_secure' => PHPMailer::ENCRYPTION_STARTTLS
     ];
 
+    // Constructeur - Initialise PHPMailer et configure SMTP
     public function __construct()
     {
         $this->mailer = new PHPMailer(true);
         $this->configureSMTP();
     }
 
-    /**
-     * Configure les paramètres SMTP
-     */
+    // Configure les paramètres SMTP pour l'envoi d'emails
     private function configureSMTP()
     {
         try {

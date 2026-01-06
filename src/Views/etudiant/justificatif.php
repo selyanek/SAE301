@@ -135,13 +135,13 @@ require '../layout/navigation.php';
                     $motifUrl = urlencode($absence['motif']);
                 ?>
                     <div style='margin-top: 15px;'>
-                        <a href="depotJustificatif.php?id=<?php echo $idAbsence; ?>&date_start=<?php echo $dateDebutUrl; ?>&date_end=<?php echo $dateFinUrl; ?>&motif=<?php echo $motifUrl; ?>&ressoumission=1" class="btn-resoumettre">📎 Resoumettre un justificatif</a>
+                        <a href="depotJustificatif.php?id=<?php echo $idAbsence; ?>&date_start=<?php echo $dateDebutUrl; ?>&date_end=<?php echo $dateFinUrl; ?>&motif=<?php echo $motifUrl; ?>&ressoumission=1" class="btn-resoumettre">Resoumettre un justificatif</a>
                     </div>
                 <?php endif; ?>
             </div>
             <div class='card-status'>
                 <?php if ($enRevision): ?>
-                    <span class='status-badge' style='background-color: #fff3cd; color: #856404; font-weight: bold; padding: 8px 12px; border-radius: 4px; border: 1px solid #ffc107;'>⚠️ En révision</span>
+                    <span class='status-badge' style='background-color: #fff3cd; color: #856404; font-weight: bold; padding: 8px 12px; border-radius: 4px; border: 1px solid #ffc107;'>En révision</span>
                 <?php else: ?>
                     <span class='status-badge'>En attente</span>
                 <?php endif; ?>

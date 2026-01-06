@@ -38,13 +38,13 @@ require_once __DIR__ . '/../layout/navigation.php';
 ?>
 
 <div class="stats-container">
-    <!-- En-tête -->
+    <?php // En-tête ?>
     <div class="stats-header">
         <h1>Statistiques des Absences</h1>
         <p class="stats-subtitle">Analyse des absences</p>
     </div>
 
-    <!-- Filtres -->
+    <?php // Filtres ?>
     <div class="stats-filters">
         <form method="GET" class="filter-form">
             <div class="filter-group">
@@ -86,10 +86,9 @@ require_once __DIR__ . '/../layout/navigation.php';
         </form>
     </div>
 
-    <!-- Statistiques globales - Grille 4 colonnes -->
+    <?php // Statistiques globales - Grille 4 colonnes ?>
     <div class="stats-global">
         <div class="stat-card stat-danger">
-            <span class="stat-icon">📉</span>
             <div class="stat-content">
                 <h3><?= $globales['total'] ?></h3>
                 <p>Absences totales</p>
@@ -97,7 +96,6 @@ require_once __DIR__ . '/../layout/navigation.php';
         </div>
 
         <div class="stat-card stat-success">
-            <span class="stat-icon">✅</span>
             <div class="stat-content">
                 <h3><?= $globales['justifiees'] ?></h3>
                 <p>Absences justifiées</p>
@@ -105,7 +103,6 @@ require_once __DIR__ . '/../layout/navigation.php';
         </div>
 
         <div class="stat-card stat-warning">
-            <span class="stat-icon">⚠️</span>
             <div class="stat-content">
                 <h3><?= $globales['non_justifiees'] ?></h3>
                 <p>Non justifiées</p>
@@ -113,7 +110,6 @@ require_once __DIR__ . '/../layout/navigation.php';
         </div>
 
         <div class="stat-card stat-danger">
-            <span class="stat-icon">📝</span>
             <div class="stat-content">
                 <h3><?= $globales['evaluations'] ?></h3>
                 <p>Lors d'évaluations</p>
@@ -121,17 +117,23 @@ require_once __DIR__ . '/../layout/navigation.php';
         </div>
     </div>
 
-    <!-- Graphiques - Grille 2x2 -->
+    <?php // Graphiques - Grille 2x2 ?>
     <div class="stats-charts">
         <div class="chart-row">
             <div class="chart-container">
                 <h2>Répartition par type de cours</h2>
                 <canvas id="chartTypes"></canvas>
+                <button class="btn-export" onclick="exporterGraphique('chartTypes', 'Répartition par type de cours')">
+                    Exporter en PDF
+                </button>
             </div>
 
             <div class="chart-container">
                 <h2>Répartition par heure</h2>
                 <canvas id="chartHeures"></canvas>
+                <button class="btn-export" onclick="exporterGraphique('chartHeures', 'Répartition par heure')">
+                    Exporter en PDF
+                </button>
             </div>
         </div>
 
@@ -139,18 +141,25 @@ require_once __DIR__ . '/../layout/navigation.php';
             <div class="chart-container">
                 <h2>Top 10 des matières</h2>
                 <canvas id="chartMatieres"></canvas>
+                <button class="btn-export" onclick="exporterGraphique('chartMatieres', 'Top 10 des matières')">
+                    Exporter en PDF
+                </button>
             </div>
 
             <div class="chart-container">
                 <h2>Tendances mensuelles</h2>
                 <canvas id="chartTendances"></canvas>
+                <button class="btn-export" onclick="exporterGraphique('chartTendances', 'Tendances mensuelles')">
+                    Exporter en PDF
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Chart.js -->
+<?php // Chart.js et jsPDF ?>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 // Données PHP → JavaScript
 const donneesTypes = <?= json_encode($donneesGraphiques['types']) ?>;
@@ -239,6 +248,33 @@ new Chart(document.getElementById('chartTendances'), {
         }
     }
 });
+
+// Fonction pour exporter un graphique en PDF
+function exporterGraphique(canvasId, titre) {
+    const { jsPDF } = window.jspdf;
+    const canvas = document.getElementById(canvasId);
+    // Créer un PDF
+    const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: 'a4'
+    });
+    // Obtenir l'image du canvas
+    const imgData = canvas.toDataURL('image/png');
+    // Ajouter le titre
+    pdf.setFontSize(16);
+    pdf.text(titre, 10, 15);
+    // Dimensions de l'image
+    const imgWidth = 250;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    const x = 10;
+    const y = 25;
+    // Ajouter l'image
+    pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
+    // Télécharger le PDF
+    const nomFichier = titre.replace(/\s+/g, '_').toLowerCase() + '_' + Date.now() + '.pdf';
+    pdf.save(nomFichier);
+}
 </script>
 
 <?php require_once __DIR__ . '/../layout/footer.php'; ?>

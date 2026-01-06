@@ -31,7 +31,7 @@ if (isset($_GET['error'])) {
 // Afficher un message pour les ressoumissions
 if ($isRessoumission) {
     echo '<div class="alert-ressoumission" style="background: #fff3cd; color: #856404; padding: 15px; margin: 20px auto; max-width: 800px; border-radius: 5px; border: 1px solid #ffc107;">';
-    echo '⚠️ <strong>Ressoumission de justificatif</strong><br>';
+    echo '<strong>Ressoumission de justificatif</strong><br>';
     echo 'Vous pouvez ajouter de nouveaux documents pour compléter votre justification.';
     echo '</div>';
 }

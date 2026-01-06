@@ -75,7 +75,7 @@ class Statistiques
             }
 
             if (!empty($filtres['date_fin'])) {
-                $sql .= " AND a.date_fin <= :date_fin";
+                $sql .= " AND a.date_debut <= :date_fin";
                 $params[':date_fin'] = $filtres['date_fin'];
             }
 
@@ -289,6 +289,7 @@ class Statistiques
         }
 
         $tendances = [];
+        $tendancesAvecDate = []; // Pour stocker avec la date de tri
         
         foreach ($this->absences as $absence) {
             // La date est déjà au format JJ/MM/AAAA, on la convertit en timestamp
@@ -298,14 +299,28 @@ class Statistiques
                 $mois = (int)date('n', strtotime($dateISO));
                 $annee = date('Y', strtotime($dateISO));
                 $periode = $this->getMoisFrancais($mois) . ' ' . $annee;
+                // Clé de tri : AAAA-MM pour un tri chronologique
+                $cle_tri = sprintf('%04d-%02d', $annee, $mois);
             } else {
                 $periode = $dateISO;
+                $cle_tri = $dateISO;
             }
 
-            if (!isset($tendances[$periode])) {
-                $tendances[$periode] = 0;
+            if (!isset($tendancesAvecDate[$cle_tri])) {
+                $tendancesAvecDate[$cle_tri] = [
+                    'periode' => $periode,
+                    'count' => 0
+                ];
             }
-            $tendances[$periode]++;
+            $tendancesAvecDate[$cle_tri]['count']++;
+        }
+
+        // Trier par clé (ordre chronologique)
+        ksort($tendancesAvecDate);
+        
+        // Reconstruire le tableau avec seulement période => count
+        foreach ($tendancesAvecDate as $data) {
+            $tendances[$data['periode']] = $data['count'];
         }
 
         return $tendances;

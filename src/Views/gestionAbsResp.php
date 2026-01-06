@@ -47,7 +47,7 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
     <link href="/public/asset/CSS/cssGestionAbsResp.css" rel="stylesheet">
 </head>
 <body>
-<!-- Affichage des logos -->
+<?php // Affichage des logos ?>
 <div class="uphf">
     <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">
 </div>
@@ -55,7 +55,7 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
     <img src="../../public/asset/img/logoedutrack.png" alt="Logo EduTrack">
 </div>
 
-<!-- Barre latérale de navigation -->
+<?php // Barre latérale de navigation ?>
 <div class="sidebar">
     <ul>
         <li><a href="accueil_responsable.php">Accueil</a></li>
@@ -70,7 +70,7 @@ $statutFiltre = isset($_POST['statut']) ? $_POST['statut'] : '';
     <h1>Gestion des absences</h1>
 </header>
 
-<!-- Messages de succès/erreur/info -->
+<?php // Messages de succès/erreur/info ?>
 <?php
 // Afficher les messages en haut de la page
 if (isset($_GET['success'])) {
@@ -84,7 +84,7 @@ if (isset($_GET['info'])) {
 }
 ?>
 
-<!-- Filtrage -->
+<?php // Filtrage ?>
 <form method="post">
     <label for="nom">Nom étudiant :</label>
     <input type="text" name="nom" id="nom" value="<?php echo isset($_POST['nom']) ? htmlspecialchars($_POST['nom']) : ''; ?>">
@@ -105,7 +105,7 @@ if (isset($_GET['info'])) {
     <a href="gestionAbsResp.php"><button type="button">Réinitialiser</button></a>
 </form>
 
-<!-- Tableau des absences -->
+<?php // Tableau des absences ?>
 <table id="tableAbsences">
     <thead>
     <tr>
@@ -128,7 +128,7 @@ if (isset($_GET['info'])) {
         // MODE DEBUG - Afficher les données de la première absence
         if ($debug_mode && count($absences) > 0) {
             echo "<tr><td colspan='8' style='background: #fff3cd; padding: 15px;'>";
-            echo "<strong>🔍 MODE DEBUG - Données de la première absence :</strong><br>";
+            echo "<strong>MODE DEBUG - Données de la première absence :</strong><br>";
             echo "<pre style='text-align: left; font-size: 11px;'>";
             print_r($absences[0]);
             echo "</pre>";
@@ -348,15 +348,15 @@ if (isset($_GET['info'])) {
                     break;
                 case 'en_revision':
                     $statutClass = 'statut-revision';
-                    $statutLabel = '⚠️ En révision';
+                    $statutLabel = 'En révision';
                     break;
                 case 'valide':
                     $statutClass = 'statut-valide';
-                    $statutLabel = '✅ Validé';
+                    $statutLabel = 'Validé';
                     break;
                 case 'refuse':
                     $statutClass = 'statut-refuse';
-                    $statutLabel = '❌ Refusé';
+                    $statutLabel = 'Refusé';
                     break;
             }
 
@@ -422,7 +422,7 @@ if (isset($_GET['info'])) {
 
 <div style="height: 150px;"></div>
 
-<!-- Pied de page -->
+<?php // Pied de page ?>
 <footer class="footer">
     <nav class="footer-nav">
         <a href="accueil_responsable.php">Accueil</a>

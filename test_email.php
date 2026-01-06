@@ -17,7 +17,7 @@ try {
     $emailService = new EmailService();
     
     // Remplacez ces valeurs par vos données de test
-    $testEmail = 'dilara.simsek@uphf.fr'; // ⚠️ CHANGEZ CETTE ADRESSE
+    $testEmail = 'dilara.simsek@uphf.fr'; // CHANGEZ CETTE ADRESSE
     $testName = 'Test Étudiant';
     $testDateStart = '2024-01-15 09:00:00';
     $testDateEnd = '2024-01-15 11:00:00';

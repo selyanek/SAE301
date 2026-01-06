@@ -11,7 +11,7 @@ require '../layout/navigation.php';
     <h1>Gestion des absences</h1>
 </header>
 
-<!-- Filtrage -->
+<?php // Filtrage ?>
 <form method="post">
     <label for="nom">Nom étudiant :</label>
     <input type="text" name="nom" id="nom" value="<?php echo isset($_POST['nom']) ? htmlspecialchars($_POST['nom']) : ''; ?>">
@@ -31,7 +31,7 @@ require '../layout/navigation.php';
     <a href="gestionAbsence.php"><button type="button">Réinitialiser</button></a>
 </form>
 
-<!-- Tableau des absences -->
+<?php // Tableau des absences ?>
 <table id="tableAbsences">
     <thead>
     <tr>
@@ -54,10 +54,10 @@ require '../layout/navigation.php';
 
     // Afficher les messages
     if (isset($_GET['success'])) {
-        echo "<div class='success-message'>✅ " . htmlspecialchars($_GET['success']) . "</div>";
+        echo "<div class='success-message'>" . htmlspecialchars($_GET['success']) . "</div>";
     }
     if (isset($_GET['error'])) {
-        echo "<div class='error-message'>❌ Erreur lors du traitement</div>";
+        echo "<div class='error-message'>Erreur lors du traitement</div>";
     }
 
     // Charger depuis la base de données
@@ -95,15 +95,15 @@ require '../layout/navigation.php';
                 switch($statut) {
                     case 'en_attente':
                         $statutClass = 'statut-attente';
-                        $statutLabel = '⏳ En attente';
+                        $statutLabel = 'En attente';
                         break;
                     case 'valide':
                         $statutClass = 'statut-valide';
-                        $statutLabel = '✅ Validé';
+                        $statutLabel = 'Validé';
                         break;
                     case 'refuse':
                         $statutClass = 'statut-refuse';
-                        $statutLabel = '❌ Refusé';
+                        $statutLabel = 'Refusé';
                         break;
                 }
 
@@ -113,7 +113,7 @@ require '../layout/navigation.php';
                 echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($absence['date_fin']))) . "</td>";
                 echo "<td>" . htmlspecialchars($absence['prenomCompte'] . ' ' . $absence['nomCompte']) . "</td>";
                 echo "<td>" . htmlspecialchars($absence['motif']) . "</td>";
-                echo "<td><a href='" . htmlspecialchars($absence['uriJustificatif']) . "' target='_blank'>📄 Voir le document</a></td>";
+                echo "<td><a href='" . htmlspecialchars($absence['uriJustificatif']) . "' target='_blank'>Voir le document</a></td>";
                 echo "<td class='$statutClass'>$statutLabel</td>";
 
                 // Actions

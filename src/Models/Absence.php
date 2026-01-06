@@ -1,4 +1,6 @@
 <?php
+// Modèle Absence
+// Gère les opérations CRUD pour les absences des étudiants
 
 namespace src\Models;
 
@@ -7,6 +9,7 @@ use PDOException;
 
 class Absence
 {
+    // Propriétés de l'absence
     private ?string $dateDebut;
     private ?string $dateFin;
     private ?string $motif;
@@ -18,20 +21,22 @@ class Absence
     private $conn;
     private $table = 'Absence';
 
+    // Constructeur - Initialise la connexion à la base de données
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
-    // --- SETTERS ---
+    // Setters pour définir les propriétés de l'absence
     public function setDateDebut(string $dateDebut): void { $this->dateDebut = $dateDebut; }
     public function setDateFin(string $dateFin): void { $this->dateFin = $dateFin; }
     public function setMotif(?string $motif): void { $this->motif = $motif; }
-    public function setJustifie(?bool $justifie): void { $this->justifie = $justifie; } // Accepte null
+    public function setJustifie(?bool $justifie): void { $this->justifie = $justifie; }
     public function setIdEtudiant(int $idEtudiant): void { $this->idEtudiant = $idEtudiant; }
     public function setIdCours(int $idCours): void { $this->idCours = $idCours; }
     public function setUriJustificatif(?string $uriJustificatif): void { $this->uriJustificatif = $uriJustificatif; }
 
+    // Ajoute une nouvelle absence dans la base de données
     public function ajouterAbsence()
     {
         try {
@@ -64,6 +69,7 @@ class Absence
         }
     }
 
+    // Marque une absence comme justifiée
     public function justifierAbsence($idAbsence)
     {
         try {
@@ -76,6 +82,7 @@ class Absence
         }
     }
 
+    // Met à jour le statut de justification d'une absence (valider/refuser)
     public function updateJustifie($idAbsence, bool $value, ?string $raisonRefus = null, ?string $typeRefus = null)
     {
         try {
@@ -148,6 +155,7 @@ class Absence
         }
     }
 
+    // Récupère toutes les absences avec les informations associées (étudiant, cours, ressource)
     public function getAll() {
         try {
             $sql = "SELECT a.*, e.identifiantEtu, c.type AS cours_type, r.nom AS ressource_nom, c.date_debut AS cours_date_debut, comp.nom AS nomCompte, comp.prenom AS prenomCompte
@@ -166,6 +174,7 @@ class Absence
         }
     }
 
+    // Récupère la durée d'une absence (date début et fin)
     public function getDuree($idAbsence) {
         try {
             $sql = "SELECT date_debut, date_fin 
@@ -181,6 +190,7 @@ class Absence
         }
     }
 
+    // Récupère une absence spécifique par son ID avec toutes les informations associées
     public function getById($idAbsence)
     {
         try {

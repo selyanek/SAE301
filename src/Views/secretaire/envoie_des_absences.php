@@ -149,7 +149,7 @@ $redirect->redirect();
                 const fileItem = document.createElement('div');
                 fileItem.className = 'file-item';
                 fileItem.innerHTML = `
-                    <span>📄 ${file.name} (${(file.size / 1024).toFixed(2)} Ko)</span>
+                    <span>${file.name} (${(file.size / 1024).toFixed(2)} Ko)</span>
                     <button type="button" onclick="removeFile(${index})">Supprimer</button>
                 `;
                 fileList.appendChild(fileItem);

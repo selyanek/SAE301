@@ -194,6 +194,35 @@
     max-height: 300px;
 }
 
+/* Bouton d'export */
+.btn-export {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #0d4f94, #29acc8);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.btn-export:hover {
+    background: linear-gradient(135deg, #29acc8, #0d4f94);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(13, 79, 148, 0.3);
+}
+
+.btn-export:active {
+    transform: translateY(0);
+}
+
 /* Rattrapages */
 .stats-rattrapages {
     background: white;

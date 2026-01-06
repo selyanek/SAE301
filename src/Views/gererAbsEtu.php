@@ -118,7 +118,7 @@ try {
         </td>
         <td>
             <?php if ($enRevision): ?>
-                <span class="statut-revision" style="background-color: #fff3cd; color: #856404; font-weight: bold; padding: 5px 10px; border-radius: 4px; border: 1px solid #ffc107;">⚠️ En révision</span>
+                <span class="statut-revision" style="background-color: #fff3cd; color: #856404; font-weight: bold; padding: 5px 10px; border-radius: 4px; border: 1px solid #ffc107;">En révision</span>
             <?php else: ?>
                 <span class="statut-attente">En attente</span>
             <?php endif; ?>
@@ -130,7 +130,7 @@ try {
                 $dateFin = htmlspecialchars($absence['date_fin']);
                 $motifUrl = urlencode($absence['motif']);
             ?>
-                <a href="etudiant/depotJustificatif.php?id=<?php echo $idAbsence; ?>&date_start=<?php echo $dateDebut; ?>&date_end=<?php echo $dateFin; ?>&motif=<?php echo $motifUrl; ?>&ressoumission=1" class="btn-resoumettre" style="background: #ff9800; color: white; padding: 8px 16px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">📎 Resoumettre un justificatif</a>
+                <a href="etudiant/depotJustificatif.php?id=<?php echo $idAbsence; ?>&date_start=<?php echo $dateDebut; ?>&date_end=<?php echo $dateFin; ?>&motif=<?php echo $motifUrl; ?>&ressoumission=1" class="btn-resoumettre" style="background: #ff9800; color: white; padding: 8px 16px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Resoumettre un justificatif</a>
             <?php else: ?>
                 <span style="color: #888;">—</span>
             <?php endif; ?>
