@@ -206,17 +206,6 @@ td a[target="_blank"]:hover {
   padding: 20px;
 }
 
-/* Mode debug */
-.debug-box {
-  background: #fff3cd;
-  padding: 15px;
-}
-
-.debug-pre {
-  text-align: left;
-  font-size: 11px;
-}
-
 /* Small text pour les cours */
 .small-gray {
   color: #666;
@@ -227,4 +216,66 @@ td a[target="_blank"]:hover {
 /* Spacer */
 .spacer-150 {
   height: 150px;
+}
+
+/* Styles des statuts */
+.statut-attente {
+  color: orange;
+  font-weight: bold;
+}
+
+.statut-revision {
+  background-color: #fff3cd;
+  color: #856404;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #ffc107;
+}
+
+.statut-valide {
+  color: green;
+  font-weight: bold;
+}
+
+.statut-refuse {
+  color: red;
+  font-weight: bold;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 5px;
+}
+
+.btn-valider {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.btn-refuser {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.btn-valider:hover {
+  background: #45a049;
+}
+
+.btn-refuser:hover {
+  background: #da190b;
+}
+
+.traite {
+  color: #888;
+  font-style: italic;
 }

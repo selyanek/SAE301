@@ -98,17 +98,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             $emailService = new \src\Models\EmailService();
             
-            // Récupérer l'identifiant de l'étudiant (comme dans monProfil.php)
+            // Récupérer l'identifiant de l'étudiant 
             $identifiant = $absence['identifiantcompte'] ?? '';
             $studentName = trim(($absence['prenomcompte'] ?? '') . ' ' . ($absence['nomcompte'] ?? ''));
             
-            // Construire l'email comme dans monProfil.php : si ce n'est pas déjà un email, ajouter @uphf.fr
+            // Construire l'email
             if (empty($identifiant)) {
                 header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&demande=true&error=identifiant_manquant');
                 exit();
             }
             
-            // Si l'identifiant contient déjà un @, c'est un email, sinon on ajoute @uphf.fr
+            // Si l'identifiant contient déjà un @ c'est un email sinon on ajoute @uphf.fr
             $studentEmail = (strpos($identifiant, '@') !== false) ? $identifiant : $identifiant . '@uphf.fr';
             
             // Valider l'email final

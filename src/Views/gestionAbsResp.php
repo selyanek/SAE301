@@ -30,9 +30,6 @@ $absenceModel = new \src\Models\Absence($pdo);
 // Récupérer toutes les absences
 $absences = $absenceModel->getAll();
 
-// MODE DEBUG - Décommenter pour voir les données brutes
-$debug_mode = isset($_GET['debug']) && $_GET['debug'] === '1';
-
 // Récupération des filtres
 $nomFiltre = isset($_POST['nom']) ? strtolower(trim($_POST['nom'])) : '';
 $dateFiltre = isset($_POST['date']) ? $_POST['date'] : '';
@@ -125,17 +122,6 @@ if (isset($_GET['info'])) {
     if (!$absences || count($absences) === 0) {
         echo "<tr><td colspan='8' class='empty-message'>Aucune absence enregistrée pour le moment.</td></tr>";
     } else {
-        // MODE DEBUG - Afficher les données de la première absence
-        if ($debug_mode && count($absences) > 0) {
-            echo "<tr><td colspan='8' class='debug-box'>";
-            echo "<strong>MODE DEBUG - Données de la première absence :</strong><br>";
-            echo "<pre class='debug-pre'>";
-            print_r($absences[0]);
-            echo "</pre>";
-            echo "<strong>Clés disponibles :</strong> " . implode(', ', array_keys($absences[0]));
-            echo "</td></tr>";
-        }
-        
         // Regrouper les absences par étudiant et par période continue
         $absencesParEtudiant = [];
         
@@ -461,19 +447,6 @@ if (isset($_GET['info'])) {
         }
     }
 </script>
-
-<style>
-    .statut-attente { color: orange; font-weight: bold; }
-    .statut-revision { background-color: #fff3cd; color: #856404; font-weight: bold; padding: 5px 10px; border-radius: 4px; border: 1px solid #ffc107; }
-    .statut-valide { color: green; font-weight: bold; }
-    .statut-refuse { color: red; font-weight: bold; }
-    .actions { display: flex; gap: 5px; }
-    .btn-valider { background: #4CAF50; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px; }
-    .btn-refuser { background: #f44336; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px; }
-    .btn-valider:hover { background: #45a049; }
-    .btn-refuser:hover { background: #da190b; }
-    .traite { color: #888; font-style: italic; }
-</style>
 
 </body>
 </html>
