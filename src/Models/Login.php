@@ -94,4 +94,32 @@ class Login
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ? $result['identifiantetu'] : null;
     }
+    /**
+     * Retourne toutes les données utilisateur en une fois
+     * Évite les multiples requêtes à la base de données
+     */
+    public function getAllUserData($pdo)
+    {
+        $stmt = $pdo->prepare("
+            SELECT 
+                c.idcompte,
+                c.identifiantCompte,
+                c.nom,
+                c.prenom,
+                c.fonction,
+                c.mot_de_passe,
+                e.identifiantEtu
+            FROM Compte c
+            LEFT JOIN Etudiant e ON c.idCompte = e.idEtudiant
+            WHERE c.identifiantCompte = :identifiant 
+            AND c.mot_de_passe = :mdp
+        ");
+        
+        $stmt->execute([
+            ':identifiant' => $this->identifiant,
+            ':mdp' => $this->mot_de_passe
+        ]);
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

@@ -12,8 +12,7 @@ require '../layout/navigation.php';
         <button type="submit" class="btn">Consulter les absences</button>
     </a>
 </header>
-</body>
+
 <?php
 require '../layout/footer.php';
 ?>
-</html>
