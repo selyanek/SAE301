@@ -1,6 +1,4 @@
 <?php
-// Modèle Absence
-// Gère les opérations CRUD pour les absences des étudiants
 
 namespace src\Models;
 
@@ -9,11 +7,10 @@ use PDOException;
 
 class Absence
 {
-    // Propriétés de l'absence
     private ?string $dateDebut;
     private ?string $dateFin;
     private ?string $motif;
-    private ?bool $justifie; // null = en attente, true = validé, false = refusé
+    private ?bool $justifie; // null = en attente, true = validÃ©, false = refusÃ©
     private ?int $idEtudiant;
     private ?int $idCours;
     private ?string $uriJustificatif;
@@ -21,22 +18,20 @@ class Absence
     private $conn;
     private $table = 'Absence';
 
-    // Constructeur - Initialise la connexion à la base de données
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
-    // Setters pour définir les propriétés de l'absence
+    // --- SETTERS ---
     public function setDateDebut(string $dateDebut): void { $this->dateDebut = $dateDebut; }
     public function setDateFin(string $dateFin): void { $this->dateFin = $dateFin; }
     public function setMotif(?string $motif): void { $this->motif = $motif; }
-    public function setJustifie(?bool $justifie): void { $this->justifie = $justifie; }
+    public function setJustifie(?bool $justifie): void { $this->justifie = $justifie; } // Accepte null
     public function setIdEtudiant(int $idEtudiant): void { $this->idEtudiant = $idEtudiant; }
     public function setIdCours(int $idCours): void { $this->idCours = $idCours; }
     public function setUriJustificatif(?string $uriJustificatif): void { $this->uriJustificatif = $uriJustificatif; }
 
-    // Ajoute une nouvelle absence dans la base de données
     public function ajouterAbsence()
     {
         try {
@@ -69,7 +64,6 @@ class Absence
         }
     }
 
-    // Marque une absence comme justifiée
     public function justifierAbsence($idAbsence)
     {
         try {
@@ -82,21 +76,19 @@ class Absence
         }
     }
 
-    // Met à jour le statut de justification d'une absence (valider/refuser)
-    public function updateJustifie($idAbsence, bool $value, ?string $raisonRefus = null, ?string $typeRefus = null)
+    public function updateJustifie($idAbsence, bool $value, ?string $raisonRefus = null)
     {
         try {
             if ($value === false && $raisonRefus !== null && trim($raisonRefus) !== '') {
-                // Si refusé avec une raison et type de refus - réinitialiser revision à false
-                $sql = "UPDATE $this->table SET justifie = :value, raison_refus = :raisonRefus, type_refus = :typeRefus, revision = false WHERE idabsence = :idAbsence";
+                // Si refusÃ© avec une raison
+                $sql = "UPDATE $this->table SET justifie = :value, raison_refus = :raisonRefus WHERE idabsence = :idAbsence";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->bindValue(':value', $value, PDO::PARAM_BOOL);
                 $stmt->bindValue(':raisonRefus', trim($raisonRefus), PDO::PARAM_STR);
-                $stmt->bindValue(':typeRefus', $typeRefus, PDO::PARAM_STR);
                 $stmt->bindValue(':idAbsence', $idAbsence, PDO::PARAM_INT);
             } else {
-                // Si validé ou refusé sans raison - réinitialiser revision à false
-                $sql = "UPDATE $this->table SET justifie = :value, revision = false WHERE idabsence = :idAbsence";
+                // Si validÃ© ou refusÃ© sans raison
+                $sql = "UPDATE $this->table SET justifie = :value WHERE idabsence = :idAbsence";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->bindValue(':value', $value, PDO::PARAM_BOOL);
                 $stmt->bindValue(':idAbsence', $idAbsence, PDO::PARAM_INT);
@@ -109,53 +101,6 @@ class Absence
         }
     }
 
-    /**
-     * Met à jour l'état de révision d'une absence
-     * Utilisé quand le responsable demande un justificatif supplémentaire
-     */
-    public function setEnRevision($idAbsence, bool $value)
-    {
-        try {
-            $sql = "UPDATE $this->table SET revision = :value WHERE idabsence = :idAbsence";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindValue(':value', $value, PDO::PARAM_BOOL);
-            $stmt->bindValue(':idAbsence', $idAbsence, PDO::PARAM_INT);
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            error_log("Erreur setEnRevision : " . $e->getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * Permet à l'étudiant de modifier une absence refusée avec possibilité de ressoumission
-     * Remet l'absence en attente (justifie = NULL) et efface le type de refus
-     */
-    public function resoumettre($idAbsence, $nouveauMotif, $nouvelleUriJustificatif)
-    {
-        try {
-            $sql = "UPDATE $this->table 
-                    SET motif = :motif, 
-                        urijustificatif = :uriJustificatif, 
-                        justifie = NULL, 
-                        type_refus = NULL,
-                        raison_refus = NULL
-                    WHERE idabsence = :idAbsence 
-                    AND justifie = false 
-                    AND type_refus = 'ressoumission'";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindValue(':motif', $nouveauMotif, PDO::PARAM_STR);
-            $stmt->bindValue(':uriJustificatif', $nouvelleUriJustificatif, PDO::PARAM_STR);
-            $stmt->bindValue(':idAbsence', $idAbsence, PDO::PARAM_INT);
-            
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            error_log("Erreur resoumettre : " . $e->getMessage());
-            return false;
-        }
-    }
-
-    // Récupère toutes les absences avec les informations associées (étudiant, cours, ressource)
     public function getAll() {
         try {
             $sql = "SELECT a.*, e.identifiantEtu, c.type AS cours_type, r.nom AS ressource_nom, c.date_debut AS cours_date_debut, comp.nom AS nomCompte, comp.prenom AS prenomCompte
@@ -174,7 +119,6 @@ class Absence
         }
     }
 
-    // Récupère la durée d'une absence (date début et fin)
     public function getDuree($idAbsence) {
         try {
             $sql = "SELECT date_debut, date_fin 
@@ -190,7 +134,6 @@ class Absence
         }
     }
 
-    // Récupère une absence spécifique par son ID avec toutes les informations associées
     public function getById($idAbsence)
     {
         try {
@@ -231,14 +174,14 @@ class Absence
     }
 
     /**
-     * Compte le nombre de périodes d'absences en attente de traitement (justifie IS NULL)
-     * Les absences consécutives (moins de 24h d'écart) sont regroupées en une seule période
-     * @return int Nombre de périodes d'absences en attente
+     * Compte le nombre de pÃ©riodes d'absences en attente de traitement (justifie IS NULL)
+     * Les absences consÃ©cutives (moins de 24h d'Ã©cart) sont regroupÃ©es en une seule pÃ©riode
+     * @return int Nombre de pÃ©riodes d'absences en attente
      */
     public function countEnAttente(): int
     {
         try {
-            // Récupérer toutes les absences en attente, triées par étudiant et date
+            // RÃ©cupÃ©rer toutes les absences en attente, triÃ©es par Ã©tudiant et date
             $sql = "SELECT idabsence, idetudiant, date_debut, date_fin
                     FROM $this->table 
                     WHERE justifie IS NULL
@@ -251,7 +194,7 @@ class Absence
                 return 0;
             }
             
-            // Regrouper par étudiant
+            // Regrouper par Ã©tudiant
             $absencesParEtudiant = [];
             foreach ($absences as $absence) {
                 $idEtudiant = $absence['idetudiant'];
@@ -261,7 +204,7 @@ class Absence
                 $absencesParEtudiant[$idEtudiant][] = $absence;
             }
             
-            // Compter les périodes regroupées
+            // Compter les pÃ©riodes regroupÃ©es
             $nombrePeriodes = 0;
             foreach ($absencesParEtudiant as $absencesEtudiant) {
                 $periodeActuelle = null;
@@ -271,21 +214,21 @@ class Absence
                     $finActuelle = strtotime($absence['date_fin']);
                     
                     if ($periodeActuelle === null) {
-                        // Première absence, créer une nouvelle période
+                        // PremiÃ¨re absence, crÃ©er une nouvelle pÃ©riode
                         $periodeActuelle = [
                             'date_debut' => $absence['date_debut'],
                             'date_fin' => $absence['date_fin']
                         ];
                     } else {
-                        // Vérifier si cette absence est consécutive (moins de 24h d'écart)
+                        // VÃ©rifier si cette absence est consÃ©cutive (moins de 24h d'Ã©cart)
                         $finPeriode = strtotime($periodeActuelle['date_fin']);
                         $ecart = $debutActuel - $finPeriode;
                         
                         if ($ecart <= 86400) { // 24h
-                            // Fusionner avec la période actuelle
+                            // Fusionner avec la pÃ©riode actuelle
                             $periodeActuelle['date_fin'] = $absence['date_fin'];
                         } else {
-                            // Nouvelle période non consécutive
+                            // Nouvelle pÃ©riode non consÃ©cutive
                             $nombrePeriodes++;
                             $periodeActuelle = [
                                 'date_debut' => $absence['date_debut'],
@@ -295,7 +238,7 @@ class Absence
                     }
                 }
                 
-                // Ajouter la dernière période
+                // Ajouter la derniÃ¨re pÃ©riode
                 if ($periodeActuelle !== null) {
                     $nombrePeriodes++;
                 }
@@ -306,6 +249,125 @@ class Absence
         } catch (PDOException $e) {
             error_log("Erreur countEnAttente Absence : " . $e->getMessage());
             return 0;
+        }
+    }
+
+    // =============================================
+    // US-9 : Verrouillage et revision des decisions
+    // =============================================
+
+    /**
+     * Verrouille une decision (empeche l'etudiant de resoumettre)
+     */
+    public function verrouiller($idAbsence, $idResponsable)
+    {
+        try {
+            $sql = "UPDATE {$this->table} 
+                    SET verrouille = TRUE, 
+                        date_decision = NOW(),
+                        id_responsable_decision = :idResp
+                    WHERE idAbsence = :id";
+            
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindValue(':id', $idAbsence, PDO::PARAM_INT);
+            $stmt->bindValue(':idResp', $idResponsable, PDO::PARAM_INT);
+            
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Erreur verrouiller : " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Deverrouille une decision (permet a l'etudiant de resoumettre)
+     */
+    public function deverrouiller($idAbsence)
+    {
+        try {
+            $sql = "UPDATE {$this->table} 
+                    SET verrouille = FALSE 
+                    WHERE idAbsence = :id";
+            
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindValue(':id', $idAbsence, PDO::PARAM_INT);
+            
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Erreur deverrouiller : " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Verifie si une absence est verrouillee
+     */
+    public function isVerrouilleById($idAbsence)
+    {
+        try {
+            $sql = "SELECT verrouille FROM {$this->table} WHERE idAbsence = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindValue(':id', $idAbsence, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ? (bool)$result['verrouille'] : false;
+        } catch (PDOException $e) {
+            error_log("Erreur isVerrouilleById : " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Revise une decision (change le statut justifie et la raison)
+     */
+    public function reviserDecision($idAbsence, $nouveauStatut, $nouvelleRaison, $idResponsable)
+    {
+        try {
+            $sql = "UPDATE {$this->table} 
+                    SET justifie = :statut,
+                        raison_refus = :raison,
+                        date_decision = NOW(),
+                        id_responsable_decision = :idResp
+                    WHERE idAbsence = :id";
+            
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindValue(':id', $idAbsence, PDO::PARAM_INT);
+            $stmt->bindValue(':idResp', $idResponsable, PDO::PARAM_INT);
+            $stmt->bindValue(':raison', $nouvelleRaison);
+            
+            // Gestion du statut null/true/false
+            if ($nouveauStatut === null) {
+                $stmt->bindValue(':statut', null, PDO::PARAM_NULL);
+            } else {
+                $stmt->bindValue(':statut', $nouveauStatut, PDO::PARAM_BOOL);
+            }
+            
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Erreur reviserDecision : " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Recupere les absences verrouillees d'un etudiant
+     */
+    public function getAbsencesVerrouilleesEtudiant($idEtudiant)
+    {
+        try {
+            $sql = "SELECT idAbsence, date_debut, date_fin, verrouille
+                    FROM {$this->table}
+                    WHERE idEtudiant = :idEtu AND verrouille = TRUE";
+            
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindValue(':idEtu', $idEtudiant, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Erreur getAbsencesVerrouilleesEtudiant : " . $e->getMessage());
+            return [];
         }
     }
 }
