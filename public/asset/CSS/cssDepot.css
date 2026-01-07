@@ -1,43 +1,226 @@
+/* ========== FORMULAIRE D'ABSENCE ========== */
 .absence-form {
-    max-width: 600px;
-    margin: 20px auto;
-    background: #fafafa;
-    padding: 25px 30px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-family: Arial, sans-serif;
+    max-width: 700px;
+    margin: 30px auto;
+    background: #ffffff;
+    padding: 40px 45px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
+
+/* ========== GROUPES DE CHAMPS ========== */
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
+
+/* ========== LABELS ========== */
 .label {
     display: block;
-    font-weight: bold;
-    margin-bottom: 8px;
-    margin-top: 8px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    margin-top: 10px;
     color: #333;
+    font-size: 15px;
 }
+
+/* ========== CHAMPS DE FORMULAIRE ========== */
 .input,
 .textarea,
 .file-input {
     width: 100%;
-    padding: 5px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 14px 16px;
+    font-size: 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
     resize: vertical;
     box-sizing: border-box;
+    font-family: inherit;
+    transition: all 0.3s ease;
 }
+
+.input:focus,
+.textarea:focus,
+.file-input:focus {
+    outline: none;
+    border-color: #29acc8;
+    box-shadow: 0 0 0 4px rgba(41, 172, 200, 0.1);
+}
+
+.input:hover,
+.textarea:hover,
+.file-input:hover {
+    border-color: #b0b0b0;
+}
+
 .textarea {
-    min-height: 60px;
+    min-height: 100px;
 }
+
+/* ========== MESSAGES D'ERREUR ========== */
 .error {
     color: #d9534f;
-    font-size: 13px;
-    margin-top: 5px;
+    font-size: 14px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
+
+.error::before {
+    content: "⚠";
+    font-weight: bold;
+}
+
+/* ========== MESSAGES D'INFO ========== */
 .info {
-    font-size: 13px;
+    font-size: 14px;
     color: #666;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+/* ========== FORMULAIRE D'ABSENCE ========== */
+.absence-form {
+    max-width: 700px;
+    margin: 30px auto;
+    background: #ffffff;
+    padding: 40px 45px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ========== CONTENEUR DES BOUTONS ========== */
+.absence-form .buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+/* ========== TOUS LES BOUTONS ========== */
+.absence-form .buttons .btn {
+    background: linear-gradient(135deg, #29acc8 0%, #238da4 100%);
+    color: white;
+    font-size: 17px;
+    font-weight: 600;
+    padding: 16px 32px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(41, 172, 200, 0.3);
+    min-width: 160px;
+    text-align: center;
+}
+
+.absence-form .buttons .btn:hover {
+    background: linear-gradient(135deg, #238da4 0%, #1d7289 100%);
+    box-shadow: 0 6px 16px rgba(41, 172, 200, 0.4);
+    transform: translateY(-2px);
+}
+
+.absence-form .buttons .btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(41, 172, 200, 0.3);
+}
+
+/* ========== BOUTON RÉINITIALISER ========== */
+.absence-form .buttons .btn[onclick*="resetForm"] {
+    background: linear-gradient(135deg, #D60606 0%, #BA0404 100%);
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+}
+
+.absence-form .buttons .btn[onclick*="resetForm"]:hover {
+    background: linear-gradient(135deg, #BA0404 0%, #A80505 100%);
+    box-shadow: 0 6px 16px rgba(255, 152, 0, 0.4);
+}
+
+/* ========== BOUTON ANNULER ========== */
+.absence-form .buttons a .btn {
+    background: linear-gradient(135deg, #888 0%, #666 100%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.absence-form .buttons a .btn:hover {
+    background: linear-gradient(135deg, #666 0%, #555 100%);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* ========== CHAMP FICHIER PERSONNALISÉ ========== */
+.file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+}
+
+.file-input-wrapper input[type="file"] {
+    position: absolute;
+    left: -9999px;
+}
+
+.file-input-label {
+    display: block;
+    padding: 14px 16px;
+    background: #f5f5f5;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    color: #666;
+}
+
+.file-input-label:hover {
+    background: #e8f5f8;
+    border-color: #29acc8;
+    color: #29acc8;
+}
+
+/* ========== CHAMPS REQUIS ========== */
+.label.required::after {
+    content: " *";
+    color: #d9534f;
+    font-weight: bold;
+}
+
+/* ========== SELECT/DROPDOWN ========== */
+.select {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: white;
+    cursor: pointer;
+}
+
+.select:focus {
+    outline: none;
+    border-color: #29acc8;
+    box-shadow: 0 0 0 4px rgba(41, 172, 200, 0.1);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .absence-form {
+        max-width: 95%;
+        padding: 30px 25px;
+        margin: 20px auto;
+    }
+    
+    .input,
+    .textarea,
+    .file-input,
+    .select {
+        font-size: 16px;
+    }
 }

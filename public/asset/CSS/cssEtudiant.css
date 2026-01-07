@@ -1,0 +1,17 @@
+/* ========== EN-TÊTE ÉTUDIANT ========== */
+header.text h1 {
+    color: #333;
+    font-size: 2.5em;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-top: 10px;
+}
+
+header.text h1 .greeting {
+    color: #29acc8;
+    display: block;
+}
+
+header.text h1 .student-name {
+    color: #333;
+}

@@ -13,7 +13,7 @@
 </head>
 <body>
 <div class="uphf">
-    <img src="../../../public/asset/img/logouphf.png" alt="Logo uphf">
+    <a href="https://www.uphf.fr/iut"><img src="../../../public/asset/img/logouphf.png" alt="Logo uphf"></a>
 </div>
 <div class="logoEdu">
     <img src="../../../public/asset/img/logoedutrack.png" alt="Logo EduTrack">

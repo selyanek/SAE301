@@ -77,7 +77,7 @@ class AuthController
             'etudiant' => '../src/Views/etudiant/dashbord.php',
             'etudiante' => '../src/Views/etudiant/dashbord.php',
             'professeur' => '../src/Views/accueil_prof.php',
-            'responsable_pedagogique' => '../src/Views/accueil_responsable.php',
+            'responsable_pedagogique' => '../src/Views/responsable/dashbord.php',
             'secretaire' => '../src/Views/secretaire/dashboard.php'
         ];
         

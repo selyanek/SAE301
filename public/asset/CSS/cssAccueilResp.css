@@ -141,7 +141,7 @@ header.text h1 {
     margin: 10px 0;
 }
 
-/* Grille de statistiques (si vous voulez ajouter plus de stats) */
+/* Grille de statistiques */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
