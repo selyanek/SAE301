@@ -302,7 +302,34 @@ function openModal(idAbsence, idRattrapage, dateRattrapage, salle, remarque, sta
         document.getElementById('remarque').value = '';
         document.getElementById('statut').value = 'planifie';
     }
+    
+    // Gérer l'obligation de la date selon le statut
+    updateDateRequirement();
 }
+
+function updateDateRequirement() {
+    const statutSelect = document.getElementById('statut');
+    const dateInput = document.getElementById('dateRattrapage');
+    const dateLabel = dateInput.previousElementSibling;
+    
+    if (statutSelect.value === 'annule') {
+        // Si annulé, la date n'est pas obligatoire
+        dateInput.removeAttribute('required');
+        dateLabel.textContent = 'Date et heure du rattrapage :';
+    } else {
+        // Sinon, la date est obligatoire
+        dateInput.setAttribute('required', 'required');
+        dateLabel.textContent = 'Date et heure du rattrapage * :';
+    }
+}
+
+// Écouter les changements de statut
+document.addEventListener('DOMContentLoaded', function() {
+    const statutSelect = document.getElementById('statut');
+    if (statutSelect) {
+        statutSelect.addEventListener('change', updateDateRequirement);
+    }
+});
 
 function closeModal() {
     document.getElementById('rattrapageModal').style.display = 'none';

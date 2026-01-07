@@ -63,7 +63,7 @@ $nombreAbsencesEnAttente = $absenceModel->countEnAttente();
 
 <!-- Bouton pour consulter les absences -->
 <div class="text action-section fade-in">
-    <a href="gestionAbsResp.php">
+    <a href="/src/Views/gestionAbsResp.php">
         <button type="submit" class="btn">Consulter les absences en cours</button>
     </a>
 </div>
