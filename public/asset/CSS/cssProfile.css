@@ -1,19 +1,19 @@
-/* Profile page dedicated styles - cohesive with theme */
+/* ========== PROFILE PAGE - MODERN DESIGN ========== */
 
 .profile-card {
-    max-width: 880px;
+    max-width: 920px;
     margin: 90px auto 40px;
-    padding: 32px 40px;
+    padding: 40px 48px;
     background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(13, 79, 148, 0.08);
-    border: 1px solid #e9eef4;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(41, 172, 200, 0.12);
+    border: 1px solid #e3f2f7;
 }
 
 .profile-card h2 {
-    color: #0d4f94;
-    font-size: 24px;
-    margin: 0 0 8px 0;
+    color: #29acc8;
+    font-size: 28px;
+    margin: 0 0 12px 0;
     font-weight: 700;
 }
 
@@ -22,82 +22,100 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f7fa;
 }
 
 .btn-logout {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 20px;
+    padding: 11px 22px;
     background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
     color: #ffffff;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-weight: 600;
     font-size: 15px;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(231, 76, 60, 0.25);
 }
 
 .btn-logout:hover {
     background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(231, 76, 60, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(231, 76, 60, 0.35);
 }
 
 .profile-card h3 {
     color: #29acc8;
-    font-size: 18px;
-    margin: 24px 0 12px 0;
+    font-size: 20px;
+    margin: 32px 0 16px 0;
     font-weight: 600;
+    padding-bottom: 8px;
+    border-bottom: 3px solid #29acc8;
+    display: inline-block;
 }
 
 .profile-card hr {
     border: none;
-    border-top: 2px solid #e9eef4;
-    margin: 24px 0;
+    border-top: 2px solid #e9f4f7;
+    margin: 28px 0;
 }
 
 .profile-field {
-    margin: 14px 0;
-    padding: 12px 16px;
-    background: #f8fafb;
-    border-radius: 8px;
-    border-left: 3px solid #29acc8;
+    margin: 16px 0;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #f8fcfd 0%, #f0f8fa 100%);
+    border-radius: 10px;
+    border-left: 4px solid #29acc8;
+    transition: all 0.3s ease;
+}
+
+.profile-field:hover {
+    background: linear-gradient(135deg, #f0f8fa 0%, #e8f4f7 100%);
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(41, 172, 200, 0.08);
 }
 
 .profile-field strong {
     color: #0d4f94;
     font-weight: 600;
     display: inline-block;
-    min-width: 140px;
+    min-width: 160px;
+    font-size: 15px;
 }
 
 .profile-card form {
-    margin-top: 16px;
+    margin-top: 20px;
+    padding: 24px;
+    background: #fafcfd;
+    border-radius: 12px;
+    border: 2px solid #e9f4f7;
 }
 
 .profile-card form label {
     color: #0d4f94;
     font-weight: 600;
     display: block;
-    margin-bottom: 6px;
-    margin-top: 12px;
+    margin-bottom: 8px;
+    margin-top: 16px;
+    font-size: 15px;
 }
 
 .profile-card form input[type="password"],
 .profile-card form input[type="text"],
 .profile-card form input[type="email"] {
     width: 100%;
-    max-width: 480px;
-    padding: 12px 14px;
-    border: 1px solid #d7e2e8;
-    border-radius: 8px;
-    background: #fbfdff;
+    max-width: 520px;
+    padding: 13px 16px;
+    border: 2px solid #d7e8ed;
+    border-radius: 10px;
+    background: #ffffff;
     font-size: 15px;
     box-sizing: border-box;
-    transition: border-color 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .profile-card form input[type="password"]:focus,
@@ -105,89 +123,126 @@
 .profile-card form input[type="email"]:focus {
     outline: none;
     border-color: #29acc8;
-    box-shadow: 0 0 0 3px rgba(41, 172, 200, 0.1);
+    box-shadow: 0 0 0 4px rgba(41, 172, 200, 0.12);
+    background: #fbfdfe;
 }
 
 .form-actions {
-    margin-top: 18px;
+    margin-top: 24px;
     display: flex;
-    gap: 12px;
+    gap: 14px;
     align-items: center;
 }
 
 .form-actions button[type="submit"],
 .form-actions .btn-primary {
-    background: #29acc8;
+    background: linear-gradient(135deg, #29acc8 0%, #238da4 100%);
     color: #ffffff;
     border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
+    padding: 13px 28px;
+    border-radius: 10px;
     font-weight: 600;
     font-size: 15px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(41, 172, 200, 0.2);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(41, 172, 200, 0.25);
 }
 
 .form-actions button[type="submit"]:hover,
 .form-actions .btn-primary:hover {
-    background: #238ca3;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(41, 172, 200, 0.3);
+    background: linear-gradient(135deg, #238da4 0%, #1d7289 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(41, 172, 200, 0.35);
 }
 
 .form-actions button[type="button"],
 .form-actions a {
-    background: #f3f6f8;
+    background: #f5f8fa;
     color: #556677;
-    border: 1px solid #dde5eb;
-    padding: 11px 20px;
-    border-radius: 8px;
-    font-weight: 500;
+    border: 2px solid #e0e8ed;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
     font-size: 14px;
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .form-actions button[type="button"]:hover,
 .form-actions a:hover {
-    background: #e8eef2;
-    border-color: #cbd5dd;
+    background: #e8f0f5;
+    border-color: #c9d6df;
+    transform: translateY(-1px);
 }
 
 .message {
-    padding: 14px 18px;
-    margin: 16px 0;
-    border-radius: 8px;
-    font-size: 14px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+    font-size: 15px;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .message.success {
-    background: #e6ffed;
+    background: linear-gradient(135deg, #e6ffed 0%, #d4f8e0 100%);
     color: #155724;
-    border-left: 4px solid #2e7d32;
+    border-left: 5px solid #2e7d32;
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.15);
+}
+
+.message.success::before {
+    content: "✓";
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: #2e7d32;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 24px;
+    font-weight: bold;
 }
 
 .message.error {
-    background: #fff0f0;
+    background: linear-gradient(135deg, #fff0f0 0%, #ffe6e6 100%);
     color: #721c24;
-    border-left: 4px solid #c62828;
+    border-left: 5px solid #c62828;
+    box-shadow: 0 4px 12px rgba(198, 40, 40, 0.15);
+}
+
+.message.error::before {
+    content: "✕";
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: #c62828;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 24px;
+    font-weight: bold;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .profile-card {
         margin: 70px 16px 30px;
-        padding: 24px;
+        padding: 28px 20px;
+    }
+
+    .profile-card h2 {
+        font-size: 24px;
     }
 
     .profile-header-bar {
         flex-direction: column;
         align-items: flex-start;
-        gap: 12px;
+        gap: 14px;
     }
 
     .btn-logout {
@@ -197,7 +252,11 @@
 
     .profile-field strong {
         display: block;
-        margin-bottom: 4px;
+        margin-bottom: 6px;
+    }
+
+    .profile-card form {
+        padding: 20px 16px;
     }
 
     .form-actions {
@@ -209,5 +268,6 @@
     .form-actions a {
         width: 100%;
         text-align: center;
+        justify-content: center;
     }
 }

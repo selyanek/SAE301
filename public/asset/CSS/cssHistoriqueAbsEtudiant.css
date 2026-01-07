@@ -1,0 +1,304 @@
+/* ========== HISTORIQUE DES ABSENCES ÉTUDIANT ========== */
+
+/* ========== HEADER ========== */
+.text {
+    text-align: center;
+    margin: 40px auto 30px;
+    max-width: 1200px;
+}
+
+.text h1 {
+    color: #29acc8;
+    font-size: 2.5em;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.text p {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 0;
+}
+
+/* ========== FORMULAIRE DE FILTRE ========== */
+.filtre-form {
+    margin: 30px auto;
+    padding: 25px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    border: 2px solid #dee2e6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    max-width: 1200px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+}
+
+.filtre-form label {
+    font-weight: 600;
+    color: #333;
+    font-size: 15px;
+    margin-right: 8px;
+}
+
+.filtre-form input[type="date"],
+.filtre-form select {
+    padding: 10px 14px;
+    border: 2px solid #ced4da;
+    border-radius: 8px;
+    font-size: 15px;
+    background: white;
+    transition: all 0.3s ease;
+    min-width: 180px;
+}
+
+.filtre-form input[type="date"]:focus,
+.filtre-form select:focus {
+    outline: none;
+    border-color: #29acc8;
+    box-shadow: 0 0 0 4px rgba(41, 172, 200, 0.15);
+}
+
+.filtre-form button {
+    background: linear-gradient(135deg, #29acc8 0%, #238da4 100%);
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 11px 28px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(41, 172, 200, 0.3);
+}
+
+.filtre-form button:hover {
+    background: linear-gradient(135deg, #238da4 0%, #1d7289 100%);
+    box-shadow: 0 6px 16px rgba(41, 172, 200, 0.4);
+    transform: translateY(-2px);
+}
+
+.filtre-form a button {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.filtre-form a button:hover {
+    background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+}
+
+/* ========== CONTENEUR DES ABSENCES ========== */
+.absences-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin: 30px auto 60px;
+    max-width: 1200px;
+    padding: 0 20px;
+}
+
+/* ========== CARTE D'ABSENCE ========== */
+.absence-card {
+    display: grid;
+    grid-template-columns: 240px 1fr 140px;
+    gap: 30px;
+    align-items: flex-start;
+    padding: 28px;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #e0e0e0;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.absence-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+}
+
+/* Bordure colorée selon le statut */
+.absence-card.statut-valide {
+    border-left-color: #4caf50;
+}
+
+.absence-card.statut-refuse {
+    border-left-color: #f44336;
+}
+
+.absence-card.statut-attente {
+    border-left-color: #ff9800;
+}
+
+.absence-card.statut-revision {
+    border-left-color: #ffc107;
+}
+
+/* ========== DATES ========== */
+.absence-card .card-dates {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-right: 20px;
+    border-right: 2px solid #f0f0f0;
+}
+
+.absence-card .card-dates div {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #555;
+}
+
+.absence-card .card-dates strong {
+    color: #29acc8;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ========== INFO ========== */
+.absence-card .card-info {
+    color: #333;
+}
+
+.absence-card .card-info .motif {
+    margin-bottom: 18px;
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+.absence-card .card-info strong {
+    color: #29acc8;
+    font-weight: 600;
+}
+
+.absence-card .card-info .justif {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.absence-card .card-info .justif a {
+    color: #1976d2;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    word-break: break-all;
+}
+
+.absence-card .card-info .justif a:hover {
+    color: #0d47a1;
+    text-decoration: underline;
+}
+
+/* ========== STATUT ========== */
+.absence-card .card-statut {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.absence-card .card-statut span {
+    display: inline-block;
+    padding: 12px 22px;
+    border-radius: 24px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #fff;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    min-width: 120px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Statut En attente */
+.statut-attente {
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%) !important;
+}
+
+/* Statut Validé */
+.statut-valide {
+    background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%) !important;
+}
+
+/* Statut Refusé */
+.statut-refuse {
+    background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%) !important;
+}
+
+/* Statut En révision */
+.statut-revision {
+    background: linear-gradient(135deg, #ffc107 0%, #ffa000 100%) !important;
+    color: #333 !important;
+}
+
+/* ========== MESSAGE AUCUN RÉSULTAT ========== */
+.no-results {
+    color: #666;
+    padding: 50px 30px;
+    background: #fff;
+    border-radius: 12px;
+    border: 2px dashed #ccc;
+    text-align: center;
+    font-size: 17px;
+    margin: 30px auto;
+    max-width: 600px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.no-results::before {
+    content: "📋";
+    display: block;
+    font-size: 56px;
+    margin-bottom: 20px;
+    opacity: 0.4;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 968px) {
+    .absence-card {
+        grid-template-columns: 200px 1fr 120px;
+        gap: 20px;
+        padding: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .absence-card {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 24px;
+        border-left-width: 4px;
+    }
+    
+    .absence-card .card-dates {
+        border-right: none;
+        border-bottom: 2px solid #f0f0f0;
+        padding-right: 0;
+        padding-bottom: 16px;
+    }
+    
+    .absence-card .card-statut {
+        justify-content: flex-start;
+    }
+    
+    .filtre-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filtre-form label {
+        margin-bottom: 5px;
+    }
+    
+    .filtre-form input,
+    .filtre-form select,
+    .filtre-form button {
+        width: 100%;
+    }
+}

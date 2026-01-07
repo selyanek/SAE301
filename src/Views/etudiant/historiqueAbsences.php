@@ -1,9 +1,9 @@
 <?php
 // Page d'historique des absences pour l'étudiant
 session_start();
-require '../../Controllers/session_timeout.php'; // Gestion du timeout de session
+require '../../Controllers/session_timeout.php';
 $pageTitle = 'Historique des absences';
-$additionalCSS = ['../../../public/asset/CSS/cssGererAbsEtu.css'];
+$additionalCSS = ['/public/asset/CSS/cssHistoriqueAbsEtudiant.css'];
 require '../layout/header.php';
 require '../layout/navigation.php';
 ?>
@@ -107,6 +107,7 @@ require '../layout/navigation.php';
 
         // Préparer les dates et justificatifs
         $dateSoumission = htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_debut'])));
+        $dateDebut = htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_debut'])));
         $dateFin = htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_fin'])));
         $motif = htmlspecialchars($absence['motif']);
 
@@ -117,27 +118,23 @@ require '../layout/navigation.php';
             if (is_array($fichiers) && count($fichiers) > 0) {
                 $links = [];
                 foreach ($fichiers as $fichier) {
-                    $fichierPath = "../../../uploads/" . htmlspecialchars($fichier);
+                    $fichierPath = "/uploads/" . htmlspecialchars($fichier);
                     $links[] = "<a href='" . $fichierPath . "' target='_blank'>" . htmlspecialchars($fichier) . "</a>";
                 }
                 $justificatifsHtml = implode('<br>', $links);
             }
         }
-
-        echo "<div class='absence-card {$statutClass}'>";
-        echo "  <div class='card-dates'>";
-        echo "    <div><strong>Soumission</strong><br>{$dateSoumission}</div>";
-        echo "    <div><strong>Début</strong><br>" . htmlspecialchars(date('d/m/Y à H:i', strtotime($absence['date_debut']))) . "</div>";
-        echo "    <div><strong>Fin</strong><br>{$dateFin}</div>";
-        echo "  </div>";
-        echo "  <div class='card-info'>";
-        echo "    <div class='motif'><strong>Motif :</strong> {$motif}</div>";
-        echo "    <div class='justif'><strong>Justificatif :</strong><br>{$justificatifsHtml}</div>";
-        echo "  </div>";
-        echo "  <div class='card-statut'>";
-        echo "    <span class='{$statutClass}'>{$statutLabel}</span>";
-        echo "  </div>";
+    }
+    
+    // Afficher un message si aucune absence trouvée
+    if ($count === 0) {
+        echo "<div class='no-results'>";
+        echo "Aucune absence trouvée pour ces critères.";
         echo "</div>";
     }
-    ?>
+?>
 </div>
+
+<?php
+require '../layout/footer.php';
+?>

@@ -1,0 +1,303 @@
+/* ========== PAGE AIDE ÉTUDIANT ========== */
+
+.aide-container {
+    max-width: 1000px;
+    margin: 80px auto 60px;
+    padding: 0 20px;
+}
+
+/* ========== HEADER ========== */
+.aide-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.aide-header h1 {
+    color: #29acc8;
+    font-size: 2.8em;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.aide-subtitle {
+    color: #666;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+/* ========== CONTENU ========== */
+.aide-content {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+/* ========== CARTES ========== */
+.aide-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 32px 36px;
+    box-shadow: 0 6px 20px rgba(41, 172, 200, 0.1);
+    border: 2px solid #e8f4f7;
+    transition: all 0.3s ease;
+}
+
+.aide-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(41, 172, 200, 0.15);
+    border-color: #29acc8;
+}
+
+.aide-card .card-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: inline-block;
+}
+
+.aide-card h2 {
+    color: #0d4f94;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.aide-card p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.7;
+    margin: 12px 0;
+}
+
+/* ========== CARTE INTRO ========== */
+.intro-card {
+    background: linear-gradient(135deg, #f0f9fb 0%, #e3f4f8 100%);
+    border-left: 6px solid #29acc8;
+}
+
+/* ========== CARTE ÉTAPES ========== */
+.steps-card {
+    background: linear-gradient(135deg, #fff9f0 0%, #fff4e6 100%);
+    border-left: 6px solid #ff9800;
+}
+
+.steps-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0 0;
+    counter-reset: step-counter;
+}
+
+.steps-list li {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.steps-list li:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateX(8px);
+}
+
+.step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 20px;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-content strong {
+    color: #0d4f94;
+    font-size: 18px;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.step-content p {
+    color: #666;
+    font-size: 15px;
+    margin: 0;
+}
+
+/* ========== CARTE INFO ========== */
+.info-card {
+    background: linear-gradient(135deg, #fff0f5 0%, #ffe6f0 100%);
+    border-left: 6px solid #e91e63;
+}
+
+.info-list {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 0 0;
+}
+
+.info-list li {
+    padding: 12px 16px 12px 40px;
+    margin-bottom: 12px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    position: relative;
+    color: #555;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.info-list li::before {
+    content: "•";
+    position: absolute;
+    left: 18px;
+    color: #e91e63;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.info-list li strong {
+    color: #0d4f94;
+    font-weight: 600;
+}
+
+/* ========== CARTE RÈGLEMENT ========== */
+.reglement-card {
+    background: linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%);
+    border-left: 6px solid #2196f3;
+}
+
+.btn-reglement {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 16px;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(33, 150, 243, 0.3);
+}
+
+.btn-reglement:hover {
+    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+}
+
+.btn-reglement .arrow {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+
+.btn-reglement:hover .arrow {
+    transform: translateX(4px);
+}
+
+/* ========== ACTIONS ========== */
+.aide-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 2px solid #e9f4f7;
+}
+
+.btn-retour {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 28px;
+    background: #f5f8fa;
+    color: #556677;
+    text-decoration: none;
+    border: 2px solid #e0e8ed;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.btn-retour:hover {
+    background: #e8f0f5;
+    border-color: #c9d6df;
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 28px;
+    background: linear-gradient(135deg, #29acc8 0%, #238da4 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(41, 172, 200, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #238da4 0%, #1d7289 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(41, 172, 200, 0.4);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .aide-container {
+        margin: 60px auto 40px;
+        padding: 0 16px;
+    }
+
+    .aide-header h1 {
+        font-size: 2em;
+    }
+
+    .aide-card {
+        padding: 24px 20px;
+    }
+
+    .steps-list li {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .step-number {
+        align-self: flex-start;
+    }
+
+    .aide-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-retour,
+    .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .btn-reglement {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
