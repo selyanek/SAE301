@@ -589,5 +589,193 @@ private function generateAbsenceAlertText($studentName, $dateStart, $dateEnd, $c
            "EduTrack - Gestion des Absences";
 }
 
+// Email quand on deverrouille une decision
+    public function sendDeverrouillageEmail($email, $nom, $dateDebut, $dateFin)
+    {
+        $dateDebutF = date('d/m/Y H:i', strtotime($dateDebut));
+        $dateFinF = date('d/m/Y H:i', strtotime($dateFin));
+        
+        $subject = "Absence deverrouillee - Vous pouvez resoumettre un justificatif";
+        
+        $html = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body>
+            <h2>Bonjour {$nom},</h2>
+            <p>La decision concernant votre absence du <strong>{$dateDebutF}</strong> au <strong>{$dateFinF}</strong> a ete deverrouillee.</p>
+            <p>Vous pouvez maintenant soumettre un nouveau justificatif si vous le souhaitez.</p>
+            <p>Cordialement,<br>L'equipe EduTrack</p>
+        </body></html>";
+        
+        $text = "Bonjour {$nom},\n\nLa decision concernant votre absence du {$dateDebutF} au {$dateFinF} a ete deverrouillee.\n\nVous pouvez soumettre un nouveau justificatif.\n\nCordialement,\nL'equipe EduTrack";
+        
+        return $this->envoyerEmail($email, $subject, $html, $nom, $text);
+    }
+
+    /**
+     * Envoie un email à l'étudiant pour notifier la révision d'une décision
+     * 
+     * @param string $email Email de l'étudiant
+     * @param string $nom Nom de l'étudiant
+     * @param string $dateDebut Date de début d'absence
+     * @param string $dateFin Date de fin d'absence
+     * @param string $ancienStatut Ancien statut (valide, refuse, en_attente)
+     * @param string $nouveauStatut Nouveau statut (valide, refuse, en_attente)
+     * @param string $justification Motif de la révision
+     * @return bool True si l'email a été envoyé avec succès
+     */
+    public function sendRevisionDecisionEmail($email, $nom, $dateDebut, $dateFin, $ancienStatut, $nouveauStatut, $justification)
+    {
+        try {
+            $this->mailer->clearAddresses();
+            $this->mailer->clearAttachments();
+            $this->mailer->addAddress($email, $nom);
+
+            $this->mailer->Subject = 'Décision révisée pour votre absence';
+
+            // Corps du message HTML
+            $htmlBody = $this->generateRevisionDecisionHTML($nom, $dateDebut, $dateFin, $ancienStatut, $nouveauStatut, $justification);
+            $this->mailer->isHTML(true);
+            $this->mailer->Body = $htmlBody;
+            
+            // Version texte
+            $this->mailer->AltBody = $this->generateRevisionDecisionText($nom, $dateDebut, $dateFin, $ancienStatut, $nouveauStatut, $justification);
+
+            $this->mailer->send();
+            return true;
+        } catch (Exception $e) {
+            error_log('Erreur lors de l\'envoi de l\'email de révision: ' . $this->mailer->ErrorInfo);
+            return false;
+        }
+    }
+
+    /**
+     * Génère le corps HTML de l'email de révision de décision
+     */
+    private function generateRevisionDecisionHTML($nom, $dateDebut, $dateFin, $ancienStatut, $nouveauStatut, $justification)
+    {
+        $dateDebutFormatted = date('d/m/Y à H:i', strtotime($dateDebut));
+        $dateFinFormatted = date('d/m/Y à H:i', strtotime($dateFin));
+        
+        // Conversion des statuts en labels
+        $ancienLabel = $this->getStatutLabel($ancienStatut);
+        $nouveauLabel = $this->getStatutLabel($nouveauStatut);
+        
+        // Couleur selon le nouveau statut
+        $statutColor = $this->getStatutColor($nouveauStatut);
+        $ancienColor = $this->getStatutColor($ancienStatut);
+        
+        return "
+        <!DOCTYPE html>
+        <html lang='fr'>
+        <head>
+            <meta charset='UTF-8'>
+            <style>
+                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                .header { background-color: #29acc8; color: white; padding: 20px; text-align: center; }
+                .content { background-color: #f9f9f9; padding: 20px; }
+                .info-box { background-color: white; padding: 15px; margin: 10px 0; border-left: 4px solid #29acc8; }
+                .statut-box { background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 15px 0; }
+                .statut-change { display: flex; align-items: center; justify-content: center; margin: 20px 0; }
+                .statut-old { background-color: {$ancienColor}; color: white; padding: 10px 15px; border-radius: 5px; font-weight: bold; }
+                .statut-new { background-color: {$statutColor}; color: white; padding: 10px 15px; border-radius: 5px; font-weight: bold; }
+                .arrow { margin: 0 15px; font-size: 1.5em; color: #666; }
+                .justification-box { background-color: #fff8e1; border-left: 4px solid #ffa726; padding: 15px; margin: 15px 0; }
+                .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+                h3 { margin-top: 0; color: #29acc8; }
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <div class='header'>
+                    <h2>Décision révisée</h2>
+                </div>
+                <div class='content'>
+                    <p>Bonjour <strong>" . htmlspecialchars($nom) . "</strong>,</p>
+                    <p>La décision concernant votre absence a été révisée par le responsable pédagogique.</p>
+                    
+                    <div class='info-box'>
+                        <h3>Détails de l'absence</h3>
+                        <p style='margin: 5px 0;'><strong>Date de début :</strong> {$dateDebutFormatted}</p>
+                        <p style='margin: 5px 0;'><strong>Date de fin :</strong> {$dateFinFormatted}</p>
+                    </div>
+                    
+                    <div class='statut-box'>
+                        <h3>Changement de statut</h3>
+                        <div class='statut-change'>
+                            <div class='statut-old'>{$ancienLabel}</div>
+                            <div class='arrow'>→</div>
+                            <div class='statut-new'>{$nouveauLabel}</div>
+                        </div>
+                    </div>
+                    
+                    <div class='justification-box'>
+                        <h3>Motif de la révision</h3>
+                        <p style='margin: 0;'>" . nl2br(htmlspecialchars($justification)) . "</p>
+                    </div>
+                    
+                    <p>Cette décision est définitive. Pour toute question, veuillez contacter votre responsable pédagogique.</p>
+                </div>
+                <div class='footer'>
+                    <p>Cet email a été envoyé automatiquement, merci de ne pas y répondre.</p>
+                    <p>EduTrack - Gestion des Absences</p>
+                </div>
+            </div>
+        </body>
+        </html>";
+    }
+
+    /**
+     * Génère le corps texte de l'email de révision de décision
+     */
+    private function generateRevisionDecisionText($nom, $dateDebut, $dateFin, $ancienStatut, $nouveauStatut, $justification)
+    {
+        $dateDebutFormatted = date('d/m/Y à H:i', strtotime($dateDebut));
+        $dateFinFormatted = date('d/m/Y à H:i', strtotime($dateFin));
+        
+        $ancienLabel = $this->getStatutLabel($ancienStatut);
+        $nouveauLabel = $this->getStatutLabel($nouveauStatut);
+        
+        return "Bonjour " . $nom . ",\n\n" .
+            "La décision concernant votre absence a été révisée par le responsable pédagogique.\n\n" .
+            "=== Détails de l'absence ===\n" .
+            "Date de début : {$dateDebutFormatted}\n" .
+            "Date de fin : {$dateFinFormatted}\n\n" .
+            "=== Changement de statut ===\n" .
+            "{$ancienLabel} → {$nouveauLabel}\n\n" .
+            "=== Motif de la révision ===\n" .
+            $justification . "\n\n" .
+            "Cette décision est définitive. Pour toute question, veuillez contacter votre responsable pédagogique.\n\n" .
+            "---\n" .
+            "Cet email a été envoyé automatiquement, merci de ne pas y répondre.\n" .
+            "EduTrack - Gestion des Absences";
+    }
+
+    /**
+     * Retourne le label français d'un statut
+     */
+    private function getStatutLabel($statut)
+    {
+        $labels = [
+            'valide' => 'Validée',
+            'refuse' => 'Refusée',
+            'en_attente' => 'En attente'
+        ];
+        
+        return $labels[$statut] ?? 'En attente';
+    }
+
+    /**
+     * Retourne la couleur hexadécimale associée à un statut
+     */
+    private function getStatutColor($statut)
+    {
+        $colors = [
+            'valide' => '#4caf50',    // Vert
+            'refuse' => '#f44336',    // Rouge
+            'en_attente' => '#ff9800' // Orange
+        ];
+        
+        return $colors[$statut] ?? '#ff9800';
+    }
+
 }
 
