@@ -16,6 +16,14 @@ class Statistiques
     }
 
     /**
+     * Setter pour injecter des données de test (utilisé par PHPUnit)
+     */
+    public function setAbsences(array $absences): void
+    {
+        $this->absences = $absences;
+    }
+
+    /**
      * Charge les absences depuis la base de données
      */
     public function chargerAbsences($filtres = [])
