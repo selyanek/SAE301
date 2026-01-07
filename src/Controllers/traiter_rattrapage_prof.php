@@ -35,7 +35,8 @@ try {
         throw new Exception("ID d'absence manquant");
     }
 
-    if (!$dateRattrapage) {
+    // La date est obligatoire sauf si le statut est "annulé"
+    if (!$dateRattrapage && $statut !== 'annule') {
         throw new Exception("La date du rattrapage est obligatoire");
     }
 
@@ -143,8 +144,8 @@ try {
         // Construire l'email de l'étudiant (identifiant@uphf.fr)
         $emailEtudiant = $info['etudiant_email'] . '@uphf.fr';
         
-        // Formater la date du rattrapage
-        $dateFormatee = date('d/m/Y à H:i', strtotime($dateRattrapage));
+        // Formater la date du rattrapage (seulement si elle existe)
+        $dateFormatee = $dateRattrapage ? date('d/m/Y à H:i', strtotime($dateRattrapage)) : 'Non définie';
         
         // Déterminer le sujet et le contenu en fonction du statut
         switch($statut) {
@@ -157,6 +158,11 @@ try {
                 $sujet = "Rattrapage effectué - " . $info['ressource_nom'];
                 $action = "marqué comme effectué";
                 $couleur = "#28a745";
+                break;
+            case 'annule':
+                $sujet = "Rattrapage annulé - " . $info['ressource_nom'];
+                $action = "annulé";
+                $couleur = "#dc3545";
                 break;
             default:
                 $sujet = "Rattrapage à planifier - " . $info['ressource_nom'];
@@ -196,13 +202,13 @@ try {
                         <p class='value'><span class='label'>Ressource :</span> {$info['ressource_nom']}</p>
                         <p class='value'><span class='label'>Type :</span> {$info['cours_type']}</p>
                         <p class='value'><span class='label'>Évaluation initiale :</span> " . date('d/m/Y', strtotime($info['cours_date'])) . "</p>
-                        <p class='value'><span class='label'>Date du rattrapage :</span> {$dateFormatee}</p>
+                        " . ($dateRattrapage ? "<p class='value'><span class='label'>Date du rattrapage :</span> {$dateFormatee}</p>" : "") . "
                         " . (!empty($salle) ? "<p class='value'><span class='label'>Salle :</span> {$salle}</p>" : "") . "
                         <p class='value'><span class='label'>Statut :</span> <span class='status'>" . strtoupper($statut) . "</span></p>
                         " . (!empty($remarque) ? "<p class='value'><span class='label'>Remarque :</span><br>{$remarque}</p>" : "") . "
                     </div>
                     
-                    <p style='margin-top: 20px;'><strong>Veuillez vous présenter à l'heure indiquée.</strong></p>
+                    " . ($statut !== 'annule' && $dateRattrapage ? "<p style='margin-top: 20px;'><strong>Veuillez vous présenter à l'heure indiquée.</strong></p>" : "") . "
                     
                     <div class='footer'>
                         <p>Ceci est un email automatique, merci de ne pas y répondre.</p>
