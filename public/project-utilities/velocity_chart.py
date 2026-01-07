@@ -9,7 +9,7 @@ if __name__ == "__main__":
     pred_x = [1, 2, 3, 4]
     pred_y = [112, 115, 155, 88]
     res_x = [2, 3, 4]
-    res_y = [14, 119, 1]
+    res_y = [14, 119, 88]
 
     fig, ax = plt.subplots(figsize=(10, 8))
 

@@ -7,7 +7,7 @@ import numpy as np
 if __name__ == '__main__':
 
     ideal = [89 * (7 - i) / 7 for i in range(0, 7)]
-    real = [88 for i in range(7)]
+    real = [88, 80, 62, 48, 40, 40, 0]
     heure = [0,4,8,12,16,20,24]
 
     plt.plot(heure, ideal, label='Avancement idéal', color='red', linestyle='--')
