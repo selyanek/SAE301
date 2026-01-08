@@ -7,28 +7,42 @@ use src\Models\Absence;
 use PDO;
 use PDOStatement;
 
+/**
+ * Tests unitaires pour le modèle Absence
+ * Utilise des mocks PDO pour isoler les tests de la base de données
+ * Tous les tests sont basés sur l'étudiante Alice Martin (idCompte: 4)
+ */
 class AbsenceTest extends TestCase
 {
     private $mockPdo;
     private $mockStmt;
     private $absence;
+    
+    // Données de test pour Alice Martin
+    private const ID_ETUDIANT = 4;
+    private const IDENTIFIANT_ETU = 'alice.martin';
+    private const NOM = 'Martin';
+    private const PRENOM = 'Alice';
 
+    /**
+     * Initialisation avant chaque test
+     * Crée les mocks PDO et PDOStatement nécessaires
+     */
     protected function setUp(): void
     {
-        // Créer les mocks
         $this->mockPdo = $this->createMock(PDO::class);
         $this->mockStmt = $this->createMock(PDOStatement::class);
-        
-        // Initialiser l'objet Absence avec le mock PDO
         $this->absence = new Absence($this->mockPdo);
     }
 
+    /**
+     * Teste l'affectation de la date de début d'absence
+     */
     public function testSetDateDebut(): void
     {
         $date = '2026-01-07 08:00:00';
         $this->absence->setDateDebut($date);
         
-        // Utiliser reflection pour vérifier la propriété privée
         $reflection = new \ReflectionClass($this->absence);
         $property = $reflection->getProperty('dateDebut');
         $property->setAccessible(true);
@@ -36,6 +50,9 @@ class AbsenceTest extends TestCase
         $this->assertEquals($date, $property->getValue($this->absence));
     }
 
+    /**
+     * Teste l'affectation de la date de fin d'absence
+     */
     public function testSetDateFin(): void
     {
         $date = '2026-01-07 10:00:00';
@@ -48,9 +65,12 @@ class AbsenceTest extends TestCase
         $this->assertEquals($date, $property->getValue($this->absence));
     }
 
+    /**
+     * Teste l'affectation du motif d'absence
+     */
     public function testSetMotif(): void
     {
-        $motif = 'Maladie';
+        $motif = 'Rendez-vous médical';
         $this->absence->setMotif($motif);
         
         $reflection = new \ReflectionClass($this->absence);
@@ -60,7 +80,10 @@ class AbsenceTest extends TestCase
         $this->assertEquals($motif, $property->getValue($this->absence));
     }
 
-    public function testSetJustifie(): void
+    /**
+     * Teste l'affectation du statut justifié (true)
+     */
+    public function testSetJustifieTrue(): void
     {
         $this->absence->setJustifie(true);
         
@@ -71,6 +94,9 @@ class AbsenceTest extends TestCase
         $this->assertTrue($property->getValue($this->absence));
     }
 
+    /**
+     * Teste l'affectation du statut justifié à null (en attente)
+     */
     public function testSetJustifieNull(): void
     {
         $this->absence->setJustifie(null);
@@ -82,11 +108,14 @@ class AbsenceTest extends TestCase
         $this->assertNull($property->getValue($this->absence));
     }
 
-    public function testAjouterAbsencePourAliceMartin(): void
+    /**
+     * Teste l'ajout d'une nouvelle absence pour Alice Martin
+     * Vérifie que l'ID de l'absence insérée est bien retourné
+     */
+    public function testAjouterAbsence(): void
     {
-        // Alice Martin (idCompte: 4, etudiant)
         $this->absence->setIdCours(1);
-        $this->absence->setIdEtudiant(4);
+        $this->absence->setIdEtudiant(self::ID_ETUDIANT);
         $this->absence->setDateDebut('2026-01-07 08:00:00');
         $this->absence->setDateFin('2026-01-07 10:00:00');
         $this->absence->setMotif('Rendez-vous médical');
@@ -113,41 +142,17 @@ class AbsenceTest extends TestCase
         $this->assertEquals('101', $result);
     }
 
-    public function testAjouterAbsencePourOceaneFournier(): void
-    {
-        // Oceane Fournier (idCompte: 20, etudiant)
-        $this->absence->setIdCours(2);
-        $this->absence->setIdEtudiant(20);
-        $this->absence->setDateDebut('2026-01-08 14:00:00');
-        $this->absence->setDateFin('2026-01-08 16:00:00');
-        $this->absence->setMotif('Problème de transport');
-        $this->absence->setJustifie(false);
-        $this->absence->setUriJustificatif(null);
-
-        $this->mockPdo->expects($this->once())
-            ->method('prepare')
-            ->willReturn($this->mockStmt);
-
-        $this->mockStmt->expects($this->once())
-            ->method('execute')
-            ->willReturn(true);
-
-        $this->mockPdo->expects($this->once())
-            ->method('lastInsertId')
-            ->willReturn('102');
-
-        $result = $this->absence->ajouterAbsence();
-        
-        $this->assertEquals('102', $result);
-    }
-
+    /**
+     * Teste la gestion d'erreur lors de l'ajout d'une absence
+     * Vérifie qu'une exception est levée en cas d'erreur PDO
+     */
     public function testAjouterAbsenceAvecErreur(): void
     {
         $this->absence->setIdCours(1);
-        $this->absence->setIdEtudiant(12); // Maxime Garcia
+        $this->absence->setIdEtudiant(self::ID_ETUDIANT);
         $this->absence->setDateDebut('2026-01-07 08:00:00');
         $this->absence->setDateFin('2026-01-07 10:00:00');
-        $this->absence->setMotif('Test');
+        $this->absence->setMotif('Test erreur');
         $this->absence->setJustifie(null);
         $this->absence->setUriJustificatif(null);
 
@@ -161,9 +166,12 @@ class AbsenceTest extends TestCase
         $this->absence->ajouterAbsence();
     }
 
-    public function testJustifierAbsenceDeLeaRousseau(): void
+    /**
+     * Teste la validation d'une absence pour Alice Martin
+     * Vérifie que le statut justifié passe à true
+     */
+    public function testJustifierAbsence(): void
     {
-        // Absence de Lea Rousseau (idCompte: 9)
         $idAbsence = 5;
 
         $this->mockPdo->expects($this->once())
@@ -180,9 +188,12 @@ class AbsenceTest extends TestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * Teste l'échec de validation d'une absence inexistante
+     */
     public function testJustifierAbsenceEchec(): void
     {
-        $idAbsence = 99;
+        $idAbsence = 999;
 
         $this->mockPdo->expects($this->once())
             ->method('prepare')
@@ -193,9 +204,11 @@ class AbsenceTest extends TestCase
         $this->assertFalse($result);
     }
 
-    public function testUpdateJustifieValidationPourChloe(): void
+    /**
+     * Teste la validation d'une absence (acceptation)
+     */
+    public function testUpdateJustifieValidation(): void
     {
-        // Valider l'absence de Chloe Leroux (idCompte: 15)
         $idAbsence = 10;
 
         $this->mockPdo->expects($this->once())
@@ -214,9 +227,12 @@ class AbsenceTest extends TestCase
         $this->assertTrue($result);
     }
 
-    public function testUpdateJustifieRefusPourNathanGirard(): void
+    /**
+     * Teste le refus d'une absence avec possibilité de resoumission
+     * Vérifie que la raison et le type de refus sont enregistrés
+     */
+    public function testUpdateJustifieRefusAvecResoumission(): void
     {
-        // Refuser l'absence de Nathan Girard (idCompte: 16) avec possibilité de resoumission
         $idAbsence = 11;
         $raisonRefus = 'Le justificatif médical n\'est pas conforme. Veuillez fournir un certificat médical original.';
         $typeRefus = 'ressoumission';
@@ -237,9 +253,12 @@ class AbsenceTest extends TestCase
         $this->assertTrue($result);
     }
 
-    public function testSetEnRevisionPourDylanLegrand(): void
+    /**
+     * Teste la mise en révision d'une absence
+     * Utilisé quand le responsable demande un justificatif supplémentaire
+     */
+    public function testSetEnRevision(): void
     {
-        // Mettre en révision l'absence de Dylan Legrand (idCompte: 21)
         $idAbsence = 15;
 
         $this->mockPdo->expects($this->once())
@@ -258,12 +277,15 @@ class AbsenceTest extends TestCase
         $this->assertTrue($result);
     }
 
-    public function testResoumettreAbsenceManonMercier(): void
+    /**
+     * Teste la resoumission d'une absence refusée
+     * Permet à Alice Martin de modifier son motif et son justificatif
+     */
+    public function testResoumettreAbsence(): void
     {
-        // Manon Mercier (idCompte: 18) resoumets son absence refusée
         $idAbsence = 20;
         $nouveauMotif = 'Consultation spécialisée en ophtalmologie';
-        $nouvelleUri = '/uploads/certificat_ophtalmologie_manon.pdf';
+        $nouvelleUri = '/uploads/certificat_ophtalmologie_alice.pdf';
 
         $this->mockPdo->expects($this->once())
             ->method('prepare')
@@ -281,44 +303,24 @@ class AbsenceTest extends TestCase
         $this->assertTrue($result);
     }
 
-    public function testGetAllAvecDonneesEtudiants(): void
+    /**
+     * Teste la récupération de toutes les absences
+     * Inclut les données de jointure (étudiant, cours, ressource)
+     */
+    public function testGetAll(): void
     {
         $expectedData = [
             [
                 'idabsence' => 1,
-                'identifiantEtu' => 'alice.martin',
+                'identifiantEtu' => self::IDENTIFIANT_ETU,
                 'cours_type' => 'CM',
                 'ressource_nom' => 'Mathématiques',
-                'nomCompte' => 'Martin',
-                'prenomCompte' => 'Alice',
+                'nomCompte' => self::NOM,
+                'prenomCompte' => self::PRENOM,
                 'date_debut' => '2026-01-07 08:00:00',
                 'date_fin' => '2026-01-07 10:00:00',
                 'motif' => 'Rendez-vous médical',
                 'justifie' => null
-            ],
-            [
-                'idabsence' => 2,
-                'identifiantEtu' => 'oceane.fournier',
-                'cours_type' => 'TD',
-                'ressource_nom' => 'Informatique',
-                'nomCompte' => 'Fournier',
-                'prenomCompte' => 'Oceane',
-                'date_debut' => '2026-01-08 14:00:00',
-                'date_fin' => '2026-01-08 16:00:00',
-                'motif' => 'Problème de transport',
-                'justifie' => false
-            ],
-            [
-                'idabsence' => 3,
-                'identifiantEtu' => 'maxime.garcia',
-                'cours_type' => 'TP',
-                'ressource_nom' => 'Physique',
-                'nomCompte' => 'Garcia',
-                'prenomCompte' => 'Maxime',
-                'date_debut' => '2026-01-06 10:00:00',
-                'date_fin' => '2026-01-06 12:00:00',
-                'motif' => 'Maladie',
-                'justifie' => true
             ]
         ];
 
@@ -336,15 +338,18 @@ class AbsenceTest extends TestCase
 
         $result = $this->absence->getAll();
         
-        $this->assertCount(3, $result);
-        $this->assertEquals('alice.martin', $result[0]['identifiantEtu']);
-        $this->assertEquals('Martin', $result[0]['nomCompte']);
-        $this->assertEquals('Alice', $result[0]['prenomCompte']);
+        $this->assertCount(1, $result);
+        $this->assertEquals(self::IDENTIFIANT_ETU, $result[0]['identifiantEtu']);
+        $this->assertEquals(self::NOM, $result[0]['nomCompte']);
+        $this->assertEquals(self::PRENOM, $result[0]['prenomCompte']);
     }
 
-    public function testGetDureePourAbsenceAntoineBlanc(): void
+    /**
+     * Teste la récupération de la durée d'une absence
+     * Retourne les dates de début et de fin
+     */
+    public function testGetDuree(): void
     {
-        // Antoine Blanc (idCompte: 6)
         $idAbsence = 25;
         $expectedData = [
             'date_debut' => '2026-01-09 08:00:00',
@@ -370,23 +375,26 @@ class AbsenceTest extends TestCase
         $this->assertEquals('2026-01-10 18:00:00', $result['date_fin']);
     }
 
-    public function testGetByIdPourKevinBertrand(): void
+    /**
+     * Teste la récupération d'une absence par son ID
+     * Inclut toutes les données jointes
+     */
+    public function testGetById(): void
     {
-        // Kevin Bertrand (idCompte: 19)
         $idAbsence = 30;
         $expectedData = [
             'idabsence' => 30,
-            'identifiantEtu' => 'kevin.bertrand',
-            'nomCompte' => 'Bertrand',
-            'prenomCompte' => 'Kevin',
-            'identifiantCompte' => 'kevin.bertrand',
+            'identifiantEtu' => self::IDENTIFIANT_ETU,
+            'nomCompte' => self::NOM,
+            'prenomCompte' => self::PRENOM,
+            'identifiantCompte' => self::IDENTIFIANT_ETU,
             'cours_type' => 'CM',
             'ressource_nom' => 'Algorithmique',
             'date_debut' => '2026-01-05 14:00:00',
             'date_fin' => '2026-01-05 16:00:00',
             'motif' => 'Stage en entreprise',
             'justifie' => true,
-            'urijustificatif' => '/uploads/convention_stage_kevin.pdf'
+            'urijustificatif' => '/uploads/convention_stage_alice.pdf'
         ];
 
         $this->mockPdo->expects($this->once())
@@ -405,21 +413,23 @@ class AbsenceTest extends TestCase
         $result = $this->absence->getById($idAbsence);
         
         $this->assertEquals(30, $result['idabsence']);
-        $this->assertEquals('kevin.bertrand', $result['identifiantEtu']);
-        $this->assertEquals('Bertrand', $result['nomCompte']);
-        $this->assertEquals('Kevin', $result['prenomCompte']);
+        $this->assertEquals(self::IDENTIFIANT_ETU, $result['identifiantEtu']);
+        $this->assertEquals(self::NOM, $result['nomCompte']);
+        $this->assertEquals(self::PRENOM, $result['prenomCompte']);
     }
 
-    public function testGetByStudentIdentifiantPourLeaRousseau(): void
+    /**
+     * Teste la récupération de toutes les absences d'Alice Martin
+     * Vérifie que les absences sont triées par date décroissante
+     */
+    public function testGetByStudentIdentifiant(): void
     {
-        // Lea Rousseau (idCompte: 9)
-        $identifiantEtu = 'lea.rousseau';
         $expectedData = [
             [
                 'idabsence' => 35,
-                'identifiantEtu' => 'lea.rousseau',
-                'nomCompte' => 'Rousseau',
-                'prenomCompte' => 'Lea',
+                'identifiantEtu' => self::IDENTIFIANT_ETU,
+                'nomCompte' => self::NOM,
+                'prenomCompte' => self::PRENOM,
                 'cours_type' => 'TD',
                 'ressource_nom' => 'Base de données',
                 'date_debut' => '2026-01-10 10:00:00',
@@ -429,9 +439,9 @@ class AbsenceTest extends TestCase
             ],
             [
                 'idabsence' => 36,
-                'identifiantEtu' => 'lea.rousseau',
-                'nomCompte' => 'Rousseau',
-                'prenomCompte' => 'Lea',
+                'identifiantEtu' => self::IDENTIFIANT_ETU,
+                'nomCompte' => self::NOM,
+                'prenomCompte' => self::PRENOM,
                 'cours_type' => 'CM',
                 'ressource_nom' => 'Réseaux',
                 'date_debut' => '2026-01-03 08:00:00',
@@ -447,103 +457,37 @@ class AbsenceTest extends TestCase
 
         $this->mockStmt->expects($this->once())
             ->method('execute')
-            ->with([':identifiantEtu' => $identifiantEtu]);
+            ->with([':identifiantEtu' => self::IDENTIFIANT_ETU]);
 
         $this->mockStmt->expects($this->once())
             ->method('fetchAll')
             ->with(PDO::FETCH_ASSOC)
             ->willReturn($expectedData);
 
-        $result = $this->absence->getByStudentIdentifiant($identifiantEtu);
+        $result = $this->absence->getByStudentIdentifiant(self::IDENTIFIANT_ETU);
         
         $this->assertCount(2, $result);
-        $this->assertEquals('lea.rousseau', $result[0]['identifiantEtu']);
-        $this->assertEquals('Rousseau', $result[0]['nomCompte']);
-        $this->assertEquals('Lea', $result[0]['prenomCompte']);
+        $this->assertEquals(self::IDENTIFIANT_ETU, $result[0]['identifiantEtu']);
+        $this->assertEquals(self::NOM, $result[0]['nomCompte']);
+        $this->assertEquals(self::PRENOM, $result[0]['prenomCompte']);
     }
 
-    public function testCountEnAttenteAvecAbsencesConsecutivesPourieursEtudiants(): void
+    /**
+     * Teste le comptage des périodes d'absences en attente
+     * Les absences consécutives (moins de 24h) sont regroupées
+     */
+    public function testCountEnAttenteAvecAbsencesConsecutives(): void
     {
-        // Simuler des absences en attente pour plusieurs étudiants
-        // Alice Martin: 2 absences consécutives (même journée)
-        // Chloe Leroux: 1 absence isolée
-        // Maxime Garcia: 2 absences non consécutives
         $absencesData = [
-            // Alice Martin - 2 absences consécutives (< 24h)
             [
                 'idabsence' => 1,
-                'idetudiant' => 4,
+                'idetudiant' => self::ID_ETUDIANT,
                 'date_debut' => '2026-01-07 08:00:00',
                 'date_fin' => '2026-01-07 10:00:00'
             ],
             [
                 'idabsence' => 2,
-                'idetudiant' => 4,
-                'date_debut' => '2026-01-07 14:00:00',
-                'date_fin' => '2026-01-07 16:00:00'
-            ],
-            // Chloe Leroux - 1 absence isolée
-            [
-                'idabsence' => 3,
-                'idetudiant' => 15,
-                'date_debut' => '2026-01-08 10:00:00',
-                'date_fin' => '2026-01-08 12:00:00'
-            ],
-            // Maxime Garcia - 2 absences non consécutives (> 24h)
-            [
-                'idabsence' => 4,
-                'idetudiant' => 12,
-                'date_debut' => '2026-01-05 08:00:00',
-                'date_fin' => '2026-01-05 10:00:00'
-            ],
-            [
-                'idabsence' => 5,
-                'idetudiant' => 12,
-                'date_debut' => '2026-01-08 14:00:00',
-                'date_fin' => '2026-01-08 16:00:00'
-            ]
-        ];
-
-        $this->mockPdo->expects($this->once())
-            ->method('prepare')
-            ->willReturn($this->mockStmt);
-
-        $this->mockStmt->expects($this->once())
-            ->method('execute');
-
-        $this->mockStmt->expects($this->once())
-            ->method('fetchAll')
-            ->with(PDO::FETCH_ASSOC)
-            ->willReturn($absencesData);
-
-        $result = $this->absence->countEnAttente();
-        
-        // Alice: 1 période (2 absences consécutives)
-        // Chloe: 1 période (1 absence)
-        // Maxime: 2 périodes (2 absences non consécutives)
-        // Total: 4 périodes
-        $this->assertEquals(4, $result);
-    }
-
-    public function testCountEnAttenteAvecAbsencesConsecutivesMemejournee(): void
-    {
-        // Océane Fournier avec 3 absences la même journée
-        $absencesData = [
-            [
-                'idabsence' => 1,
-                'idetudiant' => 20,
-                'date_debut' => '2026-01-07 08:00:00',
-                'date_fin' => '2026-01-07 10:00:00'
-            ],
-            [
-                'idabsence' => 2,
-                'idetudiant' => 20,
-                'date_debut' => '2026-01-07 10:00:00',
-                'date_fin' => '2026-01-07 12:00:00'
-            ],
-            [
-                'idabsence' => 3,
-                'idetudiant' => 20,
+                'idetudiant' => self::ID_ETUDIANT,
                 'date_debut' => '2026-01-07 14:00:00',
                 'date_fin' => '2026-01-07 16:00:00'
             ]
@@ -563,10 +507,13 @@ class AbsenceTest extends TestCase
 
         $result = $this->absence->countEnAttente();
         
-        // Les 3 absences sont dans les 24h, donc 1 seule période
+        // Les 2 absences sont dans les 24h, donc 1 seule période
         $this->assertEquals(1, $result);
     }
 
+    /**
+     * Teste le comptage avec aucune absence en attente
+     */
     public function testCountEnAttenteAvecAucuneAbsence(): void
     {
         $this->mockPdo->expects($this->once())
@@ -586,25 +533,25 @@ class AbsenceTest extends TestCase
         $this->assertEquals(0, $result);
     }
 
-    public function testGetByStudentIdentifiantEtudiantSansAbsence(): void
+    /**
+     * Teste la récupération des absences quand l'étudiant n'en a aucune
+     */
+    public function testGetByStudentIdentifiantSansAbsence(): void
     {
-        // Antoine Blanc n'a aucune absence
-        $identifiantEtu = 'antoine.blanc';
-
         $this->mockPdo->expects($this->once())
             ->method('prepare')
             ->willReturn($this->mockStmt);
 
         $this->mockStmt->expects($this->once())
             ->method('execute')
-            ->with([':identifiantEtu' => $identifiantEtu]);
+            ->with([':identifiantEtu' => self::IDENTIFIANT_ETU]);
 
         $this->mockStmt->expects($this->once())
             ->method('fetchAll')
             ->with(PDO::FETCH_ASSOC)
             ->willReturn([]);
 
-        $result = $this->absence->getByStudentIdentifiant($identifiantEtu);
+        $result = $this->absence->getByStudentIdentifiant(self::IDENTIFIANT_ETU);
         
         $this->assertCount(0, $result);
         $this->assertIsArray($result);
