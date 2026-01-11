@@ -1,281 +1,326 @@
-.pipicaca {
-  display: flex;
-  margin-right: 5%;
-  justify-content: flex-end;
+/* ========== HEADER SPÉCIFIQUE PAGE ========== */
+.text h1 {
+  color: #29acc8;
+  font-size: 2.3em;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
-.calendar {
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 280px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th {
-  background-color: #f0f0f0;
-  padding: 6px;
-}
-
-td {
-  padding: 8px;
-  text-align: center;
-  border-radius: 4px;
-}
-
-td.today {
-  background-color: #007BFF;
-  color: white;
-  font-weight: bold;
-}
-
-.ddd {
-  background-color: #ffffff;
-  color: #333;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-left: 10px;
+/* ========== FORMULAIRE DE FILTRE ========== */
+.filter-form {
+  margin: 30px auto;
+  padding: 20px 24px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid #dee2e6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  max-width: 1200px;
   display: flex;
   flex-wrap: wrap;
+  gap: 15px;
   align-items: center;
-  gap: 10px;
-  max-width: 100%;
-  box-sizing: border-box;
 }
 
-.ddd:hover {
-  background-color: #f0f0f0;
+.filter-form label {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+  margin-right: 8px;
+  white-space: nowrap;
 }
 
-.ddd label,
-.ddd input {
-  margin-right: 10px;
-  font-size: 16px;
+.filter-form input[type="text"],
+.filter-form input[type="date"],
+.filter-form select {
+  padding: 10px 14px;
+  border: 2px solid #ced4da;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+  transition: all 0.3s ease;
+  min-width: 180px;
 }
 
-.ddd input {
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 200px;
-  max-width: 100%;
-  box-sizing: border-box;
+.filter-form input[type="text"]:focus,
+.filter-form input[type="date"]:focus,
+.filter-form select:focus {
+  outline: none;
+  border-color: #29acc8;
+  box-shadow: 0 0 0 3px rgba(41, 172, 200, 0.18);
 }
 
-.ddd button {
-  background-color: #29acc8;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  border-radius: 5px;
-  flex-shrink: 0;
+/* Les boutons dans le formulaire utilisent .btn de cssDeBase.css */
+/* On s'assure juste qu'ils s'affichent correctement */
+.filter-form .btn {
+  margin: 0;
 }
 
-.ddd button:hover {
-  background-color: #0d4f94;
-}
-
-@media (max-width: 600px) {
-  .ddd {
-    flex-direction: column;
-    align-items: stretch;
-    margin-left: 0;
-    padding: 8px;
-    gap: 8px;
-  }
-
-  .ddd label,
-  .ddd input {
-    margin-right: 0;
-    font-size: 15px;
-  }
-
-  .ddd input {
-    width: 100%;
-  }
-
-  .ddd button {
-    width: 100%;
-    padding: 10px 0;
-  }
-}
-
-/* Styles pour le tableau des absences */
-table {
-
+/* ========== TABLEAU DES ABSENCES ========== */
+.table-wrapper {
   width: 100%;
+  overflow-x: auto;
+  margin: 30px auto;
+  max-width: 1400px;
+}
+
+#tableAbsences {
+  width: 100%;
+  min-width: 1000px;
   border-collapse: collapse;
-  margin-top: 20px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  font-size: 13px;
 }
 
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 8px;
+#tableAbsences thead {
+  background: linear-gradient(135deg, #29acc8 0%, #238da4 100%);
+  color: #fff;
+}
+
+#tableAbsences th {
+  padding: 12px 10px;
   text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
-th {
-  background-color: #f2f2f2;
+#tableAbsences td {
+  padding: 10px 8px;
+  text-align: left;
+  border-bottom: 1px solid #e9ecef;
+  vertical-align: middle;
+  font-size: 12px;
 }
 
-tr:nth-child(even) {
-  background-color: #f9f9f9;
+#tableAbsences tbody tr:nth-child(even) {
+  background-color: #f9fbfc;
 }
 
-tr:hover {
-
-
-  background-color: #e8f4f5;
+#tableAbsences tbody tr:hover {
+  background-color: #e8f4f8;
+  transition: background-color 0.2s ease;
 }
 
-.btn_justif {
-  background: #29acc8;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: 3px;
+/* Texte gris pour les cours */
+.small-gray {
+  color: #6c757d;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 5px;
+  display: block;
+}
+
+/* Lien document */
+#tableAbsences td a[target="_blank"] {
+  color: #1976d2;
   text-decoration: none;
-  display: inline-block;
+  font-weight: 600;
+  transition: color 0.2s ease;
+  word-break: break-word;
+  display: block;
+  margin-bottom: 4px;
 }
 
-.btn_justif:hover {
-  background: #29acc8;
-}
-
-/* Styles pour l'affichage des documents */
-td a[target="_blank"] {
-  color: #0066cc;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-td a[target="_blank"]:hover {
-  color: #004499;
+#tableAbsences td a[target="_blank"]:hover {
+  color: #0d47a1;
   text-decoration: underline;
 }
 
-/* Alertes - Messages de succès/erreur/info */
-.alert-success {
-  background: #d4edda;
-  color: #155724;
-  padding: 15px;
-  margin: 20px 30px;
-  border: 1px solid #c3e6cb;
-  border-radius: 5px;
-  text-align: center;
-  font-weight: bold;
+/* ========== STATUTS (BADGES) ========== */
+td.statut-attente,
+td.statut-revision,
+td.statut-valide,
+td.statut-refuse {
+  vertical-align: middle;
 }
 
-.alert-error {
-  background: #f8d7da;
-  color: #721c24;
-  padding: 15px;
-  margin: 20px 30px;
-  border: 1px solid #f5c6cb;
-  border-radius: 5px;
-  text-align: center;
-  font-weight: bold;
-}
-
-.alert-info {
-  background: #d1ecf1;
-  color: #0c5460;
-  padding: 15px;
-  margin: 20px 30px;
-  border: 1px solid #bee5eb;
-  border-radius: 5px;
-  text-align: center;
-  font-weight: bold;
-}
-
-/* Messages vides */
-.empty-message {
-  text-align: center;
-  padding: 20px;
-}
-
-/* Small text pour les cours */
-.small-gray {
-  color: #666;
-  display: block;
-  margin-top: 5px;
-}
-
-/* Spacer */
-.spacer-150 {
-  height: 150px;
-}
-
-/* Styles des statuts */
-.statut-attente {
-  color: orange;
-  font-weight: bold;
-}
-
-.statut-revision {
-  background-color: #fff3cd;
-  color: #856404;
-  font-weight: bold;
-  padding: 5px 10px;
-  border-radius: 4px;
-  border: 1px solid #ffc107;
-}
-
-.statut-valide {
-  color: green;
-  font-weight: bold;
-}
-
+.statut-attente,
+.statut-revision,
+.statut-valide,
 .statut-refuse {
-  color: red;
-  font-weight: bold;
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* Actions */
+/* En attente */
+.statut-attente {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+}
+
+/* En révision */
+.statut-revision {
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+}
+
+/* Validé */
+.statut-valide {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+}
+
+/* Refusé */
+.statut-refuse {
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+}
+
+/* ========== ACTIONS ========== */
+td.actions {
+  vertical-align: middle;
+}
+
 .actions {
   display: flex;
-  gap: 5px;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
 }
 
-.btn-valider {
-  background: #4CAF50;
-  color: white;
-  border: none;
-  padding: 5px 10px;
+/* Bouton Détails - style similaire à .btn mais adapté */
+.btn_justif {
   cursor: pointer;
-  border-radius: 3px;
-}
-
-.btn-refuser {
-  background: #f44336;
-  color: white;
+  background: linear-gradient(135deg, #29acc8 0%, #238da4 100%);
   border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: 3px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(41, 172, 200, 0.2);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
 }
 
-.btn-valider:hover {
-  background: #45a049;
-}
-
-.btn-refuser:hover {
-  background: #da190b;
+.btn_justif:hover {
+  background: linear-gradient(135deg, #238da4 0%, #1d7289 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(41, 172, 200, 0.3);
 }
 
 .traite {
   color: #888;
   font-style: italic;
+  font-size: 13px;
+}
+
+/* ========== ALERTES ========== */
+.alert-success,
+.alert-error,
+.alert-info {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+  border-width: 2px;
+  border-style: solid;
+}
+
+.alert-success {
+  background: #d4edda;
+  color: #155724;
+  border-color: #c3e6cb;
+}
+
+.alert-error {
+  background: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
+}
+
+.alert-info {
+  background: #d1ecf1;
+  color: #0c5460;
+  border-color: #bee5eb;
+}
+
+/* Message vide */
+.empty-message {
+  text-align: center;
+  padding: 30px 20px;
+  color: #666;
+  font-style: italic;
+}
+
+/* ========== ESPACEUR ========== */
+.spacer-150 {
+  height: 150px;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 992px) {
+  .filter-form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .filter-form label {
+    margin-bottom: 4px;
+    margin-right: 0;
+  }
+
+  .filter-form input,
+  .filter-form select,
+  .filter-form .btn,
+  .filter-form a {
+    width: 100%;
+    min-width: unset;
+  }
+  
+  .filter-form a .btn {
+    width: 100%;
+  }
+
+  #tableAbsences {
+    font-size: 12px;
+  }
+
+  #tableAbsences th,
+  #tableAbsences td {
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .text h1 {
+    font-size: 1.8em;
+  }
+
+  #tableAbsences {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  #tableAbsences th,
+  #tableAbsences td {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .btn_justif {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .actions {
+    justify-content: center;
+  }
 }

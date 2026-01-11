@@ -128,13 +128,11 @@ class Login
                 e.identifiantEtu
             FROM Compte c
             LEFT JOIN Etudiant e ON c.idCompte = e.idEtudiant
-            WHERE c.identifiantCompte = :identifiant 
-            AND c.mot_de_passe = :mdp
+            WHERE c.identifiantCompte = :identifiant
         ");
         
         $stmt->execute([
-            ':identifiant' => $this->identifiant,
-            ':mdp' => $this->mot_de_passe
+            ':identifiant' => $this->identifiant
         ]);
         
         return $stmt->fetch(PDO::FETCH_ASSOC);
