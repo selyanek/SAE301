@@ -207,9 +207,31 @@ try {
     $idAbsence = $absence->ajouterAbsence();
 
     if ($idAbsence) {
+        // Tentative d'envoi d'email de confirmation (non bloquant)
+        $studentEmail = null;
+        $studentName = null;
+        if (!empty($_SESSION['email'])) {
+            $studentEmail = $_SESSION['email'];
+        } elseif (!empty($_SESSION['login'])) {
+            $studentEmail = (strpos($_SESSION['login'], '@') !== false) ? $_SESSION['login'] : $_SESSION['login'] . '@uphf.fr';
+        }
+        if (!empty($_SESSION['nom']) || !empty($_SESSION['prenom'])) {
+            $studentName = trim(($_SESSION['prenom'] ?? '') . ' ' . ($_SESSION['nom'] ?? ''));
+        }
+
+        try {
+            if ($studentEmail && filter_var($studentEmail, FILTER_VALIDATE_EMAIL)) {
+                $emailService = new \src\Models\EmailService();
+                $sent = $emailService->sendAbsenceConfirmationEmail($studentEmail, $studentName ?: '', $dateStart, $dateEnd, $motif);
+            }
+        } catch (Exception $e) {
+            error_log('Erreur email confirmation upload: ' . $e->getMessage());
+        }
+
         echo json_encode([
             "success" => true,
-            "message" => "Justificatif envoyé avec succès !"
+            "message" => "Justificatif envoyé avec succès !",
+            "email_sent" => isset($sent) ? (bool)$sent : false
         ]);
     } else {
         echo json_encode([

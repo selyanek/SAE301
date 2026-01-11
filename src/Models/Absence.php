@@ -319,6 +319,26 @@ class Absence
     }
 
     /**
+     * Mettre une absence en révision ou retirer la révision
+     * @param int $idAbsence
+     * @param bool $value
+     * @return bool
+     */
+    public function setEnRevision($idAbsence, bool $value)
+    {
+        try {
+            $sql = "UPDATE {$this->table} SET revision = :rev WHERE idAbsence = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindValue(':rev', $value, PDO::PARAM_BOOL);
+            $stmt->bindValue(':id', $idAbsence, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Erreur setEnRevision : " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Revise une decision (change le statut justifie et la raison)
      */
     public function reviserDecision($idAbsence, $nouveauStatut, $nouvelleRaison, $idResponsable)

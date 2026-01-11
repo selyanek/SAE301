@@ -74,11 +74,7 @@ require '../layout/navigation.php';
             }
         }
         
-        // FILTRER : N'afficher QUE les absences validées ou refusées (pas en_attente ni en_revision)
-        if ($statut !== 'valide' && $statut !== 'refuse') {
-            continue;
-        }
-
+        // Ne pas exclure les absences en attente : l'étudiant doit pouvoir voir son dépôt
         if ($statutFiltre && $statut != $statutFiltre) {
             continue;
         }
@@ -124,6 +120,18 @@ require '../layout/navigation.php';
                 $justificatifsHtml = implode('<br>', $links);
             }
         }
+
+        // Rendu HTML simple pour chaque absence (carte)
+        echo "<div class='absence-card'>";
+        echo "<div class='header-card'>" . $dateSoumission . "</div>";
+        echo "<div class='dates'><strong>Du :</strong> " . $dateDebut . " <strong>au</strong> " . $dateFin . "</div>";
+        echo "<div class='motif'><strong>Motif :</strong> " . $motif . "</div>";
+        echo "<div class='justificatifs'><strong>Justificatifs :</strong><br>" . $justificatifsHtml . "</div>";
+        echo "<div class='statut " . $statutClass . "'><strong>Statut :</strong> " . $statutLabel . "</div>";
+        if ($statut === 'refuse' && !empty($absence['raison_refus'])) {
+            echo "<div class='refus-reason'><strong>Raison du refus :</strong> " . htmlspecialchars($absence['raison_refus']) . "</div>";
+        }
+        echo "</div>";
     }
     
     // Afficher un message si aucune absence trouvée

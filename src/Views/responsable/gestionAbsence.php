@@ -287,18 +287,22 @@ require __DIR__ . '/../layout/navigation.php';
                 }
             }
             
-            // Trier les périodes : d'abord "en_revision", puis "en_attente"
+            // Trier les périodes : par date de début décroissante (plus récentes en premier),
+            // puis par statut (en_revision avant en_attente) si même date.
             usort($periodesTotales, function($a, $b) {
-                // Ordre de priorité : en_revision > en_attente
+                $timeA = strtotime($a['date_debut'] ?? 0);
+                $timeB = strtotime($b['date_debut'] ?? 0);
+
+                // Priorité principale : date (plus récent d'abord)
+                if ($timeA !== $timeB) {
+                    return $timeB - $timeA;
+                }
+
+                // Si mêmes dates, appliquer ordre de priorité sur le statut
                 $ordre = ['en_revision' => 1, 'en_attente' => 2];
                 $prioriteA = $ordre[$a['statut']] ?? 3;
                 $prioriteB = $ordre[$b['statut']] ?? 3;
-                
-                // Si même statut, trier par date de début (plus récent d'abord)
-                if ($prioriteA === $prioriteB) {
-                    return strtotime($b['date_debut']) - strtotime($a['date_debut']);
-                }
-                
+
                 return $prioriteA - $prioriteB;
             });
             

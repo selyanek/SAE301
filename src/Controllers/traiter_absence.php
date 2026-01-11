@@ -27,12 +27,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && isset($_GE
     $id = (int)$_GET['id'];
     
     if ($action === 'valider') {
-        $absenceModel->updateJustifie($id, true);
+        // Récupérer l'absence avant modification pour obtenir l'ancien statut
+        $abs = $absenceModel->getById($id);
+        $ancienStatut = $abs['justifie'] ?? null;
+        $ok = $absenceModel->updateJustifie($id, true);
+
+        // Envoi d'email non bloquant pour notifier l'étudiant
+        try {
+            if ($ok && $abs) {
+                $emailService = new \src\Models\EmailService();
+                $identifiant = $abs['identifiantcompte'] ?? '';
+                $nomEtu = trim(($abs['prenomcompte'] ?? '') . ' ' . ($abs['nomcompte'] ?? ''));
+                $emailEtu = (strpos($identifiant, '@') !== false) ? $identifiant : $identifiant . '@uphf.fr';
+                if (filter_var($emailEtu, FILTER_VALIDATE_EMAIL)) {
+                    $emailService->sendRevisionDecisionEmail($emailEtu, $nomEtu, $abs['date_debut'], $abs['date_fin'],
+                        ($ancienStatut === true ? 'valide' : ($ancienStatut === false ? 'refuse' : 'en_attente')),
+                        'valide',
+                        'Votre absence a été validée.');
+                }
+            }
+        } catch (Exception $e) {
+            error_log('Erreur envoi email validation: ' . $e->getMessage());
+        }
+
         header('Location: ../Views/responsable/gestionAbsence.php');
         exit();
     } 
     elseif ($action === 'refuser') {
-        $absenceModel->updateJustifie($id, false);
+        // Récupérer l'absence avant modification pour obtenir l'ancien statut
+        $abs = $absenceModel->getById($id);
+        $ancienStatut = $abs['justifie'] ?? null;
+        $ok = $absenceModel->updateJustifie($id, false);
+
+        // Envoi d'email non bloquant pour notifier l'étudiant
+        try {
+            if ($ok && $abs) {
+                $emailService = new \src\Models\EmailService();
+                $identifiant = $abs['identifiantcompte'] ?? '';
+                $nomEtu = trim(($abs['prenomcompte'] ?? '') . ' ' . ($abs['nomcompte'] ?? ''));
+                $emailEtu = (strpos($identifiant, '@') !== false) ? $identifiant : $identifiant . '@uphf.fr';
+                if (filter_var($emailEtu, FILTER_VALIDATE_EMAIL)) {
+                    $emailService->sendRevisionDecisionEmail($emailEtu, $nomEtu, $abs['date_debut'], $abs['date_fin'],
+                        ($ancienStatut === true ? 'valide' : ($ancienStatut === false ? 'refuse' : 'en_attente')),
+                        'refuse',
+                        'Votre absence a été refusée.');
+                }
+            }
+        } catch (Exception $e) {
+            error_log('Erreur envoi email refus: ' . $e->getMessage());
+        }
+
         header('Location: ../Views/responsable/gestionAbsence.php');
         exit();
     }
@@ -137,7 +181,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if ($idPost !== null) {
         if ($action === 'valider') {
+            // Récupérer l'absence avant modification
+            $abs = $absenceModel->getById($idPost);
+            $ancienStatut = $abs['justifie'] ?? null;
             $result = $absenceModel->updateJustifie($idPost, true);
+
+            // Envoi d'email non bloquant
+            try {
+                if ($result && $abs) {
+                    $emailService = new \src\Models\EmailService();
+                    $identifiant = $abs['identifiantcompte'] ?? '';
+                    $nomEtu = trim(($abs['prenomcompte'] ?? '') . ' ' . ($abs['nomcompte'] ?? ''));
+                    $emailEtu = (strpos($identifiant, '@') !== false) ? $identifiant : $identifiant . '@uphf.fr';
+                    if (filter_var($emailEtu, FILTER_VALIDATE_EMAIL)) {
+                        $emailService->sendRevisionDecisionEmail($emailEtu, $nomEtu, $abs['date_debut'], $abs['date_fin'],
+                            ($ancienStatut === true ? 'valide' : ($ancienStatut === false ? 'refuse' : 'en_attente')),
+                            'valide',
+                            'Votre absence a été validée.');
+                    }
+                }
+            } catch (Exception $e) {
+                error_log('Erreur envoi email validation POST: ' . $e->getMessage());
+            }
+
             $msg = $result ? 'success=' . urlencode('Validee') : 'error=' . urlencode('Erreur');
             header('Location: ../Views/responsable/gestionAbsence.php?' . $msg);
             exit();
@@ -150,7 +216,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $typeRefus = 'definitif';
             }
             
+            // Récupérer l'absence avant modification
+            $abs = $absenceModel->getById($idPost);
+            $ancienStatut = $abs['justifie'] ?? null;
+
             $result = $absenceModel->updateJustifie($idPost, false, $raisonRefus, $typeRefus);
+
+            // Envoi d'email non bloquant
+            try {
+                if ($result && $abs) {
+                    $emailService = new \src\Models\EmailService();
+                    $identifiant = $abs['identifiantcompte'] ?? '';
+                    $nomEtu = trim(($abs['prenomcompte'] ?? '') . ' ' . ($abs['nomcompte'] ?? ''));
+                    $emailEtu = (strpos($identifiant, '@') !== false) ? $identifiant : $identifiant . '@uphf.fr';
+                    if (filter_var($emailEtu, FILTER_VALIDATE_EMAIL)) {
+                        $emailService->sendRevisionDecisionEmail($emailEtu, $nomEtu, $abs['date_debut'], $abs['date_fin'],
+                            ($ancienStatut === true ? 'valide' : ($ancienStatut === false ? 'refuse' : 'en_attente')),
+                            'refuse',
+                            $raisonRefus ?: 'Votre absence a été refusée.');
+                    }
+                }
+            } catch (Exception $e) {
+                error_log('Erreur envoi email refus POST: ' . $e->getMessage());
+            }
+
             $message = ($typeRefus === 'ressoumission') 
                 ? 'Refusee - Ressoumission possible' 
                 : 'Refusee definitivement';
