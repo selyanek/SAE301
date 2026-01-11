@@ -20,48 +20,65 @@ class Login
     // Vérifie si les identifiants de connexion sont corrects
     public function verifierConnexion($pdo)
     {
-        $stmt = $pdo->prepare("SELECT * FROM Compte WHERE identifiantCompte = :identifiant AND mot_de_passe = :mdp");
-        $stmt->execute([
-            ':identifiant' => $this->identifiant,
-            ':mdp' => $this->mot_de_passe
-        ]);
-        return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
+        // Récupérer le hash du mot de passe pour cet utilisateur
+        $stmt = $pdo->prepare("SELECT mot_de_passe FROM Compte WHERE identifiantCompte = :identifiant");
+        $stmt->execute([':identifiant' => $this->identifiant]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Vérifier si l'utilisateur existe et si le mot de passe correspond
+        if ($result && password_verify($this->mot_de_passe, $result['mot_de_passe'])) {
+            return true;
+        }
+        
+        return false;
     }
 
     // Retourne le rôle (fonction) de l'utilisateur connecté
     public function verifRole($pdo)
     {
-        $stmt = $pdo->prepare("SELECT fonction FROM Compte WHERE identifiantCompte = :id AND mot_de_passe = :mdp");
-        $stmt->execute([
-            ':id' => $this->identifiant,
-            ':mdp' => $this->mot_de_passe
-        ]);
+        // Récupérer le hash du mot de passe et la fonction
+        $stmt = $pdo->prepare("SELECT fonction, mot_de_passe FROM Compte WHERE identifiantCompte = :id");
+        $stmt->execute([':id' => $this->identifiant]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ? $result['fonction'] : false;
+        
+        // Vérifier si l'utilisateur existe et si le mot de passe correspond
+        if ($result && password_verify($this->mot_de_passe, $result['mot_de_passe'])) {
+            return $result['fonction'];
+        }
+        
+        return false;
     }
 
     // Retourne le nom complet de l'utilisateur connecté
     public function getName($pdo)
     {
-        $stmt = $pdo->prepare("SELECT nom, prenom FROM Compte WHERE identifiantCompte = :id AND mot_de_passe = :mdp");
-        $stmt->execute([
-            ':id' => $this->identifiant,
-            ':mdp' => $this->mot_de_passe
-        ]);
+        // Récupérer le hash du mot de passe, nom et prénom
+        $stmt = $pdo->prepare("SELECT nom, prenom, mot_de_passe FROM Compte WHERE identifiantCompte = :id");
+        $stmt->execute([':id' => $this->identifiant]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ? $result['prenom'] . ' ' . $result['nom'] : false;
+        
+        // Vérifier si l'utilisateur existe et si le mot de passe correspond
+        if ($result && password_verify($this->mot_de_passe, $result['mot_de_passe'])) {
+            return $result['prenom'] . ' ' . $result['nom'];
+        }
+        
+        return false;
     }
 
     // Retourne le mot de passe de l'utilisateur
     public function getPwd($pdo)
     {
-        $stmt = $pdo->prepare("SELECT mot_de_passe FROM Compte WHERE identifiantCompte = :id AND mot_de_passe = :mdp");
-        $stmt->execute([
-            ':id' => $this->identifiant,
-            ':mdp' => $this->mot_de_passe
-        ]);
+        // Récupérer le hash du mot de passe
+        $stmt = $pdo->prepare("SELECT mot_de_passe FROM Compte WHERE identifiantCompte = :id");
+        $stmt->execute([':id' => $this->identifiant]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ? $result['mot_de_passe'] : false;
+        
+        // Vérifier si l'utilisateur existe et si le mot de passe correspond
+        if ($result && password_verify($this->mot_de_passe, $result['mot_de_passe'])) {
+            return $result['mot_de_passe'];
+        }
+        
+        return false;
     }
 
     public function getRole($pdo)

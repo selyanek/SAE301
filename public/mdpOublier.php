@@ -28,10 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 // Générer un nouveau mot de passe
                 $newPwd = bin2hex(random_bytes(5));
+                
+                // Hacher le mot de passe avant de le stocker
+                $hashedPwd = password_hash($newPwd, PASSWORD_DEFAULT);
 
-                // Mettre à jour en base
+                // Mettre à jour en base avec le mot de passe haché
                 $update = $pdo->prepare('UPDATE compte SET mot_de_passe = :pwd WHERE identifiantcompte = :identifiant');
-                $updated = $update->execute([':pwd' => $newPwd, ':identifiant' => $user['identifiant']]);
+                $updated = $update->execute([':pwd' => $hashedPwd, ':identifiant' => $user['identifiant']]);
 
                 if ($updated) {
                     // Générer l'email - tous les utilisateurs ont @uphf.fr

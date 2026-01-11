@@ -202,14 +202,17 @@ class GestionCSV
             return (int)$result['idcompte'];
         }
         
-        // Créer le compte
+        // Créer le compte avec mot de passe haché
+        $plainPassword = $this->generatePassword();
+        $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
+        
         $sql = "INSERT INTO Compte (identifiantCompte, mot_de_passe, nom, prenom, fonction) 
                 VALUES (:identifiant, :password, :nom, :prenom, 'etudiant')
                 RETURNING idCompte";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             ':identifiant' => $identifiant,
-            ':password' => $this->generatePassword(),
+            ':password' => $hashedPassword,
             ':nom' => $nom,
             ':prenom' => $prenom
         ]);
@@ -319,14 +322,17 @@ class GestionCSV
             return (int)$result['idcompte'];
         }
         
-        // Créer le compte
+        // Créer le compte avec mot de passe haché
+        $plainPassword = $this->generatePassword();
+        $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
+        
         $sql = "INSERT INTO Compte (identifiantCompte, mot_de_passe, nom, prenom, fonction) 
                 VALUES (:identifiant, :password, :nom, :prenom, 'professeur')
                 RETURNING idCompte";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             ':identifiant' => $identifiant,
-            ':password' => $this->generatePassword(),
+            ':password' => $hashedPassword,
             ':nom' => $nom,
             ':prenom' => $prenom
         ]);
@@ -375,12 +381,15 @@ class GestionCSV
         }
         
         // Si aucun responsable n'existe, créer christelle.roze comme responsable par défaut
+        $plainPassword = $this->generatePassword();
+        $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
+        
         $sql = "INSERT INTO Compte (identifiantCompte, mot_de_passe, nom, prenom, fonction) 
                 VALUES ('christelle.roze', :password, 'ROZE', 'Christelle', 'responsable_pedagogique')
                 ON CONFLICT (identifiantCompte) DO NOTHING
                 RETURNING idCompte";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([':password' => $this->generatePassword()]);
+        $stmt->execute([':password' => $hashedPassword]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($result && isset($result['idcompte'])) {

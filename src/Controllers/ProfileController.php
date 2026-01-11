@@ -34,23 +34,26 @@ class ProfileController {
                 $message = 'Veuillez remplir tous les champs.';
                 $messageType = 'error';
             } else {
-                // Vérifier l'ancien mot de passe
+                // Vérifier l'ancien mot de passe avec password_verify
                 $stmt = $pdo->prepare('SELECT mot_de_passe FROM Compte WHERE identifiantCompte = :id');
                 $stmt->execute([':id' => $identifiant]);
                 $currentPassword = $stmt->fetchColumn();
 
-                if ($currentPassword !== $old) {
+                if (!password_verify($old, $currentPassword)) {
                     $message = 'L\'ancien mot de passe est incorrect.';
                     $messageType = 'error';
                 } elseif ($new !== $confirm) {
                     $message = 'Les nouveaux mots de passe ne correspondent pas.';
                     $messageType = 'error';
                 } else {
-                    // Mise à jour (le projet stocke le mot de passe en clair actuellement)
+                    // Hacher le nouveau mot de passe avant de le stocker
+                    $hashedPassword = password_hash($new, PASSWORD_DEFAULT);
+                    
+                    // Mise à jour avec le mot de passe haché
                     $stmt = $pdo->prepare('UPDATE Compte SET mot_de_passe = :mdp WHERE identifiantCompte = :id');
-                    $updated = $stmt->execute([':mdp' => $new, ':id' => $identifiant]);
+                    $updated = $stmt->execute([':mdp' => $hashedPassword, ':id' => $identifiant]);
                     if ($updated) {
-                        $_SESSION['mdp'] = $new;
+                        // Ne pas stocker le mot de passe en session
                         $message = 'Mot de passe mis à jour avec succès.';
                         $messageType = 'success';
                     } else {
