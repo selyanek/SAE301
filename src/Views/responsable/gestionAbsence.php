@@ -72,6 +72,7 @@ require __DIR__ . '/../layout/navigation.php';
     </form>
 
     <?php // Tableau des absences ?>
+    <div class="table-wrapper">
     <table id="tableAbsences">
         <thead>
         <tr>
@@ -371,14 +372,16 @@ require __DIR__ . '/../layout/navigation.php';
                 echo "<td class='$statutClass'>$statutLabel</td>";
 
                 // Actions
-                echo "<td class='actions'>";
+                echo "<td>";
+                echo "<div class='actions'>";
                 if ($statut == 'en_attente' || $statut == 'en_revision') {
                     echo "<a href='traitementDesJustificatif.php?id=" . htmlspecialchars($periode['idabsence']) . "' class='btn_justif'>Détails</a>";
                 } else {
                     echo "<span class='traite'>Traité</span>";
                 }
+                echo "</div>";
                 echo "</td>";
-                echo "</tr>";
+
             }
 
             if ($count == 0) {
@@ -388,6 +391,7 @@ require __DIR__ . '/../layout/navigation.php';
         ?>
         </tbody>
     </table>
+    </div>
 </div>
 
 <script>

@@ -32,7 +32,7 @@ $redirect->redirect();
         <li><a href="/src/Views/secretaire/dashboard.php">Accueil</a></li>
         <li><a href="/src/Views/secretaire/envoie_des_absences.php">Envoie des absences</a></li>
         <li><a href="/src/Controllers/profile.php">Mon profil</a></li>
-        <li><a href="/src/Views/secretaire/aideSecr.php">Aides</a></li>
+        <li><a href="/src/Views/secretaire/aide.php">Aides</a></li>
     </ul>
 </div>
 
@@ -60,7 +60,7 @@ $redirect->redirect();
     <nav class="footer-nav">
         <a href="dashboard.php">Accueil</a>
         <span>|</span>
-        <a href="aideSecr.php">Aides</a>
+        <a href="aide.php">Aides</a>
     </nav>
 </footer>
 

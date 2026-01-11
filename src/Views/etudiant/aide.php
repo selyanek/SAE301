@@ -66,7 +66,7 @@ require '../layout/navigation.php';
         </div>
 
         <div class="aide-actions">
-            <a href="/src/Views/etudiant/dashbord.php" class="btn-retour">
+            <a href="/src/Views/etudiant/dashboard.php" class="btn-retour">
                 <span>← Retour à l'accueil</span>
             </a>
             <a href="/src/Views/etudiant/justificatif.php" class="btn-primary">

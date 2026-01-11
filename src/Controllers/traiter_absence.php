@@ -28,29 +28,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && isset($_GE
     
     if ($action === 'valider') {
         $absenceModel->updateJustifie($id, true);
-        header('Location: ../Views/gestionAbsResp.php');
+        header('Location: ../Views/responsable/gestionAbsence.php');
         exit();
     } 
     elseif ($action === 'refuser') {
         $absenceModel->updateJustifie($id, false);
-        header('Location: ../Views/gestionAbsResp.php');
+        header('Location: ../Views/responsable/gestionAbsence.php');
         exit();
     }
     // US-9 : verrouiller
     elseif ($action === 'verrouiller') {
         if (!$idResp) {
-            header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Session expiree'));
+            header('Location: ../Views/responsable/historiqueAbsResp.php?error=' . urlencode('Session expiree'));
             exit();
         }
         
         $abs = $absenceModel->getById($id);
         if (!$abs) {
-            header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Absence introuvable'));
+            header('Location: ../Views/responsable/historiqueAbsResp.php?error=' . urlencode('Absence introuvable'));
             exit();
         }
         
         if ($abs['justifie'] === null) {
-            header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Impossible de verrouiller une absence en attente'));
+            header('Location: ../Views/responsable/historiqueAbsResp.php?error=' . urlencode('Impossible de verrouiller une absence en attente'));
             exit();
         }
         
@@ -66,22 +66,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && isset($_GE
                 'ip_address' => $_SERVER['REMOTE_ADDR'] ?? null,
                 'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null
             ]);
-            header('Location: ../Views/historiqueAbsResp.php?success=' . urlencode('Decision verrouillee'));
+            header('Location: ../Views/responsable/historiqueAbsResp.php?success=' . urlencode('Decision verrouillee'));
         } else {
-            header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Erreur verrouillage'));
+            header('Location: ../Views/responsable/historiqueAbsResp.php?error=' . urlencode('Erreur verrouillage'));
         }
         exit();
     }
     // US-9 : deverrouiller
     elseif ($action === 'deverrouiller') {
         if (!$idResp) {
-            header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Session expiree'));
+            header('Location: ../Views/responsable/historiqueAbsResp.php?error=' . urlencode('Session expiree'));
             exit();
         }
         
         $abs = $absenceModel->getById($id);
         if (!$abs) {
-            header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Absence introuvable'));
+            header('Location: ../Views/responsable/historiqueAbsResp.php?error=' . urlencode('Absence introuvable'));
             exit();
         }
         
@@ -106,9 +106,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && isset($_GE
             
             $emailService->sendDeverrouillageEmail($emailEtu, $nomEtu, $abs['date_debut'], $abs['date_fin']);
             
-            header('Location: ../Views/historiqueAbsResp.php?success=' . urlencode('Deverrouille - Email envoye'));
+            header('Location: ../Views/responsable/historiqueAbsResp.php?success=' . urlencode('Deverrouille - Email envoye'));
         } else {
-            header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Erreur deverrouillage'));
+            header('Location: ../Views/responsable/historiqueAbsResp.php?error=' . urlencode('Erreur deverrouillage'));
         }
         exit();
     }
@@ -126,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if ($id !== null) {
         $absence = $absenceModel->getById($id);
     }
-    require __DIR__ . '/../Views/traitementDesJustificatif.php';
+    require __DIR__ . '/../Views/responsable/traitementDesJustificatif.php';
     exit();
 }
 
@@ -139,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($action === 'valider') {
             $result = $absenceModel->updateJustifie($idPost, true);
             $msg = $result ? 'success=' . urlencode('Validee') : 'error=' . urlencode('Erreur');
-            header('Location: ../Views/gestionAbsResp.php?' . $msg);
+            header('Location: ../Views/responsable/gestionAbsence.php?' . $msg);
             exit();
         } 
         elseif ($action === 'refuser') {
@@ -155,24 +155,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ? 'Refusee - Ressoumission possible' 
                 : 'Refusee definitivement';
             $msg = $result ? 'success=' . urlencode($message) : 'error=' . urlencode('Erreur');
-            header('Location: ../Views/gestionAbsResp.php?' . $msg);
+            header('Location: ../Views/responsable/gestionAbsence.php?' . $msg);
             exit();
         } 
         elseif ($action === 'Demande_justif') {
             $absenceModel->setEnRevision($idPost, true);
-            header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&demande=true');
+            header('Location: ../Views/responsable/traitementDesJustificatif.php?id=' . $idPost . '&demande=true');
             exit();
         } 
         elseif ($action === 'envoyer_demande_justif') {
             $absence = $absenceModel->getById($idPost);
             if (!$absence) {
-                header('Location: ../Views/gestionAbsResp.php?error=' . urlencode('Absence non trouvee'));
+                header('Location: ../Views/responsable/gestionAbsence.php?error=' . urlencode('Absence non trouvee'));
                 exit();
             }
             
             $motif = trim($_POST['motif_demande'] ?? '');
             if (empty($motif)) {
-                header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&demande=true&error=champ_vide');
+                header('Location: ../Views/responsable/traitementDesJustificatif.php?id=' . $idPost . '&demande=true&error=champ_vide');
                 exit();
             }
             
@@ -181,36 +181,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $studentName = trim(($absence['prenomcompte'] ?? '') . ' ' . ($absence['nomcompte'] ?? ''));
             
             if (empty($identifiant)) {
-                header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&demande=true&error=identifiant_manquant');
+                header('Location: ../Views/responsable/traitementDesJustificatif.php?id=' . $idPost . '&demande=true&error=identifiant_manquant');
                 exit();
             }
             
             $studentEmail = (strpos($identifiant, '@') !== false) ? $identifiant : $identifiant . '@uphf.fr';
             
             if (!filter_var($studentEmail, FILTER_VALIDATE_EMAIL)) {
-                header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&demande=true&error=email_invalide');
+                header('Location: ../Views/responsable/traitementDesJustificatif.php?id=' . $idPost . '&demande=true&error=email_invalide');
                 exit();
             }
             
             $success = $emailService->sendJustificationRequestEmail($studentEmail, $studentName, $motif);
             
             if ($success) {
-                header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&email_sent=true');
+                header('Location: ../Views/responsable/traitementDesJustificatif.php?id=' . $idPost . '&email_sent=true');
             } else {
-                header('Location: ../Views/traitementDesJustificatif.php?id=' . $idPost . '&demande=true&error=envoi_echoue');
+                header('Location: ../Views/responsable/traitementDesJustificatif.php?id=' . $idPost . '&demande=true&error=envoi_echoue');
             }
             exit();
         }
         // US-9 : reviser
         elseif ($action === 'reviser') {
             if (!$idResp) {
-                header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Session expiree'));
+                header('Location: ../Views/responsable/historiqueAbsResp.php?error=' . urlencode('Session expiree'));
                 exit();
             }
             
             $abs = $absenceModel->getById($idPost);
             if (!$abs) {
-                header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Absence introuvable'));
+                header('Location: ../Views/responsable/historiqueAbsResp.php?error=' . urlencode('Absence introuvable'));
                 exit();
             }
             
@@ -219,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $justif = trim($_POST['justification_revision'] ?? '');
             
             if (empty($justif)) {
-                header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Justification obligatoire'));
+                header('Location: ../Views/responsable/historiqueAbsResp.php?error=' . urlencode('Justification obligatoire'));
                 exit();
             }
             
@@ -257,15 +257,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $ancienLabel = $ancienStatut === true ? 'valide' : ($ancienStatut === false ? 'refuse' : 'en_attente');
                 $emailService->sendRevisionDecisionEmail($emailEtu, $nomEtu, $abs['date_debut'], $abs['date_fin'], $ancienLabel, $nouveauStatut, $justif);
                 
-                header('Location: ../Views/historiqueAbsResp.php?success=' . urlencode('Revisee - Email envoye'));
+                header('Location: ../Views/responsable/historiqueAbsResp.php?success=' . urlencode('Revisee - Email envoye'));
             } else {
-                header('Location: ../Views/historiqueAbsResp.php?error=' . urlencode('Erreur revision'));
+                header('Location: ../Views/responsable/historiqueAbsResp.php?error=' . urlencode('Erreur revision'));
             }
             exit();
         }
     }
     
-    header('Location: ../Views/gestionAbsResp.php');
+    header('Location: ../Views/responsable/gestionAbsence.php');
     exit();
 }
 ?>

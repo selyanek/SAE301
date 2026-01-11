@@ -196,7 +196,7 @@ require '../layout/navigation.php';
 <br>
 
 <div class="text">
-    <a href="dashbord.php"><button type="button" class="btn">Retour à l'accueil</button></a>
+    <a href="dashboard.php"><button type="button" class="btn">Retour à l'accueil</button></a>
 </div>
 
 <?php

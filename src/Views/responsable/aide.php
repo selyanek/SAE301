@@ -1,31 +1,28 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Aide</title>
-    <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
-</head>
-<body>
-<!-- Affichage du logo de l'université -->
-<div class="uphf">
-    <img src="/public/asset/img/logouphf.png" alt="Logo uphf">
-</div>
+<?php
+session_start();
+require __DIR__ . '/../../Controllers/session_timeout.php';
+require __DIR__ . '/../../Controllers/Redirect.php';
+require __DIR__ . '/../../Database/Database.php';
+require __DIR__ . '/../../Models/Absence.php';
 
-<!-- Affichage du logo EduTrack -->
-<div class="logoEdu">
-    <img src="/public/asset/img/logoedutrack.png" alt="Logo EduTrack">
-</div>
+use src\Controllers\Redirect;
 
-<!-- Barre latérale de navigation -->
-<div class="sidebar">
-    <ul>
-        <li><a href="accueil_responsable.php">Accueil</a></li>
-        <li><a href="/src/Controllers/profile.php">Mon profil</a></li>
-        <li><a href="/src/Views/gestionAbsResp.php">Gestion des absences</a></li>
-        <li><a href="historiqueAbsResp.php">Historique des absences</a></li>
-        <li><a href="/src/Views/responsable/statistiques.php">Statistiques</a></li>
-    </ul>
-</div>
+$redirect = new Redirect('responsable_pedagogique');
+$redirect->redirect();
+
+// Connexion à la base de données
+$db = new \src\Database\Database();
+$pdo = $db->getConnection();
+$absenceModel = new \src\Models\Absence($pdo);
+
+// Récupérer le nombre d'absences en attente
+$nombreAbsencesEnAttente = $absenceModel->countEnAttente();
+
+// Inclure le header
+require __DIR__ . '/../layout/header.php';
+require __DIR__ . '/../layout/navigation.php';
+?>
+<link href="/public/asset/CSS/cssAide.css" rel="stylesheet">
 
 <section class="text">
     <h1>Aide</h1>
@@ -43,7 +40,7 @@
 
     <p>Pensez à traiter les demandes dans les délais afin d'assurer le bon suivi des absences et la conformité avec le règlement.</p>
 
-    <a href="accueil_responsable.php"><button type="button" class="btn">Retour à l'accueil</button></a>
+    <a href="dashboard.php"><button type="button" class="btn">Retour à l'accueil</button></a>
 </section>
 
 <!-- Pied de page avec navigation -->
@@ -51,7 +48,7 @@
     <nav class="footer-nav">
         <a href="accueil_responsable.php">Accueil</a>
         <span>|</span>
-        <a href="aideResp.php">Aides</a>
+        <a href="aide.php">Aides</a>
     </nav>
 </footer>
 

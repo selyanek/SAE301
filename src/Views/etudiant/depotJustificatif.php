@@ -85,7 +85,7 @@ if ($isRessoumission) {
     <div class="buttons">
         <button type="button" class="btn" onclick="resetForm()">Réinitialiser</button>
         <button type="submit" class="btn" id="submitBtn">Valider</button>
-        <a href="dashbord.php"><button type="button" class="btn">Annuler</button></a>
+        <a href="dashboard.php"><button type="button" class="btn">Annuler</button></a>
     </div>
 
 </form>

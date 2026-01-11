@@ -3,6 +3,12 @@
   color: #29acc8;
   font-size: 2.3em;
   font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.text p {
+  font-size: 14px;
+  color: #555;
   margin-bottom: 20px;
 }
 
@@ -49,8 +55,6 @@
   box-shadow: 0 0 0 3px rgba(41, 172, 200, 0.18);
 }
 
-/* Les boutons dans le formulaire utilisent .btn de cssDeBase.css */
-/* On s'assure juste qu'ils s'affichent correctement */
 .filter-form .btn {
   margin: 0;
 }
@@ -106,15 +110,6 @@
   transition: background-color 0.2s ease;
 }
 
-/* Texte gris pour les cours */
-.small-gray {
-  color: #6c757d;
-  font-size: 12px;
-  line-height: 1.5;
-  margin-top: 5px;
-  display: block;
-}
-
 /* Lien document */
 #tableAbsences td a[target="_blank"] {
   color: #1976d2;
@@ -150,73 +145,98 @@ td.statut-refuse {
   font-weight: 700;
   text-align: center;
   white-space: nowrap;
-  color: #fff;
+  color: #fff !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* En attente */
+/* Statut En attente */
 .statut-attente {
   background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
 }
 
-/* En révision */
+/* Statut En révision */
 .statut-revision {
   background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
 }
 
-/* Validé */
+/* Statut Validé */
 .statut-valide {
   background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  color: #fff !important;
 }
 
-/* Refusé */
+/* Statut Refusé */
 .statut-refuse {
   background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  color: #fff !important;
+}
+
+/* Badge verrouillé */
+.badge-verrouille {
+  display: inline-block;
+  background-color: #555;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 11px;
+  margin-left: 4px;
+}
+
+/* Raison du refus (élément dédié, en dehors des boutons) */
+.refus-reason {
+  display: block;
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: #fff;
+  border-left: 3px solid #f44336;
+  font-size: 12px;
+  color: #000;
+  border-radius: 4px;
 }
 
 /* ========== ACTIONS ========== */
-td.actions {
-  vertical-align: middle;
-}
-
+/* Actions container (match other pages) */
 .actions {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center; /* Changé de flex-start à center */
 }
 
-/* Bouton Détails - style similaire à .btn mais adapté */
-.btn_justif {
+/* Default button style inside actions */
+.actions button,
+.actions a {
   cursor: pointer;
-  background: linear-gradient(135deg, #29acc8 0%, #238da4 100%);
-  border: none;
-  color: white;
+  padding: 6px 12px;
   font-size: 12px;
   font-weight: 600;
-  padding: 6px 12px;
+  border: none;
   border-radius: 6px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(41, 172, 200, 0.2);
+  color: #fff;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  white-space: nowrap;
+  transition: all 0.25s ease;
 }
 
-.btn_justif:hover {
-  background: linear-gradient(135deg, #238da4 0%, #1d7289 100%);
+/* Boutons spécifiques */
+.btn-verrouiller { background: #f57c00; }
+.btn-deverrouiller { background:#4caf50; }
+.btn-reviser { background:#2196f3; }
+.btn-historique { background:#9c27b0; }
+
+/* Hover boutons */
+.actions button:hover,
+.actions a:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(41, 172, 200, 0.3);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.12);
 }
 
-.traite {
-  color: #888;
-  font-style: italic;
-  font-size: 13px;
-}
+.btn-verrouiller:hover { background:#ffa726 ; }
+.btn-deverrouiller:hover { background:#66bb6a; }
+.btn-reviser:hover { background:#42a5f5; }
+.btn-historique:hover { background:#9575cd; }
 
 
 /* ========== ALERTES ========== */
@@ -233,23 +253,9 @@ td.actions {
   border-style: solid;
 }
 
-.alert-success {
-  background: #d4edda;
-  color: #155724;
-  border-color: #c3e6cb;
-}
-
-.alert-error {
-  background: #f8d7da;
-  color: #721c24;
-  border-color: #f5c6cb;
-}
-
-.alert-info {
-  background: #d1ecf1;
-  color: #0c5460;
-  border-color: #bee5eb;
-}
+.alert-success { background: #d4edda; color: #155724; border-color: #c3e6cb; }
+.alert-error { background: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+.alert-info { background: #d1ecf1; color: #0c5460; border-color: #bee5eb; }
 
 /* Message vide */
 .empty-message {
@@ -260,68 +266,20 @@ td.actions {
 }
 
 /* ========== ESPACEUR ========== */
-.spacer-150 {
-  height: 150px;
-}
+.spacer-150 { height: 150px; }
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 992px) {
-  .filter-form {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-  }
-
-  .filter-form label {
-    margin-bottom: 4px;
-    margin-right: 0;
-  }
-
-  .filter-form input,
-  .filter-form select,
-  .filter-form .btn,
-  .filter-form a {
-    width: 100%;
-    min-width: unset;
-  }
-  
-  .filter-form a .btn {
-    width: 100%;
-  }
-
-  #tableAbsences {
-    font-size: 12px;
-  }
-
-  #tableAbsences th,
-  #tableAbsences td {
-    padding: 10px 12px;
-  }
+  .filter-form { flex-direction: column; align-items: stretch; gap: 12px; }
+  .filter-form label { margin-bottom: 4px; margin-right: 0; }
+  .filter-form input, .filter-form select, .filter-form .btn, .filter-form a { width: 100%; min-width: unset; }
+  #tableAbsences { font-size: 12px; }
+  #tableAbsences th, #tableAbsences td { padding: 10px 12px; }
 }
 
 @media (max-width: 768px) {
-  .text h1 {
-    font-size: 1.8em;
-  }
-
-  #tableAbsences {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  #tableAbsences th,
-  #tableAbsences td {
-    padding: 8px 10px;
-    font-size: 12px;
-  }
-
-  .btn_justif {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
-  
-  .actions {
-    justify-content: center;
-  }
+  .text h1 { font-size: 1.8em; }
+  #tableAbsences { display: block; overflow-x: auto; white-space: nowrap; }
+  #tableAbsences th, #tableAbsences td { padding: 8px 10px; font-size: 12px; }
+  .actions-cell { justify-content: center; }
 }

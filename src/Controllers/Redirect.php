@@ -20,7 +20,7 @@ class Redirect
         if ($_SESSION['role'] !== $this->roleNecessaire) {
             switch ($_SESSION['role']) {
                 case 'etudiant':
-                    header('Location: /src/Views/etudiant/dashbord.php');
+                    header('Location: /src/Views/etudiant/dashboard.php');
                     exit();
                 case 'professeur':
                     // redirect to the professor's accueil page
@@ -28,7 +28,7 @@ class Redirect
                     exit();
                 case 'responsable_pedagogique':
                     // redirect to the responsable's dashboard page
-                    header('Location: /src/Views/responsable/dashbord.php');
+                    header('Location: /src/Views/responsable/dashboard.php');
                     exit();
                 case 'secretaire':
                     // redirect to the secretaire's dashboard page

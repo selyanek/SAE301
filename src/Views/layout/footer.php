@@ -6,20 +6,16 @@ $pageLienAide = '/src/Views/etudiant/aide.php';
 if (isset($_SESSION['role'])) {
     switch ($_SESSION['role']) {
         case 'responsable_pedagogique':
-            $pageLienAccueil = '/src/Views/accueil_responsable.php';
-            $pageLienAide = '/src/Views/aideResp.php';
-            break;
-        case 'professeur':
-            $pageLienAccueil = '/src/Views/accueil_prof.php';
-            $pageLienAide = '/src/Views/aide.php';
+            $pageLienAccueil = '/src/Views/responsable/dashboard.php';
+            $pageLienAide = '/src/Views/responsable/aide.php';
             break;
         case 'secretaire':
             $pageLienAccueil = '/src/Views/secretaire/dashboard.php';
-            $pageLienAide = '/src/Views/secretaire/aideSecr.php';
+            $pageLienAide = '/src/Views/secretaire/aide.php';
             break;
         case 'etudiant':
         case 'etudiante':
-            $pageLienAccueil = '/src/Views/accueil_etudiant.php';
+            $pageLienAccueil = '/src/Views/etudiant/dashboard.php';
             $pageLienAide = '/src/Views/etudiant/aide.php';
             break;
     }

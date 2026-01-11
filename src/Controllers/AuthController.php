@@ -74,10 +74,10 @@ class AuthController
     private function getRedirectUrlByRole($role)
     {
         $routes = [
-            'etudiant' => '../src/Views/etudiant/dashbord.php',
-            'etudiante' => '../src/Views/etudiant/dashbord.php',
+            'etudiant' => '../src/Views/etudiant/dashboard.php',
+            'etudiante' => '../src/Views/etudiant/dashboard.php',
             'professeur' => '../src/Views/accueil_prof.php',
-            'responsable_pedagogique' => '../src/Views/responsable/dashbord.php',
+            'responsable_pedagogique' => '../src/Views/responsable/dashboard.php',
             'secretaire' => '../src/Views/secretaire/dashboard.php'
         ];
         
