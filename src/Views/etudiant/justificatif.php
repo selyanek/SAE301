@@ -53,8 +53,8 @@ $additionalCSS = ['../../../public/asset/CSS/cssGererAbsEtu.css'];
 require '../layout/header.php';
 require '../layout/navigation.php';
 ?>
-
-<header class="text">
+<div class="text fade-in">
+    <header class="text">
     <h1>Gérer mes absences</h1>
     <p>Cette page vous donne accès aux informations et réponses liées à vos absences en attente de validation ou en révision.</p>
     <?php
@@ -202,4 +202,5 @@ require '../layout/navigation.php';
 <?php
 require '../layout/footer.php';
 ?>
+</div>
 

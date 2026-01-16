@@ -46,19 +46,22 @@ require __DIR__ . '/../layout/navigation.php';
 
 <link href="/public/asset/CSS/cssHistoriqueResponsable.css" rel="stylesheet">
 
+<header class="text fade-in">
+    <h1>Historique des absences</h1>
+    <p>Consultez et gérez l'historique des absences traitées.</p>
+</header>
+
 <!-- Messages flash -->
+<div class="text fade-in">
 <?php if ($successMsg): ?>
     <div class="alert-success"><?= $successMsg ?></div>
 <?php endif; ?>
 <?php if ($errorMsg): ?>
     <div class="alert-error"><?= $errorMsg ?></div>
 <?php endif; ?>
+</div>
 
-<header class="text">
-    <h1>Historique des absences</h1>
-    <p>Consultez et gérez l'historique des absences traitées.</p>
-</header>
-
+<div class="text fade-in">
 <!-- Formulaire de filtre -->
 <form method="post" class="filter-form">
     <label for="nom">Nom étudiant :</label>
@@ -175,7 +178,6 @@ require __DIR__ . '/../layout/navigation.php';
                     echo "<td>" . htmlspecialchars($p['etudiant']) . "</td>";
                     echo "<td>" . htmlspecialchars($p['motif']) . "</td>";
 
-                    // Documents
                     echo "<td>";
                     if (!empty($p['urijustificatif'])) {
                         $fichiers = json_decode($p['urijustificatif'], true);
@@ -184,17 +186,14 @@ require __DIR__ . '/../layout/navigation.php';
                     } else echo "-";
                     echo "</td>";
 
-                    // Statut
                     echo "<td class='$statutClass'>";
                     echo $statutLabel;
                     if ($verrouille) echo " <span class='badge-verrouille' title='Décision verrouillée'>🔒</span>";
                     if ($p['statut'] === 'refuse' && !empty($p['raison_refus'])) {
-                        // afficher la raison dans un élément dédié en dehors des boutons
                         echo "<div class='refus-reason'><strong>Raison:</strong> ".htmlspecialchars($p['raison_refus'])."</div>";
                     }
                     echo "</td>";
 
-                    // Actions (placer les boutons DANS un conteneur <div class='actions'> pour garantir le style)
                     echo "<td>";
                     echo "<div class='actions'>";
                     if ($verrouille) {
@@ -215,12 +214,12 @@ require __DIR__ . '/../layout/navigation.php';
         </tbody>
     </table>
 </div>
+</div> <!-- Fin de text fade-in -->
 
 <div class="spacer-150"></div>
 
 <!-- Footer -->
 <?php include __DIR__.'/../layout/footer.php'; ?>
-
 
 <script src="/public/asset/JS/jsHistoriqueResponsable.js"></script>
 </body>
