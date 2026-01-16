@@ -221,8 +221,6 @@ require __DIR__ . '/../layout/navigation.php';
 <!-- Footer -->
 <?php include __DIR__.'/../layout/footer.php'; ?>
 
-<!-- Modales -->
-<?php include __DIR__.'/modales_absence.php'; ?>
 
 <script src="/public/asset/JS/jsHistoriqueResponsable.js"></script>
 </body>
