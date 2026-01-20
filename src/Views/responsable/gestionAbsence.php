@@ -68,7 +68,7 @@ require __DIR__ . '/../layout/navigation.php';
         </select>
 
         <button type="submit" class="btn">Filtrer</button>
-        <a href="gestionAbsResp.php"><button type="button" class="btn">Réinitialiser</button></a>
+        <a href="gestionAbsence.php"><button type="button" class="btn">Réinitialiser</button></a>
     </form>
 
     <?php // Tableau des absences ?>
