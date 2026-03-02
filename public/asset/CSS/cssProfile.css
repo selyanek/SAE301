@@ -271,3 +271,91 @@
         justify-content: center;
     }
 }
+
+@media (max-width: 480px) {
+    .profile-card {
+        margin: 60px 10px 20px;
+        padding: 20px 15px;
+        border-radius: 12px;
+    }
+
+    .profile-card h2 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .profile-card h3 {
+        font-size: 18px;
+        margin: 20px 0 12px 0;
+    }
+
+    .profile-header-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .btn-logout {
+        padding: 10px 16px;
+        font-size: 14px;
+        width: 100%;
+    }
+
+    .profile-field {
+        margin: 12px 0;
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+
+    .profile-field strong {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 13px;
+        min-width: unset;
+    }
+
+    .profile-card form {
+        padding: 15px 12px;
+        margin-top: 15px;
+    }
+
+    .profile-card form label {
+        font-size: 14px;
+        margin-top: 12px;
+        margin-bottom: 6px;
+    }
+
+    .profile-card form input[type="password"],
+    .profile-card form input[type="text"],
+    .profile-card form input[type="email"] {
+        max-width: 100%;
+        padding: 11px 14px;
+        font-size: 16px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+    .form-actions button,
+    .form-actions a {
+        padding: 11px 16px;
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .message {
+        padding: 12px 15px;
+        font-size: 13px;
+        gap: 10px;
+    }
+
+    .message::before {
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+    }
+}

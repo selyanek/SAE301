@@ -223,4 +223,106 @@
     .select {
         font-size: 16px;
     }
+
+    .label {
+        font-size: 14px;
+        margin-top: 12px;
+        margin-bottom: 8px;
+    }
+
+    .absence-form .buttons {
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .absence-form .buttons .btn {
+        width: 100%;
+        font-size: 15px;
+        padding: 14px 24px;
+        min-width: unset;
+    }
+
+    .file-input-label {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .absence-form {
+        max-width: 95%;
+        padding: 20px 15px;
+        margin: 15px 10px;
+        border-radius: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .label {
+        font-size: 13px;
+        margin-top: 10px;
+        margin-bottom: 6px;
+    }
+
+    .label.required::after {
+        font-size: 14px;
+    }
+
+    .input,
+    .textarea,
+    .file-input,
+    .select {
+        padding: 12px 12px;
+        font-size: 16px;
+        border-radius: 6px;
+    }
+
+    .textarea {
+        min-height: 80px;
+    }
+
+    .error {
+        font-size: 13px;
+        margin-top: 6px;
+    }
+
+    .info {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .absence-form .buttons {
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    .absence-form .buttons .btn {
+        width: 100%;
+        padding: 12px 18px;
+        font-size: 13px;
+        min-width: unset;
+    }
+
+    .absence-form .buttons .btn[onclick*="resetForm"] {
+        font-size: 13px;
+    }
+
+    .file-input-wrapper {
+        width: 100%;
+    }
+
+    .file-input-label {
+        padding: 12px;
+        font-size: 13px;
+        border-radius: 6px;
+    }
+
+    .select {
+        font-size: 16px;
+    }
 }

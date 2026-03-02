@@ -274,6 +274,34 @@ body {
 }
 
 @media (max-width: 768px) {
+    .text h1 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+    }
+
+    .text p {
+        font-size: 15px;
+    }
+
+    .filtre-form {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 20px;
+    }
+
+    .filtre-form label {
+        margin-right: 0;
+        font-size: 14px;
+    }
+
+    .filtre-form input[type="date"],
+    .filtre-form select,
+    .filtre-form button {
+        width: 100%;
+        min-width: unset;
+    }
+
     .absence-card {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -291,13 +319,123 @@ body {
     .card-statut {
         align-items: flex-start;
     }
-    
-    .filtre-form {
-        flex-direction: column;
-        align-items: stretch;
+
+    .card-statut span {
+        min-width: 120px;
     }
-    
+}
+
+@media (max-width: 480px) {
+    .text {
+        text-align: center;
+        margin: 20px 10px 15px;
+        padding: 0 10px;
+        max-width: 100%;
+    }
+
+    .text h1 {
+        font-size: 1.4em;
+        text-align: left;
+        margin-bottom: 12px;
+    }
+
+    .text p {
+        font-size: 14px;
+        text-align: left;
+    }
+
+    .filtre-form {
+        margin: 15px 8px;
+        padding: 12px;
+        gap: 10px;
+    }
+
     .filtre-form label {
+        font-size: 13px;
+        margin-bottom: 4px;
+    }
+
+    .filtre-form input[type="date"],
+    .filtre-form select {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+
+    .filtre-form button {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+
+    .absences-container {
+        margin: 15px auto 40px;
+        padding: 0 8px;
+        gap: 15px;
+    }
+
+    .absence-card {
+        padding: 16px;
+        gap: 12px;
+        border-left-width: 3px;
+    }
+
+    .card-dates {
+        gap: 12px;
+        padding-bottom: 12px;
+    }
+
+    .card-dates div {
+        font-size: 13px;
+    }
+
+    .card-dates strong {
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+
+    .card-info {
+        font-size: 14px;
+    }
+
+    .card-info .motif {
+        margin-bottom: 12px;
+        font-size: 14px;
+    }
+
+    .card-info strong {
+        font-weight: 600;
+    }
+
+    .card-info .justif {
+        margin-top: 8px;
+        font-size: 13px;
+    }
+
+    .card-info .justif a {
+        font-size: 13px;
+    }
+
+    .card-statut {
+        gap: 8px;
+    }
+
+    .card-statut span {
+        padding: 10px 16px;
+        font-size: 12px;
+        min-width: 100px;
+        border-radius: 6px;
+    }
+
+    .no-results {
+        margin: 20px 10px;
+        padding: 30px 15px;
+        font-size: 15px;
+    }
+
+    .no-results::before {
+        font-size: 48px;
+        margin-bottom: 15px;
+    }
+}
         margin-bottom: 5px;
     }
     

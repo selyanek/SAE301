@@ -141,19 +141,86 @@
 }
 
 /* ========== Responsive ========== */
-@media (max-width: 480px) {
-  .wapper {
-    margin: 20px 15px;
-    padding: 25px 20px;
+@media (max-width: 768px) {
+  .text-with-image-section {
+    margin: 20px 0 15px 0;
+    padding: 0 15px;
   }
-  
+
+  .text-with-image {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
   .text-with-image h2 {
     font-size: 20px;
   }
-  
+
+  .wapper {
+    margin: 40px 15px;
+    padding: 30px 20px;
+    width: 95%;
+  }
+
+  .wapper input[type="text"],
+  .wapper input[type="password"] {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-with-image-section {
+    margin: 15px 0 10px 0;
+    padding: 0 10px;
+  }
+
+  .text-with-image h2 {
+    font-size: 18px;
+  }
+
   .text-with-image img {
     height: 40px;
     width: 40px;
+  }
+
+  .wapper {
+    margin: 20px 10px;
+    padding: 20px 15px;
+    width: 95%;
+    border-radius: 10px;
+  }
+
+  .wapper form {
+    gap: 18px;
+  }
+
+  .wapper label {
+    font-size: 14px;
+    margin-bottom: -12px;
+  }
+
+  .wapper input[type="text"],
+  .wapper input[type="password"] {
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+
+  .wapper button {
+    padding: 14px;
+    font-size: 16px;
+    margin-top: 8px;
+  }
+
+  .wapper a {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .wapper .message {
+    font-size: 13px;
+    padding: 10px 12px;
   }
 }
 

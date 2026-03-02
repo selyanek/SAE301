@@ -544,6 +544,18 @@
     padding: 0 15px;
   }
 
+  .text .boutons {
+    margin: 20px 10px;
+    padding: 0 10px;
+    gap: 10px;
+  }
+
+  .text .boutons button,
+  .text .boutons a button {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+
   .encadre1,
   .zone-demande-justif,
   .message-succes,
@@ -554,6 +566,11 @@
 
   .encadre2 {
     min-width: auto;
+    max-width: 100%;
+  }
+
+  .encadre2 h3 {
+    font-size: 1.1em;
   }
 
   #zone-raison-refus .btn-actions,
@@ -566,5 +583,119 @@
   .zone-demande-justif .btn-envoyer,
   .zone-demande-justif .btn-annuler {
     width: 100%;
+  }
+
+  #zone-raison-refus textarea,
+  .zone-demande-justif textarea {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .titre h1 {
+    font-size: 1.4em;
+    padding: 0 10px;
+    margin: 30px 0 15px;
+  }
+
+  .text .boutons {
+    margin: 15px 8px;
+    padding: 0 8px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .text .boutons button,
+  .text .boutons a button {
+    font-size: 13px;
+    padding: 10px 16px;
+    width: 100%;
+  }
+
+  .boutons {
+    margin: 15px 8px;
+    padding: 0 8px;
+    flex-direction: column;
+  }
+
+  .boutons button,
+  .boutons a button {
+    font-size: 13px;
+    padding: 10px 16px;
+    width: 100%;
+  }
+
+  .trait {
+    width: 95%;
+    margin: 20px auto;
+  }
+
+  .encadre1 {
+    margin: 15px 8px;
+    padding: 12px;
+  }
+
+  .encadre2 {
+    min-width: auto;
+    max-width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+  }
+
+  .encadre3 {
+    padding: 12px;
+  }
+
+  .motif {
+    margin: 15px 8px;
+    padding: 12px;
+  }
+
+  #zone-raison-refus,
+  .zone-demande-justif,
+  .message-succes,
+  .error-message {
+    margin: 15px 8px;
+    padding: 12px;
+  }
+
+  #zone-raison-refus h3,
+  .zone-demande-justif h3,
+  .message-succes h3 {
+    font-size: 1.1em;
+  }
+
+  #zone-raison-refus .radio-group {
+    gap: 10px;
+  }
+
+  #zone-raison-refus .radio-group label {
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .zone-demande-justif label,
+  .zone-demande-justif .aide-texte {
+    font-size: 13px;
+  }
+
+  .zone-demande-justif textarea,
+  #zone-raison-refus textarea {
+    font-size: 16px;
+    padding: 10px;
+    min-height: 100px;
+  }
+
+  #zone-raison-refus .btn-confirmer-refus,
+  #zone-raison-refus .btn-annuler-refus,
+  .zone-demande-justif .btn-envoyer,
+  .zone-demande-justif .btn-annuler {
+    width: 100%;
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+
+  .espacement-footer {
+    height: 80px;
   }
 }
