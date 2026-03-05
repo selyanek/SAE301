@@ -131,6 +131,7 @@ $absencesEvaluations = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     <?php endif; ?>
 
+    <div class="table-responsive">
     <table class="rattrapage-table">
         <thead>
             <tr>
@@ -220,6 +221,7 @@ $absencesEvaluations = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php endif; ?>
         </tbody>
     </table>
+    </div>
 </div>
 
 <!-- Modal pour planifier/modifier un rattrapage -->
