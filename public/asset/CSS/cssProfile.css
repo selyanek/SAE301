@@ -1,13 +1,16 @@
 /* ========== PROFILE PAGE - MODERN DESIGN ========== */
 
 .profile-card {
-    max-width: 920px;
-    margin: 90px auto 40px;
-    padding: 40px 48px;
+    width: 100%;
+    max-width: none;
+    min-height: calc(100vh - 90px);
+    margin: 90px 0 0;
+    padding: 40px 48px 56px;
+    box-sizing: border-box;
     background: #ffffff;
-    border-radius: 16px;
+    border-radius: 0;
     box-shadow: 0 8px 32px rgba(41, 172, 200, 0.12);
-    border: 1px solid #e3f2f7;
+    border: none;
 }
 
 .profile-card h2 {
@@ -25,27 +28,6 @@
     margin-bottom: 24px;
     padding-bottom: 20px;
     border-bottom: 2px solid #f0f7fa;
-}
-
-.btn-logout {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 11px 22px;
-    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-    color: #ffffff;
-    text-decoration: none;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 15px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 14px rgba(231, 76, 60, 0.25);
-}
-
-.btn-logout:hover {
-    background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(231, 76, 60, 0.35);
 }
 
 .profile-card h3 {
@@ -71,12 +53,6 @@
     border-radius: 10px;
     border-left: 4px solid #29acc8;
     transition: all 0.3s ease;
-}
-
-.profile-field:hover {
-    background: linear-gradient(135deg, #f0f8fa 0%, #e8f4f7 100%);
-    transform: translateX(4px);
-    box-shadow: 0 4px 12px rgba(41, 172, 200, 0.08);
 }
 
 .profile-field strong {
@@ -231,8 +207,9 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .profile-card {
-        margin: 70px 16px 30px;
-        padding: 28px 20px;
+        min-height: calc(100vh - 70px);
+        margin: 70px 0 0;
+        padding: 24px 16px 36px;
     }
 
     .profile-card h2 {
