@@ -63,7 +63,8 @@ require __DIR__ . '/../layout/navigation.php';
 
 <div class="text fade-in">
 <!-- Formulaire de filtre -->
-<form method="post" class="filter-form">
+<form method="post" id="absenceFilterForm" class="filter-form" data-endpoint="../../Controllers/api_absences.php">
+    <input type="hidden" name="mode" value="historique">
     <label for="nom">Nom étudiant :</label>
     <input type="text" name="nom" id="nom" value="<?= htmlspecialchars($_POST['nom'] ?? '') ?>">
 
@@ -78,8 +79,10 @@ require __DIR__ . '/../layout/navigation.php';
     </select>
 
     <button type="submit" class="btn">Filtrer</button>
-    <a href="historiqueAbsResp.php" class="btn">Réinitialiser</a>
+    <a href="historiqueAbsResp.php" id="resetFiltersButton" class="btn" role="button">Réinitialiser</a>
 </form>
+<div id="tableLoader" class="ajax-loader" hidden>Chargement des absences...</div>
+<div id="tableFeedback" class="ajax-feedback" hidden></div>
 
 <!-- Tableau des absences -->
 <div class="table-wrapper">
@@ -96,7 +99,7 @@ require __DIR__ . '/../layout/navigation.php';
             <th>Actions</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="tableAbsencesBody">
         <?php
         if (!$absences || count($absences) === 0) {
             echo "<tr><td colspan='8' class='empty-message'>Aucune absence enregistrée.</td></tr>";
@@ -222,5 +225,6 @@ require __DIR__ . '/../layout/navigation.php';
 <?php include __DIR__.'/../layout/footer.php'; ?>
 
 <script src="/public/asset/JS/jsHistoriqueResponsable.js"></script>
+<script src="/public/asset/JS/gestionAbsenceAjax.js"></script>
 </body>
 </html>

@@ -1,8 +1,4 @@
 .btn-logout {
-    position: fixed;
-    top: 16px;
-    right: 20px;
-    z-index: 1000;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -15,6 +11,9 @@
     font-size: 15px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 14px #e74c3c40;
+    position: absolute;
+    top: 20px;
+    right: 20px;
 }
 
 .btn-logout:hover {
@@ -25,8 +24,6 @@
 
 @media (max-width: 768px) {
     .btn-logout {
-        top: 10px;
-        right: 10px;
         padding: 9px 14px;
         font-size: 13px;
     }

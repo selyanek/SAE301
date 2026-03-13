@@ -46,13 +46,45 @@
 .filter-form select:focus {
   outline: none;
   border-color: #29acc8;
-  box-shadow: 0 0 0 3px rgba(41, 172, 200, 0.18);
+  box-shadow: 0 0 0 3px #29acc82e;
 }
 
 /* Les boutons dans le formulaire utilisent .btn de cssDeBase.css */
 /* On s'assure juste qu'ils s'affichent correctement */
 .filter-form .btn {
   margin: 0;
+}
+
+.filter-form.is-loading {
+  opacity: 0.7;
+}
+
+.ajax-loader {
+  max-width: 1200px;
+  margin: 12px auto;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #eef6ff;
+  color: #145da0;
+  font-weight: 600;
+}
+
+.ajax-feedback {
+  max-width: 1200px;
+  margin: 12px auto 18px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.ajax-feedback.success {
+  background: #edf9f1;
+  color: #1d6f42;
+}
+
+.ajax-feedback.error {
+  background: #fdecec;
+  color: #b42318;
 }
 
 /* ========== TABLEAU DES ABSENCES ========== */
@@ -70,7 +102,7 @@
   background: #fff;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 14px #00000014;
   font-size: 13px;
 }
 

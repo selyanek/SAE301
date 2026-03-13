@@ -51,7 +51,7 @@ require __DIR__ . '/../layout/navigation.php';
     ?>
 
     <?php // Formulaire de filtrage ?>
-    <form method="post" class="filter-form">
+    <form method="post" class="filter-form" id="absenceFilterForm" data-endpoint="../../Controllers/api_absences.php">
         <label for="nom">Nom étudiant :</label>
         <input type="text" name="nom" id="nom" value="<?php echo isset($_POST['nom']) ? htmlspecialchars($_POST['nom']) : ''; ?>">
 
@@ -68,8 +68,11 @@ require __DIR__ . '/../layout/navigation.php';
         </select>
 
         <button type="submit" class="btn">Filtrer</button>
-        <a href="gestionAbsence.php"><button type="button" class="btn">Réinitialiser</button></a>
+        <a href="gestionAbsence.php" id="resetFiltersButton" class="btn">Réinitialiser</a>
     </form>
+
+    <div id="tableLoader" class="ajax-loader" hidden>Chargement des absences...</div>
+    <div id="tableFeedback" class="ajax-feedback" hidden></div>
 
     <?php // Tableau des absences ?>
     <div class="table-wrapper">
@@ -86,7 +89,7 @@ require __DIR__ . '/../layout/navigation.php';
             <th scope='col'>Actions</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="tableAbsencesBody">
         <?php
         // Vérifier si des absences existent
         if (!$absences || count($absences) === 0) {
@@ -411,6 +414,7 @@ require __DIR__ . '/../layout/navigation.php';
         }
     }
 </script>
+<script src="/public/asset/JS/gestionAbsenceAjax.js"></script>
 
 <?php
 require __DIR__ . '/../layout/footer.php';

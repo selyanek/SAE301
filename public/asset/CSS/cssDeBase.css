@@ -20,6 +20,7 @@ body {
   flex-direction: column;
   color: #333;
   line-height: 1.6;
+  position: relative;
 }
 
 /* ========== Sidebar ========== */
@@ -140,7 +141,6 @@ body {
 /* ========== Contenu principal ========== */
 .text {
   padding: 30px;
-  flex: 1;
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
