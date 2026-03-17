@@ -320,6 +320,11 @@ body {
 }
 
 @media (max-width: 768px) {
+    .text h1 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+    }
+
     .absence-card {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -336,5 +341,123 @@ body {
     
     .card-status {
         align-items: flex-start;
+    }
+
+    .alert-ressoumission {
+        margin: 20px 10px;
+        padding: 15px;
+        font-size: 14px;
+    }
+
+    .error-messages,
+    .success-messages {
+        width: 90%;
+    }
+
+    .text {
+        margin: 30px auto 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .text {
+        text-align: center;
+        margin: 20px 10px 15px;
+        padding: 0 10px;
+        max-width: 100%;
+    }
+
+    .text h1 {
+        font-size: 1.4em;
+        text-align: left;
+        margin-bottom: 12px;
+    }
+
+    .text p {
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .absence-card {
+        padding: 16px;
+        gap: 12px;
+        border-left-width: 3px;
+    }
+
+    .card-dates {
+        padding-bottom: 12px;
+    }
+
+    .card-dates div {
+        font-size: 13px;
+    }
+
+    .card-dates strong {
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+
+    .card-info {
+        font-size: 14px;
+    }
+
+    .card-info .motif {
+        margin-bottom: 12px;
+        font-size: 14px;
+    }
+
+    .card-info .justif {
+        margin-top: 8px;
+        font-size: 13px;
+    }
+
+    .card-status {
+        gap: 10px;
+    }
+
+    .status-badge {
+        padding: 10px 16px;
+        font-size: 12px;
+        min-width: 100px;
+    }
+
+    .btn-resoumettre {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+
+    .alert-ressoumission {
+        margin: 15px 8px;
+        padding: 12px;
+        font-size: 13px;
+    }
+
+    .error-messages,
+    .success-messages {
+        width: 95%;
+        margin: 15px 8px;
+        padding: 12px 16px;
+        font-size: 13px;
+    }
+
+    .error,
+    .success {
+        font-size: 13px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+
+    .no-results {
+        margin: 20px 10px;
+        padding: 30px 15px;
+        font-size: 15px;
+    }
+
+    .no-results::before {
+        font-size: 48px;
+        margin-bottom: 15px;
     }
 }

@@ -98,3 +98,62 @@
 .btn-cancel:hover {
     background: #777;
 }
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media (max-width: 768px) {
+    .ressoumission-container {
+        margin: 20px 15px;
+        padding: 15px;
+    }
+
+    .info-absence {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .form-ressoumission {
+        padding: 15px;
+    }
+
+    .form-group textarea,
+    .form-group input[type="file"] {
+        font-size: 16px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-submit,
+    .btn-cancel {
+        width: 100%;
+        padding: 14px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ressoumission-container {
+        margin: 15px 10px;
+        padding: 12px;
+    }
+
+    .info-absence h3 {
+        font-size: 1.1em;
+    }
+
+    .form-group label {
+        font-size: 14px;
+    }
+
+    .form-group small {
+        font-size: 0.85em;
+    }
+
+    .btn-submit,
+    .btn-cancel {
+        font-size: 14px;
+        padding: 12px 16px;
+        width: 100%;
+    }
+}

@@ -270,16 +270,149 @@ td.statut-refuse {
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 992px) {
-  .filter-form { flex-direction: column; align-items: stretch; gap: 12px; }
-  .filter-form label { margin-bottom: 4px; margin-right: 0; }
-  .filter-form input, .filter-form select, .filter-form .btn, .filter-form a { width: 100%; min-width: unset; }
-  #tableAbsences { font-size: 12px; }
-  #tableAbsences th, #tableAbsences td { padding: 10px 12px; }
+  .filter-form { 
+    flex-direction: column; 
+    align-items: stretch; 
+    gap: 12px; 
+  }
+  .filter-form label { 
+    margin-bottom: 4px; 
+    margin-right: 0; 
+  }
+  .filter-form input, 
+  .filter-form select, 
+  .filter-form .btn, 
+  .filter-form a { 
+    width: 100%; 
+    min-width: unset; 
+  }
+  #tableAbsences { 
+    font-size: 12px; 
+  }
+  #tableAbsences th, 
+  #tableAbsences td { 
+    padding: 10px 12px; 
+  }
 }
 
 @media (max-width: 768px) {
-  .text h1 { font-size: 1.8em; }
-  #tableAbsences { display: block; overflow-x: auto; white-space: nowrap; }
-  #tableAbsences th, #tableAbsences td { padding: 8px 10px; font-size: 12px; }
-  .actions-cell { justify-content: center; }
+  .text h1 { 
+    font-size: 1.8em;
+    margin-bottom: 15px;
+  }
+  
+  .filter-form {
+    margin: 20px 10px;
+    padding: 15px;
+  }
+  
+  #tableAbsences { 
+    display: block; 
+    overflow-x: auto; 
+    white-space: nowrap;
+    min-width: 100%;
+    font-size: 11px;
+  }
+  
+  #tableAbsences th, 
+  #tableAbsences td { 
+    padding: 8px 10px; 
+    font-size: 11px; 
+  }
+  
+  .actions-cell { 
+    justify-content: center; 
+  }
+
+  .actions button,
+  .actions a {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  .refus-reason {
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .text h1 {
+    font-size: 1.4em;
+    margin-bottom: 12px;
+  }
+
+  .text p {
+    font-size: 13px;
+  }
+
+  .filter-form {
+    margin: 15px 8px;
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .filter-form label {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .filter-form input[type="text"],
+  .filter-form input[type="date"],
+  .filter-form select {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  #tableAbsences {
+    font-size: 9px;
+    overflow-x: auto;
+  }
+
+  #tableAbsences th,
+  #tableAbsences td {
+    padding: 5px 4px;
+    font-size: 9px;
+    word-break: break-word;
+  }
+
+  #tableAbsences td a[target="_blank"] {
+    font-size: 9px;
+    margin-bottom: 2px;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .actions button,
+  .actions a {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .refus-reason {
+    font-size: 10px;
+    padding: 6px;
+    margin-top: 6px;
+  }
+
+  .badge-verrouille {
+    font-size: 9px;
+    padding: 1px 4px;
+  }
+
+  .alert-success,
+  .alert-error,
+  .alert-info {
+    margin: 15px 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .empty-message {
+    padding: 20px 15px;
+    font-size: 14px;
+  }
 }

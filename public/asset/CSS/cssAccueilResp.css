@@ -186,11 +186,17 @@ header.text h1 {
 @media (max-width: 768px) {
     header.text h1 {
         font-size: 2em;
+        padding: 15px 0;
+    }
+    
+    .main-content {
+        padding: 70px 20px 30px;
     }
     
     .info-box {
         max-width: 100%;
         padding: 25px 30px;
+        margin: 20px 0;
     }
     
     .info-value {
@@ -199,6 +205,91 @@ header.text h1 {
     
     .stats-grid {
         grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .stat-card {
+        padding: 20px;
+    }
+    
+    .welcome-card {
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .action-section .btn {
+        padding: 12px 24px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    header.text h1 {
+        font-size: 1.6em;
+        margin-bottom: 8px;
+    }
+    
+    .main-content {
+        padding: 60px 15px 20px;
+    }
+    
+    .info-box {
+        padding: 20px 20px;
+        margin: 15px 0;
+    }
+    
+    .info-label {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    
+    .info-value {
+        font-size: 40px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-card {
+        padding: 18px;
+        border-top-width: 2px;
+    }
+    
+    .stat-card h3 {
+        font-size: 1em;
+    }
+    
+    .stat-card .number {
+        font-size: 2em;
+    }
+    
+    .stat-card .description {
+        font-size: 0.85em;
+    }
+    
+    .welcome-card {
+        padding: 15px;
+        margin: 15px 0;
+    }
+    
+    .welcome-card h2 {
+        font-size: 1.2em;
+    }
+    
+    .welcome-card p {
+        font-size: 14px;
+    }
+    
+    .action-section .btn {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    .notification-badge {
+        font-size: 12px;
+        padding: 3px 8px;
     }
 }
 

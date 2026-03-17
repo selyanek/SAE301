@@ -68,6 +68,35 @@ $absencesEvaluations = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link href="/public/asset/CSS/rattrapage.css" rel="stylesheet">
 </head>
 <body>
+<!-- US-26 : Bouton hamburger pour mobile -->
+<button class="hamburger" id="hamburgerBtn" aria-label="Menu de navigation" onclick="toggleMenu()">☰</button>
+
+<script>
+function toggleMenu() {
+    var sidebar = document.querySelector('.sidebar');
+    var btn = document.getElementById('hamburgerBtn');
+    sidebar.classList.toggle('open');
+    btn.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
+}
+document.addEventListener('DOMContentLoaded', function() {
+    var links = document.querySelectorAll('.sidebar a');
+    for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener('click', function() {
+            var sidebar = document.querySelector('.sidebar');
+            sidebar.classList.remove('open');
+            document.getElementById('hamburgerBtn').textContent = '☰';
+        });
+    }
+    document.addEventListener('click', function(e) {
+        var sidebar = document.querySelector('.sidebar');
+        var btn = document.getElementById('hamburgerBtn');
+        if (sidebar && sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== btn) {
+            sidebar.classList.remove('open');
+            btn.textContent = '☰';
+        }
+    });
+});
+</script>
 <div class="uphf">
     <img src="../../public/asset/img/logouphf.png" alt="Logo uphf">
 </div>
