@@ -1,3 +1,9 @@
 <?php
+require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/ProfileController.php';
-\src\Controllers\ProfileController::show();
+
+use src\Controllers\ProfileController;
+
+$controller = new ProfileController();
+$controller->show();
+

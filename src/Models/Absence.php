@@ -390,4 +390,29 @@ class Absence
             return [];
         }
     }
+
+    public function resoumettre(int $idAbsence, string $motif, ?string $uriJustificatif): bool
+    {
+        try {
+            $sql = "UPDATE {$this->table} 
+                    SET motif = :motif, 
+                        urijustificatif = :uri,
+                        justifie = NULL, -- Repasse en attente
+                        raison_refus = NULL,
+                        type_refus = NULL
+                    WHERE idabsence = :id";
+            
+            $stmt = $this->conn->prepare($sql);
+            
+            return $stmt->execute([
+                ':motif' => $motif,
+                ':uri' => $uriJustificatif,
+                ':id' => $idAbsence
+            ]);
+            
+        } catch (PDOException $e) {
+            error_log("Erreur lors de la ressoumission de l'absence : " . $e->getMessage());
+            return false;
+        }
+    }
 }

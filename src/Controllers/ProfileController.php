@@ -1,78 +1,39 @@
 <?php
 namespace src\Controllers;
 
-session_start();
-require __DIR__ . '/session_timeout.php'; // Gestion du timeout de session
+require_once __DIR__ . '/../Models/ProfileModel.php';
+require_once __DIR__ . '/session_timeout.php';
 
-require __DIR__ . '/../Database/Database.php';
-
-use src\Database\Database;
+use src\Models\ProfileModel;
 
 class ProfileController {
-    public static function show()
+    private $profileModel;
+
+    public function __construct()
     {
-        // Vérifier connexion
+        $this->profileModel = new ProfileModel();
+    }
+
+    public function show()
+    {
+        session_start();
         if (!isset($_SESSION['login'])) {
             header('Location: ../../public/index.php');
             exit;
         }
 
         $identifiant = $_SESSION['login'];
-        $bd = new Database();
-        $pdo = $bd->getConnection();
-
         $message = '';
         $messageType = '';
 
-        // Traitement de la mise à jour du mot de passe
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_password') {
-            $old = $_POST['old_password'] ?? '';
-            $new = $_POST['new_password'] ?? '';
-            $confirm = $_POST['confirm_password'] ?? '';
-
-            if (empty($old) || empty($new) || empty($confirm)) {
-                $message = 'Veuillez remplir tous les champs.';
-                $messageType = 'error';
-            } else {
-                // Vérifier l'ancien mot de passe avec password_verify
-                $stmt = $pdo->prepare('SELECT mot_de_passe FROM Compte WHERE identifiantCompte = :id');
-                $stmt->execute([':id' => $identifiant]);
-                $currentPassword = $stmt->fetchColumn();
-
-                if (!password_verify($old, $currentPassword)) {
-                    $message = 'L\'ancien mot de passe est incorrect.';
-                    $messageType = 'error';
-                } elseif ($new !== $confirm) {
-                    $message = 'Les nouveaux mots de passe ne correspondent pas.';
-                    $messageType = 'error';
-                } else {
-                    // Hacher le nouveau mot de passe avant de le stocker
-                    $hashedPassword = password_hash($new, PASSWORD_DEFAULT);
-                    
-                    // Mise à jour avec le mot de passe haché
-                    $stmt = $pdo->prepare('UPDATE Compte SET mot_de_passe = :mdp WHERE identifiantCompte = :id');
-                    $updated = $stmt->execute([':mdp' => $hashedPassword, ':id' => $identifiant]);
-                    if ($updated) {
-                        // Ne pas stocker le mot de passe en session
-                        $message = 'Mot de passe mis à jour avec succès.';
-                        $messageType = 'success';
-                    } else {
-                        $message = 'Erreur lors de la mise à jour du mot de passe.';
-                        $messageType = 'error';
-                    }
-                }
-            }
+            list($message, $messageType) = $this->handlePasswordUpdate($identifiant);
         }
 
-        // Récupérer les informations utilisateur depuis la table Compte
-        $stmt = $pdo->prepare('SELECT idCompte, prenom, nom, identifiantCompte, fonction FROM Compte WHERE identifiantCompte = :id');
-        $stmt->execute([':id' => $identifiant]);
-        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $user = $this->profileModel->getUserByIdentifiant($identifiant);
 
-        // Si pas trouvé, créer un fallback minimal basé sur la session
-        if (!is_array($user) || empty($user)) {
+        if (!$user) {
             $user = [
-                'idCompte' => null,
                 'identifiantCompte' => $identifiant,
                 'prenom' => $_SESSION['prenom'] ?? '',
                 'nom' => $_SESSION['nom'] ?? '',
@@ -80,24 +41,47 @@ class ProfileController {
             ];
         }
 
-        // sécuriser les accès aux clés
-        $identFromDb = $user['identifiantCompte'] ?? $identifiant;
-        $idCompte = $user['idCompte'] ?? null;
-        $fonction = $user['fonction'] ?? ($_SESSION['role'] ?? '');
+        $user['email'] = ($user['identifiantCompte'] ?? $identifiant) . '@uphf.fr';
+        $role = strtolower((string)($user['fonction'] ?? ''));
 
-        // Email fallback - tous les utilisateurs ont @uphf.fr
-        $user['email'] = $identFromDb . '@uphf.fr';
-
-        // Récupérer les informations spécifiques selon le rôle si possible
-        $role = strtolower((string)$fonction);
         if ($role === 'etudiant' || $role === 'etudiante') {
-            // Chercher la formation/groupe dans la table Etudiant si possible
-            if ($idCompte !== null) {
-                $stmtE = $pdo->prepare('SELECT formation FROM Etudiant WHERE idEtudiant = :idCompte');
-                $stmtE->execute([':idCompte' => $idCompte]);
-            } else {
-                $stmtE = $pdo->prepare('SELECT formation FROM Etudiant WHERE identifiantEtu = :id');
-                $stmtE->execute([':id' => $identFromDb]);
+            $etudiantDetails = $this->profileModel->getEtudiantDetails($user['idCompte'] ?? null, $identifiant);
+            if ($etudiantDetails) {
+                $user = array_merge($user, $etudiantDetails);
+            }
+        }
+
+        require __DIR__ . '/../Views/profile/profile_vue.php';
+    }
+
+    private function handlePasswordUpdate($identifiant)
+    {
+        $old = $_POST['old_password'] ?? '';
+        $new = $_POST['new_password'] ?? '';
+        $confirm = $_POST['confirm_password'] ?? '';
+
+        if (empty($old) || empty($new) || empty($confirm)) {
+            return ['Veuillez remplir tous les champs.', 'error'];
+        }
+
+        $user = $this->profileModel->getUserByIdentifiant($identifiant);
+
+        if (!$user || !password_verify($old, $user['mot_de_passe'])) {
+            return ['L\'ancien mot de passe est incorrect.', 'error'];
+        }
+
+        if ($new !== $confirm) {
+            return ['Les nouveaux mots de passe ne correspondent pas.', 'error'];
+        }
+
+        if ($this->profileModel->updateUserPassword($identifiant, $new)) {
+            return ['Mot de passe mis à jour avec succès.', 'success'];
+        } else {
+            return ['Erreur lors de la mise à jour du mot de passe.', 'error'];
+        }
+    }
+}
+
             }
             $etu = $stmtE->fetch(\PDO::FETCH_ASSOC);
             $user['groupe'] = $etu['formation'] ?? null;
