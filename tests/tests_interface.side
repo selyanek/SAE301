@@ -1,0 +1,328 @@
+{
+  "id": "sae301-tests",
+  "version": "2.0",
+  "name": "SAE301 Tests",
+  "url": "http://localhost",
+  "tests": [
+    {
+      "id": "test-etudiant-completer-absence",
+      "name": "Étudiant - Compléter absence avec justificatif",
+      "commands": [
+        {
+          "command": "open",
+          "target": "/index.php",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "id=username",
+          "value": "dilara.simsek"
+        },
+        {
+          "command": "type",
+          "target": "id=password",
+          "value": "motdepasse123"
+        },
+        {
+          "command": "click",
+          "target": "id=login-button",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "linkText=Mon Profil",
+          "value": ""
+        },
+        {
+          "command": "click",
+          "target": "linkText=Mon Profil",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "id=resoumettre-absence",
+          "value": ""
+        },
+        {
+          "command": "click",
+          "target": "id=resoumettre-absence",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "id=date-debut",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "id=date-debut",
+          "value": "2026-03-16"
+        },
+        {
+          "command": "type",
+          "target": "id=heure-debut",
+          "value": "08:00"
+        },
+        {
+          "command": "type",
+          "target": "id=date-fin",
+          "value": "2026-03-18"
+        },
+        {
+          "command": "type",
+          "target": "id=heure-fin",
+          "value": "17:00"
+        },
+        {
+          "command": "type",
+          "target": "id=justificatif",
+          "value": "Maladie"
+        },
+        {
+          "command": "click",
+          "target": "id=upload-file",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "id=file-input",
+          "value": "/path/to/justificatif.pdf"
+        },
+        {
+          "command": "click",
+          "target": "id=submit-absence",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "id=validation-message",
+          "value": ""
+        },
+        {
+          "command": "assertText",
+          "target": "id=validation-message",
+          "value": "Absence soumise avec succès"
+        }
+      ]
+    },
+    {
+      "id": "test-secretaire-upload-csv",
+      "name": "Secrétaire - Simulation envoi fichier CSV",
+      "commands": [
+        {
+          "command": "open",
+          "target": "/index.php",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "id=username",
+          "value": "delphine.milice"
+        },
+        {
+          "command": "type",
+          "target": "id=password",
+          "value": "password123"
+        },
+        {
+          "command": "click",
+          "target": "id=login-button",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "linkText=Importer CSV",
+          "value": ""
+        },
+        {
+          "command": "click",
+          "target": "linkText=Importer CSV",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "id=csv-upload",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "id=csv-upload",
+          "value": "/path/to/data/CSV/BUT1-240122-240223_anonymise.CSV"
+        },
+        {
+          "command": "click",
+          "target": "id=upload-button",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "id=validation-message",
+          "value": ""
+        },
+        {
+          "command": "assertText",
+          "target": "id=validation-message",
+          "value": "Fichier CSV importé avec succès"
+        }
+      ]
+    },
+    {
+      "id": "test-etudiant-changer-mdp",
+      "name": "Étudiant - Changer mot de passe",
+      "commands": [
+        {
+          "command": "open",
+          "target": "/index.php",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "id=username",
+          "value": "dilara.simsek"
+        },
+        {
+          "command": "type",
+          "target": "id=password",
+          "value": "motdepasse123"
+        },
+        {
+          "command": "click",
+          "target": "id=login-button",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "linkText=Mon Profil",
+          "value": ""
+        },
+        {
+          "command": "click",
+          "target": "linkText=Mon Profil",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "id=changer-mdp",
+          "value": ""
+        },
+        {
+          "command": "click",
+          "target": "id=changer-mdp",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "id=ancien-mdp",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "id=ancien-mdp",
+          "value": "motdepasse123"
+        },
+        {
+          "command": "type",
+          "target": "id=nouveau-mdp",
+          "value": "newpassword456"
+        },
+        {
+          "command": "type",
+          "target": "id=confirmer-mdp",
+          "value": "newpassword456"
+        },
+        {
+          "command": "click",
+          "target": "id=submit-mdp",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "id=success-message",
+          "value": ""
+        },
+        {
+          "command": "assertText",
+          "target": "id=success-message",
+          "value": "Mot de passe changé avec succès"
+        }
+      ]
+    },
+    {
+      "id": "test-professeur-filtrer-absences",
+      "name": "Professeur - Filtrer absences rattrapage",
+      "commands": [
+        {
+          "command": "open",
+          "target": "/index.php",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "id=username",
+          "value": "professeur@example.com"
+        },
+        {
+          "command": "type",
+          "target": "id=password",
+          "value": "password123"
+        },
+        {
+          "command": "click",
+          "target": "id=login-button",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "linkText=Rattrapage",
+          "value": ""
+        },
+        {
+          "command": "click",
+          "target": "linkText=Rattrapage",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "id=filtre-date",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "id=filtre-date",
+          "value": "2026-03-16"
+        },
+        {
+          "command": "click",
+          "target": "id=appliquer-filtre",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "id=list-absences",
+          "value": ""
+        },
+        {
+          "command": "assertElementPresent",
+          "target": "css=.absence-item",
+          "value": ""
+        }
+      ]
+    }
+  ],
+  "suites": [
+    {
+      "id": "suite-all-tests",
+      "name": "Tous les tests",
+      "tests": [
+        "test-etudiant-completer-absence",
+        "test-secretaire-upload-csv",
+        "test-etudiant-changer-mdp",
+        "test-professeur-filtrer-absences"
+      ]
+    }
+  ],
+  "urls": [
+    "http://localhost"
+  ],
+  "plugins": []
+}
