@@ -16,7 +16,9 @@ class ProfileController {
 
     public function show()
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         if (!isset($_SESSION['login'])) {
             header('Location: ../../public/index.php');
             exit;
@@ -51,7 +53,7 @@ class ProfileController {
             }
         }
 
-        require __DIR__ . '/../Views/profile/profile_vue.php';
+        require __DIR__ . '/../Views/profile/monProfil.php';
     }
 
     private function handlePasswordUpdate($identifiant)
@@ -79,26 +81,5 @@ class ProfileController {
         } else {
             return ['Erreur lors de la mise à jour du mot de passe.', 'error'];
         }
-    }
-}
-
-            }
-            $etu = $stmtE->fetch(\PDO::FETCH_ASSOC);
-            $user['groupe'] = $etu['formation'] ?? null;
-        } elseif ($role === 'professeur') {
-            // Chercher les matières (Ressource.nom) enseignées par ce professeur via Professeur -> Cours -> Ressource
-            if ($idCompte !== null) {
-                $stmtP = $pdo->prepare('SELECT DISTINCT r.nom AS matiere FROM Professeur p JOIN Cours c ON p.idProfesseur = c.idProfesseur JOIN Ressource r ON c.idRessource = r.idRessource WHERE p.idProfesseur = :idCompte');
-                $stmtP->execute([':idCompte' => $idCompte]);
-            } else {
-                $stmtP = $pdo->prepare('SELECT DISTINCT r.nom AS matiere FROM Professeur p JOIN Cours c ON p.idProfesseur = c.idProfesseur JOIN Ressource r ON c.idRessource = r.idRessource WHERE p.identifiantProf = :id');
-                $stmtP->execute([':id' => $identFromDb]);
-            }
-            $matieres = $stmtP->fetchAll(\PDO::FETCH_COLUMN);
-            $user['matieres'] = $matieres ?: [];
-        }
-
-        // Rendre la vue
-        require __DIR__ . '/../Views/profile/monProfil.php';
     }
 }

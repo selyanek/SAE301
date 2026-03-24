@@ -225,6 +225,6 @@ require __DIR__ . '/../layout/navigation.php';
 <?php include __DIR__.'/../layout/footer.php'; ?>
 
 <script src="/public/asset/JS/jsHistoriqueResponsable.js"></script>
-<script src="/public/asset/JS/gestionAbsenceAjax.js"></script>
+<script src="/public/asset/JS/filterAjax.js"></script>
 </body>
 </html>

@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <title>Mon Profil - EduTrack</title>
     <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
-    <link href="/public/asset/CSS/profile.css" rel="stylesheet">
+    <link href="/public/asset/CSS/cssProfile.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">

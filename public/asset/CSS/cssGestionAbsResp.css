@@ -92,17 +92,18 @@
   width: 100%;
   overflow-x: auto;
   margin: 30px auto;
-  max-width: 1400px;
+  max-width: 1250px;
 }
 
 #tableAbsences {
   width: 100%;
-  min-width: 1000px;
-  border-collapse: collapse;
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 14px #00000014;
+  min-width: 1040px;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
   font-size: 13px;
 }
 
@@ -121,21 +122,40 @@
   letter-spacing: 0.3px;
 }
 
-#tableAbsences td {
-  padding: 10px 8px;
-  text-align: left;
-  border-bottom: 1px solid #e9ecef;
-  vertical-align: middle;
-  font-size: 12px;
+#tableAbsences thead th:first-child {
+  border-radius: 10px 0 0 10px;
 }
 
-#tableAbsences tbody tr:nth-child(even) {
-  background-color: #f9fbfc;
+#tableAbsences thead th:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+#tableAbsences td {
+  padding: 12px 10px;
+  text-align: left;
+  border: none;
+  vertical-align: middle;
+  font-size: 12px;
+  background: #ffffff;
+}
+
+#tableAbsences tbody tr {
+  box-shadow: 0 4px 16px #00000014;
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 #tableAbsences tbody tr:hover {
-  background-color: #e8f4f8;
-  transition: background-color 0.2s ease;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px #0000001f;
+}
+
+#tableAbsences tbody tr td:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+#tableAbsences tbody tr td:last-child {
+  border-radius: 0 10px 10px 0;
 }
 
 /* Texte gris pour les cours */
@@ -183,7 +203,7 @@ td.statut-refuse {
   text-align: center;
   white-space: nowrap;
   color: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 6px #00000026;
 }
 
 /* En attente */
@@ -230,7 +250,7 @@ td.actions {
   padding: 6px 12px;
   border-radius: 6px;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(41, 172, 200, 0.2);
+  box-shadow: 0 2px 4px #29acc833;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -297,16 +317,17 @@ td.actions {
 }
 
 /* ========== RESPONSIVE ========== */
+
 @media (max-width: 992px) {
   .filter-form {
-    flex-direction: column;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
     gap: 12px;
   }
 
   .filter-form label {
-    margin-bottom: 4px;
-    margin-right: 0;
+    margin: 0;
   }
 
   .filter-form input,
@@ -314,20 +335,26 @@ td.actions {
   .filter-form .btn,
   .filter-form a {
     width: 100%;
-    min-width: unset;
+    min-width: 0;
   }
-  
-  .filter-form a .btn {
-    width: 100%;
+
+  .table-wrapper {
+    padding: 0 10px;
+    -webkit-overflow-scrolling: touch;
   }
 
   #tableAbsences {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   #tableAbsences th,
   #tableAbsences td {
-    padding: 10px 12px;
+    padding: 9px 8px;
+    font-size: 11px;
+  }
+
+  .actions {
+    justify-content: flex-start;
   }
 }
 
@@ -340,98 +367,63 @@ td.actions {
   .filter-form {
     margin: 20px 10px;
     padding: 15px;
+    grid-template-columns: 1fr;
   }
 
-  .filter-form input,
-  .filter-form select {
-    min-width: unset;
+  .filter-form .btn,
+  .filter-form a {
+    text-align: center;
   }
 
-  #tableAbsences {
-    min-width: 100%;
-    font-size: 11px;
+  .table-wrapper {
+    width: 100%;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0;
   }
 
+  #tableAbsences,
+  #tableAbsences thead,
+  #tableAbsences tbody,
+  #tableAbsences tr,
   #tableAbsences th,
   #tableAbsences td {
-    padding: 8px 6px;
-    font-size: 11px;
-  }
-
-  .btn_justif {
-    padding: 5px 10px;
-    font-size: 11px;
-  }
-
-  .actions {
-    flex-direction: column;
-    gap: 5px;
-  }
-}
-
-@media (max-width: 480px) {
-  .text h1 {
-    font-size: 1.4em;
-  }
-
-  .filter-form {
-    margin: 15px 8px;
-    padding: 12px;
-    gap: 10px;
-  }
-
-  .filter-form label {
-    font-size: 13px;
-  }
-
-  .filter-form input[type="text"],
-  .filter-form input[type="date"],
-  .filter-form select {
-    padding: 8px 10px;
-    font-size: 14px;
+    display: revert;
   }
 
   #tableAbsences {
-    font-size: 10px;
+    min-width: 760px;
+    font-size: 11px;
   }
 
   #tableAbsences th,
   #tableAbsences td {
-    padding: 6px 4px;
-    font-size: 10px;
+    padding: 9px 8px;
+    white-space: normal;
     word-break: break-word;
   }
 
-  .btn_justif {
-    padding: 4px 8px;
-    font-size: 10px;
-  }
-}
-
-@media (max-width: 768px) {
-  .text h1 {
-    font-size: 1.8em;
+  #tableAbsences th:nth-child(1),
+  #tableAbsences td:nth-child(1) {
+    display: none;
   }
 
-  #tableAbsences {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
+  /* On supprime les pseudo-labels td::before — inutiles en mode scroll */
+  #tableAbsences td::before {
+    content: none;
   }
 
-  #tableAbsences th,
-  #tableAbsences td {
-    padding: 8px 10px;
-    font-size: 12px;
-  }
-
-  .btn_justif {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
-  
   .actions {
-    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 6px;
+  }
+
+  .actions button,
+  .actions a,
+  .btn_justif {
+    font-size: 11px;
+    padding: 5px 10px;
   }
 }

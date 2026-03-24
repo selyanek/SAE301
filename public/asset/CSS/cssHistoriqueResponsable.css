@@ -270,28 +270,39 @@ td.statut-refuse {
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 992px) {
-  .filter-form { 
-    flex-direction: column; 
-    align-items: stretch; 
-    gap: 12px; 
+  .filter-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    gap: 12px;
   }
-  .filter-form label { 
-    margin-bottom: 4px; 
-    margin-right: 0; 
+
+  .filter-form label {
+    margin: 0;
   }
-  .filter-form input, 
-  .filter-form select, 
-  .filter-form .btn, 
-  .filter-form a { 
-    width: 100%; 
-    min-width: unset; 
+
+  .filter-form input,
+  .filter-form select,
+  .filter-form .btn,
+  .filter-form a {
+    width: 100%;
+    min-width: 0;
   }
-  #tableAbsences { 
-    font-size: 12px; 
+
+  .table-wrapper {
+    padding: 0 10px;
+    -webkit-overflow-scrolling: touch;
   }
-  #tableAbsences th, 
-  #tableAbsences td { 
-    padding: 10px 12px; 
+
+  #tableAbsences {
+    min-width: 980px;
+    font-size: 11px;
+  }
+
+  #tableAbsences th,
+  #tableAbsences td {
+    padding: 9px 8px;
+    font-size: 11px;
   }
 }
 
@@ -304,29 +315,23 @@ td.statut-refuse {
   .filter-form {
     margin: 20px 10px;
     padding: 15px;
+    grid-template-columns: 1fr;
   }
   
   #tableAbsences { 
-    display: block; 
-    overflow-x: auto; 
-    white-space: nowrap;
-    min-width: 100%;
-    font-size: 11px;
+    min-width: 880px;
   }
-  
-  #tableAbsences th, 
-  #tableAbsences td { 
-    padding: 8px 10px; 
-    font-size: 11px; 
-  }
-  
-  .actions-cell { 
-    justify-content: center; 
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
   }
 
   .actions button,
   .actions a {
-    padding: 5px 10px;
+    width: 100%;
+    padding: 6px 10px;
     font-size: 11px;
   }
 
@@ -365,6 +370,7 @@ td.statut-refuse {
   }
 
   #tableAbsences {
+    min-width: 760px;
     font-size: 9px;
     overflow-x: auto;
   }

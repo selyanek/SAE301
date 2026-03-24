@@ -414,7 +414,7 @@ require __DIR__ . '/../layout/navigation.php';
         }
     }
 </script>
-<script src="/public/asset/JS/gestionAbsenceAjax.js"></script>
+<script src="/public/asset/JS/filterAjax.js"></script>
 
 <?php
 require __DIR__ . '/../layout/footer.php';

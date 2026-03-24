@@ -7,5 +7,6 @@
         <li><a href="/src/Views/responsable/gestionAbsence.php"> Gestion des absences</a></li>
         <li><a href="/src/Views/responsable/historiqueAbsResp.php"> Historique des absences</a></li>
         <li><a href="/src/Views/responsable/statistiques.php"> Statistiques</a></li>
+        <li class="logout-item"><a href="/src/Views/logout.php">Déconnexion</a></li>
     </ul>
 </div>

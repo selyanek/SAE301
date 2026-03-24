@@ -40,6 +40,36 @@
     gap: 20px;
 }
 
+.filter-form.is-loading {
+    opacity: 0.7;
+}
+
+.ajax-loader {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #eef6ff;
+    color: #145da0;
+    font-weight: 600;
+}
+
+.ajax-feedback {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.ajax-feedback.success {
+    background: #edf9f1;
+    color: #1d6f42;
+}
+
+.ajax-feedback.error {
+    background: #fdecec;
+    color: #b42318;
+}
+
 .filter-group {
     display: flex;
     flex-direction: column;
@@ -320,126 +350,15 @@
 }
 
 @media (max-width: 480px) {
-    .stats-container {
-        margin: 60px 8px 20px;
-        padding: 8px;
-    }
-
-    .stats-header {
-        margin-bottom: 20px;
-    }
-
     .stats-header h1 {
-        font-size: 1.4em;
-        margin-bottom: 8px;
-    }
-
-    .stats-subtitle {
-        font-size: 14px;
-    }
-
-    .stats-filters {
-        padding: 15px;
-        margin-bottom: 20px;
-        box-shadow: none;
-    }
-
-    .filter-form {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-
-    .filter-group label {
-        font-size: 13px;
-        margin-bottom: 6px;
-    }
-
-    .filter-group select,
-    .filter-group input[type="date"] {
-        padding: 8px 10px;
-        font-size: 14px;
-    }
-
-    .filter-actions {
-        flex-direction: column;
-        width: 100%;
-        gap: 8px;
-    }
-
-    .filter-actions .btn {
-        width: 100%;
-        padding: 10px 16px;
-        font-size: 13px;
-    }
-
-    .stats-global {
-        gap: 12px;
-        margin-bottom: 25px;
-    }
-
-    .stat-card {
-        min-width: 100%;
-        padding: 15px;
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
-    }
-
-    .stat-icon {
-        font-size: 40px;
+        font-size: 20px;
     }
 
     .stat-content h3 {
         font-size: 28px;
     }
 
-    .stat-content p {
-        font-size: 13px;
-    }
-
-    .chart-row {
-        gap: 20px;
-    }
-
-    .chart-container {
-        padding: 15px;
-    }
-
     .chart-container h2 {
         font-size: 16px;
-        margin-bottom: 15px;
-    }
-
-    .chart-container canvas {
-        max-height: 250px;
-    }
-
-    .btn-export {
-        font-size: 13px;
-        padding: 8px 16px;
-        gap: 6px;
-    }
-
-    .stats-rattrapages {
-        padding: 15px;
-    }
-
-    .stats-rattrapages h2 {
-        font-size: 1.1em;
-    }
-
-    .table-rattrapages {
-        font-size: 11px;
-    }
-
-    .table-rattrapages th,
-    .table-rattrapages td {
-        padding: 6px 3px;
-        font-size: 10px;
-    }
-
-    .badge {
-        padding: 3px 8px;
-        font-size: 10px;
     }
 }

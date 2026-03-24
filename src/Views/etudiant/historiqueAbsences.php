@@ -149,4 +149,4 @@ require '../layout/navigation.php';
 <?php
 require '../layout/footer.php';
 ?>
-<script src="/public/asset/JS/gestionAbsenceAjax.js"></script>
+<script src="/public/asset/JS/filterAjax.js"></script>

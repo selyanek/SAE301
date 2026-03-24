@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         <hr>
         <h3>Changer le mot de passe</h3>
-        <form method="post" action="">
+            <form method="post" action="" class="form-ajax" data-endpoint="/src/Controllers/api_profile.php" data-timeout="30000">
             <input type="hidden" name="action" value="update_password">
             <label>Ancien mot de passe :</label><br>
             <input type="password" name="old_password" required><br>
@@ -99,11 +99,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button type="submit">Valider</button>
                 <a href="javascript:history.back();"><button type="button">Annuler</button></a>
             </div>
+            <div class="form-feedback"></div>
         </form>
 
     <?php else: ?>
         <p>Utilisateur introuvable.</p>
     <?php endif; ?>
 </div>
+    <link rel="stylesheet" href="/public/asset/CSS/cssFormAjax.css">
+    <script src="/public/asset/JS/formAjax.js"></script>
 </body>
 </html>

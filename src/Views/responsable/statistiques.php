@@ -46,7 +46,7 @@ require_once __DIR__ . '/../layout/navigation.php';
 
     <?php // Filtres ?>
     <div class="stats-filters">
-        <form method="GET" class="filter-form">
+        <form method="GET" class="filter-form" id="statsFilterForm" data-endpoint="../../Controllers/api_statistiques.php">
             <div class="filter-group">
                 <label for="annee_but">Année BUT</label>
                 <select name="annee_but" id="annee_but">
@@ -81,37 +81,39 @@ require_once __DIR__ . '/../layout/navigation.php';
 
             <div class="filter-actions">
                 <button type="submit" class="btn btn-primary">Filtrer</button>
-                <a href="statistiques.php" class="btn btn-secondary">Réinitialiser</a>
+                <a href="statistiques.php" class="btn btn-secondary" id="resetStatsFilters">Réinitialiser</a>
             </div>
         </form>
+        <div id="statsLoader" class="ajax-loader" hidden>Chargement des statistiques...</div>
+        <div id="statsFeedback" class="ajax-feedback" hidden></div>
     </div>
 
     <?php // Statistiques globales - Grille 4 colonnes ?>
     <div class="stats-global">
         <div class="stat-card stat-danger">
             <div class="stat-content">
-                <h3><?= $globales['total'] ?></h3>
+                <h3 id="statTotal"><?= $globales['total'] ?></h3>
                 <p>Absences totales</p>
             </div>
         </div>
 
         <div class="stat-card stat-success">
             <div class="stat-content">
-                <h3><?= $globales['justifiees'] ?></h3>
+                <h3 id="statJustifiees"><?= $globales['justifiees'] ?></h3>
                 <p>Absences justifiées</p>
             </div>
         </div>
 
         <div class="stat-card stat-warning">
             <div class="stat-content">
-                <h3><?= $globales['non_justifiees'] ?></h3>
+                <h3 id="statNonJustifiees"><?= $globales['non_justifiees'] ?></h3>
                 <p>Non justifiées</p>
             </div>
         </div>
 
         <div class="stat-card stat-danger">
             <div class="stat-content">
-                <h3><?= $globales['evaluations'] ?></h3>
+                <h3 id="statEvaluations"><?= $globales['evaluations'] ?></h3>
                 <p>Lors d'évaluations</p>
             </div>
         </div>
@@ -276,5 +278,6 @@ function exporterGraphique(canvasId, titre) {
     pdf.save(nomFichier);
 }
 </script>
+<script src="/public/asset/JS/filterAjax.js"></script>
 
 <?php require_once __DIR__ . '/../layout/footer.php'; ?>
