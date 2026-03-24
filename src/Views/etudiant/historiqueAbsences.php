@@ -14,7 +14,8 @@ require '../layout/navigation.php';
 </header>
 
 <!-- Formulaire de filtrage -->
-<form method="post" class="filtre-form">
+<form method="post" id="absenceFilterForm" class="filtre-form" data-endpoint="../../Controllers/api_absences.php">
+    <input type="hidden" name="mode" value="etudiant">
     <label for="date">Filtrer par date :</label>
     <input type="date" name="date" id="date" value="<?php echo isset($_POST['date']) ? htmlspecialchars($_POST['date']) : ''; ?>">
 
@@ -26,11 +27,13 @@ require '../layout/navigation.php';
     </select>
 
     <button type="submit">Filtrer</button>
-    <a href="historiqueAbsences.php"><button type="button">Réinitialiser</button></a>
+    <a href="historiqueAbsences.php" id="resetFiltersButton"><button type="button">Réinitialiser</button></a>
 </form>
+<div id="tableLoader" class="ajax-loader" hidden>Chargement...</div>
+<div id="tableFeedback" class="ajax-feedback" hidden></div>
 
 <!-- Liste des absences sous forme de cartes -->
-<div class="absences-container">
+<div class="absences-container" id="tableAbsencesBody">
 <?php
     // Récupération des filtres
     $dateFiltre = isset($_POST['date']) ? $_POST['date'] : '';
@@ -146,3 +149,4 @@ require '../layout/navigation.php';
 <?php
 require '../layout/footer.php';
 ?>
+<script src="/public/asset/JS/gestionAbsenceAjax.js"></script>
