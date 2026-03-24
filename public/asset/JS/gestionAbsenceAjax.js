@@ -1,4 +1,6 @@
+// Gère le filtrage Ajax des absences (gestion/historique) sans rechargement de page.
 document.addEventListener('DOMContentLoaded', () => {
+    // Elements utilises pour piloter le filtrage et le rendu dynamique.
     const form = document.getElementById('absenceFilterForm');
     const body = document.getElementById('tableAbsencesBody');
     const loader = document.getElementById('tableLoader');
@@ -13,17 +15,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let debounceTimer = null;
     let activeController = null;
 
+    // Affiche/masque l'etat de chargement et grise le formulaire pendant la requete.
     const setLoading = (loading) => {
         loader.hidden = !loading;
         form.classList.toggle('is-loading', loading);
     };
 
+    // Affiche un message utilisateur (succes ou erreur).
     const setFeedback = (message, isError = false) => {
         feedback.textContent = message;
         feedback.className = isError ? 'ajax-feedback error' : 'ajax-feedback success';
         feedback.hidden = message === '';
     };
 
+    // Transforme les champs du formulaire en query string pour le endpoint.
     const queryFromForm = () => {
         const params = new URLSearchParams();
         const data = new FormData(form);
@@ -33,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return params.toString();
     };
 
+    // Lance le chargement Ajax des resultats avec annulation de la requete precedente.
     const loadRows = async () => {
         if (!endpoint) {
             return;
@@ -74,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Debounce pour eviter de spammer l'API pendant la saisie texte.
     const debouncedLoad = () => {
         window.clearTimeout(debounceTimer);
         debounceTimer = window.setTimeout(loadRows, 250);
@@ -88,9 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const dateInput = document.getElementById('date');
     const statutInput = document.getElementById('statut');
 
+    // Filtrage en direct sur le nom.
     if (nomInput) {
         nomInput.addEventListener('input', debouncedLoad);
     }
+    // Mise a jour immediate sur les champs select/date.
     if (dateInput) {
         dateInput.addEventListener('change', loadRows);
     }
@@ -98,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         statutInput.addEventListener('change', loadRows);
     }
 
+    // Reinitialise le formulaire puis recharge la liste sans recharger la page.
     if (reset) {
         reset.addEventListener('click', (event) => {
             event.preventDefault();

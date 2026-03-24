@@ -1,4 +1,8 @@
 <?php
+// Endpoint Ajax central pour filtrer/rendre les absences selon le contexte:
+// - mode gestion (responsable, en attente/en revision)
+// - mode historique (responsable, valide/refuse)
+// - mode etudiant (cartes de ses propres absences)
 session_start();
 
 require __DIR__ . '/../../vendor/autoload.php';
@@ -8,6 +12,7 @@ require __DIR__ . '/../Models/Absence.php';
 
 header('Content-Type: application/json');
 
+// Controle d'acces de base: un role de session est obligatoire.
 if (!isset($_SESSION['role'])) {
     http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'Acces refuse.']);
@@ -16,6 +21,7 @@ if (!isset($_SESSION['role'])) {
 
 $modeEarly = isset($_GET['mode']) ? trim((string) $_GET['mode']) : 'gestion';
 
+// Controle d'acces par mode pour eviter qu'un role appelle un endpoint non autorise.
 if ($modeEarly === 'etudiant') {
     if ($_SESSION['role'] !== 'etudiant' && $_SESSION['role'] !== 'etudiante') {
         http_response_code(403);
@@ -31,6 +37,7 @@ if ($modeEarly === 'etudiant') {
 }
 
 try {
+    // Initialisation commune: connexion DB + modele principal.
     $db = new \src\Database\Database();
     $pdo = $db->getConnection();
     $absenceModel = new \src\Models\Absence($pdo);
@@ -40,7 +47,7 @@ try {
     $statutFiltre = isset($_GET['statut']) ? trim((string) $_GET['statut'])           : '';
     $mode         = isset($_GET['mode'])   ? trim((string) $_GET['mode'])             : 'gestion';
 
-    // ── Mode ÉTUDIANT : rendu cartes ───────────────────────────────────────────
+    // Mode etudiant: renvoie des cartes HTML filtrees pour l'etudiant connecte.
     if ($mode === 'etudiant') {
         $studentId = $_SESSION['login'] ?? '';
         $mesAbsences = !empty($studentId) ? $absenceModel->getByStudentIdentifiant($studentId) : [];
@@ -118,7 +125,7 @@ try {
         exit();
     }
 
-    // ── Modes GESTION / HISTORIQUE ─────────────────────────────────────────────
+    // Modes responsable: on travaille sur toutes les absences puis on filtre selon le mode.
     $absences = $absenceModel->getAll();
     $absencesParEtudiant = [];
 
@@ -183,6 +190,7 @@ try {
         ];
     }
 
+    // Regroupe les absences consecutives (ecart <= 24h) en une periode unique.
     $regrouperAbsencesConsecutives = function (array $liste): array {
         if (empty($liste)) {
             return [];
@@ -287,7 +295,7 @@ try {
         $idAbs = (int) $periode['idabsence'];
 
         if ($mode === 'historique') {
-            // ---- Rendu HISTORIQUE (valide / refusé) ----
+            // Rendu historique: statut final + actions verrouillage/revision/historique.
             $statutClass = $periode['statut'] === 'valide' ? 'statut-valide' : 'statut-refuse';
             $statutLabel = $periode['statut'] === 'valide' ? 'Valide'        : 'Refusé';
             $verrouille  = $periode['verrouille'] === true || $periode['verrouille'] === 't' || $periode['verrouille'] === '1';
@@ -330,7 +338,7 @@ try {
             echo "</tr>";
 
         } else {
-            // ---- Rendu GESTION (en_attente / en_revision) ----
+            // Rendu gestion: absences en attente/en revision + lien details.
             $statutClass = '';
             $statutLabel = '';
             switch ($periode['statut']) {
@@ -382,12 +390,14 @@ try {
         $rowsHtml = $emptyMsg;
     }
 
+    // Reponse JSON standard exploitee par le front Ajax.
     echo json_encode([
         'success' => true,
         'html' => $rowsHtml,
         'count' => count($periodesTotales)
     ]);
 } catch (Throwable $exception) {
+    // Reponse d'erreur JSON pour conserver un comportement coherent cote front.
     http_response_code(500);
     echo json_encode([
         'success' => false,

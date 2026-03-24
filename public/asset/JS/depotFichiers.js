@@ -1,9 +1,11 @@
+// Gère le dépôt de justificatifs: sélection, validation locale, upload et feedback utilisateur.
 let filesList = [];
 const MAX_FILE_SIZE = 5 * 1024 * 1024;   // 5MB par fichier
 const MAX_TOTAL_SIZE = 20 * 1024 * 1024; // 20MB au total
 const allowedTypes = ["application/pdf", "image/jpeg", "image/png"];
 
 function addFile() {
+    // Récupère les fichiers sélectionnés et applique les validations avant ajout à la liste.
     const fileInput = document.getElementById('fileInput');
     const files = fileInput.files;
 
@@ -48,11 +50,13 @@ function addFile() {
 }
 
 function removeFile(index) {
+    // Supprime un fichier de la liste locale puis met à jour l'affichage.
     filesList.splice(index, 1);
     updateFileList();
 }
 
 function updateFileList() {
+    // Rafraîchit l'état visuel de la liste des fichiers et du compteur.
     const container = document.getElementById('fileListContainer');
     const submitBtn = document.getElementById('submitBtn');
     const fileCount = document.getElementById('fileCount');
@@ -89,6 +93,7 @@ function updateFileList() {
 }
 
 async function uploadFiles() {
+    // Construit le FormData complet, envoie au contrôleur puis affiche le résultat.
     const messageDiv = document.getElementById('message');
     const submitBtn = document.getElementById('submitBtn');
 
@@ -138,7 +143,7 @@ async function uploadFiles() {
         if (result.success) {
             messageDiv.innerHTML = `<div class="message success">${result.message}</div>`;
 
-            // Rediriger vers l'historique des absences
+            // Redirection courte après succès pour laisser le temps de lire le message.
             setTimeout(() => {
                 window.location.href = '/src/Views/etudiant/historiqueAbsences.php';
             }, 1500);
@@ -154,6 +159,7 @@ async function uploadFiles() {
 }
 
 function resetForm() {
+    // Réinitialise le formulaire, la liste locale et les messages UI.
     filesList = [];
     updateFileList();
     document.getElementById('absenceForm').reset();
@@ -161,5 +167,6 @@ function resetForm() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Initialise l'UI de la liste au chargement.
     updateFileList();
 });
