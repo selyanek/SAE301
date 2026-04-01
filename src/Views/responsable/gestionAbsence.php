@@ -79,9 +79,7 @@ require __DIR__ . '/../layout/navigation.php';
     <table id="tableAbsences">
         <thead>
         <tr>
-            <th scope='col'>Date de soumission</th>
-            <th scope='col'>Date début</th>
-            <th scope='col'>Date fin</th>
+            <th scope='col'>Dates</th>
             <th scope='col'>Étudiant</th>
             <th scope='col'>Motif</th>
             <th scope='col'>Document</th>
@@ -93,7 +91,7 @@ require __DIR__ . '/../layout/navigation.php';
         <?php
         // Vérifier si des absences existent
         if (!$absences || count($absences) === 0) {
-            echo "<tr><td colspan='8' class='empty-message'>Aucune absence enregistrée pour le moment.</td></tr>";
+            echo "<tr><td colspan='6' class='empty-message'>Aucune absence enregistrée pour le moment.</td></tr>";
         } else {
             // Regrouper les absences par étudiant et par période continue
             $absencesParEtudiant = [];
@@ -338,45 +336,52 @@ require __DIR__ . '/../layout/navigation.php';
                 }
 
                 echo "<tr>";
-                // Date de soumission
-                echo "<td>" . htmlspecialchars(date('d/m/Y', strtotime($periode['date_debut']))) . "</td>";
-                // Date début
-                echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($periode['date_debut']))) . "</td>";
-                // Date fin
-                echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($periode['date_fin']))) . "</td>";
-                // Nom de l'étudiant
-                echo "<td>" . htmlspecialchars($periode['etudiant']) . "</td>";
-                // Motif + liste des cours
-                echo "<td>";
-                echo htmlspecialchars($periode['motif']);
+                // Dates empilées : début au-dessus, fin en-dessous (US-27)
+                echo "<td class='td-dates'>";
+                echo "<span class='date-debut'>" . htmlspecialchars(date('d/m/Y H:i', strtotime($periode['date_debut']))) . "</span>";
+                echo "<span class='date-fin'>" . htmlspecialchars(date('d/m/Y H:i', strtotime($periode['date_fin']))) . "</span>";
+                echo "</td>";
+                // Nom empilé : prénom au-dessus, nom en-dessous (US-27)
+                $nomParts = explode(' ', $periode['etudiant'], 2);
+                echo "<td class='td-etudiant'>";
+                echo "<span class='etudiant-prenom'>" . htmlspecialchars($nomParts[0] ?? '') . "</span>";
+                echo "<span class='etudiant-nom'>" . htmlspecialchars($nomParts[1] ?? '') . "</span>";
+                echo "</td>";
+                // Motif + liste des cours — bouton "Voir" pour mobile (US-27)
+                $motifComplet = htmlspecialchars($periode['motif']);
                 if (!empty($periode['cours'])) {
-                    echo "<br><small class='small-gray'>";
-                    echo "<strong>Cours concernés:</strong><br>";
+                    $motifComplet .= "\n\nCours concernés:\n";
                     foreach (array_unique($periode['cours']) as $cours) {
-                        echo "• " . htmlspecialchars($cours) . "<br>";
+                        $motifComplet .= "• " . htmlspecialchars($cours) . "\n";
                     }
-                    echo "</small>";
                 }
+                echo "<td class='td-motif'>";
+                echo "<span class='cell-full'>" . nl2br($motifComplet) . "</span>";
+                echo "<button class='btn-voir' onclick='ouvrirModale(\"Motif\", this.dataset.content)' data-content='" . htmlspecialchars($motifComplet, ENT_QUOTES) . "'>Voir</button>";
                 echo "</td>";
                 
-                // Documents justificatifs
-                echo "<td>";
+                // Documents justificatifs — bouton "Voir" pour mobile (US-27)
+                $docHtml = '';
                 if (!empty($periode['urijustificatif'])) {
                     $fichiers = json_decode($periode['urijustificatif'], true);
                     if (is_array($fichiers) && count($fichiers) > 0) {
                         foreach ($fichiers as $index => $fichier) {
                             $fichierPath = "/uploads/" . htmlspecialchars($fichier);
-                            echo "<a href='" . $fichierPath . "' target='_blank'>" . htmlspecialchars($fichier) . "</a><br>";
+                            $docHtml .= "<a href='" . $fichierPath . "' target='_blank'>" . htmlspecialchars($fichier) . "</a><br>";
                         }
                     } else {
-                        echo "—";
+                        $docHtml = "—";
                     }
                 } else {
-                    echo "—";
+                    $docHtml = "—";
                 }
+                echo "<td class='td-document'>";
+                echo "<span class='cell-full'>" . $docHtml . "</span>";
+                echo "<button class='btn-voir btn-voir-doc' onclick='ouvrirModaleDoc(this)' data-content='" . htmlspecialchars($docHtml, ENT_QUOTES) . "'>Voir</button>";
                 echo "</td>";
                 
-                echo "<td class='$statutClass'>$statutLabel</td>";
+                // Statut avec span pour éviter conflit CSS (US-27)
+                echo "<td><span class='statut-badge $statutClass'>$statutLabel</span></td>";
 
                 // Actions
                 echo "<td>";
@@ -392,7 +397,7 @@ require __DIR__ . '/../layout/navigation.php';
             }
 
             if ($count == 0) {
-                echo "<tr><td colspan='8' class='empty-message'>Aucune absence ne correspond aux critères de filtrage.</td></tr>";
+                echo "<tr><td colspan='6' class='empty-message'>Aucune absence ne correspond aux critères de filtrage.</td></tr>";
             }
         }
         ?>
@@ -415,6 +420,42 @@ require __DIR__ . '/../layout/navigation.php';
     }
 </script>
 <script src="/public/asset/JS/filterAjax.js"></script>
+
+<!-- US-27 : Modale pour afficher le contenu des colonnes sur mobile -->
+<div id="modaleDetail" class="modale-overlay" style="display:none;" onclick="if(event.target===this)fermerModale()">
+    <div class="modale-content">
+        <div class="modale-header">
+            <h3 id="modale-titre"></h3>
+            <button class="modale-close" onclick="fermerModale()">✕</button>
+        </div>
+        <div id="modale-body" class="modale-body"></div>
+    </div>
+</div>
+
+<script>
+function ouvrirModale(titre, contenu) {
+    document.getElementById('modale-titre').textContent = titre;
+    document.getElementById('modale-body').textContent = contenu;
+    document.getElementById('modaleDetail').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function ouvrirModaleDoc(btn) {
+    document.getElementById('modale-titre').textContent = 'Document';
+    document.getElementById('modale-body').innerHTML = btn.dataset.content;
+    document.getElementById('modaleDetail').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function fermerModale() {
+    document.getElementById('modaleDetail').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') fermerModale();
+});
+</script>
 
 <?php
 require __DIR__ . '/../layout/footer.php';

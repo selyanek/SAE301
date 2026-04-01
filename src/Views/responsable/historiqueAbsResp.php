@@ -89,9 +89,7 @@ require __DIR__ . '/../layout/navigation.php';
     <table id="tableAbsences">
         <thead>
         <tr>
-            <th>Date soumission</th>
-            <th>Date début</th>
-            <th>Date fin</th>
+            <th>Dates</th>
             <th>Étudiant</th>
             <th>Motif</th>
             <th>Document</th>
@@ -102,7 +100,7 @@ require __DIR__ . '/../layout/navigation.php';
         <tbody id="tableAbsencesBody">
         <?php
         if (!$absences || count($absences) === 0) {
-            echo "<tr><td colspan='8' class='empty-message'>Aucune absence enregistrée.</td></tr>";
+            echo "<tr><td colspan='6' class='empty-message'>Aucune absence enregistrée.</td></tr>";
         } else {
             $absencesParEtudiant = [];
             foreach ($absences as $absence) {
@@ -175,22 +173,47 @@ require __DIR__ . '/../layout/navigation.php';
                     $idAbs = $p['idabsence'];
 
                     echo "<tr>";
-                    echo "<td>" . date('d/m/Y', strtotime($p['date_debut'])) . "</td>";
-                    echo "<td>" . date('d/m/Y H:i', strtotime($p['date_debut'])) . "</td>";
-                    echo "<td>" . date('d/m/Y H:i', strtotime($p['date_fin'])) . "</td>";
-                    echo "<td>" . htmlspecialchars($p['etudiant']) . "</td>";
-                    echo "<td>" . htmlspecialchars($p['motif']) . "</td>";
-
-                    echo "<td>";
-                    if (!empty($p['urijustificatif'])) {
-                        $fichiers = json_decode($p['urijustificatif'], true);
-                        if (is_array($fichiers)) foreach ($fichiers as $f) echo "<a href='/uploads/".htmlspecialchars($f)."' target='_blank'>".htmlspecialchars($f)."</a><br>";
-                        else echo "-";
-                    } else echo "-";
+                    // Dates empilées (US-27)
+                    echo "<td class='td-dates'>";
+                    echo "<span class='date-debut'>" . date('d/m/Y H:i', strtotime($p['date_debut'])) . "</span>";
+                    echo "<span class='date-fin'>" . date('d/m/Y H:i', strtotime($p['date_fin'])) . "</span>";
+                    echo "</td>";
+                    // Nom empilé (US-27)
+                    $nomParts = explode(' ', $p['etudiant'], 2);
+                    echo "<td class='td-etudiant'>";
+                    echo "<span class='etudiant-prenom'>" . htmlspecialchars($nomParts[0] ?? '') . "</span>";
+                    echo "<span class='etudiant-nom'>" . htmlspecialchars($nomParts[1] ?? '') . "</span>";
                     echo "</td>";
 
-                    echo "<td class='$statutClass'>";
-                    echo $statutLabel;
+                    // Motif — bouton "Voir" pour mobile (US-27)
+                    $motifTexte = htmlspecialchars($p['motif']);
+                    echo "<td class='td-motif'>";
+                    echo "<span class='cell-full'>" . $motifTexte . "</span>";
+                    echo "<button class='btn-voir' onclick='ouvrirModale(\"Motif\", this.dataset.content)' data-content='" . htmlspecialchars($motifTexte, ENT_QUOTES) . "'>Voir</button>";
+                    echo "</td>";
+
+                    // Document — bouton "Voir" pour mobile (US-27)
+                    $docHtml = '';
+                    if (!empty($p['urijustificatif'])) {
+                        $fichiers = json_decode($p['urijustificatif'], true);
+                        if (is_array($fichiers)) {
+                            foreach ($fichiers as $f) {
+                                $docHtml .= "<a href='/uploads/".htmlspecialchars($f)."' target='_blank'>".htmlspecialchars($f)."</a><br>";
+                            }
+                        } else {
+                            $docHtml = "-";
+                        }
+                    } else {
+                        $docHtml = "-";
+                    }
+                    echo "<td class='td-document'>";
+                    echo "<span class='cell-full'>" . $docHtml . "</span>";
+                    echo "<button class='btn-voir btn-voir-doc' onclick='ouvrirModaleDoc(this)' data-content='" . htmlspecialchars($docHtml, ENT_QUOTES) . "'>Voir</button>";
+                    echo "</td>";
+
+                    // Statut avec span (US-27)
+                    echo "<td>";
+                    echo "<span class='statut-badge $statutClass'>$statutLabel</span>";
                     if ($verrouille) echo " <span class='badge-verrouille' title='Décision verrouillée'>🔒</span>";
                     if ($p['statut'] === 'refuse' && !empty($p['raison_refus'])) {
                         echo "<div class='refus-reason'><strong>Raison:</strong> ".htmlspecialchars($p['raison_refus'])."</div>";
@@ -226,5 +249,41 @@ require __DIR__ . '/../layout/navigation.php';
 
 <script src="/public/asset/JS/jsHistoriqueResponsable.js"></script>
 <script src="/public/asset/JS/filterAjax.js"></script>
+
+<!-- US-27 : Modale pour afficher le contenu des colonnes sur mobile -->
+<div id="modaleDetail" class="modale-overlay" style="display:none;" onclick="if(event.target===this)fermerModale()">
+    <div class="modale-content">
+        <div class="modale-header">
+            <h3 id="modale-titre"></h3>
+            <button class="modale-close" onclick="fermerModale()">✕</button>
+        </div>
+        <div id="modale-body" class="modale-body"></div>
+    </div>
+</div>
+
+<script>
+function ouvrirModale(titre, contenu) {
+    document.getElementById('modale-titre').textContent = titre;
+    document.getElementById('modale-body').textContent = contenu;
+    document.getElementById('modaleDetail').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function ouvrirModaleDoc(btn) {
+    document.getElementById('modale-titre').textContent = 'Document';
+    document.getElementById('modale-body').innerHTML = btn.dataset.content;
+    document.getElementById('modaleDetail').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function fermerModale() {
+    document.getElementById('modaleDetail').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') fermerModale();
+});
+</script>
 </body>
 </html>

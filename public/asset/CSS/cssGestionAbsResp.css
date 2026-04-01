@@ -97,7 +97,7 @@
 
 #tableAbsences {
   width: 100%;
-  min-width: 1040px;
+  min-width: 700px;
   border-collapse: separate;
   border-spacing: 0 12px;
   background: transparent;
@@ -184,17 +184,7 @@
 }
 
 /* ========== STATUTS (BADGES) ========== */
-td.statut-attente,
-td.statut-revision,
-td.statut-valide,
-td.statut-refuse {
-  vertical-align: middle;
-}
-
-.statut-attente,
-.statut-revision,
-.statut-valide,
-.statut-refuse {
+.statut-badge {
   display: inline-flex;
   padding: 5px 10px;
   border-radius: 20px;
@@ -207,23 +197,62 @@ td.statut-refuse {
 }
 
 /* En attente */
-.statut-attente {
+.statut-badge.statut-attente {
   background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
 }
 
 /* En révision */
-.statut-revision {
+.statut-badge.statut-revision {
   background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
 }
 
 /* Validé */
-.statut-valide {
+.statut-badge.statut-valide {
   background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
 }
 
 /* Refusé */
-.statut-refuse {
+.statut-badge.statut-refuse {
   background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+}
+
+/* ========== Dates empilées (US-27) ========== */
+.td-dates {
+  white-space: nowrap;
+}
+
+.td-dates .date-debut,
+.td-dates .date-fin {
+  display: block;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.td-dates .date-debut::before {
+  content: "▸ ";
+  color: #29acc8;
+  font-size: 10px;
+}
+
+.td-dates .date-fin::before {
+  content: "▸ ";
+  color: #888;
+  font-size: 10px;
+}
+
+/* ========== Nom empilé (US-27) ========== */
+.td-etudiant .etudiant-prenom,
+.td-etudiant .etudiant-nom {
+  display: block;
+}
+
+.td-etudiant .etudiant-prenom {
+  font-weight: 600;
+}
+
+.td-etudiant .etudiant-nom {
+  color: #666;
+  font-size: 12px;
 }
 
 /* ========== ACTIONS ========== */
@@ -392,7 +421,7 @@ td.actions {
   }
 
   #tableAbsences {
-    min-width: 760px;
+    min-width: 500px;
     font-size: 11px;
   }
 
@@ -401,11 +430,6 @@ td.actions {
     padding: 9px 8px;
     white-space: normal;
     word-break: break-word;
-  }
-
-  #tableAbsences th:nth-child(1),
-  #tableAbsences td:nth-child(1) {
-    display: none;
   }
 
   /* On supprime les pseudo-labels td::before — inutiles en mode scroll */
@@ -425,5 +449,139 @@ td.actions {
   .btn_justif {
     font-size: 11px;
     padding: 5px 10px;
+  }
+}
+/* ========== US-27 : Boutons "Voir" et Modale mobile ========== */
+
+/* Par défaut (desktop) : boutons cachés, contenu visible */
+.btn-voir {
+  display: none;
+}
+
+.cell-full {
+  display: inline;
+}
+
+/* Modale de détail */
+.modale-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modale-content {
+  background: white;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: modaleIn 0.25s ease;
+}
+
+@keyframes modaleIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modale-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  border-bottom: 2px solid #e9ecef;
+  background: linear-gradient(135deg, #29acc8 0%, #238da4 100%);
+  border-radius: 12px 12px 0 0;
+}
+
+.modale-header h3 {
+  margin: 0;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.modale-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0 8px;
+  line-height: 1;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.modale-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.modale-body {
+  padding: 20px;
+  color: #333;
+  font-size: 15px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.modale-body a {
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 600;
+  display: block;
+  margin: 6px 0;
+}
+
+.modale-body a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile : cacher le contenu, afficher les boutons */
+@media (max-width: 768px) {
+  .cell-full {
+    display: none;
+  }
+
+  .btn-voir {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #29acc8 0%, #238da4 100%);
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 36px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(41, 172, 200, 0.2);
+  }
+
+  .btn-voir:hover {
+    background: linear-gradient(135deg, #238da4 0%, #1d7289 100%);
+    transform: translateY(-1px);
+  }
+
+  .modale-content {
+    max-width: 95%;
+    margin: 0 10px;
+  }
+
+  .modale-body {
+    font-size: 14px;
+    padding: 15px;
   }
 }
