@@ -7,9 +7,9 @@ if __name__ == "__main__":
     # données et style pour reproduire exactement le graphique fourni
     sprints = list(range(1, 5))
     pred_x = [1, 2, 3, 4]
-    pred_y = [112, 115, 155, 88]
+    pred_y = [26, 139, 0, 0]
     res_x = [2, 3, 4]
-    res_y = [14, 119, 88]
+    res_y = [0,0,0]
 
     fig, ax = plt.subplots(figsize=(10, 8))
 

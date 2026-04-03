@@ -6,8 +6,8 @@ import numpy as np
 
 if __name__ == '__main__':
 
-    ideal = [217 * (7 - i) / 7 for i in range(0, 7)]
-    real = [217,190,188,167,161,112,98]
+    ideal = [146 - (146 / 6 * i) for i in range(7)]
+    real = [146, 120, 100, 80, 60, 30, 5]
     heure = [0,4,8,12,16,20,24]
 
     plt.plot(heure, ideal, label='Avancement idéal', color='red', linestyle='--')
@@ -23,6 +23,6 @@ if __name__ == '__main__':
 
 
 
-    plt.title('Burndown chart pour le projet (Sprint 3)')
+    plt.title('Burndown chart pour le projet (Sprint S4-2)')
 
     plt.show()

@@ -89,12 +89,12 @@ document.addEventListener('DOMContentLoaded', function() {
         <h3>Changer le mot de passe</h3>
             <form method="post" action="" class="form-ajax" data-endpoint="/src/Controllers/api_profile.php" data-timeout="30000">
             <input type="hidden" name="action" value="update_password">
-            <label>Ancien mot de passe :</label><br>
-            <input type="password" name="old_password" required><br>
-            <label>Nouveau mot de passe :</label><br>
-            <input type="password" name="new_password" required><br>
-            <label>Confirmer :</label><br>
-            <input type="password" name="confirm_password" required><br>
+            <label for="old_password">Ancien mot de passe :</label><br>
+            <input type="password" name="old_password" id="old_password" required><br>
+            <label for="new_password">Nouveau mot de passe :</label><br>
+            <input type="password" name="new_password" id="new_password" required><br>
+            <label for="confirm_password">Confirmer :</label><br>
+            <input type="password" name="confirm_password" id="confirm_password" required><br>
             <div class="form-actions">
                 <button type="submit">Valider</button>
                 <a href="javascript:history.back();"><button type="button">Annuler</button></a>

@@ -104,6 +104,20 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     <?php endif; ?>
 
+    <!-- Section de filtrage -->
+    <div class="filter-section" style="background: #f5f5f5; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
+        <form method="GET" action="" style="display: flex; gap: 10px; align-items: flex-end;">
+            <div style="flex: 1;">
+                <label for="filtre-date">Filtrer par date d'évaluation :</label>
+                <input type="date" id="filtre-date" name="filtre_date" value="<?php echo htmlspecialchars($_GET['filtre_date'] ?? ''); ?>" />
+            </div>
+            <button type="submit" id="appliquer-filtre" class="btn" style="margin-bottom: 0;">Appliquer</button>
+            <?php if (!empty($_GET['filtre_date'])): ?>
+                <a href="?"><button type="button" class="btn" style="margin-bottom: 0;">Réinitialiser</button></a>
+            <?php endif; ?>
+        </form>
+    </div>
+
     <table class="rattrapage-table">
         <thead>
             <tr>

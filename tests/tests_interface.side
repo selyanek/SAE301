@@ -15,12 +15,12 @@
         },
         {
           "command": "type",
-          "target": "id=username",
+          "target": "id=identifiant",
           "value": "dilara.simsek"
         },
         {
           "command": "type",
-          "target": "id=password",
+          "target": "id=mot_de_passe",
           "value": "motdepasse123"
         },
         {
@@ -30,78 +30,63 @@
         },
         {
           "command": "waitForElementPresent",
-          "target": "linkText=Mon Profil",
+          "target": "link=Consulter vos justificatifs",
           "value": ""
         },
         {
           "command": "click",
-          "target": "linkText=Mon Profil",
+          "target": "link=Consulter vos justificatifs",
           "value": ""
         },
         {
           "command": "waitForElementPresent",
-          "target": "id=resoumettre-absence",
+          "target": "css=.btn-resoumettre",
           "value": ""
         },
         {
           "command": "click",
-          "target": "id=resoumettre-absence",
+          "target": "css=.btn-resoumettre",
           "value": ""
         },
         {
           "command": "waitForElementPresent",
-          "target": "id=date-debut",
+          "target": "id=date_start",
           "value": ""
         },
         {
           "command": "type",
-          "target": "id=date-debut",
-          "value": "2026-03-16"
+          "target": "id=date_start",
+          "value": "2026-03-16T08:00"
         },
         {
           "command": "type",
-          "target": "id=heure-debut",
-          "value": "08:00"
+          "target": "id=date_end",
+          "value": "2026-03-18T17:00"
         },
         {
           "command": "type",
-          "target": "id=date-fin",
-          "value": "2026-03-18"
-        },
-        {
-          "command": "type",
-          "target": "id=heure-fin",
-          "value": "17:00"
-        },
-        {
-          "command": "type",
-          "target": "id=justificatif",
+          "target": "id=motif",
           "value": "Maladie"
         },
         {
-          "command": "click",
-          "target": "id=upload-file",
-          "value": ""
-        },
-        {
           "command": "type",
-          "target": "id=file-input",
+          "target": "id=fileInput",
           "value": "/path/to/justificatif.pdf"
         },
         {
           "command": "click",
-          "target": "id=submit-absence",
+          "target": "id=submitBtn",
           "value": ""
         },
         {
           "command": "waitForElementPresent",
-          "target": "id=validation-message",
+          "target": "id=message",
           "value": ""
         },
         {
           "command": "assertText",
-          "target": "id=validation-message",
-          "value": "Absence soumise avec succès"
+          "target": "id=message",
+          "value": "Fichier téléchargé avec succès"
         }
       ]
     },
@@ -116,12 +101,12 @@
         },
         {
           "command": "type",
-          "target": "id=username",
+          "target": "id=identifiant",
           "value": "delphine.milice"
         },
         {
           "command": "type",
-          "target": "id=password",
+          "target": "id=mot_de_passe",
           "value": "password123"
         },
         {
@@ -131,37 +116,37 @@
         },
         {
           "command": "waitForElementPresent",
-          "target": "linkText=Importer CSV",
+          "target": "link=Envoie des absences",
           "value": ""
         },
         {
           "command": "click",
-          "target": "linkText=Importer CSV",
+          "target": "link=Envoie des absences",
           "value": ""
         },
         {
           "command": "waitForElementPresent",
-          "target": "id=csv-upload",
+          "target": "id=uploadForm",
           "value": ""
         },
         {
           "command": "type",
-          "target": "id=csv-upload",
+          "target": "id=fileInput",
           "value": "/path/to/data/CSV/BUT1-240122-240223_anonymise.CSV"
         },
         {
           "command": "click",
-          "target": "id=upload-button",
+          "target": "id=submitBtn",
           "value": ""
         },
         {
           "command": "waitForElementPresent",
-          "target": "id=validation-message",
+          "target": "css=.success-message",
           "value": ""
         },
         {
           "command": "assertText",
-          "target": "id=validation-message",
+          "target": "css=.success-message",
           "value": "Fichier CSV importé avec succès"
         }
       ]
@@ -177,12 +162,12 @@
         },
         {
           "command": "type",
-          "target": "id=username",
+          "target": "id=identifiant",
           "value": "dilara.simsek"
         },
         {
           "command": "type",
-          "target": "id=password",
+          "target": "id=mot_de_passe",
           "value": "motdepasse123"
         },
         {
@@ -192,57 +177,47 @@
         },
         {
           "command": "waitForElementPresent",
-          "target": "linkText=Mon Profil",
+          "target": "link=Mon profil",
           "value": ""
         },
         {
           "command": "click",
-          "target": "linkText=Mon Profil",
+          "target": "link=Mon profil",
           "value": ""
         },
         {
           "command": "waitForElementPresent",
-          "target": "id=changer-mdp",
-          "value": ""
-        },
-        {
-          "command": "click",
-          "target": "id=changer-mdp",
-          "value": ""
-        },
-        {
-          "command": "waitForElementPresent",
-          "target": "id=ancien-mdp",
+          "target": "id=old_password",
           "value": ""
         },
         {
           "command": "type",
-          "target": "id=ancien-mdp",
+          "target": "id=old_password",
           "value": "motdepasse123"
         },
         {
           "command": "type",
-          "target": "id=nouveau-mdp",
+          "target": "id=new_password",
           "value": "newpassword456"
         },
         {
           "command": "type",
-          "target": "id=confirmer-mdp",
+          "target": "id=confirm_password",
           "value": "newpassword456"
         },
         {
           "command": "click",
-          "target": "id=submit-mdp",
+          "target": "css=.form-ajax button[type='submit']",
           "value": ""
         },
         {
           "command": "waitForElementPresent",
-          "target": "id=success-message",
+          "target": "css=.success",
           "value": ""
         },
         {
           "command": "assertText",
-          "target": "id=success-message",
+          "target": "css=.success",
           "value": "Mot de passe changé avec succès"
         }
       ]
@@ -258,12 +233,12 @@
         },
         {
           "command": "type",
-          "target": "id=username",
-          "value": "professeur@example.com"
+          "target": "id=identifiant",
+          "value": "professeur.test"
         },
         {
           "command": "type",
-          "target": "id=password",
+          "target": "id=mot_de_passe",
           "value": "password123"
         },
         {
@@ -273,12 +248,12 @@
         },
         {
           "command": "waitForElementPresent",
-          "target": "linkText=Rattrapage",
+          "target": "link=Rattrapages",
           "value": ""
         },
         {
           "command": "click",
-          "target": "linkText=Rattrapage",
+          "target": "link=Rattrapages",
           "value": ""
         },
         {
@@ -298,12 +273,12 @@
         },
         {
           "command": "waitForElementPresent",
-          "target": "id=list-absences",
+          "target": "css=.rattrapage-table",
           "value": ""
         },
         {
           "command": "assertElementPresent",
-          "target": "css=.absence-item",
+          "target": "css=.rattrapage-table tbody tr",
           "value": ""
         }
       ]

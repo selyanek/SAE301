@@ -36,7 +36,7 @@
                    required>
             <br>
             
-            <button type="submit">Se connecter</button>
+            <button type="submit" id="login-button">Se connecter</button>
             <br>
             
             <a href="mdpOublier.php">Mot de passe oublié ?</a>

@@ -20,14 +20,6 @@ class Database
     // Constructeur - Établit la connexion à la base de données PostgreSQL
     public function __construct()
     {
-        $this->loadEnvironment();
-
-        $this->host = $this->getRequiredEnv('DB_HOST');
-        $this->port = $this->getRequiredEnv('DB_PORT');
-        $this->dbname = $this->getRequiredEnv('DB_NAME');
-        $this->user = $this->getRequiredEnv('DB_USER');
-        $this->pass = $this->getRequiredEnv('DB_PASSWORD');
-
         try {
             $this->pdo = new PDO(
                 "pgsql:host=$this->host;port=$this->port;dbname=$this->dbname",
