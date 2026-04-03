@@ -3,6 +3,7 @@
   "version": "2.0",
   "name": "SAE301 Tests",
   "url": "http://localhost",
+
   "tests": [
     {
       "id": "test-etudiant-completer-absence",
