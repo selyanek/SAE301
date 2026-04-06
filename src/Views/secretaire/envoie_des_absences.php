@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 fileItem.className = 'file-item';
                 fileItem.innerHTML = `
                     <span>${file.name} (${(file.size / 1024).toFixed(2)} Ko)</span>
-                    <button type="button" onclick="removeFile(${index})">Supprimer</button>
+                    <button type="button" class="btn" onclick="removeFile(${index})">Supprimer</button>
                 `;
                 fileList.appendChild(fileItem);
             });

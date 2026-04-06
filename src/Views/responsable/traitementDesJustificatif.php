@@ -112,10 +112,10 @@ require __DIR__ . '/../layout/navigation.php';
             </div>
 
             <div class="boutons">
-                <button type="submit" name="action" value="valider">Valider</button>
-                <button type="button" onclick="afficherRaisonRefus()">Refuser</button>
-                <button type="submit" name="action" value="Demande_justif">Demander justificatif</button>
-                <a href="gestionAbsence.php"><button type="button">Retour</button></a>
+                <button type="submit" name="action" value="valider" class="btn">Valider</button>
+                <button type="button" onclick="afficherRaisonRefus()" class="btn">Refuser</button>
+                <button type="submit" name="action" value="Demande_justif" class="btn">Demander justificatif</button>
+                <a href="gestionAbsence.php"><button type="button" class="btn">Retour</button></a>
             </div>
             
             <!-- Zone pour saisir la raison du refus (cachée par défaut) -->

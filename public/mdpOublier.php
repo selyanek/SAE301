@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label for="identifiant_email">Identifiant :</label>
         <input type="text" id="identifiant_email" name="identifiant_email" required>
         <br>
-        <button type="submit">Recevoir un nouveau mot de passe</button>
+        <button type="submit" class="btn">Recevoir un nouveau mot de passe</button>
     </form>
 
     <p><a href="index.php">Retour à la connexion</a></p>

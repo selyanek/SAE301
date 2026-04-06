@@ -26,8 +26,8 @@ require '../layout/navigation.php';
         <option value="refuse" <?php echo (isset($_POST['statut']) && $_POST['statut'] == 'refuse') ? 'selected' : ''; ?>>Refusé</option>
     </select>
 
-    <button type="submit">Filtrer</button>
-    <a href="historiqueAbsences.php" id="resetFiltersButton"><button type="button">Réinitialiser</button></a>
+    <button type="submit" class="btn">Filtrer</button>
+    <a href="historiqueAbsences.php" id="resetFiltersButton"><button type="button" class="btn">Réinitialiser</button></a>
 </form>
 <div id="tableLoader" class="ajax-loader" hidden>Chargement...</div>
 <div id="tableFeedback" class="ajax-feedback" hidden></div>

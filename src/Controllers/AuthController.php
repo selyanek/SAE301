@@ -76,7 +76,7 @@ class AuthController
         $routes = [
             'etudiant' => '/src/Views/etudiant/dashboard.php',
             'etudiante' => '/src/Views/etudiant/dashboard.php',
-            'professeur' => '/src/Views/accueil_prof.php',
+            'professeur' => '/public/professeur/accueil_prof.php',
             'responsable_pedagogique' => '/src/Views/responsable/dashboard.php',
             'secretaire' => '/src/Views/secretaire/dashboard.php'
         ];

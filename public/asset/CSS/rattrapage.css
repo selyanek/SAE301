@@ -71,6 +71,54 @@
     color: #721c24;
 }
 
+/* Formulaire de filtre - style harmonise avec les autres pages */
+.filter-form {
+    margin: 20px 0 24px;
+    padding: 20px 24px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    border: 2px solid #dee2e6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+.filter-form label {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+    margin-right: 8px;
+    white-space: nowrap;
+}
+
+.filter-form input[type="date"] {
+    padding: 10px 14px;
+    border: 2px solid #ced4da;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fff;
+    transition: all 0.3s ease;
+    min-width: 180px;
+}
+
+.filter-form input[type="date"]:focus {
+    outline: none;
+    border-color: #29acc8;
+    box-shadow: 0 0 0 3px rgba(41, 172, 200, 0.18);
+}
+
+.filter-form .btn {
+    margin: 0;
+    width: 150px;
+    min-width: 150px;
+    box-sizing: border-box;
+    justify-content: center;
+    display: inline-flex;
+    align-items: center;
+}
+
 /* Table de rattrapages */
 .rattrapage-table {
     width: 100%;
@@ -315,7 +363,7 @@
     border-top: 2px solid #e7e7e7;
 }
 
-.btn {
+.modal-content .btn {
     padding: 12px 28px;
     border: none;
     border-radius: 8px;
@@ -325,23 +373,23 @@
     transition: all 0.3s ease;
 }
 
-.btn-primary {
+.modal-content .btn-primary {
     background: linear-gradient(135deg, #29acc8 0%, #238ca3 100%);
     color: white;
 }
 
-.btn-primary:hover {
+.modal-content .btn-primary:hover {
     background: linear-gradient(135deg, #238ca3 0%, #1a7084 100%);
     box-shadow: 0 6px 16px rgba(41, 172, 200, 0.4);
     transform: translateY(-2px);
 }
 
-.btn-secondary {
+.modal-content .btn-secondary {
     background: #e7e7e7;
     color: #666;
 }
 
-.btn-secondary:hover {
+.modal-content .btn-secondary:hover {
     background: #d0d0d0;
 }
 
@@ -417,6 +465,12 @@
         width: 100%;
         min-height: 44px;
     }
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        white-space: nowrap;
 }
 
 @media (max-width: 480px) {
@@ -443,6 +497,9 @@
     .modal-content {
         width: 98%;
         margin: 5% auto;
+    #resetFiltersButton {
+        text-align: center;
+    }
         padding: 20px 15px;
     }
 

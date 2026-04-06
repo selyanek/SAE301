@@ -13,7 +13,6 @@ class RattrapageController
 {
     public function gererRattrapages()
     {
-        session_start();
         $redirect = new Redirect('professeur');
         $redirect->redirect();
 
@@ -27,6 +26,6 @@ class RattrapageController
         $rattrapageModel = new Rattrapage();
         $absencesEvaluations = $rattrapageModel->getAbsencesEvaluationsPourProfesseur($idProfesseur);
 
-        require __DIR__ . '/../Views/professeur/rattrapage_prof_vue.php';
+        require __DIR__ . '/../Views/professeur/rattrapage_prof.php';
     }
 }

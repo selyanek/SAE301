@@ -9,7 +9,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'professeur') {
 
 // Vérifier que la requête est POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /src/Views/rattrapage_prof.php?error=' . urlencode('Méthode non autorisée'));
+    header('Location: /public/professeur/rattrapage_prof.php?error=' . urlencode('Méthode non autorisée'));
     exit();
 }
 
@@ -232,10 +232,10 @@ try {
     }
 
     // Redirection avec message de succès
-    header('Location: /src/Views/rattrapage_prof.php?success=' . urlencode($message));
+    header('Location: /public/professeur/rattrapage_prof.php?success=' . urlencode($message));
     exit();
 
 } catch (Exception $e) {
-    header('Location: /src/Views/rattrapage_prof.php?error=' . urlencode($e->getMessage()));
+    header('Location: /public/professeur/rattrapage_prof.php?error=' . urlencode($e->getMessage()));
     exit();
 }

@@ -115,20 +115,19 @@
     background: linear-gradient(135deg, #29acc8 0%, #238da4 100%);
     color: #ffffff;
     border: none;
-    padding: 13px 28px;
     border-radius: 10px;
     font-weight: 600;
     font-size: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 14px rgba(41, 172, 200, 0.25);
+    box-shadow: 0 4px 14px #29acc840;
 }
 
 .form-actions button[type="submit"]:hover,
 .form-actions .btn-primary:hover {
     background: linear-gradient(135deg, #238da4 0%, #1d7289 100%);
     transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(41, 172, 200, 0.35);
+    box-shadow: 0 6px 18px #29acc859;
 }
 
 .form-actions button[type="button"],
@@ -136,7 +135,6 @@
     background: #f5f8fa;
     color: #556677;
     border: 2px solid #e0e8ed;
-    padding: 12px 24px;
     border-radius: 10px;
     font-weight: 600;
     font-size: 14px;
@@ -144,6 +142,15 @@
     text-decoration: none;
     display: inline-block;
     transition: all 0.3s ease;
+}
+.form-actions button[type="submit"],
+.form-actions .btn-primary,
+.form-actions button[type="button"],
+.form-actions a {
+    min-width: 140px;
+    padding: 13px 28px;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 .form-actions button[type="button"]:hover,

@@ -24,7 +24,7 @@ class Redirect
                     exit();
                 case 'professeur':
                     // redirect to the professor's accueil page
-                    header('Location: /src/Views/accueil_prof.php');
+                    header('Location: /public/professeur/accueil_prof.php');
                     exit();
                 case 'responsable_pedagogique':
                     // redirect to the responsable's dashboard page

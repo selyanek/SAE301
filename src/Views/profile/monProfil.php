@@ -96,8 +96,8 @@ document.addEventListener('DOMContentLoaded', function() {
             <label>Confirmer :</label><br>
             <input type="password" name="confirm_password" required><br>
             <div class="form-actions">
-                <button type="submit">Valider</button>
-                <a href="javascript:history.back();"><button type="button">Annuler</button></a>
+                <button type="submit" class="btn">Valider</button>
+                <a href="javascript:history.back();" class="btn">Annuler</a>
             </div>
             <div class="form-feedback"></div>
         </form>

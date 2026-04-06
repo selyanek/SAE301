@@ -120,30 +120,30 @@
 
 .absence-form .buttons .btn:hover {
     background: linear-gradient(135deg, #238da4 0%, #1d7289 100%);
-    box-shadow: 0 6px 16px rgba(41, 172, 200, 0.4);
+    box-shadow: 0 6px 16px #29acc866;
     transform: translateY(-2px);
 }
 
 .absence-form .buttons .btn:active {
     transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(41, 172, 200, 0.3);
+    box-shadow: 0 2px 8px #29acc84d;
 }
 
 /* ========== BOUTON RÉINITIALISER ========== */
 .absence-form .buttons .btn[onclick*="resetForm"] {
     background: linear-gradient(135deg, #D60606 0%, #BA0404 100%);
-    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+    box-shadow: 0 4px 12px #ff98004d;
 }
 
 .absence-form .buttons .btn[onclick*="resetForm"]:hover {
     background: linear-gradient(135deg, #BA0404 0%, #A80505 100%);
-    box-shadow: 0 6px 16px rgba(255, 152, 0, 0.4);
+    box-shadow: 0 6px 16px #ff980066;
 }
 
 /* ========== BOUTON ANNULER ========== */
 .absence-form .buttons a .btn {
     background: linear-gradient(135deg, #888 0%, #666 100%);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.2);
 }
 
 .absence-form .buttons a .btn:hover {

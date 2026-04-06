@@ -17,28 +17,37 @@ try {
 // Initialiser le contrôleur d'authentification
 $authController = new AuthController();
 $message = $authController->checkTimeout();
+$messageType = $message ? 'info' : null;
 
 // Traiter la soumission du formulaire de connexion
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $identifiant = $_POST['identifiant'] ?? '';
-        $mot_de_passe = $_POST['mot_de_passe'] ?? '';
-        
-        $result = $authController->login($identifiant, $mot_de_passe);
-        
-        if ($result['success']) {
-            header('Location: ' . $result['redirect']);
-            exit();
+        $identifiant = trim($_POST['identifiant'] ?? '');
+        $mot_de_passe = trim($_POST['mot_de_passe'] ?? '');
+
+        if ($identifiant === '' || $mot_de_passe === '') {
+            $message = "Veuillez renseigner l'identifiant et le mot de passe.";
+            $messageType = 'error';
         } else {
-            $message = $result['message'];
+            $result = $authController->login($identifiant, $mot_de_passe);
+
+            if ($result['success']) {
+                header('Location: ' . $result['redirect']);
+                exit();
+            } else {
+                $message = $result['message'];
+                $messageType = 'error';
+            }
         }
-        
+
     } catch (PDOException $e) {
         error_log("Erreur de connexion : " . $e->getMessage());
         $message = "Une erreur s'est produite. Veuillez réessayer.";
+        $messageType = 'error';
     } catch (Exception $e) {
         error_log("Erreur inattendue : " . $e->getMessage());
         $message = "Une erreur inattendue s'est produite.";
+        $messageType = 'error';
     }
 }
 

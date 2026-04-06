@@ -8,7 +8,14 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Durée d'inactivité maximale en secondes (14 minutes)
-define('TIMEOUT_DURATION', value: 840);
+if (!defined('TIMEOUT_DURATION')) {
+    define('TIMEOUT_DURATION', 840);
+}
+
+$isAjaxRequest = (
+    (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower((string) $_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') ||
+    (!empty($_SERVER['HTTP_ACCEPT']) && strpos((string) $_SERVER['HTTP_ACCEPT'], 'application/json') !== false)
+);
 
 // Vérifier si l'utilisateur est connecté
 if (isset($_SESSION['login'])) {
@@ -25,6 +32,17 @@ if (isset($_SESSION['login'])) {
             if (isset($_COOKIE[session_name()])) {
                 setcookie(session_name(), '', time() - 3600, '/');
             }
+
+            if ($isAjaxRequest) {
+                http_response_code(401);
+                header('Content-Type: application/json; charset=UTF-8');
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Session expirée, veuillez vous reconnecter.'
+                ]);
+                exit;
+            }
+
             // Rediriger vers la page de connexion avec un message
             header('Location: /public/index.php?timeout=1');
             exit;

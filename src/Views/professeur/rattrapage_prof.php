@@ -1,60 +1,24 @@
 <?php
-// Ce fichier est maintenant la vue pour la gestion des rattrapages.
+// Ce fichier est la vue pour la gestion des rattrapages.
 // La logique a été déplacée dans RattrapageController.php et Rattrapage.php.
-?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Rattrapages</title>
-    <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
-    <link href="/public/asset/CSS/rattrapage.css" rel="stylesheet">
-</head>
-<body>
-<!-- US-26 : Bouton hamburger pour mobile -->
-<button class="hamburger" id="hamburgerBtn" aria-label="Menu de navigation" onclick="toggleMenu()">☰</button>
 
-<script>
-function toggleMenu() {
-    var sidebar = document.querySelector('.sidebar');
-    var btn = document.getElementById('hamburgerBtn');
-    sidebar.classList.toggle('open');
-    btn.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
-document.addEventListener('DOMContentLoaded', function() {
-    var links = document.querySelectorAll('.sidebar a');
-    for (var i = 0; i < links.length; i++) {
-        links[i].addEventListener('click', function() {
-            var sidebar = document.querySelector('.sidebar');
-            sidebar.classList.remove('open');
-            document.getElementById('hamburgerBtn').textContent = '☰';
-        });
-    }
-    document.addEventListener('click', function(e) {
-        var sidebar = document.querySelector('.sidebar');
-        var btn = document.getElementById('hamburgerBtn');
-        if (sidebar && sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== btn) {
-            sidebar.classList.remove('open');
-            btn.textContent = '☰';
-        }
-    });
-});
-</script>
-<div class="uphf">
-    <img src="/public/asset/img/logouphf.png" alt="Logo uphf">
-</div>
-<div class="logoEdu">
-    <img src="/public/asset/img/logoedutrack.png" alt="Logo EduTrack">
-</div>
-<div class="sidebar">
-    <ul>
-        <li><a href="/public/professeur/accueil_prof.php">Accueil</a></li>
-        <li><a href="/public/professeur/rattrapage_prof.php">Rattrapages</a></li>
-        <li><a href="/src/Controllers/profile.php">Mon profil</a></li>
-        <li><a href="aide.php">Aides</a></li>
-    </ul>
-</div>
+
+require_once __DIR__ . '/../../Controllers/session_timeout.php';
+require_once __DIR__ . '/../../Controllers/Redirect.php';
+
+$redirect = new \src\Controllers\Redirect('professeur');
+$redirect->redirect();
+
+$absencesEvaluations = $absencesEvaluations ?? [];
+$pageTitle = 'Gestion des Rattrapages';
+$additionalCSS = ['/public/asset/CSS/rattrapage.css'];
+
+require __DIR__ . '/../layout/header.php';
+require __DIR__ . '/../layout/navigation.php';
+?>
 
 <header class="text">
     <h1>Gestion des Rattrapages</h1>
@@ -64,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="content-wrapper">
     <div class="info-section">
         <p class="info-text">
-            Cette page recense tous les étudiants absents lors de vos évaluations. 
+            Cette page recense tous les étudiants absents lors de vos évaluations.
             Vous pouvez planifier des rattrapages directement depuis cette interface.
         </p>
         <div class="stats-box">
@@ -72,21 +36,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 <strong>Total absences à vos évaluations :</strong> <?php echo count($absencesEvaluations); ?>
             </span>
             <span class="stat-item">
-                <strong>Rattrapages planifiés :</strong> 
-                <?php 
-                $planifies = array_filter($absencesEvaluations, function($abs) {
+                <strong>Rattrapages planifiés :</strong>
+                <?php
+                $planifies = array_filter($absencesEvaluations, function ($abs) {
                     return !empty($abs['idrattrapage']) && $abs['rattrapage_statut'] === 'planifie';
                 });
-                echo count($planifies); 
+                echo count($planifies);
                 ?>
             </span>
             <span class="stat-item">
-                <strong>À planifier :</strong> 
-                <?php 
-                $aPlanifier = array_filter($absencesEvaluations, function($abs) {
+                <strong>À planifier :</strong>
+                <?php
+                $aPlanifier = array_filter($absencesEvaluations, function ($abs) {
                     return empty($abs['idrattrapage']) || $abs['rattrapage_statut'] === 'a_planifier';
                 });
-                echo count($aPlanifier); 
+                echo count($aPlanifier);
                 ?>
             </span>
         </div>
@@ -103,6 +67,15 @@ document.addEventListener('DOMContentLoaded', function() {
             <?php echo htmlspecialchars($_GET['error']); ?>
         </div>
     <?php endif; ?>
+    <form method="GET" action="" class="filter-form" id="absenceFilterForm" data-endpoint="/src/Controllers/api_rattrapage_prof.php">
+        <label for="date">Filtrer par date d'évaluation :</label>
+        <input type="date" id="date" name="filtre_date" value="<?php echo htmlspecialchars($_GET['filtre_date'] ?? ''); ?>">
+        <button type="submit" id="appliquer-filtre" class="btn">Appliquer</button>
+        <a href="?" class="btn" role="button" id="resetFiltersButton">Réinitialiser</a>
+    </form>
+
+    <div id="tableLoader" class="ajax-loader" hidden>Chargement des rattrapages...</div>
+    <div id="tableFeedback" class="ajax-feedback" hidden></div>
 
     <table class="rattrapage-table">
         <thead>
@@ -120,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="tableAbsencesBody">
             <?php if (empty($absencesEvaluations)): ?>
                 <tr>
                     <td colspan="11" class="no-data">Aucune absence lors de vos évaluations</td>
@@ -135,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td><?php echo htmlspecialchars($absence['formation']); ?></td>
                         <td><?php echo htmlspecialchars($absence['motif'] ?? '—'); ?></td>
                         <td>
-                            <?php 
+                            <?php
                             if ($absence['justifie'] === null || $absence['justifie'] === 'NULL') {
                                 echo '<span class="badge badge-warning">En attente</span>';
                             } elseif ($absence['justifie'] === 't' || $absence['justifie'] === true || $absence['justifie'] === '1') {
@@ -146,19 +119,19 @@ document.addEventListener('DOMContentLoaded', function() {
                             ?>
                         </td>
                         <td>
-                            <?php 
-                            echo !empty($absence['date_rattrapage']) 
+                            <?php
+                            echo !empty($absence['date_rattrapage'])
                                 ? '<strong>' . date('d/m/Y H:i', strtotime($absence['date_rattrapage'])) . '</strong>'
-                                : '—'; 
+                                : '—';
                             ?>
                         </td>
                         <td><?php echo htmlspecialchars($absence['salle'] ?? '—'); ?></td>
                         <td>
-                            <?php 
+                            <?php
                             if (empty($absence['idrattrapage'])) {
                                 echo '<span class="badge badge-secondary">À planifier</span>';
                             } else {
-                                switch($absence['rattrapage_statut']) {
+                                switch ($absence['rattrapage_statut']) {
                                     case 'a_planifier':
                                         echo '<span class="badge badge-warning">À planifier</span>';
                                         break;
@@ -176,8 +149,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             ?>
                         </td>
                         <td>
-                            <button class="btn-action btn-edit" 
-                                    onclick="openModal(<?php echo $absence['idabsence']; ?>, 
+                            <button class="btn-action btn-edit"
+                                    onclick="openModal(<?php echo $absence['idabsence']; ?>,
                                                        <?php echo $absence['idrattrapage'] ? $absence['idrattrapage'] : 'null'; ?>,
                                                        '<?php echo $absence['date_rattrapage'] ?? ''; ?>',
                                                        '<?php echo htmlspecialchars($absence['salle'] ?? '', ENT_QUOTES); ?>',
@@ -195,7 +168,6 @@ document.addEventListener('DOMContentLoaded', function() {
     </table>
 </div>
 
-<!-- Modal pour planifier/modifier un rattrapage -->
 <div id="rattrapageModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
@@ -204,17 +176,17 @@ document.addEventListener('DOMContentLoaded', function() {
         <form action="/src/Controllers/traiter_rattrapage_prof.php" method="POST">
             <input type="hidden" name="idAbsence" id="idAbsence">
             <input type="hidden" name="idRattrapage" id="idRattrapage">
-            
+
             <div class="form-group">
                 <label for="dateRattrapage">Date et heure du rattrapage * :</label>
                 <input type="datetime-local" name="dateRattrapage" id="dateRattrapage" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="salle">Salle :</label>
                 <input type="text" name="salle" id="salle" placeholder="Ex: 113, Amphi...">
             </div>
-            
+
             <div class="form-group">
                 <label for="statut">Statut :</label>
                 <select name="statut" id="statut" required>
@@ -224,12 +196,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     <option value="annule">Annulé</option>
                 </select>
             </div>
-            
+
             <div class="form-group">
                 <label for="remarque">Remarque / Instructions :</label>
                 <textarea name="remarque" id="remarque" rows="3" placeholder="Informations complémentaires pour l'étudiant..."></textarea>
             </div>
-            
+
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">Enregistrer</button>
                 <button type="button" class="btn btn-secondary" onclick="closeModal()">Annuler</button>
@@ -238,15 +210,9 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </div>
 
-<footer class="footer">
-    <nav class="footer-nav">
-        <a href="accueil_prof.php">Accueil</a>
-        <span>|</span>
-        <a href="rattrapage_prof.php">Rattrapages</a>
-        <span>|</span>
-        <a href="aide.php">Aides</a>
-    </nav>
-</footer>
+<?php require __DIR__ . '/../layout/footer.php'; ?>
+
+<script src="/public/asset/JS/filterAjax.js"></script>
 
 <script>
 function openModal(idAbsence, idRattrapage, dateRattrapage, salle, remarque, statut, etudiant, ressource) {
