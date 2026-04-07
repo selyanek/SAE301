@@ -22,17 +22,17 @@ $csvFiles = [
 
 foreach ($csvFiles as $file) {
     if (!file_exists($file)) {
-        echo "⚠️  Fichier non trouvé: $file\n";
+        echo "Fichier non trouvé: $file\n";
         continue;
     }
     
-    echo "📁 Import de: " . basename($file) . "\n";
+    echo "Import de: " . basename($file) . "\n";
     
     try {
         $result = $gestionCSV->exportToDB($file, $database);
         $stats = json_decode($result, true);
         
-        echo "✅ Import réussi!\n";
+        echo "Import réussi!\n";
         echo "   - Comptes créés: " . $stats['comptes'] . "\n";
         echo "   - Étudiants créés: " . $stats['etudiants'] . "\n";
         echo "   - Ressources créées: " . $stats['ressources'] . "\n";
@@ -42,7 +42,7 @@ foreach ($csvFiles as $file) {
         echo "\n";
         
     } catch (Exception $e) {
-        echo "❌ Erreur lors de l'import: " . $e->getMessage() . "\n\n";
+        echo "Erreur lors de l'import: " . $e->getMessage() . "\n\n";
     }
 }
 
@@ -54,7 +54,7 @@ try {
     // Compter les étudiants
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM Etudiant");
     $count = $stmt->fetch(PDO::FETCH_ASSOC)['count'];
-    echo "👨‍🎓 Nombre d'étudiants: $count\n";
+    echo "Nombre d'étudiants: $count\n";
     
     // Afficher quelques exemples d'étudiants
     $stmt = $pdo->query("SELECT c.identifiantCompte, c.nom, c.prenom, e.formation 
@@ -70,7 +70,7 @@ try {
     // Compter les professeurs
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM Professeur");
     $count = $stmt->fetch(PDO::FETCH_ASSOC)['count'];
-    echo "👨‍🏫 Nombre de professeurs: $count\n";
+    echo "Nombre de professeurs: $count\n";
     
     // Afficher quelques exemples de professeurs
     $stmt = $pdo->query("SELECT c.identifiantCompte, c.nom, c.prenom 
@@ -86,7 +86,7 @@ try {
     // Compter les ressources
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM Ressource");
     $count = $stmt->fetch(PDO::FETCH_ASSOC)['count'];
-    echo "📚 Nombre de ressources: $count\n";
+    echo "Nombre de ressources: $count\n";
     
     // Afficher quelques exemples
     $stmt = $pdo->query("SELECT nom FROM Ressource LIMIT 5");
@@ -111,7 +111,7 @@ try {
     // Compter les absences
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM Absence");
     $count = $stmt->fetch(PDO::FETCH_ASSOC)['count'];
-    echo "📋 Nombre d'absences: $count\n";
+    echo "Nombre d'absences: $count\n";
     
     // Détails sur les absences
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM Absence WHERE justifie = TRUE");
@@ -120,7 +120,7 @@ try {
     echo "   - Non justifiées: " . ($count - $justified) . "\n";
     
 } catch (Exception $e) {
-    echo "❌ Erreur lors de la vérification: " . $e->getMessage() . "\n";
+    echo "Erreur lors de la vérification: " . $e->getMessage() . "\n";
 }
 
 echo "\n✨ Import terminé!\n";

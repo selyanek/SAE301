@@ -1,5 +1,18 @@
 /* Styles pour la page de gestion des rattrapages */
 
+.text h1 {
+    color: #29acc8;
+    font-size: 2.3em;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.text p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
 .subtitle {
     color: #666;
     font-size: 16px;
@@ -16,7 +29,7 @@
 }
 
 .info-section {
-    background: white;
+    background: #fff;
     padding: 20px 25px;
     border-radius: 10px;
     margin-bottom: 25px;
@@ -50,7 +63,6 @@
     font-weight: 700;
 }
 
-/* Messages */
 .message {
     padding: 15px 20px;
     border-radius: 8px;
@@ -71,14 +83,14 @@
     color: #721c24;
 }
 
-/* Formulaire de filtre - style harmonise avec les autres pages */
 .filter-form {
-    margin: 20px 0 24px;
+    margin: 20px auto 24px;
     padding: 20px 24px;
     background-color: #f8f9fa;
     border-radius: 12px;
     border: 2px solid #dee2e6;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    max-width: 1200px;
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
@@ -93,7 +105,10 @@
     white-space: nowrap;
 }
 
-.filter-form input[type="date"] {
+.filter-form input[type="text"],
+.filter-form input[type="date"],
+.filter-form input[type="datetime-local"],
+.filter-form select {
     padding: 10px 14px;
     border: 2px solid #ced4da;
     border-radius: 8px;
@@ -101,9 +116,11 @@
     background: #fff;
     transition: all 0.3s ease;
     min-width: 180px;
+    box-sizing: border-box;
 }
 
-.filter-form input[type="date"]:focus {
+.filter-form input:focus,
+.filter-form select:focus {
     outline: none;
     border-color: #29acc8;
     box-shadow: 0 0 0 3px rgba(41, 172, 200, 0.18);
@@ -111,93 +128,85 @@
 
 .filter-form .btn {
     margin: 0;
-    width: 150px;
-    min-width: 150px;
-    box-sizing: border-box;
-    justify-content: center;
-    display: inline-flex;
-    align-items: center;
 }
 
-/* Table de rattrapages */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin: 30px auto;
+    max-width: 1400px;
+}
+
 .rattrapage-table {
     width: 100%;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    min-width: 1100px;
     border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    font-size: 13px;
 }
 
 .rattrapage-table thead {
-    background: linear-gradient(135deg, #29acc8 0%, #238ca3 100%);
-    color: white;
+    background: linear-gradient(135deg, #29acc8 0%, #238da4 100%);
+    color: #fff;
 }
 
 .rattrapage-table th {
-    padding: 16px 12px;
+    padding: 12px 10px;
     text-align: left;
     font-weight: 600;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
     white-space: nowrap;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 }
 
 .rattrapage-table td {
-    padding: 14px 12px;
-    border-bottom: 1px solid #e7e7e7;
-    font-size: 14px;
-    color: #333;
+    padding: 10px 8px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+    vertical-align: middle;
+    font-size: 12px;
 }
 
-.rattrapage-table tbody tr {
-    transition: background-color 0.2s ease;
+.rattrapage-table tbody tr:nth-child(even) {
+    background-color: #f9fbfc;
 }
 
 .rattrapage-table tbody tr:hover {
-    background: #f7f9fb;
+    background-color: #e8f4f8;
+    transition: background-color 0.2s ease;
 }
 
-.rattrapage-table tbody tr:last-child td {
-    border-bottom: none;
+.rattrapage-table td strong {
+    font-weight: 700;
 }
 
-.no-data {
-    text-align: center;
-    padding: 50px !important;
-    color: #999;
-    font-style: italic;
-    font-size: 16px;
-}
-
-/* Badges de statut */
-.badge {
-    display: inline-block;
-    padding: 5px 12px;
-    border-radius: 14px;
+.rattrapage-table td .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 20px;
     font-size: 11px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    white-space: nowrap;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
 .badge-warning {
-    background: #fff3cd;
-    color: #856404;
-    border: 1px solid #ffc107;
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
 }
 
 .badge-success {
-    background: #d4edda;
-    color: #155724;
-    border: 1px solid #28a745;
+    background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
 }
 
 .badge-danger {
-    background: #f8d7da;
-    color: #721c24;
-    border: 1px solid #dc3545;
+    background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
 }
 
 .badge-info {
@@ -212,7 +221,13 @@
     border: 1px solid #999;
 }
 
-/* Boutons d'action */
+.no-data {
+    text-align: center;
+    padding: 28px 20px !important;
+    color: #666;
+    font-style: italic;
+}
+
 .btn-action {
     padding: 8px 16px;
     border: none;
@@ -226,7 +241,7 @@
 
 .btn-edit {
     background: linear-gradient(135deg, #29acc8 0%, #238ca3 100%);
-    color: white;
+    color: #fff;
 }
 
 .btn-edit:hover {
@@ -239,7 +254,6 @@
     transform: translateY(0);
 }
 
-/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -259,7 +273,7 @@
 }
 
 .modal-content {
-    background-color: #ffffff;
+    background-color: #fff;
     margin: 3% auto;
     padding: 35px;
     border-radius: 12px;
@@ -313,7 +327,6 @@
     border-left: 3px solid #29acc8;
 }
 
-/* Formulaire */
 .form-group {
     margin-bottom: 22px;
 }
@@ -353,7 +366,6 @@
     min-height: 90px;
 }
 
-/* Actions du formulaire */
 .form-actions {
     display: flex;
     gap: 12px;
@@ -375,7 +387,7 @@
 
 .modal-content .btn-primary {
     background: linear-gradient(135deg, #29acc8 0%, #238ca3 100%);
-    color: white;
+    color: #fff;
 }
 
 .modal-content .btn-primary:hover {
@@ -393,31 +405,46 @@
     background: #d0d0d0;
 }
 
-/* Responsive */
-@media (max-width: 1600px) {
-    .rattrapage-table {
-        font-size: 13px;
-    }
-    
-    .rattrapage-table th,
-    .rattrapage-table td {
-        padding: 12px 10px;
-    }
-}
-
 @media (max-width: 1200px) {
     .rattrapage-table {
+        min-width: 980px;
         font-size: 12px;
     }
-    
+
     .rattrapage-table th,
     .rattrapage-table td {
         padding: 10px 8px;
     }
-    
+
     .btn-action {
         font-size: 12px;
         padding: 6px 12px;
+    }
+}
+
+@media (max-width: 992px) {
+    .filter-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: end;
+        gap: 12px;
+    }
+
+    .filter-form label {
+        margin: 0;
+    }
+
+    .filter-form input,
+    .filter-form select,
+    .filter-form .btn,
+    .filter-form a {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .table-wrapper {
+        padding: 0 10px;
+        -webkit-overflow-scrolling: touch;
     }
 }
 
@@ -427,34 +454,118 @@
         overflow-x: hidden;
         max-width: 100vw;
     }
-    
+
+    .text h1 {
+        font-size: 1.45em;
+        margin-bottom: 10px;
+    }
+
+    .text p {
+        font-size: 13px;
+        margin-bottom: 12px;
+    }
+
     .stats-box {
         flex-direction: column;
         gap: 12px;
     }
-    
-    .modal-content {
-        width: 95%;
-        margin: 10% auto;
-        padding: 25px;
+
+    .filter-form {
+        margin: 14px 8px;
+        padding: 12px;
+        grid-template-columns: 1fr;
+        gap: 8px;
     }
-    
-    /* US-27 : Scroll horizontal via le wrapper .table-responsive */
+
+    .filter-form input[type="text"],
+    .filter-form input[type="date"],
+    .filter-form input[type="datetime-local"],
+    .filter-form select {
+        font-size: 16px;
+        padding: 9px 10px;
+    }
+
+    .table-wrapper {
+        overflow: visible;
+        padding: 0 6px;
+        margin: 14px auto;
+    }
+
     .rattrapage-table {
-        min-width: 900px;
+        min-width: 0;
+        box-shadow: none;
+        background: transparent;
+        border-radius: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+        display: block;
     }
 
-    /* US-27 : Boutons tactiles minimum 44x44px */
+    .rattrapage-table thead {
+        display: none;
+    }
+
+    .rattrapage-table tbody,
+    .rattrapage-table tr,
+    .rattrapage-table td {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .rattrapage-table tbody tr {
+        margin-bottom: 10px;
+        border: 1px solid #dfe6ee;
+        border-left: 3px solid #29acc8;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+
+    .rattrapage-table tbody tr td {
+        border-bottom: 1px solid #edf1f5;
+        padding: 8px 10px;
+        background: transparent;
+        font-size: 11px;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .rattrapage-table tbody tr td:last-child {
+        border-bottom: none;
+    }
+
+    .rattrapage-table td[data-label]::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 3px;
+        color: #637083;
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+
+    .rattrapage-table td .badge,
+    .rattrapage-table td .btn-action {
+        max-width: 100%;
+    }
+
     .btn-action {
+        width: 100%;
         min-height: 44px;
-        min-width: 44px;
-        padding: 10px 16px;
-        font-size: 13px;
+        padding: 10px 14px;
+        font-size: 12px;
     }
 
-    .badge {
-        padding: 6px 14px;
-        font-size: 12px;
+    .badge-warning,
+    .badge-success,
+    .badge-danger,
+    .badge-info,
+    .badge-secondary {
+        padding: 6px 12px;
+        font-size: 11px;
     }
 
     .form-actions {
@@ -469,11 +580,31 @@
         justify-content: center;
         box-sizing: border-box;
         white-space: nowrap;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+        padding: 25px;
+    }
+
+    .no-data {
+        padding: 22px 14px !important;
+    }
 }
 
 @media (max-width: 480px) {
     .content-wrapper {
         padding: 10px 10px 60px;
+    }
+
+    .text h1 {
+        font-size: 1.3em;
+        margin-bottom: 8px;
+    }
+
+    .text p {
+        font-size: 12px;
     }
 
     .info-section {
@@ -492,12 +623,47 @@
         font-size: 13px;
     }
 
+    .filter-form {
+        margin: 12px 6px;
+        padding: 10px;
+        gap: 7px;
+    }
+
+    .filter-form label {
+        font-size: 11px;
+        margin-bottom: 2px;
+    }
+
+    .filter-form input[type="text"],
+    .filter-form input[type="date"],
+    .filter-form input[type="datetime-local"],
+    .filter-form select {
+        padding: 8px 9px;
+        font-size: 16px;
+    }
+
+    .table-wrapper {
+        padding: 0 4px;
+        margin: 12px auto;
+    }
+
+    .rattrapage-table tbody tr {
+        margin-bottom: 8px;
+        border-radius: 10px;
+    }
+
+    .rattrapage-table tbody tr td {
+        padding: 7px 9px;
+        font-size: 10px;
+    }
+
+    .rattrapage-table td[data-label]::before {
+        font-size: 8px;
+    }
+
     .modal-content {
         width: 98%;
         margin: 5% auto;
-    #resetFiltersButton {
-        text-align: center;
-    }
         padding: 20px 15px;
     }
 
@@ -506,9 +672,7 @@
     }
 
     .btn-action {
-        min-height: 44px;
-        min-width: 44px;
-        padding: 10px 14px;
+        padding: 10px 12px;
         font-size: 12px;
     }
 
@@ -517,5 +681,4 @@
     .form-group textarea {
         font-size: 16px;
     }
-}
 }

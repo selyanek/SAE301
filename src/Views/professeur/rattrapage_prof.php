@@ -77,95 +77,97 @@ require __DIR__ . '/../layout/navigation.php';
     <div id="tableLoader" class="ajax-loader" hidden>Chargement des rattrapages...</div>
     <div id="tableFeedback" class="ajax-feedback" hidden></div>
 
-    <table class="rattrapage-table" data-pagination="true" data-page-size="10">
-        <thead>
-            <tr>
-                <th>Date Évaluation</th>
-                <th>Ressource</th>
-                <th>Type</th>
-                <th>Étudiant</th>
-                <th>Formation</th>
-                <th>Motif Absence</th>
-                <th>Justification</th>
-                <th>Date Rattrapage</th>
-                <th>Salle</th>
-                <th>Statut</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="tableAbsencesBody">
-            <?php if (empty($absencesEvaluations)): ?>
+    <div class="table-wrapper">
+        <table class="rattrapage-table" data-pagination="true" data-page-size="10">
+            <thead>
                 <tr>
-                    <td colspan="11" class="no-data">Aucune absence lors de vos évaluations</td>
+                    <th>Date Évaluation</th>
+                    <th>Ressource</th>
+                    <th>Type</th>
+                    <th>Étudiant</th>
+                    <th>Formation</th>
+                    <th>Motif Absence</th>
+                    <th>Justification</th>
+                    <th>Date Rattrapage</th>
+                    <th>Salle</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
                 </tr>
-            <?php else: ?>
-                <?php foreach ($absencesEvaluations as $absence): ?>
+            </thead>
+            <tbody id="tableAbsencesBody">
+                <?php if (empty($absencesEvaluations)): ?>
                     <tr>
-                        <td><?php echo date('d/m/Y H:i', strtotime($absence['cours_date_debut'])); ?></td>
-                        <td><?php echo htmlspecialchars($absence['ressource_nom']); ?></td>
-                        <td><?php echo htmlspecialchars($absence['cours_type']); ?></td>
-                        <td><strong><?php echo htmlspecialchars($absence['etudiant_prenom'] . ' ' . $absence['etudiant_nom']); ?></strong></td>
-                        <td><?php echo htmlspecialchars($absence['formation']); ?></td>
-                        <td><?php echo htmlspecialchars($absence['motif'] ?? '—'); ?></td>
-                        <td>
-                            <?php
-                            if ($absence['justifie'] === null || $absence['justifie'] === 'NULL') {
-                                echo '<span class="badge badge-warning">En attente</span>';
-                            } elseif ($absence['justifie'] === 't' || $absence['justifie'] === true || $absence['justifie'] === '1') {
-                                echo '<span class="badge badge-success">Justifiée</span>';
-                            } else {
-                                echo '<span class="badge badge-danger">Non justifiée</span>';
-                            }
-                            ?>
-                        </td>
-                        <td>
-                            <?php
-                            echo !empty($absence['date_rattrapage'])
-                                ? '<strong>' . date('d/m/Y H:i', strtotime($absence['date_rattrapage'])) . '</strong>'
-                                : '—';
-                            ?>
-                        </td>
-                        <td><?php echo htmlspecialchars($absence['salle'] ?? '—'); ?></td>
-                        <td>
-                            <?php
-                            if (empty($absence['idrattrapage'])) {
-                                echo '<span class="badge badge-secondary">À planifier</span>';
-                            } else {
-                                switch ($absence['rattrapage_statut']) {
-                                    case 'a_planifier':
-                                        echo '<span class="badge badge-warning">À planifier</span>';
-                                        break;
-                                    case 'planifie':
-                                        echo '<span class="badge badge-info">Planifié</span>';
-                                        break;
-                                    case 'effectue':
-                                        echo '<span class="badge badge-success">Effectué</span>';
-                                        break;
-                                    case 'annule':
-                                        echo '<span class="badge badge-danger">Annulé</span>';
-                                        break;
-                                }
-                            }
-                            ?>
-                        </td>
-                        <td>
-                            <button class="btn-action btn-edit"
-                                    onclick="openModal(<?php echo $absence['idabsence']; ?>,
-                                                       <?php echo $absence['idrattrapage'] ? $absence['idrattrapage'] : 'null'; ?>,
-                                                       '<?php echo $absence['date_rattrapage'] ?? ''; ?>',
-                                                       '<?php echo htmlspecialchars($absence['salle'] ?? '', ENT_QUOTES); ?>',
-                                                       '<?php echo htmlspecialchars($absence['remarque'] ?? '', ENT_QUOTES); ?>',
-                                                       '<?php echo $absence['rattrapage_statut'] ?? 'a_planifier'; ?>',
-                                                       '<?php echo htmlspecialchars($absence['etudiant_prenom'] . ' ' . $absence['etudiant_nom'], ENT_QUOTES); ?>',
-                                                       '<?php echo htmlspecialchars($absence['ressource_nom'], ENT_QUOTES); ?>')">
-                                <?php echo empty($absence['idrattrapage']) ? 'Planifier' : 'Modifier'; ?>
-                            </button>
-                        </td>
+                        <td colspan="11" class="no-data">Aucune absence lors de vos évaluations</td>
                     </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </tbody>
-    </table>
+                <?php else: ?>
+                    <?php foreach ($absencesEvaluations as $absence): ?>
+                        <tr>
+                            <td data-label="Date Évaluation"><?php echo date('d/m/Y H:i', strtotime($absence['cours_date_debut'])); ?></td>
+                            <td data-label="Ressource"><?php echo htmlspecialchars($absence['ressource_nom']); ?></td>
+                            <td data-label="Type"><?php echo htmlspecialchars($absence['cours_type']); ?></td>
+                            <td data-label="Étudiant"><strong><?php echo htmlspecialchars($absence['etudiant_prenom'] . ' ' . $absence['etudiant_nom']); ?></strong></td>
+                            <td data-label="Formation"><?php echo htmlspecialchars($absence['formation']); ?></td>
+                            <td data-label="Motif Absence"><?php echo htmlspecialchars($absence['motif'] ?? '—'); ?></td>
+                            <td data-label="Justification">
+                                <?php
+                                if ($absence['justifie'] === null || $absence['justifie'] === 'NULL') {
+                                    echo '<span class="badge badge-warning">En attente</span>';
+                                } elseif ($absence['justifie'] === 't' || $absence['justifie'] === true || $absence['justifie'] === '1') {
+                                    echo '<span class="badge badge-success">Justifiée</span>';
+                                } else {
+                                    echo '<span class="badge badge-danger">Non justifiée</span>';
+                                }
+                                ?>
+                            </td>
+                            <td data-label="Date Rattrapage">
+                                <?php
+                                echo !empty($absence['date_rattrapage'])
+                                    ? '<strong>' . date('d/m/Y H:i', strtotime($absence['date_rattrapage'])) . '</strong>'
+                                    : '—';
+                                ?>
+                            </td>
+                            <td data-label="Salle"><?php echo htmlspecialchars($absence['salle'] ?? '—'); ?></td>
+                            <td data-label="Statut">
+                                <?php
+                                if (empty($absence['idrattrapage'])) {
+                                    echo '<span class="badge badge-secondary">À planifier</span>';
+                                } else {
+                                    switch ($absence['rattrapage_statut']) {
+                                        case 'a_planifier':
+                                            echo '<span class="badge badge-warning">À planifier</span>';
+                                            break;
+                                        case 'planifie':
+                                            echo '<span class="badge badge-info">Planifié</span>';
+                                            break;
+                                        case 'effectue':
+                                            echo '<span class="badge badge-success">Effectué</span>';
+                                            break;
+                                        case 'annule':
+                                            echo '<span class="badge badge-danger">Annulé</span>';
+                                            break;
+                                    }
+                                }
+                                ?>
+                            </td>
+                            <td data-label="Actions">
+                                <button class="btn-action btn-edit"
+                                        onclick="openModal(<?php echo $absence['idabsence']; ?>,
+                                                           <?php echo $absence['idrattrapage'] ? $absence['idrattrapage'] : 'null'; ?>,
+                                                           '<?php echo $absence['date_rattrapage'] ?? ''; ?>',
+                                                           '<?php echo htmlspecialchars($absence['salle'] ?? '', ENT_QUOTES); ?>',
+                                                           '<?php echo htmlspecialchars($absence['remarque'] ?? '', ENT_QUOTES); ?>',
+                                                           '<?php echo $absence['rattrapage_statut'] ?? 'a_planifier'; ?>',
+                                                           '<?php echo htmlspecialchars($absence['etudiant_prenom'] . ' ' . $absence['etudiant_nom'], ENT_QUOTES); ?>',
+                                                           '<?php echo htmlspecialchars($absence['ressource_nom'], ENT_QUOTES); ?>')">
+                                    <?php echo empty($absence['idrattrapage']) ? 'Planifier' : 'Modifier'; ?>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div id="rattrapageModal" class="modal">
