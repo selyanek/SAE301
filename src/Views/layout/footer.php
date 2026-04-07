@@ -28,3 +28,4 @@ if (isset($_SESSION['role'])) {
         <a href="<?php echo $pageLienAide; ?>">Aides</a>
     </nav>
 </footer>
+<script src="/public/asset/JS/tablePagination.js"></script>

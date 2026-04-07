@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     <?php endif; ?>
 
-    <table class="rattrapage-table">
+    <table class="rattrapage-table" data-pagination="true" data-page-size="10">
         <thead>
             <tr>
                 <th>Date Évaluation</th>
@@ -249,6 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </footer>
 
 <script>
+<script src="/public/asset/JS/tablePagination.js"></script>
 function openModal(idAbsence, idRattrapage, dateRattrapage, salle, remarque, statut, etudiant, ressource) {
     document.getElementById('rattrapageModal').style.display = 'block';
     document.getElementById('idAbsence').value = idAbsence;

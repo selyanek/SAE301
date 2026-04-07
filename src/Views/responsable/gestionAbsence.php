@@ -76,7 +76,7 @@ require __DIR__ . '/../layout/navigation.php';
 
     <?php // Tableau des absences ?>
     <div class="table-wrapper">
-    <table id="tableAbsences">
+    <table id="tableAbsences" data-pagination="true" data-page-size="8">
         <thead>
         <tr>
             <th scope='col'>Dates</th>
@@ -337,13 +337,13 @@ require __DIR__ . '/../layout/navigation.php';
 
                 echo "<tr>";
                 // Dates empilées : début au-dessus, fin en-dessous (US-27)
-                echo "<td class='td-dates'>";
+                echo "<td class='td-dates' data-label='Dates'>";
                 echo "<span class='date-debut'>" . htmlspecialchars(date('d/m/Y H:i', strtotime($periode['date_debut']))) . "</span>";
                 echo "<span class='date-fin'>" . htmlspecialchars(date('d/m/Y H:i', strtotime($periode['date_fin']))) . "</span>";
                 echo "</td>";
                 // Nom empilé : prénom au-dessus, nom en-dessous (US-27)
                 $nomParts = explode(' ', $periode['etudiant'], 2);
-                echo "<td class='td-etudiant'>";
+                echo "<td class='td-etudiant' data-label='Étudiant'>";
                 echo "<span class='etudiant-prenom'>" . htmlspecialchars($nomParts[0] ?? '') . "</span>";
                 echo "<span class='etudiant-nom'>" . htmlspecialchars($nomParts[1] ?? '') . "</span>";
                 echo "</td>";
@@ -355,7 +355,7 @@ require __DIR__ . '/../layout/navigation.php';
                         $motifComplet .= "• " . htmlspecialchars($cours) . "\n";
                     }
                 }
-                echo "<td class='td-motif'>";
+                echo "<td class='td-motif' data-label='Motif'>";
                 echo "<span class='cell-full'>" . nl2br($motifComplet) . "</span>";
                 echo "<button class='btn-voir' onclick='ouvrirModale(\"Motif\", this.dataset.content)' data-content='" . htmlspecialchars($motifComplet, ENT_QUOTES) . "'>Voir</button>";
                 echo "</td>";
@@ -375,16 +375,16 @@ require __DIR__ . '/../layout/navigation.php';
                 } else {
                     $docHtml = "—";
                 }
-                echo "<td class='td-document'>";
+                echo "<td class='td-document' data-label='Document'>";
                 echo "<span class='cell-full'>" . $docHtml . "</span>";
                 echo "<button class='btn-voir btn-voir-doc' onclick='ouvrirModaleDoc(this)' data-content='" . htmlspecialchars($docHtml, ENT_QUOTES) . "'>Voir</button>";
                 echo "</td>";
                 
                 // Statut avec span pour éviter conflit CSS (US-27)
-                echo "<td><span class='statut-badge $statutClass'>$statutLabel</span></td>";
+                echo "<td data-label='Statut'><span class='statut-badge $statutClass'>$statutLabel</span></td>";
 
                 // Actions
-                echo "<td>";
+                echo "<td data-label='Actions'>";
                 echo "<div class='actions'>";
                 if ($statut == 'en_attente' || $statut == 'en_revision') {
                     echo "<a href='traitementDesJustificatif.php?id=" . htmlspecialchars($periode['idabsence']) . "' class='btn_justif'>Détails</a>";
@@ -420,6 +420,7 @@ require __DIR__ . '/../layout/navigation.php';
     }
 </script>
 <script src="/public/asset/JS/filterAjax.js"></script>
+<script src="/public/asset/JS/tablePagination.js"></script>
 
 <!-- US-27 : Modale pour afficher le contenu des colonnes sur mobile -->
 <div id="modaleDetail" class="modale-overlay" style="display:none;" onclick="if(event.target===this)fermerModale()">

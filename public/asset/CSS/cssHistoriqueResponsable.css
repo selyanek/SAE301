@@ -335,18 +335,121 @@
 
 @media (max-width: 768px) {
   .text h1 { 
-    font-size: 1.8em;
-    margin-bottom: 15px;
+    font-size: 1.45em;
+    margin-bottom: 10px;
+  }
+
+  .text p {
+    font-size: 13px;
+    margin-bottom: 12px;
   }
   
   .filter-form {
-    margin: 20px 10px;
-    padding: 15px;
+    margin: 14px 8px;
+    padding: 12px;
     grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .filter-form input[type="text"],
+  .filter-form input[type="date"],
+  .filter-form select {
+    font-size: 16px;
+    padding: 9px 10px;
   }
   
+  .table-wrapper {
+    overflow: visible;
+    padding: 0 6px;
+    margin: 14px auto;
+  }
+
   #tableAbsences { 
-    min-width: 500px;
+    min-width: 0;
+    box-shadow: none;
+    background: transparent;
+    border-radius: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  #tableAbsences thead {
+    display: none;
+  }
+
+  #tableAbsences tbody,
+  #tableAbsences tr,
+  #tableAbsences td {
+    display: block;
+    width: 100%;
+  }
+
+  #tableAbsences tbody tr {
+    margin-bottom: 10px;
+    border: 1px solid #dfe6ee;
+    border-left: 3px solid #29acc8;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  #tableAbsences tbody tr td {
+    border-bottom: 1px solid #edf1f5;
+    padding: 8px 10px;
+    border-radius: 0;
+    background: transparent;
+    font-size: 11px;
+  }
+
+  #tableAbsences tbody tr td:last-child {
+    border-bottom: none;
+  }
+
+  #tableAbsences td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 3px;
+    color: #637083;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .td-dates {
+    white-space: normal;
+  }
+
+  .td-dates .date-debut,
+  .td-dates .date-fin,
+  .td-etudiant .etudiant-prenom,
+  .td-etudiant .etudiant-nom {
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  #tableAbsences td a[target="_blank"],
+  .cell-full {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .statut-badge {
+    font-size: 10px;
+    padding: 4px 8px;
+    max-width: 100%;
+  }
+
+  #tableAbsences td.empty-message::before {
+    content: none;
+  }
+
+  #tableAbsences td.empty-message {
+    text-align: center;
+    border-bottom: none;
   }
 
   .actions {
@@ -358,8 +461,8 @@
   .actions button,
   .actions a {
     width: 100%;
-    padding: 6px 10px;
-    font-size: 11px;
+    padding: 5px 9px;
+    font-size: 10px;
   }
 
   .refus-reason {
@@ -370,69 +473,66 @@
 
 @media (max-width: 480px) {
   .text h1 {
-    font-size: 1.4em;
-    margin-bottom: 12px;
+    font-size: 1.3em;
+    margin-bottom: 8px;
   }
 
   .text p {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .filter-form {
-    margin: 15px 8px;
-    padding: 12px;
-    gap: 10px;
+    margin: 12px 6px;
+    padding: 10px;
+    gap: 7px;
   }
 
   .filter-form label {
-    font-size: 12px;
-    margin-bottom: 4px;
+    font-size: 11px;
+    margin-bottom: 2px;
   }
 
   .filter-form input[type="text"],
   .filter-form input[type="date"],
   .filter-form select {
-    padding: 8px 10px;
-    font-size: 14px;
+    padding: 8px 9px;
+    font-size: 16px;
   }
 
-  #tableAbsences {
-    min-width: 450px;
-    font-size: 9px;
-    overflow-x: auto;
+  .table-wrapper {
+    padding: 0 4px;
+    margin: 12px auto;
   }
 
-  #tableAbsences th,
-  #tableAbsences td {
-    padding: 5px 4px;
-    font-size: 9px;
-    word-break: break-word;
+  #tableAbsences tbody tr {
+    margin-bottom: 8px;
+    border-radius: 10px;
   }
 
-  #tableAbsences td a[target="_blank"] {
-    font-size: 9px;
-    margin-bottom: 2px;
-  }
-
-  .actions {
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .actions button,
-  .actions a {
-    padding: 4px 8px;
+  #tableAbsences tbody tr td {
+    padding: 7px 9px;
     font-size: 10px;
+  }
+
+  #tableAbsences td[data-label]::before {
+    font-size: 8px;
+  }
+
+  .btn-voir {
+    width: 100%;
+    padding: 5px 8px;
+    font-size: 10px;
+    min-height: 30px;
   }
 
   .refus-reason {
-    font-size: 10px;
-    padding: 6px;
-    margin-top: 6px;
+    font-size: 9px;
+    padding: 5px 6px;
+    margin-top: 4px;
   }
 
   .badge-verrouille {
-    font-size: 9px;
+    font-size: 8px;
     padding: 1px 4px;
   }
 
@@ -559,14 +659,15 @@
     background: linear-gradient(135deg, #29acc8 0%, #238da4 100%);
     color: white;
     border: none;
-    padding: 6px 14px;
+    padding: 5px 10px;
     border-radius: 6px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     cursor: pointer;
-    min-height: 36px;
+    min-height: 32px;
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(41, 172, 200, 0.2);
+    width: 100%;
   }
 
   .btn-voir:hover {

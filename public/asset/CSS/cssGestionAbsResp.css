@@ -388,15 +388,39 @@ td.actions {
 }
 
 @media (max-width: 768px) {
+  html,
+  body {
+    overflow-x: hidden !important;
+  }
+
+  .text,
+  .text.fade-in {
+    max-width: 100% !important;
+    overflow-x: clip;
+  }
+
   .text h1 {
-    font-size: 1.8em;
-    margin-bottom: 15px;
+    font-size: 1.45em;
+    margin-bottom: 10px;
   }
 
   .filter-form {
-    margin: 20px 10px;
-    padding: 15px;
+    margin: 14px 8px;
+    padding: 12px;
     grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .filter-form label {
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+
+  .filter-form input[type="text"],
+  .filter-form input[type="date"],
+  .filter-form select {
+    font-size: 16px;
+    padding: 9px 10px;
   }
 
   .filter-form .btn,
@@ -406,40 +430,130 @@ td.actions {
 
   .table-wrapper {
     width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 0;
-  }
-
-  #tableAbsences,
-  #tableAbsences thead,
-  #tableAbsences tbody,
-  #tableAbsences tr,
-  #tableAbsences th,
-  #tableAbsences td {
-    display: revert;
+    overflow: visible;
+    padding: 0 6px;
+    margin: 14px auto;
+    max-width: 100% !important;
   }
 
   #tableAbsences {
-    min-width: 500px;
-    font-size: 11px;
+    display: block;
+    min-width: 0 !important;
+    width: 100%;
+    max-width: 100% !important;
+    border-spacing: 0;
+    box-shadow: none;
+    background: transparent;
+    table-layout: fixed;
   }
 
-  #tableAbsences th,
+  #tableAbsences thead {
+    display: none;
+  }
+
+  #tableAbsences tbody,
+  #tableAbsences tr,
   #tableAbsences td {
-    padding: 9px 8px;
+    display: block !important;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #tableAbsences tbody {
+    display: block;
+    width: 100%;
+  }
+
+  #tableAbsences tbody tr {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    border: 1px solid #dfe6ee;
+    border-left: 3px solid #29acc8;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  #tableAbsences tbody tr td {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px 10px;
+    border-bottom: 1px solid #edf1f5;
+    font-size: 11px;
     white-space: normal;
     word-break: break-word;
+    border-radius: 0;
+    background: transparent;
   }
 
-  /* On supprime les pseudo-labels td::before — inutiles en mode scroll */
-  #tableAbsences td::before {
+  #tableAbsences tbody tr td:last-child {
+    border-bottom: none;
+  }
+
+  #tableAbsences td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 3px;
+    color: #637083;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .td-dates {
+    white-space: normal;
+  }
+
+  .td-dates .date-debut,
+  .td-dates .date-fin,
+  .td-etudiant .etudiant-prenom,
+  .td-etudiant .etudiant-nom {
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  #tableAbsences td a[target="_blank"],
+  .cell-full {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: normal;
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  /* Annule le style global table a de cssDeBase qui gonfle les lignes document */
+  #tableAbsences td a[target="_blank"] {
+    min-height: 0 !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    width: auto !important;
+    max-width: 100% !important;
+    margin-bottom: 3px;
+  }
+
+  .statut-badge {
+    font-size: 10px;
+    padding: 4px 8px;
+    max-width: 100%;
+  }
+
+  #tableAbsences td.empty-message::before {
     content: none;
   }
 
+  #tableAbsences td.empty-message {
+    text-align: center;
+    border-bottom: none;
+  }
+
   .actions {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: stretch;
     justify-content: flex-start;
     gap: 6px;
   }
@@ -447,8 +561,60 @@ td.actions {
   .actions button,
   .actions a,
   .btn_justif {
-    font-size: 11px;
-    padding: 5px 10px;
+    font-size: 10px;
+    padding: 5px 8px;
+    width: 100%;
+    min-height: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .text h1 {
+    font-size: 1.3em;
+    margin-bottom: 8px;
+  }
+
+  .filter-form {
+    margin: 12px 6px;
+    padding: 10px;
+    gap: 7px;
+  }
+
+  .filter-form input[type="text"],
+  .filter-form input[type="date"],
+  .filter-form select {
+    padding: 8px 9px;
+    font-size: 16px;
+  }
+
+  .table-wrapper {
+    padding: 0 4px;
+    margin: 12px auto;
+  }
+
+  #tableAbsences tbody tr {
+    margin-bottom: 8px;
+    border-radius: 10px;
+  }
+
+  #tableAbsences tbody tr td {
+    padding: 7px 9px;
+    font-size: 10px;
+  }
+
+  #tableAbsences td a[target="_blank"] {
+    font-size: 10px;
+  }
+
+  #tableAbsences td[data-label]::before {
+    font-size: 8px;
+  }
+
+  .btn-voir {
+    width: 100%;
+    padding: 5px 8px;
+    font-size: 10px;
+    min-height: 30px;
   }
 }
 /* ========== US-27 : Boutons "Voir" et Modale mobile ========== */
@@ -560,14 +726,15 @@ td.actions {
     background: linear-gradient(135deg, #29acc8 0%, #238da4 100%);
     color: white;
     border: none;
-    padding: 6px 14px;
+    padding: 5px 10px;
     border-radius: 6px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     cursor: pointer;
-    min-height: 36px;
+    min-height: 32px;
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(41, 172, 200, 0.2);
+    width: 100%;
   }
 
   .btn-voir:hover {

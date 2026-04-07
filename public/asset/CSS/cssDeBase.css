@@ -316,6 +316,91 @@ main {
   min-width: 700px;
 }
 
+/* ========== Pagination tableau ========== */
+.table-pagination {
+  margin: 14px 0 6px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.pagination-btn {
+  border: 1px solid #c9d7e1;
+  background: #fff;
+  color: #22566a;
+  border-radius: 8px;
+  min-width: 38px;
+  min-height: 36px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #eaf5f8;
+}
+
+.pagination-btn.active {
+  background: #29acc8;
+  color: #fff;
+  border-color: #29acc8;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Compatibilite avec anciennes classes de pagination */
+.table-pagination-controls {
+  margin: 14px 0 6px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.table-pagination-btn {
+  border: 1px solid #c9d7e1;
+  background: #fff;
+  color: #22566a;
+  border-radius: 8px;
+  min-width: 38px;
+  min-height: 36px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.table-pagination-btn:hover:not(:disabled) {
+  background: #eaf5f8;
+}
+
+.table-pagination-btn.active {
+  background: #29acc8;
+  color: #fff;
+  border-color: #29acc8;
+}
+
+.table-pagination-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Cache une ligne paginee meme si un autre CSS force display avec !important */
+table[data-pagination="true"] tbody tr.table-pagination-hidden,
+#tableAbsences tbody tr.table-pagination-hidden {
+  display: none !important;
+}
+
+[data-pagination-list="true"] .table-pagination-hidden,
+.table-pagination-hidden {
+  display: none !important;
+}
+
 /* ========== Responsive Design ========== */
 @media (max-width: 768px) {
   body {
@@ -386,6 +471,30 @@ main {
   }
   
   .footer-nav {
+    font-size: 12px;
+  }
+
+  .table-pagination {
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .pagination-btn {
+    min-height: 34px;
+    min-width: 34px;
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+
+  .table-pagination-controls {
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .table-pagination-btn {
+    min-height: 34px;
+    min-width: 34px;
+    padding: 5px 8px;
     font-size: 12px;
   }
 
@@ -471,6 +580,20 @@ main {
   
   .logoEdu img {
     height: 40px;
+  }
+
+  .table-pagination {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+  }
+
+  .table-pagination-controls {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
   }
 
   /* Boutons tactiles sur petits écrans (US-27) */

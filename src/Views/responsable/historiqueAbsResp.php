@@ -86,7 +86,7 @@ require __DIR__ . '/../layout/navigation.php';
 
 <!-- Tableau des absences -->
 <div class="table-wrapper">
-    <table id="tableAbsences">
+    <table id="tableAbsences" data-pagination="true" data-page-size="8">
         <thead>
         <tr>
             <th>Dates</th>
@@ -94,13 +94,12 @@ require __DIR__ . '/../layout/navigation.php';
             <th>Motif</th>
             <th>Document</th>
             <th>Statut</th>
-            <th>Actions</th>
         </tr>
         </thead>
         <tbody id="tableAbsencesBody">
         <?php
         if (!$absences || count($absences) === 0) {
-            echo "<tr><td colspan='6' class='empty-message'>Aucune absence enregistrée.</td></tr>";
+            echo "<tr><td colspan='5' class='empty-message'>Aucune absence enregistrée.</td></tr>";
         } else {
             $absencesParEtudiant = [];
             foreach ($absences as $absence) {
@@ -164,7 +163,7 @@ require __DIR__ . '/../layout/navigation.php';
             }
 
             if (count($periodesTotales) === 0) {
-                echo "<tr><td colspan='8' class='empty-message'>Aucune absence ne correspond aux critères.</td></tr>";
+                echo "<tr><td colspan='5' class='empty-message'>Aucune absence ne correspond aux critères.</td></tr>";
             } else {
                 foreach ($periodesTotales as $p) {
                     $statutClass = $p['statut'] === 'valide' ? 'statut-valide' : 'statut-refuse';
@@ -174,20 +173,20 @@ require __DIR__ . '/../layout/navigation.php';
 
                     echo "<tr>";
                     // Dates empilées (US-27)
-                    echo "<td class='td-dates'>";
+                    echo "<td class='td-dates' data-label='Dates'>";
                     echo "<span class='date-debut'>" . date('d/m/Y H:i', strtotime($p['date_debut'])) . "</span>";
                     echo "<span class='date-fin'>" . date('d/m/Y H:i', strtotime($p['date_fin'])) . "</span>";
                     echo "</td>";
                     // Nom empilé (US-27)
                     $nomParts = explode(' ', $p['etudiant'], 2);
-                    echo "<td class='td-etudiant'>";
+                    echo "<td class='td-etudiant' data-label='Étudiant'>";
                     echo "<span class='etudiant-prenom'>" . htmlspecialchars($nomParts[0] ?? '') . "</span>";
                     echo "<span class='etudiant-nom'>" . htmlspecialchars($nomParts[1] ?? '') . "</span>";
                     echo "</td>";
 
                     // Motif — bouton "Voir" pour mobile (US-27)
                     $motifTexte = htmlspecialchars($p['motif']);
-                    echo "<td class='td-motif'>";
+                    echo "<td class='td-motif' data-label='Motif'>";
                     echo "<span class='cell-full'>" . $motifTexte . "</span>";
                     echo "<button class='btn-voir' onclick='ouvrirModale(\"Motif\", this.dataset.content)' data-content='" . htmlspecialchars($motifTexte, ENT_QUOTES) . "'>Voir</button>";
                     echo "</td>";
@@ -206,30 +205,18 @@ require __DIR__ . '/../layout/navigation.php';
                     } else {
                         $docHtml = "-";
                     }
-                    echo "<td class='td-document'>";
+                    echo "<td class='td-document' data-label='Document'>";
                     echo "<span class='cell-full'>" . $docHtml . "</span>";
                     echo "<button class='btn-voir btn-voir-doc' onclick='ouvrirModaleDoc(this)' data-content='" . htmlspecialchars($docHtml, ENT_QUOTES) . "'>Voir</button>";
                     echo "</td>";
 
                     // Statut avec span (US-27)
-                    echo "<td>";
+                    echo "<td data-label='Statut'>";
                     echo "<span class='statut-badge $statutClass'>$statutLabel</span>";
                     if ($verrouille) echo " <span class='badge-verrouille' title='Décision verrouillée'>🔒</span>";
                     if ($p['statut'] === 'refuse' && !empty($p['raison_refus'])) {
                         echo "<div class='refus-reason'><strong>Raison:</strong> ".htmlspecialchars($p['raison_refus'])."</div>";
                     }
-                    echo "</td>";
-
-                    echo "<td>";
-                    echo "<div class='actions'>";
-                    if ($verrouille) {
-                        echo "<button class='btn-deverrouiller' onclick='confirmerDeverrouillage($idAbs)'>Déverrouiller</button>";
-                    } else {
-                        echo "<button class='btn-verrouiller' onclick='confirmerVerrouillage($idAbs)'>Verrouiller</button>";
-                    }
-                    echo "<button class='btn-reviser' onclick='ouvrirModaleRevision($idAbs,\"{$p['statut']}\")'>Réviser</button>";
-                    echo "<button class='btn-historique' onclick='voirHistorique($idAbs)'>Historique</button>";
-                    echo "</div>";
                     echo "</td>";
 
                     echo "</tr>";
@@ -249,6 +236,7 @@ require __DIR__ . '/../layout/navigation.php';
 
 <script src="/public/asset/JS/jsHistoriqueResponsable.js"></script>
 <script src="/public/asset/JS/filterAjax.js"></script>
+<script src="/public/asset/JS/tablePagination.js"></script>
 
 <!-- US-27 : Modale pour afficher le contenu des colonnes sur mobile -->
 <div id="modaleDetail" class="modale-overlay" style="display:none;" onclick="if(event.target===this)fermerModale()">

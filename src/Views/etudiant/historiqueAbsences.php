@@ -33,7 +33,7 @@ require '../layout/navigation.php';
 <div id="tableFeedback" class="ajax-feedback" hidden></div>
 
 <!-- Liste des absences sous forme de cartes -->
-<div class="absences-container" id="tableAbsencesBody">
+<div class="absences-container" id="tableAbsencesBody" data-pagination-list="true" data-page-item=".absence-card" data-page-size="8">
 <?php
     // Récupération des filtres
     $dateFiltre = isset($_POST['date']) ? $_POST['date'] : '';

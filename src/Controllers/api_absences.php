@@ -301,40 +301,47 @@ try {
             $verrouille  = $periode['verrouille'] === true || $periode['verrouille'] === 't' || $periode['verrouille'] === '1';
 
             echo "<tr>";
-            echo "<td>" . htmlspecialchars(date('d/m/Y',     strtotime($periode['date_debut']))) . "</td>";
-            echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($periode['date_debut']))) . "</td>";
-            echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($periode['date_fin'])))   . "</td>";
-            echo "<td>" . htmlspecialchars($periode['etudiant']) . "</td>";
-            echo "<td>" . htmlspecialchars($periode['motif'])    . "</td>";
-
-            echo "<td>";
-            if (!empty($periode['urijustificatif'])) {
-                $fichiers = json_decode($periode['urijustificatif'], true);
-                if (is_array($fichiers)) {
-                    foreach ($fichiers as $f) {
-                        echo "<a href='/uploads/" . htmlspecialchars(rawurlencode($f)) . "' target='_blank'>" . htmlspecialchars($f) . "</a><br>";
-                    }
-                } else { echo '-'; }
-            } else { echo '-'; }
+            echo "<td class='td-dates' data-label='Dates'>";
+            echo "<span class='date-debut'>" . htmlspecialchars(date('d/m/Y H:i', strtotime($periode['date_debut']))) . "</span>";
+            echo "<span class='date-fin'>" . htmlspecialchars(date('d/m/Y H:i', strtotime($periode['date_fin']))) . "</span>";
             echo "</td>";
 
-            echo "<td class='" . htmlspecialchars($statutClass) . "'>";
-            echo $statutLabel;
+            $nomParts = explode(' ', (string) $periode['etudiant'], 2);
+            echo "<td class='td-etudiant' data-label='Étudiant'>";
+            echo "<span class='etudiant-prenom'>" . htmlspecialchars($nomParts[0] ?? '') . "</span>";
+            echo "<span class='etudiant-nom'>" . htmlspecialchars($nomParts[1] ?? '') . "</span>";
+            echo "</td>";
+
+            $motifTexte = htmlspecialchars($periode['motif']);
+            echo "<td class='td-motif' data-label='Motif'>";
+            echo "<span class='cell-full'>" . $motifTexte . "</span>";
+            echo "<button class='btn-voir' onclick='ouvrirModale(\"Motif\", this.dataset.content)' data-content='" . htmlspecialchars($motifTexte, ENT_QUOTES) . "'>Voir</button>";
+            echo "</td>";
+
+            $docHtml = '-';
+            if (!empty($periode['urijustificatif'])) {
+                $fichiers = json_decode($periode['urijustificatif'], true);
+                if (is_array($fichiers) && count($fichiers) > 0) {
+                    $docHtml = '';
+                    foreach ($fichiers as $f) {
+                        $docHtml .= "<a href='/uploads/" . htmlspecialchars(rawurlencode((string) $f)) . "' target='_blank'>" . htmlspecialchars((string) $f) . "</a><br>";
+                    }
+                }
+            }
+
+            echo "<td class='td-document' data-label='Document'>";
+            echo "<span class='cell-full'>" . $docHtml . "</span>";
+            echo "<button class='btn-voir btn-voir-doc' onclick='ouvrirModaleDoc(this)' data-content='" . htmlspecialchars($docHtml, ENT_QUOTES) . "'>Voir</button>";
+            echo "</td>";
+
+            echo "<td data-label='Statut'>";
+            echo "<span class='statut-badge " . htmlspecialchars($statutClass) . "'>" . htmlspecialchars($statutLabel) . "</span>";
             if ($verrouille) echo " <span class='badge-verrouille' title='Décision verrouillée'>🔒</span>";
             if ($periode['statut'] === 'refuse' && !empty($periode['raison_refus'])) {
                 echo "<div class='refus-reason'><strong>Raison:</strong> " . htmlspecialchars($periode['raison_refus']) . "</div>";
             }
             echo "</td>";
 
-            echo "<td><div class='actions'>";
-            if ($verrouille) {
-                echo "<button class='btn-deverrouiller' onclick='confirmerDeverrouillage({$idAbs})'>Déverrouiller</button>";
-            } else {
-                echo "<button class='btn-verrouiller' onclick='confirmerVerrouillage({$idAbs})'>Verrouiller</button>";
-            }
-            echo "<button class='btn-reviser' onclick='ouvrirModaleRevision({$idAbs},\"{$periode['statut']}\")'>Réviser</button>";
-            echo "<button class='btn-historique' onclick='voirHistorique({$idAbs})'>Historique</button>";
-            echo "</div></td>";
             echo "</tr>";
 
         } else {
@@ -349,42 +356,54 @@ try {
             }
 
             echo "<tr>";
-            echo "<td>" . htmlspecialchars(date('d/m/Y',     strtotime($periode['date_debut']))) . "</td>";
-            echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($periode['date_debut']))) . "</td>";
-            echo "<td>" . htmlspecialchars(date('d/m/Y H:i', strtotime($periode['date_fin'])))   . "</td>";
-            echo "<td>" . htmlspecialchars($periode['etudiant']) . "</td>";
-
-            echo "<td>";
-            echo htmlspecialchars($periode['motif']);
-            if (!empty($periode['cours'])) {
-                echo "<br><small class='small-gray'><strong>Cours concernés:</strong><br>";
-                foreach (array_unique($periode['cours']) as $cours) {
-                    echo "• " . htmlspecialchars($cours) . "<br>";
-                }
-                echo "</small>";
-            }
+            echo "<td class='td-dates' data-label='Dates'>";
+            echo "<span class='date-debut'>" . htmlspecialchars(date('d/m/Y H:i', strtotime($periode['date_debut']))) . "</span>";
+            echo "<span class='date-fin'>" . htmlspecialchars(date('d/m/Y H:i', strtotime($periode['date_fin']))) . "</span>";
             echo "</td>";
 
-            echo "<td>";
+            $nomParts = explode(' ', (string) $periode['etudiant'], 2);
+            echo "<td class='td-etudiant' data-label='Étudiant'>";
+            echo "<span class='etudiant-prenom'>" . htmlspecialchars($nomParts[0] ?? '') . "</span>";
+            echo "<span class='etudiant-nom'>" . htmlspecialchars($nomParts[1] ?? '') . "</span>";
+            echo "</td>";
+
+            $motifComplet = htmlspecialchars($periode['motif']);
+            if (!empty($periode['cours'])) {
+                $motifComplet .= "\n\nCours concernés:\n";
+                foreach (array_unique($periode['cours']) as $cours) {
+                    $motifComplet .= "• " . htmlspecialchars($cours) . "\n";
+                }
+            }
+
+            echo "<td class='td-motif' data-label='Motif'>";
+            echo "<span class='cell-full'>" . nl2br($motifComplet) . "</span>";
+            echo "<button class='btn-voir' onclick='ouvrirModale(\"Motif\", this.dataset.content)' data-content='" . htmlspecialchars($motifComplet, ENT_QUOTES) . "'>Voir</button>";
+            echo "</td>";
+
+            $docHtml = '—';
             if (!empty($periode['urijustificatif'])) {
                 $fichiers = json_decode($periode['urijustificatif'], true);
                 if (is_array($fichiers) && count($fichiers) > 0) {
+                    $docHtml = '';
                     foreach ($fichiers as $fichier) {
-                        echo "<a href='/uploads/" . rawurlencode($fichier) . "' target='_blank'>" . htmlspecialchars($fichier) . "</a><br>";
+                        $docHtml .= "<a href='/uploads/" . htmlspecialchars(rawurlencode((string) $fichier)) . "' target='_blank'>" . htmlspecialchars((string) $fichier) . "</a><br>";
                     }
-                } else { echo '—'; }
-            } else { echo '—'; }
+                }
+            }
+            echo "<td class='td-document' data-label='Document'>";
+            echo "<span class='cell-full'>" . $docHtml . "</span>";
+            echo "<button class='btn-voir btn-voir-doc' onclick='ouvrirModaleDoc(this)' data-content='" . htmlspecialchars($docHtml, ENT_QUOTES) . "'>Voir</button>";
             echo "</td>";
 
-            echo "<td class='" . htmlspecialchars($statutClass) . "'>" . htmlspecialchars($statutLabel) . "</td>";
-            echo "<td><div class='actions'><a href='traitementDesJustificatif.php?id=" . htmlspecialchars((string) $idAbs) . "' class='btn_justif'>Détails</a></div></td>";
+            echo "<td data-label='Statut'><span class='statut-badge " . htmlspecialchars($statutClass) . "'>" . htmlspecialchars($statutLabel) . "</span></td>";
+            echo "<td data-label='Actions'><div class='actions'><a href='traitementDesJustificatif.php?id=" . htmlspecialchars((string) $idAbs) . "' class='btn_justif'>Détails</a></div></td>";
             echo "</tr>";
         }
     }
 
     $emptyMsg  = $mode === 'historique'
-        ? "<tr><td colspan='8' class='empty-message'>Aucune absence ne correspond aux critères.</td></tr>"
-        : "<tr><td colspan='8' class='empty-message'>Aucune absence ne correspond aux critères de filtrage.</td></tr>";
+        ? "<tr><td colspan='5' class='empty-message'>Aucune absence ne correspond aux critères.</td></tr>"
+        : "<tr><td colspan='6' class='empty-message'>Aucune absence ne correspond aux critères de filtrage.</td></tr>";
     $rowsHtml  = trim((string) ob_get_clean());
     if ($rowsHtml === '') {
         $rowsHtml = $emptyMsg;

@@ -85,7 +85,7 @@ require '../layout/navigation.php';
 <?php endif; ?>
 
 <!-- Liste des absences en attente sous forme de cartes -->
-<div class="absences-container">
+<div class="absences-container" data-pagination-list="true" data-page-item=".absence-card" data-page-size="8">
 <?php if (empty($absencesEnAttente)): ?>
     <p class='no-results'>Vous n'avez aucune absence en attente de validation ou en révision.</p>
 <?php else: ?>
@@ -157,7 +157,7 @@ require '../layout/navigation.php';
     <h2 style="color: #ff6b00;">Absences refusées - Vous pouvez les modifier</h2>
     <p style="margin-bottom: 20px;">Ces absences ont été refusées mais vous avez la possibilité de les modifier et les resoumettre.</p>
     
-    <div class="absences-container">
+    <div class="absences-container" data-pagination-list="true" data-page-item=".absence-card" data-page-size="8">
         <?php foreach ($absencesResoumettre as $absence): ?>
             <?php
             // Préparer les données

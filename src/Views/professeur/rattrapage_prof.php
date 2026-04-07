@@ -77,7 +77,7 @@ require __DIR__ . '/../layout/navigation.php';
     <div id="tableLoader" class="ajax-loader" hidden>Chargement des rattrapages...</div>
     <div id="tableFeedback" class="ajax-feedback" hidden></div>
 
-    <table class="rattrapage-table">
+    <table class="rattrapage-table" data-pagination="true" data-page-size="10">
         <thead>
             <tr>
                 <th>Date Évaluation</th>
