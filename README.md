@@ -1,6 +1,6 @@
 # SAE301 - Gestion des absences et justificatifs
 
-Application web developpee dans le cadre de la SAE401 pour gerer les absences des etudiants du BUT Informatique, de la declaration jusqu'au traitement pedagogique.
+Application web developpee dans le cadre de la SAE401 pour gerer les absences des etudiants, de la declaration jusqu'au traitement pedagogique.
 
 ## Contexte
 
