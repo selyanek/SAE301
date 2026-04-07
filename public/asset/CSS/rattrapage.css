@@ -464,8 +464,6 @@
     .form-actions .btn {
         width: 100%;
         min-height: 44px;
-    }
-        min-height: 44px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -519,4 +517,5 @@
     .form-group textarea {
         font-size: 16px;
     }
+}
 }

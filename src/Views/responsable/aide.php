@@ -18,39 +18,81 @@ $absenceModel = new \src\Models\Absence($pdo);
 // Récupérer le nombre d'absences en attente
 $nombreAbsencesEnAttente = $absenceModel->countEnAttente();
 
-// Inclure le header
+$pageTitle = 'Aide et assistance';
+$additionalCSS = ['/public/asset/CSS/cssAide.css'];
+
 require __DIR__ . '/../layout/header.php';
 require __DIR__ . '/../layout/navigation.php';
 ?>
-<link href="/public/asset/CSS/cssAide.css" rel="stylesheet">
 
-<section class="text">
-    <h1>Aide</h1>
-    <p>EduTrack est l'application officielle de l'IUT qui permet aux responsables de gérer et valider les absences des étudiants en ligne. Vous pouvez consulter les demandes, vérifier les justificatifs et suivre le traitement des absences directement depuis la plateforme.</p>
+<section class="aide-container">
+    <div class="aide-header">
+        <h1>Aide et assistance</h1>
+        <p class="aide-subtitle">Tout ce que vous devez savoir sur EduTrack</p>
+    </div>
 
-    <h2>Comment ça marche ?</h2>
+    <div class="aide-content">
+        <div class="aide-card intro-card">
+            <h2>Qu'est-ce qu'EduTrack ?</h2>
+            <p>EduTrack est l'application officielle de l'IUT qui permet aux responsables pédagogiques de consulter, vérifier et valider les absences des étudiants en ligne. La plateforme centralise les demandes pour faciliter le suivi administratif et le traitement des justificatifs.</p>
+        </div>
 
-    <ol>
-        <li>Consultez les absences déclarées par les étudiants</li>
-        <li>Vérifiez les justificatifs transmis (certificat, convocation, etc...)</li>
-        <li>Validez ou refusez la demande selon les documents fournis</li>
-    </ol>
+        <div class="aide-card steps-card">
+            <h2>Comment ça marche ?</h2>
+            <ol class="steps-list">
+                <li>
+                    <span class="step-number">1</span>
+                    <div class="step-content">
+                        <strong>Consulte les absences</strong>
+                        <p>Accède à la liste des absences déclarées par les étudiants.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="step-number">2</span>
+                    <div class="step-content">
+                        <strong>Vérifie les justificatifs</strong>
+                        <p>Contrôle les documents transmis comme les certificats ou convocations.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="step-number">3</span>
+                    <div class="step-content">
+                        <strong>Valide ou refuse la demande</strong>
+                        <p>Prends ta décision selon les pièces fournies et le règlement intérieur.</p>
+                    </div>
+                </li>
+            </ol>
+        </div>
 
-    <a href="https://moodle.uphf.fr/course/view.php?id=3785" target="_blank">Règlement intérieur sur les absences</a>
+        <div class="aide-card info-card">
+            <h2>Important à savoir</h2>
+            <ul class="info-list">
+                <li>Les demandes doivent être traitées dans les délais pour assurer un suivi correct des absences.</li>
+                <li>Les justificatifs doivent être lisibles et conformes aux règles de l'établissement.</li>
+                <li>Le suivi des traitements reste disponible dans l'historique des absences.</li>
+            </ul>
+        </div>
 
-    <p>Pensez à traiter les demandes dans les délais afin d'assurer le bon suivi des absences et la conformité avec le règlement.</p>
+        <div class="aide-card reglement-card">
+            <h2>Règlement intérieur</h2>
+            <p>Consulte le règlement officiel de l'IUT concernant les absences et les justificatifs.</p>
+            <a href="https://moodle.uphf.fr/course/view.php?id=3785" target="_blank" class="btn-reglement">
+                <span>Voir le règlement sur Moodle</span>
+                <span class="arrow">→</span>
+            </a>
+        </div>
 
-    <a href="dashboard.php"><button type="button" class="btn">Retour à l'accueil</button></a>
+        <div class="aide-actions">
+            <a href="/src/Views/responsable/dashboard.php" class="btn-retour">
+                <span>← Retour à l'accueil</span>
+            </a>
+            <a href="/src/Views/responsable/historiqueAbsResp.php" class="btn-primary">
+                <span>Consulter l'historique</span>
+            </a>
+        </div>
+    </div>
 </section>
 
-<!-- Pied de page avec navigation -->
-<footer class="footer">
-    <nav class="footer-nav">
-        <a href="accueil_responsable.php">Accueil</a>
-        <span>|</span>
-        <a href="aide.php">Aides</a>
-    </nav>
-</footer>
-
-</body>
-</html>
+<?php
+require __DIR__ . '/../layout/footer.php';
+?>

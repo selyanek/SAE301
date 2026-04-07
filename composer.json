@@ -10,6 +10,10 @@
     }
   },
   "require-dev": {
-    "phpunit/phpunit": "^12.5"
+    "phpunit/phpunit": "^12.5",
+    "behat/behat": "^3.14"
+  },
+  "scripts": {
+    "test:bdd": "vendor/bin/behat --colors"
   }
 }
