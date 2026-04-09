@@ -12,8 +12,10 @@
     <?php endif; ?>
 </head>
 <body>
+<?php if (!isset($showHamburger) || $showHamburger !== false): ?>
 <!-- US-26 : Bouton hamburger pour mobile -->
 <button class="hamburger" id="hamburgerBtn" aria-label="Menu de navigation" onclick="toggleMenu()">☰</button>
+<?php endif; ?>
 
 <div class="uphf">
     <a href="https://www.uphf.fr/iut"><img src="../../../public/asset/img/logouphf.png" alt="Logo uphf"></a>
@@ -22,6 +24,7 @@
     <img src="../../../public/asset/img/logoedutrack.png" alt="Logo EduTrack">
 </div>
 
+<?php if (!isset($showHamburger) || $showHamburger !== false): ?>
 <!-- US-26 : Script du menu hamburger -->
 <script>
 function toggleMenu() {
@@ -53,3 +56,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<?php endif; ?>

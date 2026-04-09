@@ -1,4 +1,4 @@
-<?php require __DIR__ . '/../layout/header.php'; ?>
+<?php $showHamburger = false; require __DIR__ . '/../layout/header.php'; ?>
 
 <link rel="stylesheet" href="/public/asset/CSS/cssConnexion.css">
 
