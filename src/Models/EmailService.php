@@ -16,6 +16,7 @@ use PHPMailer\PHPMailer\Exception;
 class EmailService
 {
     private $mailer;
+    private bool $mailEnabled = true;
     
     // Configuration SMTP par défaut (Gmail)
     private $smtpConfig = [
@@ -32,7 +33,31 @@ class EmailService
     public function __construct()
     {
         $this->mailer = new PHPMailer(true);
+        $this->mailEnabled = $this->isMailEnabledFromEnv();
         $this->configureSMTP();
+    }
+
+    private function isMailEnabledFromEnv(): bool
+    {
+        $raw = $_ENV['MAIL_ENABLED'] ?? $_SERVER['MAIL_ENABLED'] ?? getenv('MAIL_ENABLED');
+
+        if ($raw === false || $raw === null || $raw === '') {
+            return true;
+        }
+
+        $value = strtolower(trim((string) $raw));
+        return !in_array($value, ['0', 'false', 'off', 'no'], true);
+    }
+
+    private function sendCurrentMessage(): bool
+    {
+        if (!$this->mailEnabled) {
+            error_log('EmailService: envoi ignore (MAIL_ENABLED=0).');
+            return true;
+        }
+
+        $this->mailer->send();
+        return true;
     }
 
     // Configure les paramètres SMTP pour l'envoi d'emails
@@ -59,8 +84,8 @@ class EmailService
             )
         );
         
-        // Timeout plus long
-        $this->mailer->Timeout = 30;
+        // Timeout court pour eviter les blocages web en cas de SMTP indisponible
+        $this->mailer->Timeout = 8;
         
         $this->mailer->setFrom(
             $this->smtpConfig['from_email'],
@@ -103,8 +128,7 @@ class EmailService
             $this->mailer->AltBody = $this->generateConfirmationEmailText($studentName, $dateStart, $dateEnd, $motif);
             
             // Envoi
-            $this->mailer->send();
-            return true;
+            return $this->sendCurrentMessage();
             
         } catch (Exception $e) {
             error_log("Erreur lors de l'envoi de l'email: " . $this->mailer->ErrorInfo);
@@ -213,8 +237,7 @@ public function sendPasswordResetEmail($toEmail, $toName, $newPassword)
         // Version texte
         $this->mailer->AltBody = $this->generatePasswordResetText($toName, $newPassword);
 
-        $this->mailer->send();
-        return true;
+        return $this->sendCurrentMessage();
     } catch (Exception $e) {
         error_log('Erreur lors de l\'envoi email reset: ' . $this->mailer->ErrorInfo);
         return false;
@@ -324,8 +347,7 @@ public function sendJustificationRequestEmail($toEmail, $toName, $motif)
         // Version texte
         $this->mailer->AltBody = $this->generateJustificationRequestText($toName, $motif);
 
-        $this->mailer->send();
-        return true;
+        return $this->sendCurrentMessage();
     } catch (Exception $e) {
         error_log('Erreur lors de l\'envoi de la demande de justificatif: ' . $this->mailer->ErrorInfo);
         return false;
@@ -446,8 +468,7 @@ private function generateJustificationRequestText($toName, $motif)
             }
             
             // Envoi
-            $this->mailer->send();
-            return true;
+            return $this->sendCurrentMessage();
             
         } catch (Exception $e) {
             error_log("Erreur lors de l'envoi de l'email: " . $this->mailer->ErrorInfo);
@@ -490,8 +511,7 @@ public function sendAbsenceAlertEmail($studentEmail, $studentName, $absenceId, $
         $this->mailer->AltBody = $this->generateAbsenceAlertText($studentName, $dateStart, $dateEnd, $cours, $isUrgent, $heuresRestantes);
         
         // Envoi
-        $this->mailer->send();
-        return true;
+        return $this->sendCurrentMessage();
         
     } catch (Exception $e) {
         error_log("Erreur lors de l'envoi de l'alerte d'absence: " . $this->mailer->ErrorInfo);
@@ -638,8 +658,7 @@ private function generateAbsenceAlertText($studentName, $dateStart, $dateEnd, $c
             // Version texte
             $this->mailer->AltBody = $this->generateRevisionDecisionText($nom, $dateDebut, $dateFin, $ancienStatut, $nouveauStatut, $justification);
 
-            $this->mailer->send();
-            return true;
+            return $this->sendCurrentMessage();
         } catch (Exception $e) {
             error_log('Erreur lors de l\'envoi de l\'email de révision: ' . $this->mailer->ErrorInfo);
             return false;
