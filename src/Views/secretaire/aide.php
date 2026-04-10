@@ -7,92 +7,82 @@ use src\Controllers\Redirect;
 
 $redirect = new Redirect('secretaire');
 $redirect->redirect();
+
+$pageTitle = 'Aide et assistance';
+$additionalCSS = ['/public/asset/CSS/cssAide.css'];
+
+require __DIR__ . '/../layout/header.php';
+require __DIR__ . '/../layout/navigation.php';
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aide</title>
-    <link href="/public/asset/CSS/cssDeBase.css" rel="stylesheet">
-</head>
-<body>
-<!-- US-26 : Bouton hamburger pour mobile -->
-<button class="hamburger" id="hamburgerBtn" aria-label="Menu de navigation" onclick="toggleMenu()">☰</button>
 
-<script>
-function toggleMenu() {
-    var sidebar = document.querySelector('.sidebar');
-    var btn = document.getElementById('hamburgerBtn');
-    sidebar.classList.toggle('open');
-    btn.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
-}
-document.addEventListener('DOMContentLoaded', function() {
-    var links = document.querySelectorAll('.sidebar a');
-    for (var i = 0; i < links.length; i++) {
-        links[i].addEventListener('click', function() {
-            var sidebar = document.querySelector('.sidebar');
-            sidebar.classList.remove('open');
-            document.getElementById('hamburgerBtn').textContent = '☰';
-        });
-    }
-    document.addEventListener('click', function(e) {
-        var sidebar = document.querySelector('.sidebar');
-        var btn = document.getElementById('hamburgerBtn');
-        if (sidebar && sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== btn) {
-            sidebar.classList.remove('open');
-            btn.textContent = '☰';
-        }
-    });
-});
-</script>
-<!-- Affichage du logo de l'université -->
-<div class="uphf">
-    <img src="/public/asset/img/logouphf.png" alt="Logo uphf">
-</div>
+<section class="aide-container">
+    <div class="aide-header">
+        <h1>Aide et assistance</h1>
+        <p class="aide-subtitle">Tout ce que vous devez savoir sur EduTrack</p>
+    </div>
 
-<!-- Affichage du logo EduTrack -->
-<div class="logoEdu">
-    <img src="/public/asset/img/logoedutrack.png" alt="Logo EduTrack">
-</div>
+    <div class="aide-content">
+        <div class="aide-card intro-card">
+            <h2>Qu'est-ce qu'EduTrack ?</h2>
+            <p>EduTrack est l'application officielle de l'IUT qui permet a la scolarite de centraliser et d'importer les absences. En tant que secretaire, vous envoyez les absences a traiter pour alimenter la base de donnees de suivi.</p>
+        </div>
 
-<!-- Barre latérale de navigation -->
-<div class="sidebar">
-    <ul>
-        <li><a href="/src/Views/secretaire/dashboard.php">Accueil</a></li>
-        <li><a href="/src/Views/secretaire/envoie_des_absences.php">Envoie des absences</a></li>
-        <li><a href="/src/Controllers/profile.php">Mon profil</a></li>
-        <li><a href="/src/Views/secretaire/aide.php">Aides</a></li>
-    </ul>
-</div>
+        <div class="aide-card steps-card">
+            <h2>Comment ca marche ?</h2>
+            <ol class="steps-list">
+                <li>
+                    <span class="step-number">1</span>
+                    <div class="step-content">
+                        <strong>Selectionnez vos fichiers CSV</strong>
+                        <p>Ajoutez un ou plusieurs fichiers exportes depuis VT.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="step-number">2</span>
+                    <div class="step-content">
+                        <strong>Lancez l'import</strong>
+                        <p>Les absences de chaque fichier sont integrees automatiquement.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="step-number">3</span>
+                    <div class="step-content">
+                        <strong>Consultez le resultat</strong>
+                        <p>Un ecran de confirmation affiche le bilan de l'import.</p>
+                    </div>
+                </li>
+            </ol>
+        </div>
 
-<section class="text">
-    <h1>Aide</h1>
-    <p>EduTrack est l'application officielle de l'IUT qui permet aux responsables de gérer et valider les absences des étudiants en ligne. En tant que secrétaire, vous pouvez envoyer de nouvelles absences à traiter en important les fichiers .csv correspondant aux absences directement depuis la plateforme.</p>
+        <div class="aide-card info-card">
+            <h2>Important a savoir</h2>
+            <ul class="info-list">
+                <li>Importez regulierement les fichiers pour garder le suivi des absences a jour.</li>
+                <li>Verifiez que les fichiers sont bien au format <strong>.csv</strong> avant envoi.</li>
+                <li>En cas d'erreur, corrigez le fichier source puis relancez un nouvel import.</li>
+            </ul>
+        </div>
 
-    <h2>Comment ça marche ?</h2>
+        <div class="aide-card reglement-card">
+            <h2>Reglement interieur</h2>
+            <p>Consultez le reglement officiel de l'IUT concernant les absences et les justificatifs.</p>
+            <a href="https://moodle.uphf.fr/course/view.php?id=3785" target="_blank" rel="noopener noreferrer" class="btn-reglement">
+                <span>Voir le reglement sur Moodle</span>
+                <span class="arrow">-></span>
+            </a>
+        </div>
 
-    <ol>
-        <li>Importez des fichiers .csv générés depuis VT</li>
-        <li>Lors de l'import, les absences dans chaque fichier .csv seront automatiquement ajoutées à la base de données d'EduTrack</li>
-        <li>Après chaque import réussi, vous pourrez consulter les résultats de cet import (nombre de nouvelles absences, nombre d'élèves, etc...) </li>
-    </ol>
-
-    <a href="https://moodle.uphf.fr/course/view.php?id=3785" target="_blank">Règlement intérieur sur les absences</a>
-
-    <p>Pensez à importer régulièrement de nouvelles absences afin de garder à jour la liste des absences.</p>
-
-    <a href="dashboard.php"><button type="button" class="btn">Retour à l'accueil</button></a>
+        <div class="aide-actions">
+            <a href="/src/Views/secretaire/dashboard.php" class="btn-retour">
+                <span>&lt;- Retour a l'accueil</span>
+            </a>
+            <a href="/src/Views/secretaire/envoie_des_absences.php" class="btn-primary">
+                <span>Envoyer des absences</span>
+            </a>
+        </div>
+    </div>
 </section>
 
-<!-- Pied de page avec navigation -->
-<footer class="footer">
-    <nav class="footer-nav">
-        <a href="dashboard.php">Accueil</a>
-        <span>|</span>
-        <a href="aide.php">Aides</a>
-    </nav>
-</footer>
-
-</body>
-</html>
+<?php
+require __DIR__ . '/../layout/footer.php';
+?>

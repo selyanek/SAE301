@@ -14,14 +14,14 @@
           "value": ""
         },
         {
-          "command": "type",
-          "target": "id=identifiant",
-          "value": "dilara.simsek"
+          "command": "executeScript",
+          "target": "document.getElementById('identifiant').value = 'dilara.simsek'; document.getElementById('identifiant').dispatchEvent(new Event('input', {bubbles:true}));",
+          "value": ""
         },
         {
-          "command": "type",
-          "target": "id=mot_de_passe",
-          "value": "7c45d6ca0f"
+          "command": "executeScript",
+          "target": "document.getElementById('mot_de_passe').value = '7c45d6ca0f'; document.getElementById('mot_de_passe').dispatchEvent(new Event('input', {bubbles:true}));",
+          "value": ""
         },
         {
           "command": "click",
@@ -54,19 +54,19 @@
           "value": ""
         },
         {
-          "command": "type",
-          "target": "id=date_start",
-          "value": "2026-03-16T08:00"
+          "command": "executeScript",
+          "target": "document.getElementById('date_start').value = '2026-03-16T08:00'; document.getElementById('date_start').dispatchEvent(new Event('input', {bubbles:true}));",
+          "value": ""
         },
         {
-          "command": "type",
-          "target": "id=date_end",
-          "value": "2026-03-18T17:00"
+          "command": "executeScript",
+          "target": "document.getElementById('date_end').value = '2026-03-18T17:00'; document.getElementById('date_end').dispatchEvent(new Event('input', {bubbles:true}));",
+          "value": ""
         },
         {
-          "command": "type",
-          "target": "id=motif",
-          "value": "Maladie"
+          "command": "executeScript",
+          "target": "document.getElementById('motif').value = 'Maladie'; document.getElementById('motif').dispatchEvent(new Event('input', {bubbles:true}));",
+          "value": ""
         },
         {
           "command": "type",
@@ -100,14 +100,14 @@
           "value": ""
         },
         {
-          "command": "type",
-          "target": "id=identifiant",
-          "value": "delphine.milice"
+          "command": "executeScript",
+          "target": "document.getElementById('identifiant').value = 'delphine.milice'; document.getElementById('identifiant').dispatchEvent(new Event('input', {bubbles:true}));",
+          "value": ""
         },
         {
-          "command": "type",
-          "target": "id=mot_de_passe",
-          "value": "motdepasse123"
+          "command": "executeScript",
+          "target": "document.getElementById('mot_de_passe').value = 'motdepasse123'; document.getElementById('mot_de_passe').dispatchEvent(new Event('input', {bubbles:true}));",
+          "value": ""
         },
         {
           "command": "click",
@@ -161,14 +161,14 @@
           "value": ""
         },
         {
-          "command": "type",
-          "target": "id=identifiant",
-          "value": "dilara.simsek"
+          "command": "executeScript",
+          "target": "document.getElementById('identifiant').value = 'dilara.simsek'; document.getElementById('identifiant').dispatchEvent(new Event('input', {bubbles:true}));",
+          "value": ""
         },
         {
-          "command": "type",
-          "target": "id=mot_de_passe",
-          "value": "7c45d6ca0f"
+          "command": "executeScript",
+          "target": "document.getElementById('mot_de_passe').value = '7c45d6ca0f'; document.getElementById('mot_de_passe').dispatchEvent(new Event('input', {bubbles:true}));",
+          "value": ""
         },
         {
           "command": "click",
@@ -191,19 +191,19 @@
           "value": ""
         },
         {
-          "command": "type",
-          "target": "id=old_password",
-          "value": "motdepasse123"
+          "command": "executeScript",
+          "target": "document.getElementById('old_password').value = 'motdepasse123'; document.getElementById('old_password').dispatchEvent(new Event('input', {bubbles:true}));",
+          "value": ""
         },
         {
-          "command": "type",
-          "target": "id=new_password",
-          "value": "newpassword456"
+          "command": "executeScript",
+          "target": "document.getElementById('new_password').value = 'newpassword456'; document.getElementById('new_password').dispatchEvent(new Event('input', {bubbles:true}));",
+          "value": ""
         },
         {
-          "command": "type",
-          "target": "id=confirm_password",
-          "value": "newpassword456"
+          "command": "executeScript",
+          "target": "document.getElementById('confirm_password').value = 'newpassword456'; document.getElementById('confirm_password').dispatchEvent(new Event('input', {bubbles:true}));",
+          "value": ""
         },
         {
           "command": "click",
@@ -232,14 +232,14 @@
           "value": ""
         },
         {
-          "command": "sendKeys",
-          "target": "id=identifiant",
-          "value": "philippe.andre"
+          "command": "executeScript",
+          "target": "document.getElementById('identifiant').value = 'philippe.andre'; document.getElementById('identifiant').dispatchEvent(new Event('input', {bubbles:true}));",
+          "value": ""
         },
         {
-          "command": "sendKeys",
-          "target": "id=mot_de_passe",
-          "value": "6kD5cyGu"
+          "command": "executeScript",
+          "target": "document.getElementById('mot_de_passe').value = '6kD5cyGu'; document.getElementById('mot_de_passe').dispatchEvent(new Event('input', {bubbles:true}));",
+          "value": ""
         },
         {
           "command": "click",
@@ -262,9 +262,9 @@
           "value": ""
         },
         {
-          "command": "sendKeys",
-          "target": "id=date",
-          "value": "2026-03-16"
+          "command": "executeScript",
+          "target": "document.getElementById('date').value = '2026-03-16'; document.getElementById('date').dispatchEvent(new Event('input', {bubbles:true}));",
+          "value": ""
         },
         {
           "command": "click",
